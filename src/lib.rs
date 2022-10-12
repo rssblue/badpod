@@ -1,7 +1,7 @@
 mod itunes_category;
 mod language;
 
-use crate::itunes_category::ItunesCategoryName;
+use crate::itunes_category::{ItunesCategoryName, ItunesSubcategoryName};
 use crate::language::Language;
 use serde::Deserialize;
 use serde_enum_str::Deserialize_enum_str;
@@ -63,7 +63,7 @@ pub struct ItunesCategory {
 #[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct ItunesSubcategory {
     #[serde(rename = "$attr:text")]
-    pub text: Option<String>,
+    pub text: Option<ItunesSubcategoryName>,
 }
 
 #[derive(Debug, Deserialize, PartialEq, Eq, Default)]
@@ -147,7 +147,7 @@ mod tests {
                         itunes_categories: vec! {ItunesCategory{
                             text: Some(ItunesCategoryName::SocietyAndCulture),
                             subcategory: Some(ItunesSubcategory{
-                                text: Some("Documentary".to_string()),
+                                text: Some(ItunesSubcategoryName::Documentary),
                             }),
                         }},
                         itunes_owner: Some(ItunesOwner {
