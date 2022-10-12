@@ -1,15 +1,14 @@
 use serde_derive::Deserialize;
 
 #[derive(Debug, Deserialize, PartialEq, Eq, Default)]
-pub struct RSS {
-    #[serde(rename = "$attr:version")]
-    pub version: Option<String>,
+pub struct Feed {
+    pub rss: RSS,
 }
 
 #[derive(Debug, Deserialize, PartialEq, Eq, Default)]
-pub struct Feed {
-    #[serde(rename = "rss")]
-    pub rss: RSS,
+pub struct RSS {
+    #[serde(rename = "$attr:version")]
+    pub version: Option<String>,
 }
 
 #[cfg(test)]
