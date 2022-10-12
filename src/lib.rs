@@ -1,3 +1,6 @@
+mod language;
+
+use crate::language::Language;
 use serde::Deserialize;
 use serde_enum_str::Deserialize_enum_str;
 
@@ -19,7 +22,7 @@ pub struct Channel {
     pub copyright: Option<String>,
     pub description: Option<String>,
     pub generator: Option<String>,
-    pub language: Option<String>,
+    pub language: Option<Language>,
     pub link: Option<String>,
     pub title: Option<String>,
 
@@ -103,6 +106,7 @@ mod tests {
   <channel>
     <copyright>© Example Company</copyright>
     <description><![CDATA[<p><strong>Example HTML description</strong></p>]]></description>
+    <language>en-us</language>
     <link>https://example.com</link>
     <title>Example Podcast</title>
     <itunes:author>Jane Doe</itunes:author>
@@ -132,6 +136,7 @@ mod tests {
                         description: Some(
                             "<p><strong>Example HTML description</strong></p>".to_string()
                         ),
+                        language: Some(Language::EnglishUnitedStates),
                         link: Some("https://example.com".to_string()),
                         title: Some("Example Podcast".to_string()),
                         itunes_author: Some("Jane Doe".to_string()),
