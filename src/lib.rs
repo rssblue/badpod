@@ -4,7 +4,8 @@ pub mod itunes;
 pub mod podcast;
 
 use crate::language::Language;
-use serde::Deserialize;
+use chrono::DateTime;
+use serde::{Deserialize, Deserializer};
 
 #[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct Feed {
@@ -52,6 +53,63 @@ pub struct Channel {
     pub itunes_owner: Option<itunes::Owner>,
     #[serde(rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:type")]
     pub itunes_type: Option<itunes::PodcastType>,
+
+    #[serde(rename = "item", default)]
+    pub items: Vec<Item>,
+}
+
+fn datefmt<'de, D>(deserializer: D) -> Result<DateTime<chrono::FixedOffset>, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    let s = String::deserialize(deserializer)?;
+    chrono::DateTime::parse_from_rfc2822(&s).map_err(serde::de::Error::custom)
+}
+
+fn option_datefmt<'de, D>(
+    deserializer: D,
+) -> Result<Option<DateTime<chrono::FixedOffset>>, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    println!("hi 0");
+    #[derive(Deserialize)]
+    struct Wrapper(#[serde(deserialize_with = "datefmt")] DateTime<chrono::FixedOffset>);
+    println!("hi 1");
+
+    let v = Option::deserialize(deserializer)?;
+    println!("hi 2");
+    Ok(v.map(|Wrapper(a)| a))
+}
+
+#[derive(Debug, Deserialize, PartialEq, Eq, Default)]
+pub struct Item {
+    pub description: Option<String>,
+    pub link: Option<String>,
+    pub title: Option<String>,
+    pub enclosure: Option<Enclosure>,
+    pub guid: Option<GUID>,
+    // TODO: fix.
+    #[serde(default, deserialize_with = "option_datefmt")]
+    pub pub_date: Option<chrono::DateTime<chrono::FixedOffset>>,
+}
+
+#[derive(Debug, Deserialize, PartialEq, Eq, Default)]
+pub struct Enclosure {
+    #[serde(rename = "$attr:url")]
+    pub url: Option<String>,
+    #[serde(rename = "$attr:length")]
+    pub length: Option<usize>,
+    #[serde(rename = "$attr:type")]
+    pub type_: Option<String>,
+}
+
+#[derive(Debug, Deserialize, PartialEq, Eq, Default)]
+pub struct GUID {
+    #[serde(rename = "$attr:isPermaLink")]
+    pub is_permalink: Option<bool>,
+    #[serde(rename = "$value")]
+    pub value: Option<String>,
 }
 
 #[cfg(test)]
@@ -81,6 +139,14 @@ mod tests {
       <itunes:email>jane@example.com</itunes:email>
     </itunes:owner>
     <itunes:type>serial</itunes:type>
+    <item>
+      <title>Example Episode</title>
+      <enclosure
+       url="http://example.com/episode-1.mp3" 
+       length="100200"
+       type="audio/mpeg"
+      />
+    </item>
   </channel>
 </rss>
             "#
@@ -117,6 +183,15 @@ mod tests {
                             name: Some("Jane Doe".to_string()),
                         }),
                         itunes_type: Some(itunes::PodcastType::Serial),
+                        items: vec! {Item{
+                            title: Some("Example Episode".to_string()),
+                            enclosure: Some(Enclosure{
+                                url: Some("http://example.com/episode-1.mp3".to_string()),
+                                length: Some(100200),
+                                type_: Some("audio/mpeg".to_string()),
+                            }),
+                            ..Default::default()
+                        }},
                         ..Default::default()
                     }),
                 }
