@@ -28,6 +28,9 @@ pub struct Channel {
     pub link: Option<String>,
     pub title: Option<String>,
 
+    #[serde(rename = "{http://purl.org/rss/1.0/modules/content/}content:encoded")]
+    pub content_encoded: Option<String>,
+
     #[serde(rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:author")]
     pub itunes_author: Option<String>,
     #[serde(rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:block")]
@@ -111,6 +114,7 @@ mod tests {
     <language>en-us</language>
     <link>https://example.com</link>
     <title>Example Podcast</title>
+    <content:encoded>&lt;p&gt;&lt;strong&gt;Example HTML description&lt;/strong&gt;&lt;/p&gt;</content:encoded>
     <itunes:author>Jane Doe</itunes:author>
     <itunes:block>Yes</itunes:block>
     <itunes:complete>No</itunes:complete>
@@ -141,6 +145,9 @@ mod tests {
                         language: Some(Language::EnglishUnitedStates),
                         link: Some("https://example.com".to_string()),
                         title: Some("Example Podcast".to_string()),
+                        content_encoded: Some(
+                            "<p><strong>Example HTML description</strong></p>".to_string()
+                        ),
                         itunes_author: Some("Jane Doe".to_string()),
                         itunes_block: Some(ItunesYes::Yes),
                         itunes_complete: Some(ItunesYes::Other("No".to_string())),
