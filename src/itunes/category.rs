@@ -1,7 +1,7 @@
 use serde_enum_str::Deserialize_enum_str;
 
 #[derive(Debug, Deserialize_enum_str, PartialEq, Eq)]
-pub enum ItunesCategoryName {
+pub enum CategoryName {
     Arts,
     Business,
     Comedy,
@@ -33,7 +33,7 @@ pub enum ItunesCategoryName {
 }
 
 #[derive(Debug, Deserialize_enum_str, PartialEq, Eq)]
-pub enum ItunesSubcategoryName {
+pub enum SubcategoryName {
     Books,
     Design,
     #[serde(rename = "Fashion & Beauty")]
