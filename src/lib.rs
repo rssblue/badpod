@@ -1,6 +1,7 @@
 mod language;
 
 pub mod itunes;
+pub mod podcast;
 
 use crate::language::Language;
 use serde::Deserialize;
