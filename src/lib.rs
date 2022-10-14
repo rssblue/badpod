@@ -74,6 +74,11 @@ pub struct Channel {
         default
     )]
     pub podcast_fundings: Vec<podcast::Funding>,
+    #[serde(
+        rename = "{https://podcastindex.org/namespace/1.0}podcast:person",
+        default
+    )]
+    pub podcast_persons: Vec<podcast::Person>,
 
     #[serde(rename = "item", default)]
     pub items: Vec<Item>,
@@ -96,6 +101,11 @@ pub struct Item {
         default
     )]
     pub podcast_soundbites: Vec<podcast::Soundbite>,
+    #[serde(
+        rename = "{https://podcastindex.org/namespace/1.0}podcast:person",
+        default
+    )]
+    pub podcast_persons: Vec<podcast::Person>,
 }
 
 #[derive(Debug, Deserialize, PartialEq, Default)]
@@ -152,6 +162,8 @@ mod tests {
     <podcast:locked>no</podcast:locked>
     <podcast:funding url="https://www.example.com/donations">Support the show!</podcast:funding>
     <podcast:funding url="https://www.example.com/members">Become a member!</podcast:funding>
+    <podcast:person href="https://example.com/johnsmith/blog" img="http://example.com/images/johnsmith.jpg">John Smith</podcast:person>
+    <podcast:person role="guest" href="https://www.imdb.com/name/nm0427852888/" img="http://example.com/images/janedoe.jpg">Jane Doe</podcast:person>
     <item>
       <enclosure
        url="http://example.com/episode-1.mp3" 
@@ -163,6 +175,9 @@ mod tests {
       <podcast:chapters url="https://example.com/episode-1/chapters.json" type="application/json+chapters" />
       <podcast:soundbite startTime="73.0" duration="60.0" />
       <podcast:soundbite startTime="1234.5" duration="42.25">Why the Podcast Namespace Matters</podcast:soundbite>
+      <podcast:person role="guest" href="https://www.wikipedia/alicebrown" img="http://example.com/images/alicebrown.jpg">Alice Brown</podcast:person>
+      <podcast:person group="Writing" role="Guest" href="https://www.wikipedia/alicebrown" img="http://example.com/images/alicebrown.jpg">Alice Brown</podcast:person>
+      <podcast:person group="non-existent group" role="Non-existent role" href="https://example.com/artist/beckysmith">Becky Smith</podcast:person>
     </item>
   </channel>
 </rss>
@@ -215,33 +230,71 @@ mod tests {
                                 value: Some("Become a member!".to_string()),
                             },
                         },
-                        items: vec! {
-                            Item{
-                            title: Some("Example Episode".to_string()),
-                            enclosure: Some(Enclosure{
-                                url: Some("http://example.com/episode-1.mp3".to_string()),
-                                length: Some(100200),
-                                type_: Some("audio/mpeg".to_string()),
-                            }),
-                            pub_date: Some(time::DateTime::Rfc2822(chrono::FixedOffset::east(0).ymd(2022, 10, 10).and_hms(6, 10, 5))),
-
-                            podcast_chapters: Some(podcast::Chapters{
-                                url: Some("https://example.com/episode-1/chapters.json".to_string()),
-                                type_: Some(podcast::ChaptersType::ApplicationJSONChapters),
-                            }),
-                            podcast_soundbites: vec! {
-                                podcast::Soundbite{
-                                    start_time: Some(Float::Float(73.0)),
-                                    duration: Some(Float::Float(60.0)),
-                                    value: None,
-                                },
-                                podcast::Soundbite{
-                                    start_time: Some(Float::Float(1234.5)),
-                                    duration: Some(Float::Float(42.25)),
-                                    value: Some("Why the Podcast Namespace Matters".to_string()),
-                                },
+                        podcast_persons: vec! {
+                            podcast::Person{
+                                href: Some("https://example.com/johnsmith/blog".to_string()),
+                                img: Some("http://example.com/images/johnsmith.jpg".to_string()),
+                                value: Some("John Smith".to_string()),
+                                ..Default::default()
                             },
-                            ..Default::default()
+                            podcast::Person{
+                                role: Some(podcast::PersonRole::Guest),
+                                href: Some("https://www.imdb.com/name/nm0427852888/".to_string()),
+                                img: Some("http://example.com/images/janedoe.jpg".to_string()),
+                                value: Some("Jane Doe".to_string()),
+                                ..Default::default()
+                            },
+                        },
+                        items: vec! {
+                        Item{
+                        title: Some("Example Episode".to_string()),
+                        enclosure: Some(Enclosure{
+                            url: Some("http://example.com/episode-1.mp3".to_string()),
+                            length: Some(100200),
+                            type_: Some("audio/mpeg".to_string()),
+                        }),
+                        pub_date: Some(time::DateTime::Rfc2822(chrono::FixedOffset::east(0).ymd(2022, 10, 10).and_hms(6, 10, 5))),
+
+                        podcast_chapters: Some(podcast::Chapters{
+                            url: Some("https://example.com/episode-1/chapters.json".to_string()),
+                            type_: Some(podcast::ChaptersType::ApplicationJSONChapters),
+                        }),
+                        podcast_soundbites: vec! {
+                            podcast::Soundbite{
+                                start_time: Some(Float::Float(73.0)),
+                                duration: Some(Float::Float(60.0)),
+                                value: None,
+                            },
+                            podcast::Soundbite{
+                                start_time: Some(Float::Float(1234.5)),
+                                duration: Some(Float::Float(42.25)),
+                                value: Some("Why the Podcast Namespace Matters".to_string()),
+                            },
+                        },
+                        podcast_persons: vec! {
+                            podcast::Person{
+                                role: Some(podcast::PersonRole::Guest),
+                                href: Some("https://www.wikipedia/alicebrown".to_string()),
+                                img: Some("http://example.com/images/alicebrown.jpg".to_string()),
+                                value: Some("Alice Brown".to_string()),
+                                ..Default::default()
+                            },
+                            podcast::Person{
+                                group: Some(podcast::PersonGroup::Writing),
+                                role: Some(podcast::PersonRole::Guest),
+                                href: Some("https://www.wikipedia/alicebrown".to_string()),
+                                img: Some("http://example.com/images/alicebrown.jpg".to_string()),
+                                value: Some("Alice Brown".to_string()),
+                            },
+                            podcast::Person{
+                                group: Some(podcast::PersonGroup::Other("non-existent group".to_string())),
+                                role: Some(podcast::PersonRole::Other("Non-existent role".to_string())),
+                                href: Some("https://example.com/artist/beckysmith".to_string()),
+                                value: Some("Becky Smith".to_string()),
+                                ..Default::default()
+                            },
+                        },
+                        ..Default::default()
                         }},
                         ..Default::default()
                     }),
