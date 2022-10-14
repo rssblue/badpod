@@ -4,7 +4,6 @@ pub mod itunes;
 pub mod podcast;
 
 use crate::language::Language;
-use chrono::DateTime;
 use serde::{Deserialize, Deserializer};
 
 #[derive(Debug, Deserialize, PartialEq, Eq, Default)]
@@ -58,28 +57,25 @@ pub struct Channel {
     pub items: Vec<Item>,
 }
 
-fn datefmt<'de, D>(deserializer: D) -> Result<DateTime<chrono::FixedOffset>, D::Error>
+fn option_datefmt<'de, D>(deserializer: D) -> Result<Option<Datetime>, D::Error>
 where
     D: Deserializer<'de>,
 {
-    let s = String::deserialize(deserializer)?;
-    chrono::DateTime::parse_from_rfc2822(&s).map_err(serde::de::Error::custom)
+    let s = match String::deserialize(deserializer) {
+        Ok(s) => s,
+        Err(e) => return Err(e),
+    };
+
+    match chrono::DateTime::parse_from_rfc2822(&s) {
+        Ok(t) => Ok(Some(Datetime::Rfc2822(t))),
+        Err(_) => Ok(Some(Datetime::Other(s.to_string()))),
+    }
 }
 
-fn option_datefmt<'de, D>(
-    deserializer: D,
-) -> Result<Option<DateTime<chrono::FixedOffset>>, D::Error>
-where
-    D: Deserializer<'de>,
-{
-    println!("hi 0");
-    #[derive(Deserialize)]
-    struct Wrapper(#[serde(deserialize_with = "datefmt")] DateTime<chrono::FixedOffset>);
-    println!("hi 1");
-
-    let v = Option::deserialize(deserializer)?;
-    println!("hi 2");
-    Ok(v.map(|Wrapper(a)| a))
+#[derive(Debug, PartialEq, Eq)]
+pub enum Datetime {
+    Rfc2822(chrono::DateTime<chrono::FixedOffset>),
+    Other(String),
 }
 
 #[derive(Debug, Deserialize, PartialEq, Eq, Default)]
@@ -90,8 +86,8 @@ pub struct Item {
     pub enclosure: Option<Enclosure>,
     pub guid: Option<GUID>,
     // TODO: fix.
-    #[serde(default, deserialize_with = "option_datefmt")]
-    pub pub_date: Option<chrono::DateTime<chrono::FixedOffset>>,
+    #[serde(default, deserialize_with = "option_datefmt", rename = "pubDate")]
+    pub pub_date: Option<Datetime>,
 }
 
 #[derive(Debug, Deserialize, PartialEq, Eq, Default)]
@@ -115,6 +111,8 @@ pub struct GUID {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use chrono::prelude::*;
+
     #[test]
     fn deserialize_element_into_struct() {
         let feed = xml_serde::from_str::<super::Feed>(
@@ -140,12 +138,13 @@ mod tests {
     </itunes:owner>
     <itunes:type>serial</itunes:type>
     <item>
-      <title>Example Episode</title>
       <enclosure
        url="http://example.com/episode-1.mp3" 
        length="100200"
        type="audio/mpeg"
       />
+      <pubDate>Mon, 10 Oct 2022 06:10:05 GMT</pubDate>
+      <title>Example Episode</title>
     </item>
   </channel>
 </rss>
@@ -190,6 +189,7 @@ mod tests {
                                 length: Some(100200),
                                 type_: Some("audio/mpeg".to_string()),
                             }),
+                            pub_date: Some(Datetime::Rfc2822(FixedOffset::east(0).ymd(2022, 10, 10).and_hms(6, 10, 5))),
                             ..Default::default()
                         }},
                         ..Default::default()
