@@ -67,6 +67,11 @@ pub struct Channel {
         rename = "{https://podcastindex.org/namespace/1.0}podcast:locked"
     )]
     pub podcast_locked: Option<podcast::Locked>,
+    #[serde(
+        rename = "{https://podcastindex.org/namespace/1.0}podcast:funding",
+        default
+    )]
+    pub podcast_fundings: Vec<podcast::Funding>,
 
     #[serde(rename = "item", default)]
     pub items: Vec<Item>,
@@ -136,6 +141,8 @@ mod tests {
     </itunes:owner>
     <itunes:type>serial</itunes:type>
     <podcast:locked>no</podcast:locked>
+    <podcast:funding url="https://www.example.com/donations">Support the show!</podcast:funding>
+    <podcast:funding url="https://www.example.com/members">Become a member!</podcast:funding>
     <item>
       <enclosure
        url="http://example.com/episode-1.mp3" 
@@ -186,6 +193,16 @@ mod tests {
                             owner: None,
                             value: Some(Bool::Bool(false)),
                         }),
+                        podcast_fundings: vec! {
+                            podcast::Funding{
+                                url: Some("https://www.example.com/donations".to_string()),
+                                value: Some("Support the show!".to_string()),
+                            },
+                            podcast::Funding{
+                                url: Some("https://www.example.com/members".to_string()),
+                                value: Some("Become a member!".to_string()),
+                            },
+                        },
                         items: vec! {Item{
                             title: Some("Example Episode".to_string()),
                             enclosure: Some(Enclosure{

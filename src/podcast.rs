@@ -22,7 +22,14 @@ pub struct Transcript {
 pub struct Locked {
     #[serde(rename = "$attr:owner")]
     pub owner: Option<String>,
-    #[serde(rename = "$value")]
-    #[serde(deserialize_with = "bool::option_bool_yn")]
+    #[serde(rename = "$value", deserialize_with = "bool::option_bool_yn")]
     pub value: Option<bool::Bool>,
+}
+
+#[derive(Debug, Deserialize, PartialEq, Eq, Default)]
+pub struct Funding {
+    #[serde(rename = "$attr:url")]
+    pub url: Option<String>,
+    #[serde(rename = "$value")]
+    pub value: Option<String>,
 }
