@@ -48,6 +48,7 @@ pub struct Channel {
     #[serde(rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:complete")]
     pub itunes_complete: Option<itunes::Yes>,
     #[serde(
+        default,
         rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:explicit",
         deserialize_with = "bool::option_bool_tf"
     )]
