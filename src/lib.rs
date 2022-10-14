@@ -7,7 +7,7 @@ mod time;
 pub mod itunes;
 pub mod podcast;
 
-pub use crate::bool::BoolTF;
+pub use crate::bool::Bool;
 pub use crate::language::Language;
 pub use crate::time::DateTime;
 
@@ -51,7 +51,7 @@ pub struct Channel {
         rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:explicit",
         deserialize_with = "bool::option_bool_tf"
     )]
-    pub itunes_explicit: Option<BoolTF>,
+    pub itunes_explicit: Option<Bool>,
     #[serde(rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:image")]
     pub itunes_image: Option<itunes::Image>,
     #[serde(rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:new-feed-url")]
@@ -93,7 +93,7 @@ pub struct GUID {
         rename = "$attr:isPermaLink",
         deserialize_with = "bool::option_bool_tf"
     )]
-    pub is_permalink: Option<BoolTF>,
+    pub is_permalink: Option<Bool>,
     #[serde(rename = "$value")]
     pub value: Option<String>,
 }
@@ -168,7 +168,7 @@ mod tests {
                                 text: Some(itunes::SubcategoryName::Documentary),
                             }),
                         }},
-                        itunes_explicit: Some(BoolTF::Bool(false)),
+                        itunes_explicit: Some(Bool::Bool(false)),
                         itunes_owner: Some(itunes::Owner {
                             email: Some("jane@example.com".to_string()),
                             name: Some("Jane Doe".to_string()),

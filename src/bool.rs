@@ -1,6 +1,6 @@
 use serde::{Deserialize, Deserializer};
 
-pub fn option_bool_tf<'de, D>(deserializer: D) -> Result<Option<BoolTF>, D::Error>
+pub fn option_bool_tf<'de, D>(deserializer: D) -> Result<Option<Bool>, D::Error>
 where
     D: Deserializer<'de>,
 {
@@ -10,14 +10,14 @@ where
     };
 
     match s.as_str() {
-        "false" => Ok(Some(BoolTF::Bool(false))),
-        "true" => Ok(Some(BoolTF::Bool(false))),
-        _ => Ok(Some(BoolTF::Other(s))),
+        "false" => Ok(Some(Bool::Bool(false))),
+        "true" => Ok(Some(Bool::Bool(false))),
+        _ => Ok(Some(Bool::Other(s))),
     }
 }
 
 #[derive(Debug, PartialEq, Eq)]
-pub enum BoolTF {
+pub enum Bool {
     Bool(bool),
     Other(String),
 }
