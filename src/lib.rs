@@ -98,7 +98,7 @@ pub struct Item {
     pub podcast_soundbites: Vec<podcast::Soundbite>,
 }
 
-#[derive(Debug, Deserialize, PartialEq, Eq, Default)]
+#[derive(Debug, Deserialize, PartialEq, Default)]
 pub struct Enclosure {
     #[serde(rename = "$attr:url")]
     pub url: Option<String>,
@@ -108,7 +108,7 @@ pub struct Enclosure {
     pub type_: Option<String>,
 }
 
-#[derive(Debug, Deserialize, PartialEq, Eq, Default)]
+#[derive(Debug, Deserialize, PartialEq, Default)]
 pub struct GUID {
     #[serde(
         rename = "$attr:isPermaLink",

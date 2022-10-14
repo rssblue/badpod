@@ -2,7 +2,7 @@ use serde_enum_str::Deserialize_enum_str;
 
 // Language codes taken from <https://www.rssboard.org/rss-language-codes> and
 // <https://www.loc.gov/standards/iso639-2/php/code_list.php>.
-#[derive(Debug, Deserialize_enum_str, PartialEq, Eq)]
+#[derive(Debug, Deserialize_enum_str, PartialEq)]
 pub enum Language {
     #[serde(rename = "aa")]
     Afar,

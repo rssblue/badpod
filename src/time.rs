@@ -15,7 +15,7 @@ where
     }
 }
 
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq)]
 pub enum DateTime {
     Rfc2822(chrono::DateTime<chrono::FixedOffset>),
     Other(String),

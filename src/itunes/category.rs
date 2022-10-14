@@ -1,6 +1,6 @@
 use serde_enum_str::Deserialize_enum_str;
 
-#[derive(Debug, Deserialize_enum_str, PartialEq, Eq)]
+#[derive(Debug, Deserialize_enum_str, PartialEq)]
 pub enum CategoryName {
     Arts,
     Business,
@@ -32,7 +32,7 @@ pub enum CategoryName {
     Other(String),
 }
 
-#[derive(Debug, Deserialize_enum_str, PartialEq, Eq)]
+#[derive(Debug, Deserialize_enum_str, PartialEq)]
 pub enum SubcategoryName {
     Books,
     Design,
