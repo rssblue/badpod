@@ -61,6 +61,13 @@ pub struct Channel {
     #[serde(rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:type")]
     pub itunes_type: Option<itunes::PodcastType>,
 
+    #[serde(
+        default,
+        rename = "{https://podcastindex.org/namespace/1.0}podcast:locked",
+        deserialize_with = "bool::option_bool_yn"
+    )]
+    pub podcast_locked: Option<Bool>,
+
     #[serde(rename = "item", default)]
     pub items: Vec<Item>,
 }
@@ -128,6 +135,7 @@ mod tests {
       <itunes:email>jane@example.com</itunes:email>
     </itunes:owner>
     <itunes:type>serial</itunes:type>
+    <podcast:locked>no</podcast:locked>
     <item>
       <enclosure
        url="http://example.com/episode-1.mp3" 
@@ -174,6 +182,7 @@ mod tests {
                             name: Some("Jane Doe".to_string()),
                         }),
                         itunes_type: Some(itunes::PodcastType::Serial),
+                        podcast_locked: Some(Bool::Bool(false)),
                         items: vec! {Item{
                             title: Some("Example Episode".to_string()),
                             enclosure: Some(Enclosure{
