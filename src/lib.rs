@@ -1,12 +1,15 @@
+use serde::Deserialize;
+
+mod bool;
 mod language;
 mod time;
 
 pub mod itunes;
 pub mod podcast;
 
-use crate::language::Language;
+pub use crate::bool::BoolTF;
+pub use crate::language::Language;
 pub use crate::time::DateTime;
-use serde::Deserialize;
 
 #[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct Feed {
@@ -44,8 +47,11 @@ pub struct Channel {
     pub itunes_categories: Vec<itunes::Category>,
     #[serde(rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:complete")]
     pub itunes_complete: Option<itunes::Yes>,
-    #[serde(rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:explicit")]
-    pub itunes_explicit: Option<bool>,
+    #[serde(
+        rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:explicit",
+        deserialize_with = "bool::option_bool_tf"
+    )]
+    pub itunes_explicit: Option<BoolTF>,
     #[serde(rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:image")]
     pub itunes_image: Option<itunes::Image>,
     #[serde(rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:new-feed-url")]
@@ -83,8 +89,11 @@ pub struct Enclosure {
 
 #[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct GUID {
-    #[serde(rename = "$attr:isPermaLink")]
-    pub is_permalink: Option<bool>,
+    #[serde(
+        rename = "$attr:isPermaLink",
+        deserialize_with = "bool::option_bool_tf"
+    )]
+    pub is_permalink: Option<BoolTF>,
     #[serde(rename = "$value")]
     pub value: Option<String>,
 }
@@ -113,6 +122,7 @@ mod tests {
     <itunes:category text="Society &amp; Culture">
       <itunes:category text="Documentary"></itunes:category>
     </itunes:category>
+    <itunes:explicit>false</itunes:explicit>
     <itunes:owner>
       <itunes:name>Jane Doe</itunes:name>
       <itunes:email>jane@example.com</itunes:email>
@@ -158,6 +168,7 @@ mod tests {
                                 text: Some(itunes::SubcategoryName::Documentary),
                             }),
                         }},
+                        itunes_explicit: Some(BoolTF::Bool(false)),
                         itunes_owner: Some(itunes::Owner {
                             email: Some("jane@example.com".to_string()),
                             name: Some("Jane Doe".to_string()),
