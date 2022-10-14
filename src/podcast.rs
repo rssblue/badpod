@@ -6,6 +6,9 @@ use crate::language::Language;
 mod transcript;
 pub use transcript::TranscriptRel;
 
+mod chapters;
+pub use chapters::ChaptersType;
+
 #[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct Transcript {
     #[serde(rename = "$attr:url")]
@@ -32,4 +35,12 @@ pub struct Funding {
     pub url: Option<String>,
     #[serde(rename = "$value")]
     pub value: Option<String>,
+}
+
+#[derive(Debug, Deserialize, PartialEq, Eq, Default)]
+pub struct Chapters {
+    #[serde(rename = "$attr:url")]
+    pub url: Option<String>,
+    #[serde(rename = "$attr:type")]
+    pub type_: Option<ChaptersType>,
 }

@@ -84,9 +84,11 @@ pub struct Item {
     pub title: Option<String>,
     pub enclosure: Option<Enclosure>,
     pub guid: Option<GUID>,
-    // TODO: fix.
     #[serde(default, deserialize_with = "time::option_datefmt", rename = "pubDate")]
     pub pub_date: Option<DateTime>,
+
+    #[serde(rename = "{https://podcastindex.org/namespace/1.0}podcast:chapters")]
+    pub podcast_chapters: Option<podcast::Chapters>,
 }
 
 #[derive(Debug, Deserialize, PartialEq, Eq, Default)]
@@ -151,6 +153,7 @@ mod tests {
       />
       <pubDate>Mon, 10 Oct 2022 06:10:05 GMT</pubDate>
       <title>Example Episode</title>
+      <podcast:chapters url="https://example.com/episode-1/chapters.json" type="application/json+chapters" />
     </item>
   </channel>
 </rss>
@@ -211,6 +214,10 @@ mod tests {
                                 type_: Some("audio/mpeg".to_string()),
                             }),
                             pub_date: Some(time::DateTime::Rfc2822(chrono::FixedOffset::east(0).ymd(2022, 10, 10).and_hms(6, 10, 5))),
+                            podcast_chapters: Some(podcast::Chapters{
+                                url: Some("https://example.com/episode-1/chapters.json".to_string()),
+                                type_: Some(podcast::ChaptersType::ApplicationJSONChapters),
+                            }),
                             ..Default::default()
                         }},
                         ..Default::default()
