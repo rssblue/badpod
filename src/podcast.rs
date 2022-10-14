@@ -2,6 +2,7 @@ use serde::Deserialize;
 
 use crate::bool;
 use crate::language::Language;
+use crate::numbers;
 
 mod transcript;
 pub use transcript::TranscriptRel;
@@ -43,4 +44,14 @@ pub struct Chapters {
     pub url: Option<String>,
     #[serde(rename = "$attr:type")]
     pub type_: Option<ChaptersType>,
+}
+
+#[derive(Debug, Deserialize, PartialEq, Default)]
+pub struct Soundbite {
+    #[serde(rename = "$attr:startTime", deserialize_with = "numbers::option_float")]
+    pub start_time: Option<numbers::Float>,
+    #[serde(rename = "$attr:duration", deserialize_with = "numbers::option_float")]
+    pub duration: Option<numbers::Float>,
+    #[serde(rename = "$value")]
+    pub value: Option<String>,
 }

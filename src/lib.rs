@@ -2,6 +2,7 @@ use serde::Deserialize;
 
 mod bool;
 mod language;
+mod numbers;
 mod time;
 
 pub mod itunes;
@@ -9,14 +10,15 @@ pub mod podcast;
 
 pub use crate::bool::Bool;
 pub use crate::language::Language;
+pub use crate::numbers::Float;
 pub use crate::time::DateTime;
 
-#[derive(Debug, Deserialize, PartialEq, Eq, Default)]
+#[derive(Debug, Deserialize, PartialEq, Default)]
 pub struct Feed {
     pub rss: RSS,
 }
 
-#[derive(Debug, Deserialize, PartialEq, Eq, Default)]
+#[derive(Debug, Deserialize, PartialEq, Default)]
 pub struct RSS {
     #[serde(rename = "$attr:version")]
     pub version: Option<String>,
@@ -24,7 +26,7 @@ pub struct RSS {
     pub channel: Option<Channel>,
 }
 
-#[derive(Debug, Deserialize, PartialEq, Eq, Default)]
+#[derive(Debug, Deserialize, PartialEq, Default)]
 pub struct Channel {
     pub copyright: Option<String>,
     pub description: Option<String>,
@@ -77,7 +79,7 @@ pub struct Channel {
     pub items: Vec<Item>,
 }
 
-#[derive(Debug, Deserialize, PartialEq, Eq, Default)]
+#[derive(Debug, Deserialize, PartialEq, Default)]
 pub struct Item {
     pub description: Option<String>,
     pub link: Option<String>,
@@ -89,6 +91,11 @@ pub struct Item {
 
     #[serde(rename = "{https://podcastindex.org/namespace/1.0}podcast:chapters")]
     pub podcast_chapters: Option<podcast::Chapters>,
+    #[serde(
+        rename = "{https://podcastindex.org/namespace/1.0}podcast:soundbite",
+        default
+    )]
+    pub podcast_soundbites: Vec<podcast::Soundbite>,
 }
 
 #[derive(Debug, Deserialize, PartialEq, Eq, Default)]
@@ -154,6 +161,8 @@ mod tests {
       <pubDate>Mon, 10 Oct 2022 06:10:05 GMT</pubDate>
       <title>Example Episode</title>
       <podcast:chapters url="https://example.com/episode-1/chapters.json" type="application/json+chapters" />
+      <podcast:soundbite startTime="73.0" duration="60.0" />
+      <podcast:soundbite startTime="1234.5" duration="42.25">Why the Podcast Namespace Matters</podcast:soundbite>
     </item>
   </channel>
 </rss>
@@ -206,7 +215,8 @@ mod tests {
                                 value: Some("Become a member!".to_string()),
                             },
                         },
-                        items: vec! {Item{
+                        items: vec! {
+                            Item{
                             title: Some("Example Episode".to_string()),
                             enclosure: Some(Enclosure{
                                 url: Some("http://example.com/episode-1.mp3".to_string()),
@@ -214,10 +224,23 @@ mod tests {
                                 type_: Some("audio/mpeg".to_string()),
                             }),
                             pub_date: Some(time::DateTime::Rfc2822(chrono::FixedOffset::east(0).ymd(2022, 10, 10).and_hms(6, 10, 5))),
+
                             podcast_chapters: Some(podcast::Chapters{
                                 url: Some("https://example.com/episode-1/chapters.json".to_string()),
                                 type_: Some(podcast::ChaptersType::ApplicationJSONChapters),
                             }),
+                            podcast_soundbites: vec! {
+                                podcast::Soundbite{
+                                    start_time: Some(Float::Float(73.0)),
+                                    duration: Some(Float::Float(60.0)),
+                                    value: None,
+                                },
+                                podcast::Soundbite{
+                                    start_time: Some(Float::Float(1234.5)),
+                                    duration: Some(Float::Float(42.25)),
+                                    value: Some("Why the Podcast Namespace Matters".to_string()),
+                                },
+                            },
                             ..Default::default()
                         }},
                         ..Default::default()
