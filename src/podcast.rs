@@ -1,5 +1,6 @@
 use serde::Deserialize;
 
+use crate::bool;
 use crate::language::Language;
 
 mod transcript;
@@ -15,4 +16,13 @@ pub struct Transcript {
     pub language: Option<Language>,
     #[serde(rename = "$attr:rel")]
     pub rel: Option<TranscriptRel>,
+}
+
+#[derive(Debug, Deserialize, PartialEq, Eq, Default)]
+pub struct Locked {
+    #[serde(rename = "$attr:owner")]
+    pub owner: Option<String>,
+    #[serde(rename = "$value")]
+    #[serde(deserialize_with = "bool::option_bool_yn")]
+    pub value: Option<bool::Bool>,
 }

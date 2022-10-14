@@ -64,10 +64,9 @@ pub struct Channel {
 
     #[serde(
         default,
-        rename = "{https://podcastindex.org/namespace/1.0}podcast:locked",
-        deserialize_with = "bool::option_bool_yn"
+        rename = "{https://podcastindex.org/namespace/1.0}podcast:locked"
     )]
-    pub podcast_locked: Option<Bool>,
+    pub podcast_locked: Option<podcast::Locked>,
 
     #[serde(rename = "item", default)]
     pub items: Vec<Item>,
@@ -183,7 +182,10 @@ mod tests {
                             name: Some("Jane Doe".to_string()),
                         }),
                         itunes_type: Some(itunes::PodcastType::Serial),
-                        podcast_locked: Some(Bool::Bool(false)),
+                        podcast_locked: Some(podcast::Locked {
+                            owner: None,
+                            value: Some(Bool::Bool(false)),
+                        }),
                         items: vec! {Item{
                             title: Some("Example Episode".to_string()),
                             enclosure: Some(Enclosure{
