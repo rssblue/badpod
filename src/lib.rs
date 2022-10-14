@@ -1,10 +1,12 @@
 mod language;
+mod time;
 
 pub mod itunes;
 pub mod podcast;
 
 use crate::language::Language;
-use serde::{Deserialize, Deserializer};
+pub use crate::time::DateTime;
+use serde::Deserialize;
 
 #[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct Feed {
@@ -57,27 +59,6 @@ pub struct Channel {
     pub items: Vec<Item>,
 }
 
-fn option_datefmt<'de, D>(deserializer: D) -> Result<Option<Datetime>, D::Error>
-where
-    D: Deserializer<'de>,
-{
-    let s = match String::deserialize(deserializer) {
-        Ok(s) => s,
-        Err(e) => return Err(e),
-    };
-
-    match chrono::DateTime::parse_from_rfc2822(&s) {
-        Ok(t) => Ok(Some(Datetime::Rfc2822(t))),
-        Err(_) => Ok(Some(Datetime::Other(s.to_string()))),
-    }
-}
-
-#[derive(Debug, PartialEq, Eq)]
-pub enum Datetime {
-    Rfc2822(chrono::DateTime<chrono::FixedOffset>),
-    Other(String),
-}
-
 #[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct Item {
     pub description: Option<String>,
@@ -86,8 +67,8 @@ pub struct Item {
     pub enclosure: Option<Enclosure>,
     pub guid: Option<GUID>,
     // TODO: fix.
-    #[serde(default, deserialize_with = "option_datefmt", rename = "pubDate")]
-    pub pub_date: Option<Datetime>,
+    #[serde(default, deserialize_with = "time::option_datefmt", rename = "pubDate")]
+    pub pub_date: Option<DateTime>,
 }
 
 #[derive(Debug, Deserialize, PartialEq, Eq, Default)]
@@ -189,7 +170,7 @@ mod tests {
                                 length: Some(100200),
                                 type_: Some("audio/mpeg".to_string()),
                             }),
-                            pub_date: Some(Datetime::Rfc2822(FixedOffset::east(0).ymd(2022, 10, 10).and_hms(6, 10, 5))),
+                            pub_date: Some(time::DateTime::Rfc2822(chrono::FixedOffset::east(0).ymd(2022, 10, 10).and_hms(6, 10, 5))),
                             ..Default::default()
                         }},
                         ..Default::default()
