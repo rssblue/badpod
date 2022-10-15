@@ -4,7 +4,7 @@ use chrono::prelude::*;
 #[test]
 fn deserialize_element_into_struct() {
     let feed = xml_serde::from_str::<super::Feed>(
-                r#"
+        r#"
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:podcast="https://podcastindex.org/namespace/1.0">
   <channel>
@@ -33,6 +33,7 @@ fn deserialize_element_into_struct() {
     <podcast:person role="guest" href="https://www.imdb.com/name/nm0427852888/" img="http://example.com/images/janedoe.jpg">Jane Doe</podcast:person>
     <podcast:location geo="geo:33.51601,-86.81455" osm="R6930627">Birmingham Civil Rights Museum</podcast:location>
     <podcast:trailer pubdate="Thu, 01 Apr 2021 08:00:00 EST" url="https://example.org/trailers/teaser" length="12345678" type="audio/mpeg">Coming April 1st, 2021</podcast:trailer>
+    <podcast:license>cc-by-4.0</podcast:license>
     <item>
       <enclosure
        url="http://example.com/episode-1.mp3" 
@@ -142,81 +143,87 @@ fn deserialize_element_into_struct() {
                             value: Some("Coming April 1st, 2021".to_string()),
                         },
                     },
+                    podcast_license: Some(podcast::License {
+                        url: None,
+                        value: Some(
+                            podcast::LicenseType::CreativeCommonsAttribution4_0International
+                        ),
+                    }),
                     items: vec! {
                     Item{
-                    title: Some("Example Episode".to_string()),
-                    enclosure: Some(Enclosure{
-                        url: Some("http://example.com/episode-1.mp3".to_string()),
-                        length: Some(100200),
-                        type_: Some(mimetype::Enclosure::MP3),
-                    }),
-                    pub_date: Some(time::DateTime::Rfc2822(chrono::FixedOffset::west(5).ymd(2022, 10, 10).and_hms(6, 10, 0))),
+                        title: Some("Example Episode".to_string()),
+                        enclosure: Some(Enclosure{
+                            url: Some("http://example.com/episode-1.mp3".to_string()),
+                            length: Some(100200),
+                            type_: Some(mimetype::Enclosure::MP3),
+                        }),
+                        pub_date: Some(time::DateTime::Rfc2822(chrono::FixedOffset::west(5).ymd(2022, 10, 10).and_hms(6, 10, 0))),
 
-                    podcast_chapters: Some(podcast::Chapters{
-                        url: Some("https://example.com/episode-1/chapters.json".to_string()),
-                        type_: Some(podcast::ChaptersType::ApplicationJSONChapters),
-                    }),
-                    podcast_soundbites: vec! {
-                        podcast::Soundbite{
-                            start_time: Some(Float::Float(73.0)),
-                            duration: Some(Float::Float(60.0)),
-                            value: None,
+                        podcast_chapters: Some(podcast::Chapters{
+                            url: Some("https://example.com/episode-1/chapters.json".to_string()),
+                            type_: Some(podcast::ChaptersType::ApplicationJSONChapters),
+                        }),
+                        podcast_soundbites: vec! {
+                            podcast::Soundbite{
+                                start_time: Some(Float::Float(73.0)),
+                                duration: Some(Float::Float(60.0)),
+                                value: None,
+                            },
+                            podcast::Soundbite{
+                                start_time: Some(Float::Float(1234.5)),
+                                duration: Some(Float::Float(42.25)),
+                                value: Some("Why the Podcast Namespace Matters".to_string()),
+                            },
                         },
-                        podcast::Soundbite{
-                            start_time: Some(Float::Float(1234.5)),
-                            duration: Some(Float::Float(42.25)),
-                            value: Some("Why the Podcast Namespace Matters".to_string()),
+                        podcast_persons: vec! {
+                            podcast::Person{
+                                role: Some(podcast::PersonRole::Guest),
+                                href: Some("https://www.wikipedia/alicebrown".to_string()),
+                                img: Some("http://example.com/images/alicebrown.jpg".to_string()),
+                                value: Some("Alice Brown".to_string()),
+                                ..Default::default()
+                            },
+                            podcast::Person{
+                                group: Some(podcast::PersonGroup::Writing),
+                                role: Some(podcast::PersonRole::Guest),
+                                href: Some("https://www.wikipedia/alicebrown".to_string()),
+                                img: Some("http://example.com/images/alicebrown.jpg".to_string()),
+                                value: Some("Alice Brown".to_string()),
+                            },
+                            podcast::Person{
+                                group: Some(podcast::PersonGroup::Other("non-existent group".to_string())),
+                                role: Some(podcast::PersonRole::Other("Non-existent role".to_string())),
+                                href: Some("https://example.com/artist/beckysmith".to_string()),
+                                value: Some("Becky Smith".to_string()),
+                                ..Default::default()
+                            },
                         },
-                    },
-                    podcast_persons: vec! {
-                        podcast::Person{
-                            role: Some(podcast::PersonRole::Guest),
-                            href: Some("https://www.wikipedia/alicebrown".to_string()),
-                            img: Some("http://example.com/images/alicebrown.jpg".to_string()),
-                            value: Some("Alice Brown".to_string()),
-                            ..Default::default()
+                        podcast_location: Some(podcast::Location {
+                            geo: Some(podcast::Geo::Other("GEO:-27.86159,153.3169".to_string())),
+                            osm: Some(podcast::OSM::OSM(podcast::OSMObject {
+                                type_: podcast::OSMType::Way,
+                                id: 43678282,
+                                revision: None,
+                            })),
+                            value: Some("Dreamworld (Queensland)".to_string()),
+                        }),
+                        podcast_season: Some(podcast::Season{
+                            name: Some("Egyptology: The 19th Century".to_string()),
+                            value: Some(U64::U64(1)),
+                        }),
+                        podcast_episode: Some(podcast::Episode{
+                            display: Some("Ch.3".to_string()),
+                            value: Some(podcast::EpisodeNumber::Number("204".to_string())),
+                        }),
+                        podcast_transcripts: vec! {
+                            podcast::Transcript{
+                                url: Some("https://example.com/episode1/transcript.json".to_string()),
+                                type_: Some(mimetype::Transcript::JSON),
+                                language: Some(Language::Spanish),
+                                rel: Some(podcast::TranscriptRel::Captions),
+                            },
                         },
-                        podcast::Person{
-                            group: Some(podcast::PersonGroup::Writing),
-                            role: Some(podcast::PersonRole::Guest),
-                            href: Some("https://www.wikipedia/alicebrown".to_string()),
-                            img: Some("http://example.com/images/alicebrown.jpg".to_string()),
-                            value: Some("Alice Brown".to_string()),
-                        },
-                        podcast::Person{
-                            group: Some(podcast::PersonGroup::Other("non-existent group".to_string())),
-                            role: Some(podcast::PersonRole::Other("Non-existent role".to_string())),
-                            href: Some("https://example.com/artist/beckysmith".to_string()),
-                            value: Some("Becky Smith".to_string()),
-                            ..Default::default()
-                        },
-                    },
-                    podcast_location: Some(podcast::Location {
-                        geo: Some(podcast::Geo::Other("GEO:-27.86159,153.3169".to_string())),
-                        osm: Some(podcast::OSM::OSM(podcast::OSMObject {
-                            type_: podcast::OSMType::Way,
-                            id: 43678282,
-                            revision: None,
-                        })),
-                        value: Some("Dreamworld (Queensland)".to_string()),
-                    }),
-                    podcast_season: Some(podcast::Season{
-                        name: Some("Egyptology: The 19th Century".to_string()),
-                        value: Some(U64::U64(1)),
-                    }),
-                    podcast_episode: Some(podcast::Episode{
-                        display: Some("Ch.3".to_string()),
-                        value: Some(podcast::EpisodeNumber::Number("204".to_string())),
-                    }),
-                    podcast_transcripts: vec! {
-                        podcast::Transcript{
-                            url: Some("https://example.com/episode1/transcript.json".to_string()),
-                            type_: Some(mimetype::Transcript::JSON),
-                            language: Some(Language::Spanish),
-                            rel: Some(podcast::TranscriptRel::Captions),
-                        },
-                    },
-                    ..Default::default()
+                        ..Default::default()
                     }},
                     ..Default::default()
                 }),

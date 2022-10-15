@@ -21,6 +21,9 @@ pub use location::{Geo, GeoCoordinates, OSMObject, OSMType, OSM};
 mod episode;
 pub use episode::EpisodeNumber;
 
+mod license;
+pub use license::LicenseType;
+
 #[derive(Debug, Deserialize, PartialEq, Default)]
 pub struct Transcript {
     #[serde(rename = "$attr:url")]
@@ -141,4 +144,12 @@ pub struct Trailer {
     pub season: Option<numbers::U64>,
     #[serde(rename = "$value")]
     pub value: Option<String>,
+}
+
+#[derive(Debug, Deserialize, PartialEq, Default)]
+pub struct License {
+    #[serde(rename = "$attr:url")]
+    pub url: Option<String>,
+    #[serde(rename = "$value")]
+    pub value: Option<LicenseType>,
 }
