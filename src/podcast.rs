@@ -100,6 +100,14 @@ pub struct Location {
 }
 
 #[derive(Debug, Deserialize, PartialEq, Default)]
+pub struct Season {
+    #[serde(rename = "$attr:name")]
+    pub name: Option<String>,
+    #[serde(rename = "$value", deserialize_with = "numbers::option_u64")]
+    pub value: Option<numbers::U64>,
+}
+
+#[derive(Debug, Deserialize, PartialEq, Default)]
 pub struct Episode {
     #[serde(rename = "$attr:display")]
     pub display: Option<String>,
