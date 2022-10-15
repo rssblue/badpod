@@ -109,6 +109,88 @@ fn parse_geo(s: String) -> Result<GeoCoordinates, String> {
     })
 }
 
+#[derive(Debug, PartialEq)]
+pub enum OSMType {
+    Node,
+    Way,
+    Relation,
+}
+
+#[derive(Debug, PartialEq)]
+pub struct OSMObject {
+    pub type_: OSMType,
+    pub id: u64,
+    pub revision: Option<u64>,
+}
+
+#[derive(Debug, PartialEq)]
+pub enum OSM {
+    OSM(OSMObject),
+    Other(String),
+}
+
+pub fn option_osm<'de, D>(deserializer: D) -> Result<Option<OSM>, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    let s = match String::deserialize(deserializer) {
+        Ok(s) => s,
+        Err(e) => return Err(e),
+    };
+
+    match parse_osm(s.clone()) {
+        Ok(osm_coordinates) => Ok(Some(OSM::OSM(osm_coordinates))),
+        Err(_) => Ok(Some(OSM::Other(s))),
+    }
+}
+
+fn parse_osm(s: String) -> Result<OSMObject, String> {
+    let has_revision = s.matches("#").count() > 0;
+
+    let pattern = {
+        if has_revision {
+            r"(?P<type_>[NWR])(?P<id>\d+)#(?P<revision>\d+)"
+        } else {
+            r"(?P<type_>[NWR])(?P<id>\d+)"
+        }
+    };
+
+    let re = match regex::Regex::new(pattern) {
+        Ok(re) => re,
+        Err(e) => return Err(e.to_string()),
+    };
+    let caps = match re.captures(s.as_str()) {
+        Some(caps) => caps,
+        None => return Err("wrong pattern".to_string()),
+    };
+
+    let type_ = match &caps["type_"] {
+        "N" => OSMType::Node,
+        "W" => OSMType::Way,
+        "R" => OSMType::Relation,
+        _ => return Err("something went wrong".to_string()),
+    };
+
+    let id = match &caps["id"].parse::<u64>() {
+        Ok(id) => *id,
+        Err(e) => return Err(e.to_string()),
+    };
+
+    let mut revision: Option<u64> = None;
+    if has_revision {
+        revision = match &caps["revision"].parse::<u64>() {
+            Ok(revision) => Some(*revision),
+            Err(e) => return Err(e.to_string()),
+        };
+    }
+
+    Ok(OSMObject {
+        type_: type_,
+        id: id,
+        revision: revision,
+    })
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -158,6 +240,41 @@ mod tests {
         assert_eq!(
             parse_geo("geo:37.786971,-122.399677,250,u=350".to_string()),
             Err("should not have more than two commas".to_string()),
+        );
+    }
+
+    #[test]
+    fn test_parse_osm() {
+        assert_eq!(
+            parse_osm("R148838".to_string()),
+            Ok(OSMObject {
+                type_: OSMType::Relation,
+                id: 148838,
+                revision: None,
+            })
+        );
+
+        assert_eq!(
+            parse_osm("W5013364".to_string()),
+            Ok(OSMObject {
+                type_: OSMType::Way,
+                id: 5013364,
+                revision: None,
+            })
+        );
+
+        assert_eq!(
+            parse_osm("R7444#188".to_string()),
+            Ok(OSMObject {
+                type_: OSMType::Relation,
+                id: 7444,
+                revision: Some(188),
+            })
+        );
+
+        assert_eq!(
+            parse_osm("7444#188".to_string()),
+            Err("wrong pattern".to_string()),
         );
     }
 }
