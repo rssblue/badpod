@@ -197,7 +197,7 @@ mod tests {
 
     #[test]
     fn test_parse_geo() {
-        assert_eq!(
+        pretty_assertions::assert_eq!(
             parse_geo("geo:37.786971,-122.399677".to_string()),
             Ok(GeoCoordinates {
                 latitude: 37.786971,
@@ -207,7 +207,7 @@ mod tests {
             })
         );
 
-        assert_eq!(
+        pretty_assertions::assert_eq!(
             parse_geo("geo:37.786971,-122.399677,250".to_string()),
             Ok(GeoCoordinates {
                 latitude: 37.786971,
@@ -217,7 +217,7 @@ mod tests {
             })
         );
 
-        assert_eq!(
+        pretty_assertions::assert_eq!(
             parse_geo("geo:37.786971,-122.399677;u=350".to_string()),
             Ok(GeoCoordinates {
                 latitude: 37.786971,
@@ -227,7 +227,7 @@ mod tests {
             })
         );
 
-        assert_eq!(
+        pretty_assertions::assert_eq!(
             parse_geo("geo:37.786971,-122.399677,250;u=350".to_string()),
             Ok(GeoCoordinates {
                 latitude: 37.786971,
@@ -237,7 +237,7 @@ mod tests {
             })
         );
 
-        assert_eq!(
+        pretty_assertions::assert_eq!(
             parse_geo("geo:37.786971,-122.399677,250,u=350".to_string()),
             Err("should not have more than two commas".to_string()),
         );
@@ -245,7 +245,7 @@ mod tests {
 
     #[test]
     fn test_parse_osm() {
-        assert_eq!(
+        pretty_assertions::assert_eq!(
             parse_osm("R148838".to_string()),
             Ok(OSMObject {
                 type_: OSMType::Relation,
@@ -254,7 +254,7 @@ mod tests {
             })
         );
 
-        assert_eq!(
+        pretty_assertions::assert_eq!(
             parse_osm("W5013364".to_string()),
             Ok(OSMObject {
                 type_: OSMType::Way,
@@ -263,7 +263,7 @@ mod tests {
             })
         );
 
-        assert_eq!(
+        pretty_assertions::assert_eq!(
             parse_osm("R7444#188".to_string()),
             Ok(OSMObject {
                 type_: OSMType::Relation,
@@ -272,7 +272,7 @@ mod tests {
             })
         );
 
-        assert_eq!(
+        pretty_assertions::assert_eq!(
             parse_osm("7444#188".to_string()),
             Err("wrong pattern".to_string()),
         );

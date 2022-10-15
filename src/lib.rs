@@ -197,7 +197,7 @@ mod tests {
             )
             .unwrap();
 
-        assert_eq!(
+        pretty_assertions::assert_eq!(
             feed,
             Feed {
                 rss: RSS {
