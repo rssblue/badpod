@@ -2,7 +2,9 @@ use serde::Deserialize;
 
 use crate::bool;
 use crate::language::Language;
+use crate::mimetype;
 use crate::numbers;
+pub use crate::time::DateTime;
 
 mod transcript;
 pub use transcript::TranscriptRel;
@@ -103,4 +105,32 @@ pub struct Episode {
     pub display: Option<String>,
     #[serde(rename = "$value", deserialize_with = "episode::option_episode_number")]
     pub value: Option<EpisodeNumber>,
+}
+
+#[derive(Debug, Deserialize, PartialEq, Default)]
+pub struct Trailer {
+    #[serde(rename = "$attr:url")]
+    pub url: Option<String>,
+    #[serde(
+        rename = "$attr:pubdate",
+        deserialize_with = "crate::time::option_datefmt",
+        default
+    )]
+    pub pub_date: Option<DateTime>,
+    #[serde(
+        rename = "$attr:length",
+        deserialize_with = "numbers::option_u64",
+        default
+    )]
+    pub length: Option<numbers::U64>,
+    #[serde(rename = "$attr:type")]
+    pub type_: Option<mimetype::Enclosure>,
+    #[serde(
+        rename = "$attr:length",
+        deserialize_with = "numbers::option_u64",
+        default
+    )]
+    pub season: Option<numbers::U64>,
+    #[serde(rename = "$value")]
+    pub value: Option<String>,
 }

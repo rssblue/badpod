@@ -2,6 +2,7 @@ use serde::Deserialize;
 
 mod bool;
 mod language;
+pub mod mimetype;
 mod numbers;
 mod time;
 
@@ -10,7 +11,7 @@ pub mod podcast;
 
 pub use crate::bool::Bool;
 pub use crate::language::Language;
-pub use crate::numbers::Float;
+pub use crate::numbers::{Float, U64};
 pub use crate::time::DateTime;
 
 #[cfg(test)]
@@ -87,6 +88,11 @@ pub struct Channel {
         default
     )]
     pub podcast_location: Option<podcast::Location>,
+    #[serde(
+        rename = "{https://podcastindex.org/namespace/1.0}podcast:trailer",
+        default
+    )]
+    pub podcast_trailers: Vec<podcast::Trailer>,
 
     #[serde(rename = "item", default)]
     pub items: Vec<Item>,

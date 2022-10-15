@@ -32,6 +32,7 @@ fn deserialize_element_into_struct() {
     <podcast:person href="https://example.com/johnsmith/blog" img="http://example.com/images/johnsmith.jpg">John Smith</podcast:person>
     <podcast:person role="guest" href="https://www.imdb.com/name/nm0427852888/" img="http://example.com/images/janedoe.jpg">Jane Doe</podcast:person>
     <podcast:location geo="geo:33.51601,-86.81455" osm="R6930627">Birmingham Civil Rights Museum</podcast:location>
+    <podcast:trailer pubdate="Thu, 01 Apr 2021 08:00:00 EST" url="https://example.org/trailers/teaser" length="12345678" type="audio/mpeg">Coming April 1st, 2021</podcast:trailer>
     <item>
       <enclosure
        url="http://example.com/episode-1.mp3" 
@@ -129,6 +130,16 @@ fn deserialize_element_into_struct() {
                         })),
                         value: Some("Birmingham Civil Rights Museum".to_string()),
                     }),
+                    podcast_trailers: vec! {
+                        podcast::Trailer{
+                            pub_date: Some(time::DateTime::Rfc2822(chrono::FixedOffset::west(5*60*60).ymd(2021, 4, 1).and_hms(8, 0, 0))),
+                            url: Some("https://example.org/trailers/teaser".to_string()),
+                            length: Some(U64::U64(12345678)),
+                            type_: Some(mimetype::Enclosure::MP3),
+                            season: None,
+                            value: Some("Coming April 1st, 2021".to_string()),
+                        },
+                    },
                     items: vec! {
                     Item{
                     title: Some("Example Episode".to_string()),
@@ -137,7 +148,7 @@ fn deserialize_element_into_struct() {
                         length: Some(100200),
                         type_: Some("audio/mpeg".to_string()),
                     }),
-                    pub_date: Some(time::DateTime::Rfc2822(chrono::FixedOffset::east(0).ymd(2022, 10, 10).and_hms(6, 10, 5))),
+                    pub_date: Some(time::DateTime::Rfc2822(chrono::FixedOffset::west(5).ymd(2022, 10, 10).and_hms(6, 10, 0))),
 
                     podcast_chapters: Some(podcast::Chapters{
                         url: Some("https://example.com/episode-1/chapters.json".to_string()),
