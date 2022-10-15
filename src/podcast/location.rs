@@ -49,42 +49,64 @@ fn parse_geo(s: String) -> Result<GeoCoordinates, String> {
     }
     let has_uncertainty = num_semicolons == 1;
 
-    if !has_altitude && !has_uncertainty {
-        let re = match regex::Regex::new(
-            r"(?P<latitude>[+-]?([0-9]*[.])?[0-9]+),(?P<longitude>[+-]?([0-9]*[.])?[0-9]+)",
-        ) {
-            Ok(re) => re,
-            Err(e) => return Err(e.to_string()),
-        };
-        let caps = match re.captures(data.as_str()) {
-            Some(caps) => caps,
-            None => return Err("wrong pattern".to_string()),
-        };
+    let pattern = match (has_altitude, has_uncertainty) {
+        (false, false) => {
+            r"(?P<latitude>[+-]?([0-9]*[.])?[0-9]+),(?P<longitude>[+-]?([0-9]*[.])?[0-9]+)"
+        }
+        (false, true) => {
+            r"(?P<latitude>[+-]?([0-9]*[.])?[0-9]+),(?P<longitude>[+-]?([0-9]*[.])?[0-9]+);u=(?P<uncertainty>[+-]?([0-9]*[.])?[0-9]+)"
+        }
+        (true, false) => {
+            r"(?P<latitude>[+-]?([0-9]*[.])?[0-9]+),(?P<longitude>[+-]?([0-9]*[.])?[0-9]+),(?P<altitude>[+-]?([0-9]*[.])?[0-9]+)"
+        }
+        (true, true) => {
+            r"(?P<latitude>[+-]?([0-9]*[.])?[0-9]+),(?P<longitude>[+-]?([0-9]*[.])?[0-9]+),(?P<altitude>[+-]?([0-9]*[.])?[0-9]+);u=(?P<uncertainty>[+-]?([0-9]*[.])?[0-9]+)"
+        }
+    };
 
-        let latitude = &caps["latitude"];
-        let latitude = match latitude.parse::<f64>() {
-            Ok(latitude) => latitude,
-            Err(e) => return Err(e.to_string()),
-        };
+    let re = match regex::Regex::new(pattern) {
+        Ok(re) => re,
+        Err(e) => return Err(e.to_string()),
+    };
+    let caps = match re.captures(data.as_str()) {
+        Some(caps) => caps,
+        None => return Err("wrong pattern".to_string()),
+    };
 
-        let longitude = &caps["longitude"];
-        let longitude = match longitude.parse::<f64>() {
-            Ok(longitude) => longitude,
+    let latitude = &caps["latitude"];
+    let latitude = match latitude.parse::<f64>() {
+        Ok(latitude) => latitude,
+        Err(e) => return Err(e.to_string()),
+    };
+
+    let longitude = &caps["longitude"];
+    let longitude = match longitude.parse::<f64>() {
+        Ok(longitude) => longitude,
+        Err(e) => return Err(e.to_string()),
+    };
+
+    let mut altitude: Option<f64> = None;
+    if has_altitude {
+        altitude = match &caps["altitude"].parse::<f64>() {
+            Ok(altitude) => Some(*altitude),
             Err(e) => return Err(e.to_string()),
         };
-        return Ok(GeoCoordinates {
-            latitude: latitude,
-            longitude: longitude,
-            altitude: None,
-            uncertainty: None,
-        });
     }
-    return Ok(GeoCoordinates {
-        latitude: 0.0,
-        longitude: 0.0,
-        altitude: None,
-        uncertainty: None,
-    });
+
+    let mut uncertainty: Option<f64> = None;
+    if has_uncertainty {
+        uncertainty = match &caps["uncertainty"].parse::<f64>() {
+            Ok(uncertainty) => Some(*uncertainty),
+            Err(e) => return Err(e.to_string()),
+        };
+    }
+
+    Ok(GeoCoordinates {
+        latitude: latitude,
+        longitude: longitude,
+        altitude: altitude,
+        uncertainty: uncertainty,
+    })
 }
 
 #[cfg(test)]
@@ -93,15 +115,49 @@ mod tests {
 
     #[test]
     fn test_parse_geo() {
-        let geo_coordinates = parse_geo("geo:37.786971,-122.399677".to_string());
         assert_eq!(
-            geo_coordinates,
+            parse_geo("geo:37.786971,-122.399677".to_string()),
             Ok(GeoCoordinates {
                 latitude: 37.786971,
                 longitude: -122.399677,
                 altitude: None,
                 uncertainty: None,
             })
+        );
+
+        assert_eq!(
+            parse_geo("geo:37.786971,-122.399677,250".to_string()),
+            Ok(GeoCoordinates {
+                latitude: 37.786971,
+                longitude: -122.399677,
+                altitude: Some(250.0),
+                uncertainty: None,
+            })
+        );
+
+        assert_eq!(
+            parse_geo("geo:37.786971,-122.399677;u=350".to_string()),
+            Ok(GeoCoordinates {
+                latitude: 37.786971,
+                longitude: -122.399677,
+                altitude: None,
+                uncertainty: Some(350.0),
+            })
+        );
+
+        assert_eq!(
+            parse_geo("geo:37.786971,-122.399677,250;u=350".to_string()),
+            Ok(GeoCoordinates {
+                latitude: 37.786971,
+                longitude: -122.399677,
+                altitude: Some(250.0),
+                uncertainty: Some(350.0),
+            })
+        );
+
+        assert_eq!(
+            parse_geo("geo:37.786971,-122.399677,250,u=350".to_string()),
+            Err("should not have more than two commas".to_string()),
         );
     }
 }
