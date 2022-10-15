@@ -146,7 +146,7 @@ fn deserialize_element_into_struct() {
                     enclosure: Some(Enclosure{
                         url: Some("http://example.com/episode-1.mp3".to_string()),
                         length: Some(100200),
-                        type_: Some("audio/mpeg".to_string()),
+                        type_: Some(mimetype::Enclosure::MP3),
                     }),
                     pub_date: Some(time::DateTime::Rfc2822(chrono::FixedOffset::west(5).ymd(2022, 10, 10).and_hms(6, 10, 0))),
 

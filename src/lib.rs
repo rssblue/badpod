@@ -139,7 +139,7 @@ pub struct Enclosure {
     #[serde(rename = "$attr:length")]
     pub length: Option<usize>,
     #[serde(rename = "$attr:type")]
-    pub type_: Option<String>,
+    pub type_: Option<mimetype::Enclosure>,
 }
 
 #[derive(Debug, Deserialize, PartialEq, Default)]
