@@ -13,6 +13,9 @@ pub use chapters::ChaptersType;
 mod person;
 pub use person::{PersonGroup, PersonRole};
 
+mod location;
+pub use location::Geo;
+
 #[derive(Debug, Deserialize, PartialEq, Default)]
 pub struct Transcript {
     #[serde(rename = "$attr:url")]
@@ -79,4 +82,14 @@ pub struct Person {
     pub href: Option<String>,
     #[serde(rename = "$value")]
     pub value: Option<String>,
+}
+
+#[derive(Debug, Deserialize, PartialEq, Default)]
+pub struct Location {
+    #[serde(rename = "$attr:geo", deserialize_with = "location::option_geo")]
+    pub geo: Option<Geo>,
+    // #[serde(rename = "$attr:osm", deserialize_with = "location::option_osm")]
+    // pub osm: Option<OSM>,
+    // #[serde(rename = "$value")]
+    // pub value: Option<String>,
 }
