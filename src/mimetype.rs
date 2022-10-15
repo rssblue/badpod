@@ -18,3 +18,23 @@ pub enum Enclosure {
     #[serde(other)]
     Other(String),
 }
+
+#[derive(Debug, Deserialize_enum_str, PartialEq)]
+pub enum Transcript {
+    #[serde(rename = "text/plain")]
+    Plain,
+    #[serde(rename = "text/html")]
+    HTML,
+    #[serde(rename = "text/vtt")]
+    VTT,
+    #[serde(rename = "application/json")]
+    JSON,
+    #[serde(rename = "application/x-subrip")]
+    SRT,
+    // Legacy: not supported by IANA, but was once part of podcast namespace specification.
+    #[serde(rename = "application/srt")]
+    ApplicationSRT,
+
+    #[serde(other)]
+    Other(String),
+}

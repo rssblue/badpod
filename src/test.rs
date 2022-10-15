@@ -49,6 +49,7 @@ fn deserialize_element_into_struct() {
       <podcast:person group="non-existent group" role="Non-existent role" href="https://example.com/artist/beckysmith">Becky Smith</podcast:person>
       <podcast:location geo="GEO:-27.86159,153.3169" osm="W43678282">Dreamworld (Queensland)</podcast:location>
       <podcast:episode display="Ch.3">204</podcast:episode>
+      <podcast:transcript url="https://example.com/episode1/transcript.json" type="application/json" language="es" rel="captions" />
     </item>
   </channel>
 </rss>
@@ -202,6 +203,14 @@ fn deserialize_element_into_struct() {
                         display: Some("Ch.3".to_string()),
                         value: Some(podcast::EpisodeNumber::Number("204".to_string())),
                     }),
+                    podcast_transcripts: vec! {
+                        podcast::Transcript{
+                            url: Some("https://example.com/episode1/transcript.json".to_string()),
+                            type_: Some(mimetype::Transcript::JSON),
+                            language: Some(Language::Spanish),
+                            rel: Some(podcast::TranscriptRel::Captions),
+                        },
+                    },
                     ..Default::default()
                     }},
                     ..Default::default()

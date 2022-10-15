@@ -26,7 +26,7 @@ pub struct Transcript {
     #[serde(rename = "$attr:url")]
     pub url: Option<String>,
     #[serde(rename = "$attr:type")]
-    pub type_: Option<String>,
+    pub type_: Option<mimetype::Transcript>,
     #[serde(rename = "$attr:language")]
     pub language: Option<Language>,
     #[serde(rename = "$attr:rel")]

@@ -108,6 +108,11 @@ pub struct Item {
     #[serde(default, deserialize_with = "time::option_datefmt", rename = "pubDate")]
     pub pub_date: Option<DateTime>,
 
+    #[serde(
+        rename = "{https://podcastindex.org/namespace/1.0}podcast:transcript",
+        default
+    )]
+    pub podcast_transcripts: Vec<podcast::Transcript>,
     #[serde(rename = "{https://podcastindex.org/namespace/1.0}podcast:chapters")]
     pub podcast_chapters: Option<podcast::Chapters>,
     #[serde(
