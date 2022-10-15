@@ -16,6 +16,9 @@ pub use person::{PersonGroup, PersonRole};
 mod location;
 pub use location::{Geo, GeoCoordinates, OSMObject, OSMType, OSM};
 
+mod episode;
+pub use episode::EpisodeNumber;
+
 #[derive(Debug, Deserialize, PartialEq, Default)]
 pub struct Transcript {
     #[serde(rename = "$attr:url")]
@@ -92,4 +95,12 @@ pub struct Location {
     pub osm: Option<OSM>,
     #[serde(rename = "$value")]
     pub value: Option<String>,
+}
+
+#[derive(Debug, Deserialize, PartialEq, Default)]
+pub struct Episode {
+    #[serde(rename = "$attr:display")]
+    pub display: Option<String>,
+    #[serde(rename = "$value", deserialize_with = "episode::option_episode_number")]
+    pub value: Option<EpisodeNumber>,
 }

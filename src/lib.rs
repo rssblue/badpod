@@ -119,6 +119,11 @@ pub struct Item {
         default
     )]
     pub podcast_location: Option<podcast::Location>,
+    #[serde(
+        rename = "{https://podcastindex.org/namespace/1.0}podcast:episode",
+        default
+    )]
+    pub podcast_episode: Option<podcast::Episode>,
 }
 
 #[derive(Debug, Deserialize, PartialEq, Default)]

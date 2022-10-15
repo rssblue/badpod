@@ -47,6 +47,7 @@ fn deserialize_element_into_struct() {
       <podcast:person group="Writing" role="Guest" href="https://www.wikipedia/alicebrown" img="http://example.com/images/alicebrown.jpg">Alice Brown</podcast:person>
       <podcast:person group="non-existent group" role="Non-existent role" href="https://example.com/artist/beckysmith">Becky Smith</podcast:person>
       <podcast:location geo="GEO:-27.86159,153.3169" osm="W43678282">Dreamworld (Queensland)</podcast:location>
+      <podcast:episode display="Ch.3">204</podcast:episode>
     </item>
   </channel>
 </rss>
@@ -185,6 +186,10 @@ fn deserialize_element_into_struct() {
                             revision: None,
                         })),
                         value: Some("Dreamworld (Queensland)".to_string()),
+                    }),
+                    podcast_episode: Some(podcast::Episode{
+                        display: Some("Ch.3".to_string()),
+                        value: Some(podcast::EpisodeNumber::Number("204".to_string())),
                     }),
                     ..Default::default()
                     }},
