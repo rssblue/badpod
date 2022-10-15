@@ -14,7 +14,7 @@ mod person;
 pub use person::{PersonGroup, PersonRole};
 
 mod location;
-pub use location::Geo;
+pub use location::{Geo, GeoCoordinates, OSMObject, OSMType, OSM};
 
 #[derive(Debug, Deserialize, PartialEq, Default)]
 pub struct Transcript {
@@ -88,8 +88,8 @@ pub struct Person {
 pub struct Location {
     #[serde(rename = "$attr:geo", deserialize_with = "location::option_geo")]
     pub geo: Option<Geo>,
-    // #[serde(rename = "$attr:osm", deserialize_with = "location::option_osm")]
-    // pub osm: Option<OSM>,
-    // #[serde(rename = "$value")]
-    // pub value: Option<String>,
+    #[serde(rename = "$attr:osm", deserialize_with = "location::option_osm")]
+    pub osm: Option<OSM>,
+    #[serde(rename = "$value")]
+    pub value: Option<String>,
 }

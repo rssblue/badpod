@@ -79,6 +79,11 @@ pub struct Channel {
         default
     )]
     pub podcast_persons: Vec<podcast::Person>,
+    #[serde(
+        rename = "{https://podcastindex.org/namespace/1.0}podcast:location",
+        default
+    )]
+    pub podcast_location: Option<podcast::Location>,
 
     #[serde(rename = "item", default)]
     pub items: Vec<Item>,
@@ -106,6 +111,11 @@ pub struct Item {
         default
     )]
     pub podcast_persons: Vec<podcast::Person>,
+    #[serde(
+        rename = "{https://podcastindex.org/namespace/1.0}podcast:location",
+        default
+    )]
+    pub podcast_location: Option<podcast::Location>,
 }
 
 #[derive(Debug, Deserialize, PartialEq, Default)]
@@ -164,6 +174,7 @@ mod tests {
     <podcast:funding url="https://www.example.com/members">Become a member!</podcast:funding>
     <podcast:person href="https://example.com/johnsmith/blog" img="http://example.com/images/johnsmith.jpg">John Smith</podcast:person>
     <podcast:person role="guest" href="https://www.imdb.com/name/nm0427852888/" img="http://example.com/images/janedoe.jpg">Jane Doe</podcast:person>
+    <podcast:location geo="geo:33.51601,-86.81455" osm="R6930627">Birmingham Civil Rights Museum</podcast:location>
     <item>
       <enclosure
        url="http://example.com/episode-1.mp3" 
@@ -178,6 +189,7 @@ mod tests {
       <podcast:person role="guest" href="https://www.wikipedia/alicebrown" img="http://example.com/images/alicebrown.jpg">Alice Brown</podcast:person>
       <podcast:person group="Writing" role="Guest" href="https://www.wikipedia/alicebrown" img="http://example.com/images/alicebrown.jpg">Alice Brown</podcast:person>
       <podcast:person group="non-existent group" role="Non-existent role" href="https://example.com/artist/beckysmith">Becky Smith</podcast:person>
+      <podcast:location geo="GEO:-27.86159,153.3169" osm="W43678282">Dreamworld (Queensland)</podcast:location>
     </item>
   </channel>
 </rss>
@@ -245,6 +257,20 @@ mod tests {
                                 ..Default::default()
                             },
                         },
+                        podcast_location: Some(podcast::Location {
+                            geo: Some(podcast::Geo::Geo(podcast::GeoCoordinates {
+                                latitude: 33.51601,
+                                longitude: -86.81455,
+                                altitude: None,
+                                uncertainty: None
+                            })),
+                            osm: Some(podcast::OSM::OSM(podcast::OSMObject {
+                                type_: podcast::OSMType::Relation,
+                                id: 6930627,
+                                revision: None,
+                            })),
+                            value: Some("Birmingham Civil Rights Museum".to_string()),
+                        }),
                         items: vec! {
                         Item{
                         title: Some("Example Episode".to_string()),
@@ -294,6 +320,15 @@ mod tests {
                                 ..Default::default()
                             },
                         },
+                        podcast_location: Some(podcast::Location {
+                            geo: Some(podcast::Geo::Other("GEO:-27.86159,153.3169".to_string())),
+                            osm: Some(podcast::OSM::OSM(podcast::OSMObject {
+                                type_: podcast::OSMType::Way,
+                                id: 43678282,
+                                revision: None,
+                            })),
+                            value: Some("Dreamworld (Queensland)".to_string()),
+                        }),
                         ..Default::default()
                         }},
                         ..Default::default()
