@@ -111,6 +111,8 @@ pub struct Item {
     #[serde(rename = "{http://purl.org/rss/1.0/modules/content/}content:encoded")]
     pub content_encoded: Option<String>,
 
+    #[serde(rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:block")]
+    pub itunes_block: Option<itunes::Yes>,
     #[serde(
         rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:duration",
         deserialize_with = "basic::option_number_nonnegative"

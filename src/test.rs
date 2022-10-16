@@ -44,6 +44,7 @@ fn deserialize_element_into_struct() {
        type="audio/mpeg"
        unknown_attr="val"
       />
+      <itunes:block>yes</itunes:block>
       <itunes:explicit>true</itunes:explicit>
       <itunes:duration>1079</itunes:duration>
       <pubDate>Mon, 10 Oct 2022 06:10:05 GMT</pubDate>
@@ -237,6 +238,7 @@ fn deserialize_element_into_struct() {
                                 rel: Some(podcast::TranscriptRel::Captions),
                             },
                         },
+                        itunes_block: Some(itunes::Yes::Other("yes".to_string())),
                         ..Default::default()
                     }},
                     ..Default::default()
