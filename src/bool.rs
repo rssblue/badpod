@@ -17,7 +17,7 @@ where
 
     match s.as_str() {
         "false" => Ok(Some(Bool::Bool(false))),
-        "true" => Ok(Some(Bool::Bool(false))),
+        "true" => Ok(Some(Bool::Bool(true))),
         _ => Ok(Some(Bool::Other(s))),
     }
 }
