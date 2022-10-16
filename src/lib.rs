@@ -111,6 +111,9 @@ pub struct Item {
     #[serde(default, deserialize_with = "time::option_datefmt", rename = "pubDate")]
     pub pub_date: Option<DateTime>,
 
+    #[serde(rename = "{http://purl.org/rss/1.0/modules/content/}content:encoded")]
+    pub content_encoded: Option<String>,
+
     #[serde(
         rename = "{https://podcastindex.org/namespace/1.0}podcast:transcript",
         default
