@@ -114,6 +114,9 @@ pub struct Item {
     #[serde(rename = "{http://purl.org/rss/1.0/modules/content/}content:encoded")]
     pub content_encoded: Option<String>,
 
+    #[serde(rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:image")]
+    pub itunes_image: Option<itunes::Image>,
+
     #[serde(
         rename = "{https://podcastindex.org/namespace/1.0}podcast:transcript",
         default
