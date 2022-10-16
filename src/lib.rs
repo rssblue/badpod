@@ -116,6 +116,12 @@ pub struct Item {
 
     #[serde(rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:duration")]
     pub itunes_duration: Option<NonNegNumber>,
+    #[serde(
+        default,
+        rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:explicit",
+        deserialize_with = "bool::option_bool_tf"
+    )]
+    pub itunes_explicit: Option<Bool>,
     #[serde(rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:image")]
     pub itunes_image: Option<itunes::Image>,
 
