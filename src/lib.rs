@@ -123,6 +123,8 @@ pub struct Item {
     pub itunes_explicit: Option<Bool>,
     #[serde(rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:image")]
     pub itunes_image: Option<itunes::Image>,
+    #[serde(rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:title")]
+    pub itunes_title: Option<String>,
 
     #[serde(
         rename = "{https://podcastindex.org/namespace/1.0}podcast:transcript",
