@@ -11,7 +11,7 @@ pub mod podcast;
 
 pub use crate::bool::Bool;
 pub use crate::language::Language;
-pub use crate::numbers::{Float, U64};
+pub use crate::numbers::{Float, NonNegNumber, U64};
 pub use crate::time::DateTime;
 
 #[cfg(test)]
@@ -114,6 +114,8 @@ pub struct Item {
     #[serde(rename = "{http://purl.org/rss/1.0/modules/content/}content:encoded")]
     pub content_encoded: Option<String>,
 
+    #[serde(rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:duration")]
+    pub itunes_duration: Option<NonNegNumber>,
     #[serde(rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:image")]
     pub itunes_image: Option<itunes::Image>,
 

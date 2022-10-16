@@ -43,6 +43,7 @@ fn deserialize_element_into_struct() {
        type="audio/mpeg"
        unknown_attr="val"
       />
+      <itunes:duration>1079</itunes:duration>
       <pubDate>Mon, 10 Oct 2022 06:10:05 GMT</pubDate>
       <title>Example Episode</title>
       <podcast:chapters url="https://example.com/episode-1/chapters.json" type="application/json+chapters" />
@@ -160,6 +161,7 @@ fn deserialize_element_into_struct() {
                             length: Some(100200),
                             type_: Some(mimetype::Enclosure::MP3),
                         }),
+                        itunes_duration: Some(NonNegNumber::U64(1079)),
                         pub_date: Some(time::DateTime::Rfc2822(chrono::FixedOffset::west(5).ymd(2022, 10, 10).and_hms(6, 10, 0))),
 
                         podcast_chapters: Some(podcast::Chapters{
