@@ -77,3 +77,28 @@ impl<'de> Deserialize<'de> for PodcastType {
         }
     }
 }
+
+#[derive(Debug, PartialEq, Eq, EnumString, Display)]
+#[strum(serialize_all = "snake_case")]
+pub enum EpisodeType {
+    Full,
+    Trailer,
+    Bonus,
+
+    #[strum(disabled)]
+    Other(String),
+}
+
+impl<'de> Deserialize<'de> for EpisodeType {
+    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+        let s = match String::deserialize(d) {
+            Ok(s) => s,
+            Err(e) => return Err(e),
+        };
+
+        match Self::from_str(s.as_str()) {
+            Ok(x) => Ok(x),
+            Err(_) => Ok(Self::Other(s)),
+        }
+    }
+}

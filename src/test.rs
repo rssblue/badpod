@@ -60,6 +60,7 @@ fn deserialize_element_into_struct() {
       <itunes:season>Season 1</itunes:season>
       <podcast:season name="Egyptology: The 19th Century">1</podcast:season>
       <podcast:transcript url="https://example.com/episode1/transcript.json" type="application/json" language="es" rel="captions" />
+      <itunes:episodeType>full</itunes:episodeType>
     </item>
   </channel>
 </rss>
@@ -185,6 +186,7 @@ fn deserialize_element_into_struct() {
                                 value: Some("Why the Podcast Namespace Matters".to_string()),
                             },
                         },
+                        itunes_type: Some(itunes::EpisodeType::Full),
                         podcast_persons: vec! {
                             podcast::Person{
                                 role: Some(podcast::PersonRole::Guest),
