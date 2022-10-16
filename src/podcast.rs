@@ -6,11 +6,11 @@ use crate::mimetype;
 use crate::numbers;
 pub use crate::time::DateTime;
 
-//// mod transcript;
-//// pub use transcript::TranscriptRel;
+mod transcript;
+pub use transcript::TranscriptRel;
 
-//// mod chapters;
-//// pub use chapters::ChaptersType;
+mod chapters;
+pub use chapters::ChaptersType;
 
 mod person;
 pub use person::{PersonGroup, PersonRole};
@@ -21,20 +21,20 @@ pub use location::{Geo, GeoCoordinates, OSMObject, OSMType, OSM};
 mod episode;
 pub use episode::EpisodeNumber;
 
-//// mod license;
-//// pub use license::LicenseType;
+mod license;
+pub use license::LicenseType;
 
-//// #[derive(Debug, Deserialize, PartialEq, Default)]
-//// pub struct Transcript {
-////     #[serde(rename = "$attr:url")]
-////     pub url: Option<String>,
-////     #[serde(rename = "$attr:type")]
-////     pub type_: Option<mimetype::Transcript>,
-////     #[serde(rename = "$attr:language")]
-////     pub language: Option<Language>,
-////     #[serde(rename = "$attr:rel")]
-////     pub rel: Option<TranscriptRel>,
-//// }
+#[derive(Debug, Deserialize, PartialEq, Default)]
+pub struct Transcript {
+    #[serde(rename = "$attr:url")]
+    pub url: Option<String>,
+    #[serde(rename = "$attr:type")]
+    pub type_: Option<mimetype::Transcript>,
+    #[serde(rename = "$attr:language")]
+    pub language: Option<Language>,
+    #[serde(rename = "$attr:rel")]
+    pub rel: Option<TranscriptRel>,
+}
 
 #[derive(Debug, Deserialize, PartialEq, Default)]
 pub struct Locked {
@@ -52,13 +52,13 @@ pub struct Funding {
     pub value: Option<String>,
 }
 
-//// #[derive(Debug, Deserialize, PartialEq, Default)]
-//// pub struct Chapters {
-////     #[serde(rename = "$attr:url")]
-////     pub url: Option<String>,
-////     #[serde(rename = "$attr:type")]
-////     pub type_: Option<ChaptersType>,
-//// }
+#[derive(Debug, Deserialize, PartialEq, Default)]
+pub struct Chapters {
+    #[serde(rename = "$attr:url")]
+    pub url: Option<String>,
+    #[serde(rename = "$attr:type")]
+    pub type_: Option<ChaptersType>,
+}
 
 #[derive(Debug, Deserialize, PartialEq, Default)]
 pub struct Soundbite {
@@ -118,38 +118,38 @@ pub struct Episode {
     pub value: Option<EpisodeNumber>,
 }
 
-//// #[derive(Debug, Deserialize, PartialEq, Default)]
-//// pub struct Trailer {
-////     #[serde(rename = "$attr:url")]
-////     pub url: Option<String>,
-////     #[serde(
-////         rename = "$attr:pubdate",
-////         deserialize_with = "crate::time::option_datefmt",
-////         default
-////     )]
-////     pub pub_date: Option<DateTime>,
-////     #[serde(
-////         rename = "$attr:length",
-////         deserialize_with = "numbers::option_u64",
-////         default
-////     )]
-////     pub length: Option<numbers::U64>,
-////     #[serde(rename = "$attr:type")]
-////     pub type_: Option<mimetype::Enclosure>,
-////     #[serde(
-////         rename = "$attr:length",
-////         deserialize_with = "numbers::option_u64",
-////         default
-////     )]
-////     pub season: Option<numbers::U64>,
-////     #[serde(rename = "$value")]
-////     pub value: Option<String>,
-//// }
+#[derive(Debug, Deserialize, PartialEq, Default)]
+pub struct Trailer {
+    #[serde(rename = "$attr:url")]
+    pub url: Option<String>,
+    #[serde(
+        rename = "$attr:pubdate",
+        deserialize_with = "crate::time::option_datefmt",
+        default
+    )]
+    pub pub_date: Option<DateTime>,
+    #[serde(
+        rename = "$attr:length",
+        deserialize_with = "numbers::option_u64",
+        default
+    )]
+    pub length: Option<numbers::U64>,
+    #[serde(rename = "$attr:type")]
+    pub type_: Option<mimetype::Enclosure>,
+    #[serde(
+        rename = "$attr:length",
+        deserialize_with = "numbers::option_u64",
+        default
+    )]
+    pub season: Option<numbers::U64>,
+    #[serde(rename = "$value")]
+    pub value: Option<String>,
+}
 
-//// #[derive(Debug, Deserialize, PartialEq, Default)]
-//// pub struct License {
-////     #[serde(rename = "$attr:url")]
-////     pub url: Option<String>,
-////     #[serde(rename = "$value")]
-////     pub value: Option<LicenseType>,
-//// }
+#[derive(Debug, Deserialize, PartialEq, Default)]
+pub struct License {
+    #[serde(rename = "$attr:url")]
+    pub url: Option<String>,
+    #[serde(rename = "$value")]
+    pub value: Option<LicenseType>,
+}

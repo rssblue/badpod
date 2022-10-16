@@ -46,11 +46,11 @@ pub struct Channel {
     pub itunes_author: Option<String>,
     #[serde(rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:block")]
     pub itunes_block: Option<itunes::Yes>,
-    //// #[serde(
-    ////     rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:category",
-    ////     default
-    //// )]
-    //// pub itunes_categories: Vec<itunes::Category>,
+    #[serde(
+        rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:category",
+        default
+    )]
+    pub itunes_categories: Vec<itunes::Category>,
     #[serde(rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:complete")]
     pub itunes_complete: Option<itunes::Yes>,
     #[serde(
@@ -65,8 +65,8 @@ pub struct Channel {
     pub itunes_new_feed_url: Option<String>,
     #[serde(rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:owner")]
     pub itunes_owner: Option<itunes::Owner>,
-    //// #[serde(rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:type")]
-    //// pub itunes_type: Option<itunes::PodcastType>,
+    #[serde(rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:type")]
+    pub itunes_type: Option<itunes::PodcastType>,
     #[serde(
         default,
         rename = "{https://podcastindex.org/namespace/1.0}podcast:locked"
@@ -87,16 +87,16 @@ pub struct Channel {
         default
     )]
     pub podcast_location: Option<podcast::Location>,
-    //// #[serde(
-    ////     rename = "{https://podcastindex.org/namespace/1.0}podcast:trailer",
-    ////     default
-    //// )]
-    //// pub podcast_trailers: Vec<podcast::Trailer>,
-    //// #[serde(
-    ////     rename = "{https://podcastindex.org/namespace/1.0}podcast:license",
-    ////     default
-    //// )]
-    //// pub podcast_license: Option<podcast::License>,
+    #[serde(
+        rename = "{https://podcastindex.org/namespace/1.0}podcast:trailer",
+        default
+    )]
+    pub podcast_trailers: Vec<podcast::Trailer>,
+    #[serde(
+        rename = "{https://podcastindex.org/namespace/1.0}podcast:license",
+        default
+    )]
+    pub podcast_license: Option<podcast::License>,
     #[serde(rename = "item", default)]
     pub items: Vec<Item>,
 }
@@ -106,18 +106,18 @@ pub struct Item {
     pub description: Option<String>,
     pub link: Option<String>,
     pub title: Option<String>,
-    //// pub enclosure: Option<Enclosure>,
+    pub enclosure: Option<Enclosure>,
     pub guid: Option<GUID>,
     #[serde(default, deserialize_with = "time::option_datefmt", rename = "pubDate")]
     pub pub_date: Option<DateTime>,
 
-    //// #[serde(
-    ////     rename = "{https://podcastindex.org/namespace/1.0}podcast:transcript",
-    ////     default
-    //// )]
-    //// pub podcast_transcripts: Vec<podcast::Transcript>,
-    //// #[serde(rename = "{https://podcastindex.org/namespace/1.0}podcast:chapters")]
-    //// pub podcast_chapters: Option<podcast::Chapters>,
+    #[serde(
+        rename = "{https://podcastindex.org/namespace/1.0}podcast:transcript",
+        default
+    )]
+    pub podcast_transcripts: Vec<podcast::Transcript>,
+    #[serde(rename = "{https://podcastindex.org/namespace/1.0}podcast:chapters")]
+    pub podcast_chapters: Option<podcast::Chapters>,
     #[serde(
         rename = "{https://podcastindex.org/namespace/1.0}podcast:soundbite",
         default
@@ -145,15 +145,15 @@ pub struct Item {
     pub podcast_episode: Option<podcast::Episode>,
 }
 
-//// #[derive(Debug, Deserialize, PartialEq, Default)]
-//// pub struct Enclosure {
-////     #[serde(rename = "$attr:url")]
-////     pub url: Option<String>,
-////     #[serde(rename = "$attr:length")]
-////     pub length: Option<usize>,
-////     #[serde(rename = "$attr:type")]
-////     pub type_: Option<mimetype::Enclosure>,
-//// }
+#[derive(Debug, Deserialize, PartialEq, Default)]
+pub struct Enclosure {
+    #[serde(rename = "$attr:url")]
+    pub url: Option<String>,
+    #[serde(rename = "$attr:length")]
+    pub length: Option<usize>,
+    #[serde(rename = "$attr:type")]
+    pub type_: Option<mimetype::Enclosure>,
+}
 
 #[derive(Debug, Deserialize, PartialEq, Default)]
 pub struct GUID {

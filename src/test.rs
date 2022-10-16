@@ -41,6 +41,7 @@ fn deserialize_element_into_struct() {
        url="http://example.com/episode-1.mp3" 
        length="100200"
        type="audio/mpeg"
+       unknown_attr="val"
       />
       <pubDate>Mon, 10 Oct 2022 06:10:05 GMT</pubDate>
       <title>Example Episode</title>
@@ -80,18 +81,18 @@ fn deserialize_element_into_struct() {
                     itunes_author: Some("Jane Doe".to_string()),
                     itunes_block: Some(itunes::Yes::Yes),
                     itunes_complete: Some(itunes::Yes::Other("No".to_string())),
-                    //// itunes_categories: vec! {itunes::Category{
-                    ////     text: Some(itunes::CategoryName::SocietyAndCulture),
-                    ////     subcategory: Some(itunes::Subcategory{
-                    ////         text: Some(itunes::SubcategoryName::Documentary),
-                    ////     }),
-                    //// }},
+                    itunes_categories: vec! {itunes::Category{
+                        text: Some(itunes::CategoryName::SocietyAndCulture),
+                        subcategory: Some(itunes::Subcategory{
+                            text: Some(itunes::SubcategoryName::Documentary),
+                        }),
+                    }},
                     itunes_explicit: Some(Bool::Bool(false)),
                     itunes_owner: Some(itunes::Owner {
                         email: Some("jane@example.com".to_string()),
                         name: Some("Jane Doe".to_string()),
                     }),
-                    //// itunes_type: Some(itunes::PodcastType::Serial),
+                    itunes_type: Some(itunes::PodcastType::Serial),
                     podcast_locked: Some(podcast::Locked {
                         owner: None,
                         value: Some(Bool::Bool(false)),
@@ -135,36 +136,36 @@ fn deserialize_element_into_struct() {
                         })),
                         value: Some("Birmingham Civil Rights Museum".to_string()),
                     }),
-                    //// podcast_trailers: vec! {
-                    ////     podcast::Trailer{
-                    ////         pub_date: Some(time::DateTime::Rfc2822(chrono::FixedOffset::west(5*60*60).ymd(2021, 4, 1).and_hms(8, 0, 0))),
-                    ////         url: Some("https://example.org/trailers/teaser".to_string()),
-                    ////         length: Some(U64::U64(12345678)),
-                    ////         type_: Some(mimetype::Enclosure::MP3),
-                    ////         season: None,
-                    ////         value: Some("Coming April 1st, 2021".to_string()),
-                    ////     },
-                    //// },
-                    //// podcast_license: Some(podcast::License {
-                    ////     url: None,
-                    ////     value: Some(
-                    ////         podcast::LicenseType::CreativeCommonsAttribution4_0International
-                    ////     ),
-                    //// }),
+                    podcast_trailers: vec! {
+                        podcast::Trailer{
+                            pub_date: Some(time::DateTime::Rfc2822(chrono::FixedOffset::west(5*60*60).ymd(2021, 4, 1).and_hms(8, 0, 0))),
+                            url: Some("https://example.org/trailers/teaser".to_string()),
+                            length: Some(U64::U64(12345678)),
+                            type_: Some(mimetype::Enclosure::MP3),
+                            season: None,
+                            value: Some("Coming April 1st, 2021".to_string()),
+                        },
+                    },
+                    podcast_license: Some(podcast::License {
+                        url: None,
+                        value: Some(
+                            podcast::LicenseType::CreativeCommonsAttribution4_0International
+                        ),
+                    }),
                     items: vec! {
                     Item{
                         title: Some("Example Episode".to_string()),
-                        //// enclosure: Some(Enclosure{
-                        ////     url: Some("http://example.com/episode-1.mp3".to_string()),
-                        ////     length: Some(100200),
-                        ////     type_: Some(mimetype::Enclosure::MP3),
-                        //// }),
+                        enclosure: Some(Enclosure{
+                            url: Some("http://example.com/episode-1.mp3".to_string()),
+                            length: Some(100200),
+                            type_: Some(mimetype::Enclosure::MP3),
+                        }),
                         pub_date: Some(time::DateTime::Rfc2822(chrono::FixedOffset::west(5).ymd(2022, 10, 10).and_hms(6, 10, 0))),
 
-                        //// podcast_chapters: Some(podcast::Chapters{
-                        ////     url: Some("https://example.com/episode-1/chapters.json".to_string()),
-                        ////     type_: Some(podcast::ChaptersType::ApplicationJSONChapters),
-                        //// }),
+                        podcast_chapters: Some(podcast::Chapters{
+                            url: Some("https://example.com/episode-1/chapters.json".to_string()),
+                            type_: Some(podcast::ChaptersType::ApplicationJSONChapters),
+                        }),
                         podcast_soundbites: vec! {
                             podcast::Soundbite{
                                 start_time: Some(Float::Float(73.0)),
@@ -217,14 +218,14 @@ fn deserialize_element_into_struct() {
                             display: Some("Ch.3".to_string()),
                             value: Some(podcast::EpisodeNumber::Number("204".to_string())),
                         }),
-                        //// podcast_transcripts: vec! {
-                        ////     podcast::Transcript{
-                        ////         url: Some("https://example.com/episode1/transcript.json".to_string()),
-                        ////         type_: Some(mimetype::Transcript::JSON),
-                        ////         language: Some(Language::Spanish),
-                        ////         rel: Some(podcast::TranscriptRel::Captions),
-                        ////     },
-                        //// },
+                        podcast_transcripts: vec! {
+                            podcast::Transcript{
+                                url: Some("https://example.com/episode1/transcript.json".to_string()),
+                                type_: Some(mimetype::Transcript::JSON),
+                                language: Some(Language::Spanish),
+                                rel: Some(podcast::TranscriptRel::Captions),
+                            },
+                        },
                         ..Default::default()
                     }},
                     ..Default::default()

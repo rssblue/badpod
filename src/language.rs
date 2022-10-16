@@ -499,8 +499,8 @@ impl<'de> Deserialize<'de> for Language {
         };
 
         match Language::from_str(s.as_str()) {
-            Ok(l) => Ok(l),
-            _ => Ok(Language::Other(s)),
+            Ok(x) => Ok(x),
+            Err(_) => Ok(Language::Other(s)),
         }
     }
 }

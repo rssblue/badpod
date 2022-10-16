@@ -1,171 +1,201 @@
-//// use serde_enum_str::Deserialize_enum_str;
-////
-//// #[derive(Debug, Deserialize, PartialEq)]
-//// pub enum CategoryName {
-////     Arts,
-////     Business,
-////     Comedy,
-////     Education,
-////     Fiction,
-////     Government,
-////     History,
-////     #[serde(rename = "Health & Fitness")]
-////     HealthAndFitness,
-////     #[serde(rename = "Kids & Family")]
-////     KidsAndFamily,
-////     Leisure,
-////     Music,
-////     News,
-////     #[serde(rename = "Religion & Spirituality")]
-////     ReligionAndSpirituality,
-////     Science,
-////     #[serde(rename = "Society & Culture")]
-////     SocietyAndCulture,
-////     Sports,
-////     Technology,
-////     #[serde(rename = "True Crime")]
-////     TrueCrime,
-////     #[serde(rename = "TV & Film")]
-////     TVAndFilm,
-////
-////     #[serde(other)]
-////     Other(String),
-//// }
-////
-//// #[derive(Debug, Deserialize_enum_str, PartialEq)]
-//// pub enum SubcategoryName {
-////     Books,
-////     Design,
-////     #[serde(rename = "Fashion & Beauty")]
-////     FashionAndBeauty,
-////     Food,
-////     #[serde(rename = "Performing Arts")]
-////     PerformingArts,
-////     #[serde(rename = "Visual Arts")]
-////     VisualArts,
-////     Careers,
-////     Entrepreneurship,
-////     Investing,
-////     Management,
-////     Marketing,
-////     #[serde(rename = "Non-Profit")]
-////     NonProfit,
-////     #[serde(rename = "Comedy Interviews")]
-////     ComedyInterviews,
-////     Improv,
-////     #[serde(rename = "Stand-Up")]
-////     StandUp,
-////     Courses,
-////     #[serde(rename = "How To")]
-////     HowTo,
-////     #[serde(rename = "Language Learning")]
-////     LanguageLearning,
-////     #[serde(rename = "Self Improvement")]
-////     SelfImprovement,
-////     #[serde(rename = "Comedy Fiction")]
-////     ComedyFiction,
-////     Drama,
-////     #[serde(rename = "Science Fiction")]
-////     ScienceFiction,
-////     #[serde(rename = "Alternative Health")]
-////     AlternativeHealth,
-////     Fitness,
-////     Medicine,
-////     #[serde(rename = "Mental Health")]
-////     MentalHealth,
-////     Nutrition,
-////     Sexuality,
-////     #[serde(rename = "Education for Kids")]
-////     EducationForKids,
-////     Parenting,
-////     #[serde(rename = "Pets & Animals")]
-////     PetsAndAnimals,
-////     #[serde(rename = "Stories for Kids")]
-////     StoriesForKids,
-////     #[serde(rename = "Animation & Manga")]
-////     AnimationAndManga,
-////     Automotive,
-////     Aviation,
-////     Crafts,
-////     Games,
-////     Hobbies,
-////     #[serde(rename = "Home & Garden")]
-////     HomeAndGarden,
-////     #[serde(rename = "Video Games")]
-////     VideoGames,
-////     #[serde(rename = "Music Commentary")]
-////     MusicCommentary,
-////     #[serde(rename = "Music History")]
-////     MusicHistory,
-////     #[serde(rename = "Music Interviews")]
-////     MusicInterviews,
-////     #[serde(rename = "Business News")]
-////     BusinessNews,
-////     #[serde(rename = "Daily News")]
-////     DailyNews,
-////     #[serde(rename = "Entertainment News")]
-////     EntertainmentNews,
-////     #[serde(rename = "News Commentary")]
-////     NewsCommentary,
-////     Politics,
-////     #[serde(rename = "Sports News")]
-////     SportsNews,
-////     #[serde(rename = "Tech News")]
-////     TechNews,
-////     Buddhism,
-////     Christianity,
-////     Hinduism,
-////     Islam,
-////     Judaism,
-////     Religion,
-////     Spirituality,
-////     Astronomy,
-////     Chemistry,
-////     #[serde(rename = "Earth Sciences")]
-////     EarthSciences,
-////     #[serde(rename = "Life Sciences")]
-////     LifeSciences,
-////     Mathematics,
-////     #[serde(rename = "Natural Sciences")]
-////     NaturalSciences,
-////     Nature,
-////     Physics,
-////     #[serde(rename = "Social Sciences")]
-////     SocialSciences,
-////     Documentary,
-////     #[serde(rename = "Personal Journals")]
-////     PersonalJournals,
-////     Philosophy,
-////     #[serde(rename = "Places & Travel")]
-////     PlacesAndTravel,
-////     Relationships,
-////     Baseball,
-////     Basketball,
-////     Cricket,
-////     #[serde(rename = "Fantasy Sports")]
-////     FantasySports,
-////     Football,
-////     Golf,
-////     Hockey,
-////     Rugby,
-////     Running,
-////     Soccer,
-////     Swimming,
-////     Tennis,
-////     Volleyball,
-////     Wilderness,
-////     Wrestling,
-////     #[serde(rename = "After Shows")]
-////     AfterShows,
-////     #[serde(rename = "Film History")]
-////     FilmHistory,
-////     #[serde(rename = "Film Interviews")]
-////     FilmInterviews,
-////     #[serde(rename = "Film Reviews")]
-////     FilmReviews,
-////     #[serde(rename = "TV Reviews")]
-////     TVReviews,
-////
-////     #[serde(other)]
-////     Other(String),
-//// }
+use serde::{Deserialize, Deserializer};
+use std::str::FromStr;
+use strum_macros::{Display, EnumString};
+
+#[derive(Debug, PartialEq, Eq, EnumString, Display)]
+pub enum CategoryName {
+    Arts,
+    Business,
+    Comedy,
+    Education,
+    Fiction,
+    Government,
+    History,
+    #[strum(serialize = "Health & Fitness")]
+    HealthAndFitness,
+    #[strum(serialize = "Kids & Family")]
+    KidsAndFamily,
+    Leisure,
+    Music,
+    News,
+    #[strum(serialize = "Religion & Spirituality")]
+    ReligionAndSpirituality,
+    Science,
+    #[strum(serialize = "Society & Culture")]
+    SocietyAndCulture,
+    Sports,
+    Technology,
+    #[strum(serialize = "True Crime")]
+    TrueCrime,
+    #[strum(serialize = "TV & Film")]
+    TVAndFilm,
+
+    #[strum(disabled)]
+    Other(String),
+}
+
+impl<'de> Deserialize<'de> for CategoryName {
+    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+        let s = match String::deserialize(d) {
+            Ok(s) => s,
+            Err(e) => return Err(e),
+        };
+
+        match CategoryName::from_str(s.as_str()) {
+            Ok(x) => Ok(x),
+            Err(_) => Ok(CategoryName::Other(s)),
+        }
+    }
+}
+
+#[derive(Debug, PartialEq, Eq, EnumString, Display)]
+pub enum SubcategoryName {
+    Books,
+    Design,
+    #[strum(serialize = "Fashion & Beauty")]
+    FashionAndBeauty,
+    Food,
+    #[strum(serialize = "Performing Arts")]
+    PerformingArts,
+    #[strum(serialize = "Visual Arts")]
+    VisualArts,
+    Careers,
+    Entrepreneurship,
+    Investing,
+    Management,
+    Marketing,
+    #[strum(serialize = "Non-Profit")]
+    NonProfit,
+    #[strum(serialize = "Comedy Interviews")]
+    ComedyInterviews,
+    Improv,
+    #[strum(serialize = "Stand-Up")]
+    StandUp,
+    Courses,
+    #[strum(serialize = "How To")]
+    HowTo,
+    #[strum(serialize = "Language Learning")]
+    LanguageLearning,
+    #[strum(serialize = "Self Improvement")]
+    SelfImprovement,
+    #[strum(serialize = "Comedy Fiction")]
+    ComedyFiction,
+    Drama,
+    #[strum(serialize = "Science Fiction")]
+    ScienceFiction,
+    #[strum(serialize = "Alternative Health")]
+    AlternativeHealth,
+    Fitness,
+    Medicine,
+    #[strum(serialize = "Mental Health")]
+    MentalHealth,
+    Nutrition,
+    Sexuality,
+    #[strum(serialize = "Education for Kids")]
+    EducationForKids,
+    Parenting,
+    #[strum(serialize = "Pets & Animals")]
+    PetsAndAnimals,
+    #[strum(serialize = "Stories for Kids")]
+    StoriesForKids,
+    #[strum(serialize = "Animation & Manga")]
+    AnimationAndManga,
+    Automotive,
+    Aviation,
+    Crafts,
+    Games,
+    Hobbies,
+    #[strum(serialize = "Home & Garden")]
+    HomeAndGarden,
+    #[strum(serialize = "Video Games")]
+    VideoGames,
+    #[strum(serialize = "Music Commentary")]
+    MusicCommentary,
+    #[strum(serialize = "Music History")]
+    MusicHistory,
+    #[strum(serialize = "Music Interviews")]
+    MusicInterviews,
+    #[strum(serialize = "Business News")]
+    BusinessNews,
+    #[strum(serialize = "Daily News")]
+    DailyNews,
+    #[strum(serialize = "Entertainment News")]
+    EntertainmentNews,
+    #[strum(serialize = "News Commentary")]
+    NewsCommentary,
+    Politics,
+    #[strum(serialize = "Sports News")]
+    SportsNews,
+    #[strum(serialize = "Tech News")]
+    TechNews,
+    Buddhism,
+    Christianity,
+    Hinduism,
+    Islam,
+    Judaism,
+    Religion,
+    Spirituality,
+    Astronomy,
+    Chemistry,
+    #[strum(serialize = "Earth Sciences")]
+    EarthSciences,
+    #[strum(serialize = "Life Sciences")]
+    LifeSciences,
+    Mathematics,
+    #[strum(serialize = "Natural Sciences")]
+    NaturalSciences,
+    Nature,
+    Physics,
+    #[strum(serialize = "Social Sciences")]
+    SocialSciences,
+    Documentary,
+    #[strum(serialize = "Personal Journals")]
+    PersonalJournals,
+    Philosophy,
+    #[strum(serialize = "Places & Travel")]
+    PlacesAndTravel,
+    Relationships,
+    Baseball,
+    Basketball,
+    Cricket,
+    #[strum(serialize = "Fantasy Sports")]
+    FantasySports,
+    Football,
+    Golf,
+    Hockey,
+    Rugby,
+    Running,
+    Soccer,
+    Swimming,
+    Tennis,
+    Volleyball,
+    Wilderness,
+    Wrestling,
+    #[strum(serialize = "After Shows")]
+    AfterShows,
+    #[strum(serialize = "Film History")]
+    FilmHistory,
+    #[strum(serialize = "Film Interviews")]
+    FilmInterviews,
+    #[strum(serialize = "Film Reviews")]
+    FilmReviews,
+    #[strum(serialize = "TV Reviews")]
+    TVReviews,
+
+    #[strum(disabled)]
+    Other(String),
+}
+
+impl<'de> Deserialize<'de> for SubcategoryName {
+    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+        let s = match String::deserialize(d) {
+            Ok(s) => s,
+            Err(e) => return Err(e),
+        };
+
+        match SubcategoryName::from_str(s.as_str()) {
+            Ok(x) => Ok(x),
+            Err(_) => Ok(SubcategoryName::Other(s)),
+        }
+    }
+}
