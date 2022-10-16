@@ -58,17 +58,16 @@ pub enum U64 {
     Other(String),
 }
 
-pub fn option_u64<'de, D>(deserializer: D) -> Result<Option<U64>, D::Error>
-where
-    D: Deserializer<'de>,
-{
-    let s = match String::deserialize(deserializer) {
-        Ok(s) => s,
-        Err(e) => return Err(e),
-    };
+impl<'de> Deserialize<'de> for U64 {
+    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+        let s = match String::deserialize(d) {
+            Ok(s) => s,
+            Err(e) => return Err(e),
+        };
 
-    match s.parse::<u64>() {
-        Ok(number) => Ok(Some(U64::U64(number))),
-        _ => Ok(Some(U64::Other(s))),
+        match s.parse::<u64>() {
+            Ok(x) => Ok(Self::U64(x)),
+            Err(_) => Ok(Self::Other(s)),
+        }
     }
 }

@@ -106,7 +106,7 @@ pub struct Location {
 pub struct Season {
     #[serde(rename = "$attr:name")]
     pub name: Option<String>,
-    #[serde(rename = "$value", deserialize_with = "numbers::option_u64")]
+    #[serde(rename = "$value")]
     pub value: Option<numbers::U64>,
 }
 
@@ -128,19 +128,11 @@ pub struct Trailer {
         default
     )]
     pub pub_date: Option<DateTime>,
-    #[serde(
-        rename = "$attr:length",
-        deserialize_with = "numbers::option_u64",
-        default
-    )]
+    #[serde(rename = "$attr:length", default)]
     pub length: Option<numbers::U64>,
     #[serde(rename = "$attr:type")]
     pub type_: Option<mimetype::Enclosure>,
-    #[serde(
-        rename = "$attr:length",
-        deserialize_with = "numbers::option_u64",
-        default
-    )]
+    #[serde(rename = "$attr:length", default)]
     pub season: Option<numbers::U64>,
     #[serde(rename = "$value")]
     pub value: Option<String>,
