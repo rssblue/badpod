@@ -58,10 +58,16 @@ pub struct Chapters {
 
 #[derive(Debug, Deserialize, PartialEq, Default)]
 pub struct Soundbite {
-    #[serde(rename = "$attr:startTime")]
-    pub start_time: Option<basic::NonNegF64>,
-    #[serde(rename = "$attr:duration")]
-    pub duration: Option<basic::NonNegF64>,
+    #[serde(
+        rename = "$attr:startTime",
+        deserialize_with = "basic::option_float_nonnegative"
+    )]
+    pub start_time: Option<basic::Float>,
+    #[serde(
+        rename = "$attr:duration",
+        deserialize_with = "basic::option_float_nonnegative"
+    )]
+    pub duration: Option<basic::Float>,
     #[serde(rename = "$value")]
     pub value: Option<String>,
 }
@@ -102,16 +108,22 @@ pub struct Location {
 pub struct Season {
     #[serde(rename = "$attr:name")]
     pub name: Option<String>,
-    #[serde(rename = "$value")]
-    pub value: Option<basic::U64>,
+    #[serde(
+        rename = "$value",
+        deserialize_with = "basic::option_integer_nonnegative"
+    )]
+    pub value: Option<basic::Integer>,
 }
 
 #[derive(Debug, Deserialize, PartialEq, Default)]
 pub struct Episode {
     #[serde(rename = "$attr:display")]
     pub display: Option<String>,
-    #[serde(rename = "$value")]
-    pub value: Option<basic::NonNegNumber>,
+    #[serde(
+        rename = "$value",
+        deserialize_with = "basic::option_number_nonnegative"
+    )]
+    pub value: Option<basic::Number>,
 }
 
 #[derive(Debug, Deserialize, PartialEq, Default)]
@@ -124,12 +136,20 @@ pub struct Trailer {
         default
     )]
     pub pub_date: Option<DateTime>,
-    #[serde(rename = "$attr:length", default)]
-    pub length: Option<basic::U64>,
+    #[serde(
+        rename = "$attr:length",
+        deserialize_with = "basic::option_integer_nonnegative",
+        default
+    )]
+    pub length: Option<basic::Integer>,
     #[serde(rename = "$attr:type")]
     pub type_: Option<mimetype::Enclosure>,
-    #[serde(rename = "$attr:length", default)]
-    pub season: Option<basic::U64>,
+    #[serde(
+        rename = "$attr:season",
+        deserialize_with = "basic::option_integer_nonnegative",
+        default
+    )]
+    pub season: Option<basic::Integer>,
     #[serde(rename = "$value")]
     pub value: Option<String>,
 }

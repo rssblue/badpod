@@ -1,6 +1,6 @@
 use serde::{Deserialize, Deserializer};
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq)]
 pub enum Bool {
     Bool(bool),
     Other(String),
@@ -36,78 +36,161 @@ where
     }
 }
 
-#[derive(Debug, PartialEq)]
-pub enum NonNegNumber {
-    U64(u64),
-    F64(f64),
+#[derive(Debug, PartialEq, Eq)]
+pub enum Integer {
+    Integer(i64),
     Other(String),
 }
 
-impl<'de> Deserialize<'de> for NonNegNumber {
+impl<'de> Deserialize<'de> for Integer {
+    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+        let s = match String::deserialize(d) {
+            Ok(s) => s,
+            Err(e) => return Err(e),
+        };
+
+        match s.parse::<i64>() {
+            Ok(x) => Ok(Self::Integer(x)),
+            Err(_) => Ok(Self::Other(s)),
+        }
+    }
+}
+
+pub fn option_integer_nonnegative<'de, D>(d: D) -> Result<Option<Integer>, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    let s = match String::deserialize(d) {
+        Ok(s) => s,
+        Err(e) => return Err(e),
+    };
+
+    match s.parse::<i64>() {
+        Ok(x) => {
+            if x < 0 {
+                return Ok(Some(Integer::Other(s)));
+            }
+            Ok(Some(Integer::Integer(x)))
+        }
+        Err(_) => Ok(Some(Integer::Other(s))),
+    }
+}
+
+pub fn option_integer_positive<'de, D>(d: D) -> Result<Option<Integer>, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    let s = match String::deserialize(d) {
+        Ok(s) => s,
+        Err(e) => return Err(e),
+    };
+
+    match s.parse::<i64>() {
+        Ok(x) => {
+            if x < 1 {
+                return Ok(Some(Integer::Other(s)));
+            }
+            Ok(Some(Integer::Integer(x)))
+        }
+        Err(_) => Ok(Some(Integer::Other(s))),
+    }
+}
+
+#[derive(Debug, PartialEq)]
+pub enum Float {
+    Float(f64),
+    Other(String),
+}
+
+impl<'de> Deserialize<'de> for Float {
+    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+        let s = match String::deserialize(d) {
+            Ok(s) => s,
+            Err(e) => return Err(e),
+        };
+
+        match s.parse::<f64>() {
+            Ok(x) => Ok(Self::Float(x)),
+            Err(_) => Ok(Self::Other(s)),
+        }
+    }
+}
+
+pub fn option_float_nonnegative<'de, D>(d: D) -> Result<Option<Float>, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    let s = match String::deserialize(d) {
+        Ok(s) => s,
+        Err(e) => return Err(e),
+    };
+
+    match s.parse::<f64>() {
+        Ok(x) => {
+            if x < 0.0 {
+                return Ok(Some(Float::Other(s)));
+            }
+            Ok(Some(Float::Float(x)))
+        }
+        Err(_) => Ok(Some(Float::Other(s))),
+    }
+}
+
+// Tries to convert to integer if possible, float otherwise.
+#[derive(Debug, PartialEq)]
+pub enum Number {
+    Integer(i64),
+    Float(f64),
+    Other(String),
+}
+
+impl<'de> Deserialize<'de> for Number {
     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
         let mut s = match String::deserialize(d) {
             Ok(s) => s,
             Err(e) => return Err(e),
         };
 
-        s = match s.parse::<u64>() {
-            Ok(x) => return Ok(Self::U64(x)),
+        s = match s.parse::<i64>() {
+            Ok(x) => {
+                return Ok(Number::Integer(x));
+            }
             Err(_) => s,
         };
 
         match s.parse::<f64>() {
-            Ok(x) => {
-                if x < 0.0 {
-                    return Ok(Self::Other(s));
-                }
-                Ok(Self::F64(x))
-            }
-            Err(_) => Ok(Self::Other(s)),
+            Ok(x) => Ok(Number::Float(x)),
+            Err(_) => Ok(Number::Other(s)),
         }
     }
 }
 
-#[derive(Debug, PartialEq)]
-pub enum NonNegF64 {
-    F64(f64),
-    Other(String),
-}
+pub fn option_number_nonnegative<'de, D>(d: D) -> Result<Option<Number>, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    let mut s = match String::deserialize(d) {
+        Ok(s) => s,
+        Err(e) => return Err(e),
+    };
 
-impl<'de> Deserialize<'de> for NonNegF64 {
-    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        let s = match String::deserialize(d) {
-            Ok(s) => s,
-            Err(e) => return Err(e),
-        };
-
-        match s.parse::<f64>() {
-            Ok(x) => {
-                if x < 0.0 {
-                    return Ok(Self::Other(s));
-                }
-                Ok(Self::F64(x))
+    s = match s.parse::<i64>() {
+        Ok(x) => {
+            if x < 0 {
+                return Ok(Some(Number::Other(s)));
             }
-            Err(_) => Ok(Self::Other(s)),
+            return Ok(Some(Number::Integer(x)));
         }
-    }
-}
+        Err(_) => s,
+    };
 
-#[derive(Debug, PartialEq)]
-pub enum U64 {
-    U64(u64),
-    Other(String),
-}
-
-impl<'de> Deserialize<'de> for U64 {
-    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        let s = match String::deserialize(d) {
-            Ok(s) => s,
-            Err(e) => return Err(e),
-        };
-
-        match s.parse::<u64>() {
-            Ok(x) => Ok(Self::U64(x)),
-            Err(_) => Ok(Self::Other(s)),
+    match s.parse::<f64>() {
+        Ok(x) => {
+            if x < 0.0 {
+                return Ok(Some(Number::Other(s)));
+            }
+            Ok(Some(Number::Float(x)))
         }
+        Err(_) => Ok(Some(Number::Other(s))),
     }
 }

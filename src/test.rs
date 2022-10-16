@@ -142,7 +142,7 @@ fn deserialize_element_into_struct() {
                         podcast::Trailer{
                             pub_date: Some(time::DateTime::Rfc2822(chrono::FixedOffset::west(5*60*60).ymd(2021, 4, 1).and_hms(8, 0, 0))),
                             url: Some("https://example.org/trailers/teaser".to_string()),
-                            length: Some(U64::U64(12345678)),
+                            length: Some(Integer::Integer(12345678)),
                             type_: Some(mimetype::Enclosure::MP3),
                             season: None,
                             value: Some("Coming April 1st, 2021".to_string()),
@@ -162,7 +162,7 @@ fn deserialize_element_into_struct() {
                             length: Some(100200),
                             type_: Some(mimetype::Enclosure::MP3),
                         }),
-                        itunes_duration: Some(NonNegNumber::U64(1079)),
+                        itunes_duration: Some(Number::Integer(1079)),
                         itunes_explicit: Some(Bool::Bool(true)),
                         pub_date: Some(time::DateTime::Rfc2822(chrono::FixedOffset::west(5).ymd(2022, 10, 10).and_hms(6, 10, 0))),
 
@@ -172,13 +172,13 @@ fn deserialize_element_into_struct() {
                         }),
                         podcast_soundbites: vec! {
                             podcast::Soundbite{
-                                start_time: Some(NonNegF64::F64(73.0)),
-                                duration: Some(NonNegF64::F64(60.0)),
+                                start_time: Some(Float::Float(73.0)),
+                                duration: Some(Float::Float(60.0)),
                                 value: None,
                             },
                             podcast::Soundbite{
-                                start_time: Some(NonNegF64::F64(1234.5)),
-                                duration: Some(NonNegF64::F64(42.25)),
+                                start_time: Some(Float::Float(1234.5)),
+                                duration: Some(Float::Float(42.25)),
                                 value: Some("Why the Podcast Namespace Matters".to_string()),
                             },
                         },
@@ -216,11 +216,11 @@ fn deserialize_element_into_struct() {
                         }),
                         podcast_season: Some(podcast::Season{
                             name: Some("Egyptology: The 19th Century".to_string()),
-                            value: Some(U64::U64(1)),
+                            value: Some(Integer::Integer(1)),
                         }),
                         podcast_episode: Some(podcast::Episode{
                             display: Some("Ch.3".to_string()),
-                            value: Some(NonNegNumber::U64(204)),
+                            value: Some(Number::Integer(204)),
                         }),
                         podcast_transcripts: vec! {
                             podcast::Transcript{
