@@ -49,7 +49,7 @@ fn deserialize_element_into_struct() {
       <title>Example Episode</title>
       <podcast:chapters url="https://example.com/episode-1/chapters.json" type="application/json+chapters" />
       <podcast:soundbite startTime="73.0" duration="60.0" />
-      <podcast:soundbite startTime="1234.5" duration="42.25">Why the Podcast Namespace Matters</podcast:soundbite>
+      <podcast:soundbite startTime="1234.5" duration="-42.25">Why the Podcast Namespace Matters</podcast:soundbite>
       <podcast:person role="guest" href="https://www.wikipedia/alicebrown" img="http://example.com/images/alicebrown.jpg">Alice Brown</podcast:person>
       <podcast:person group="Writing" role="Guest" href="https://www.wikipedia/alicebrown" img="http://example.com/images/alicebrown.jpg">Alice Brown</podcast:person>
       <podcast:person group="non-existent group" role="Non-existent role" href="https://example.com/artist/beckysmith">Becky Smith</podcast:person>
@@ -178,7 +178,7 @@ fn deserialize_element_into_struct() {
                             },
                             podcast::Soundbite{
                                 start_time: Some(Float::Float(1234.5)),
-                                duration: Some(Float::Float(42.25)),
+                                duration: Some(Float::Other("-42.25".to_string())),
                                 value: Some("Why the Podcast Namespace Matters".to_string()),
                             },
                         },
