@@ -6,7 +6,7 @@ fn deserialize_element_into_struct() {
     let feed = xml_serde::from_str::<super::Feed>(
         r#"
 <?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:podcast="https://podcastindex.org/namespace/1.0">
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:podcast="https://podcastindex.org/namespace/1.0" xmlns:unknownNS="https://example.com">
   <channel>
     <copyright>© Example Company</copyright>
     <description><![CDATA[<p><strong>Example HTML description</strong></p>]]></description>
@@ -29,6 +29,7 @@ fn deserialize_element_into_struct() {
     <podcast:locked>no</podcast:locked>
     <podcast:funding url="https://www.example.com/donations">Support the show!</podcast:funding>
     <podcast:funding url="https://www.example.com/members">Become a member!</podcast:funding>
+    <unknownNS:tag>val</unknownNS:tag>
     <podcast:person href="https://example.com/johnsmith/blog" img="http://example.com/images/johnsmith.jpg">John Smith</podcast:person>
     <podcast:person role="guest" href="https://www.imdb.com/name/nm0427852888/" img="http://example.com/images/janedoe.jpg">Jane Doe</podcast:person>
     <podcast:location geo="geo:33.51601,-86.81455" osm="R6930627">Birmingham Civil Rights Museum</podcast:location>
