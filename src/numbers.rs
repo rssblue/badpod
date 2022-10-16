@@ -32,23 +32,27 @@ impl<'de> Deserialize<'de> for NonNegNumber {
 }
 
 #[derive(Debug, PartialEq)]
-pub enum Float {
-    Float(f32),
+pub enum NonNegF64 {
+    F64(f64),
     Other(String),
 }
 
-pub fn option_float<'de, D>(deserializer: D) -> Result<Option<Float>, D::Error>
-where
-    D: Deserializer<'de>,
-{
-    let s = match String::deserialize(deserializer) {
-        Ok(s) => s,
-        Err(e) => return Err(e),
-    };
+impl<'de> Deserialize<'de> for NonNegF64 {
+    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+        let s = match String::deserialize(d) {
+            Ok(s) => s,
+            Err(e) => return Err(e),
+        };
 
-    match s.parse::<f32>() {
-        Ok(number) => Ok(Some(Float::Float(number))),
-        _ => Ok(Some(Float::Other(s))),
+        match s.parse::<f64>() {
+            Ok(x) => {
+                if x < 0.0 {
+                    return Ok(Self::Other(s));
+                }
+                Ok(Self::F64(x))
+            }
+            Err(_) => Ok(Self::Other(s)),
+        }
     }
 }
 

@@ -11,7 +11,7 @@ pub mod podcast;
 
 pub use crate::bool::Bool;
 pub use crate::language::Language;
-pub use crate::numbers::{Float, NonNegNumber, U64};
+pub use crate::numbers::{NonNegF64, NonNegNumber, U64};
 pub use crate::time::DateTime;
 
 #[cfg(test)]

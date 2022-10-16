@@ -170,13 +170,13 @@ fn deserialize_element_into_struct() {
                         }),
                         podcast_soundbites: vec! {
                             podcast::Soundbite{
-                                start_time: Some(Float::Float(73.0)),
-                                duration: Some(Float::Float(60.0)),
+                                start_time: Some(NonNegF64::F64(73.0)),
+                                duration: Some(NonNegF64::F64(60.0)),
                                 value: None,
                             },
                             podcast::Soundbite{
-                                start_time: Some(Float::Float(1234.5)),
-                                duration: Some(Float::Float(42.25)),
+                                start_time: Some(NonNegF64::F64(1234.5)),
+                                duration: Some(NonNegF64::F64(42.25)),
                                 value: Some("Why the Podcast Namespace Matters".to_string()),
                             },
                         },

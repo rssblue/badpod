@@ -62,10 +62,10 @@ pub struct Chapters {
 
 #[derive(Debug, Deserialize, PartialEq, Default)]
 pub struct Soundbite {
-    #[serde(rename = "$attr:startTime", deserialize_with = "numbers::option_float")]
-    pub start_time: Option<numbers::Float>,
-    #[serde(rename = "$attr:duration", deserialize_with = "numbers::option_float")]
-    pub duration: Option<numbers::Float>,
+    #[serde(rename = "$attr:startTime")]
+    pub start_time: Option<numbers::NonNegF64>,
+    #[serde(rename = "$attr:duration")]
+    pub duration: Option<numbers::NonNegF64>,
     #[serde(rename = "$value")]
     pub value: Option<String>,
 }
