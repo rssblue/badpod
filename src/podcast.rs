@@ -1,9 +1,8 @@
 use serde::Deserialize;
 
-use crate::bool;
+use crate::basic;
 use crate::language::Language;
 use crate::mimetype;
-use crate::numbers;
 pub use crate::time::DateTime;
 
 mod transcript;
@@ -37,8 +36,8 @@ pub struct Transcript {
 pub struct Locked {
     #[serde(rename = "$attr:owner")]
     pub owner: Option<String>,
-    #[serde(rename = "$value", deserialize_with = "bool::option_bool_yn")]
-    pub value: Option<bool::Bool>,
+    #[serde(rename = "$value", deserialize_with = "basic::option_bool_yn")]
+    pub value: Option<basic::Bool>,
 }
 
 #[derive(Debug, Deserialize, PartialEq, Default)]
@@ -60,9 +59,9 @@ pub struct Chapters {
 #[derive(Debug, Deserialize, PartialEq, Default)]
 pub struct Soundbite {
     #[serde(rename = "$attr:startTime")]
-    pub start_time: Option<numbers::NonNegF64>,
+    pub start_time: Option<basic::NonNegF64>,
     #[serde(rename = "$attr:duration")]
-    pub duration: Option<numbers::NonNegF64>,
+    pub duration: Option<basic::NonNegF64>,
     #[serde(rename = "$value")]
     pub value: Option<String>,
 }
@@ -104,7 +103,7 @@ pub struct Season {
     #[serde(rename = "$attr:name")]
     pub name: Option<String>,
     #[serde(rename = "$value")]
-    pub value: Option<numbers::U64>,
+    pub value: Option<basic::U64>,
 }
 
 #[derive(Debug, Deserialize, PartialEq, Default)]
@@ -112,7 +111,7 @@ pub struct Episode {
     #[serde(rename = "$attr:display")]
     pub display: Option<String>,
     #[serde(rename = "$value")]
-    pub value: Option<numbers::NonNegNumber>,
+    pub value: Option<basic::NonNegNumber>,
 }
 
 #[derive(Debug, Deserialize, PartialEq, Default)]
@@ -126,11 +125,11 @@ pub struct Trailer {
     )]
     pub pub_date: Option<DateTime>,
     #[serde(rename = "$attr:length", default)]
-    pub length: Option<numbers::U64>,
+    pub length: Option<basic::U64>,
     #[serde(rename = "$attr:type")]
     pub type_: Option<mimetype::Enclosure>,
     #[serde(rename = "$attr:length", default)]
-    pub season: Option<numbers::U64>,
+    pub season: Option<basic::U64>,
     #[serde(rename = "$value")]
     pub value: Option<String>,
 }

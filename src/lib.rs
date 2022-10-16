@@ -1,17 +1,15 @@
 use serde::Deserialize;
 
-mod bool;
+mod basic;
 mod language;
 pub mod mimetype;
-mod numbers;
 mod time;
 
 pub mod itunes;
 pub mod podcast;
 
-pub use crate::bool::Bool;
+pub use crate::basic::{Bool, NonNegF64, NonNegNumber, U64};
 pub use crate::language::Language;
-pub use crate::numbers::{NonNegF64, NonNegNumber, U64};
 pub use crate::time::DateTime;
 
 #[cfg(test)]
@@ -55,8 +53,7 @@ pub struct Channel {
     pub itunes_complete: Option<itunes::Yes>,
     #[serde(
         default,
-        rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:explicit",
-        deserialize_with = "bool::option_bool_tf"
+        rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:explicit"
     )]
     pub itunes_explicit: Option<Bool>,
     #[serde(rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:image")]
@@ -118,8 +115,7 @@ pub struct Item {
     pub itunes_duration: Option<NonNegNumber>,
     #[serde(
         default,
-        rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:explicit",
-        deserialize_with = "bool::option_bool_tf"
+        rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:explicit"
     )]
     pub itunes_explicit: Option<Bool>,
     #[serde(rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:image")]
@@ -171,10 +167,7 @@ pub struct Enclosure {
 
 #[derive(Debug, Deserialize, PartialEq, Default)]
 pub struct GUID {
-    #[serde(
-        rename = "$attr:isPermaLink",
-        deserialize_with = "bool::option_bool_tf"
-    )]
+    #[serde(rename = "$attr:isPermaLink")]
     pub is_permalink: Option<Bool>,
     #[serde(rename = "$value")]
     pub value: Option<String>,
