@@ -1,252 +1,493 @@
 use serde::{Deserialize, Deserializer};
+use std::str::FromStr;
+use strum_macros::{Display, EnumString};
 
 // Language codes taken from <https://www.rssboard.org/rss-language-codes> and
 // <https://www.loc.gov/standards/iso639-2/php/code_list.php>.
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq, EnumString, Display)]
 pub enum Language {
+    #[strum(serialize = "aa")]
     Afar,
+    #[strum(serialize = "ab")]
     Abkhazian,
+    #[strum(serialize = "ae")]
     Avestan,
+    #[strum(serialize = "af")]
     Afrikaans,
+    #[strum(serialize = "ak")]
     Akan,
+    #[strum(serialize = "am")]
     Amharic,
+    #[strum(serialize = "an")]
     Aragonese,
+    #[strum(serialize = "ar")]
     Arabic,
+    #[strum(serialize = "as")]
     Assamese,
+    #[strum(serialize = "av")]
     Avaric,
+    #[strum(serialize = "ay")]
     Aymara,
+    #[strum(serialize = "az")]
     Azerbaijani,
+    #[strum(serialize = "ba")]
     Bashkir,
+    #[strum(serialize = "be")]
     Belarusian,
+    #[strum(serialize = "bg")]
     Bulgarian,
+    #[strum(serialize = "bh")]
     BihariLanguages,
+    #[strum(serialize = "bi")]
     Bislama,
+    #[strum(serialize = "bm")]
     Bambara,
+    #[strum(serialize = "bn")]
     Bengali,
+    #[strum(serialize = "bo")]
     Tibetan,
+    #[strum(serialize = "br")]
     Breton,
+    #[strum(serialize = "bs")]
     Bosnian,
+    #[strum(serialize = "ca")]
     Catalan,
+    #[strum(serialize = "ce")]
     Chechen,
+    #[strum(serialize = "ch")]
     Chamorro,
+    #[strum(serialize = "co")]
     Corsican,
+    #[strum(serialize = "cr")]
     Cree,
+    #[strum(serialize = "cs")]
     Czech,
+    #[strum(serialize = "cu")]
     SlavicChurch,
+    #[strum(serialize = "cv")]
     Chuvash,
+    #[strum(serialize = "cy")]
     Welsh,
+    #[strum(serialize = "da")]
     Danish,
+    #[strum(serialize = "de")]
     German,
+    #[strum(serialize = "de-at")]
     GermanAustria,
+    #[strum(serialize = "de-ch")]
     GermanSwitzerland,
+    #[strum(serialize = "de-de")]
     GermanGermany,
+    #[strum(serialize = "de-li")]
     GermanLiechtenstein,
+    #[strum(serialize = "de-lu")]
     GermanLuxembourg,
+    #[strum(serialize = "dv")]
     Divehi,
-    Ewe,
-    Greek,
-    English,
-    EnglishAustralia,
-    EnglishBelize,
-    EnglishCanada,
-    EnglishUnitedKingdom,
-    EnglishIreland,
-    EnglishJamaica,
-    EnglishNewZealand,
-    EnglishPhillipines,
-    EnglishTrinidad,
-    EnglishUnitedStates,
-    EnglishSouthAfrica,
-    EnglishZimbabwe,
-    Esperanto,
-    Spanish,
-    SpanishArgentina,
-    SpanishBolivia,
-    SpanishChile,
-    SpanishColombia,
-    SpanishCostaRica,
-    SpanishDominicanRepublic,
-    SpanishEcuador,
-    SpanishSpain,
-    SpanishGuatemala,
-    SpanishHonduras,
-    SpanishMexico,
-    SpanishNicaragua,
-    SpanishPanama,
-    SpanishPeru,
-    SpanishPuertoRico,
-    SpanishParaguay,
-    SpanishElSalvador,
-    SpanishUruguay,
-    SpanishVenezuela,
-    Estonian,
-    Basque,
-    Persian,
-    Fulah,
-    Finnish,
-    Fijian,
-    Faeroese,
-    Faroese,
-    French,
-    FrenchBelgium,
-    FrenchCanada,
-    FrenchSwitzerland,
-    FrenchFrance,
-    FrenchLuxembourg,
-    FrenchMonaco,
-    WesternFrisian,
-    Irish,
-    Gaelic,
-    Galician,
-    Guarani,
-    Gujarati,
-    Manx,
-    Hausa,
-    Hawaiian,
-    Hebrew,
-    Hindi,
-    HiriMotu,
-    Croatian,
-    Haitian,
-    Hungarian,
-    Armenian,
-    Herero,
-    Interlingua,
-    Interlingue,
-    Igbo,
-    SichuanYi,
-    Inupiaq,
-    Indonesian,
-    Ido,
-    Icelandic,
-    Italian,
-    ItalianSwitzerland,
-    ItalianItaly,
-    Inuktitut,
-    Japanese,
-    Javanese,
-    Georgian,
-    Kongo,
-    KikuyuGikuyu,
-    Kuanyama,
-    Kazakh,
-    Kalaallisut,
-    CentralKhmer,
-    Kannada,
-    Korean,
-    Kanuri,
-    Kashmiri,
-    Kurdish,
-    Komi,
-    Cornish,
-    KirghizKyrgyz,
-    Latin,
-    Luxembourgish,
-    Ganda,
-    Limburgan,
-    Lingala,
-    Lao,
-    Lithuanian,
-    LubaKatanga,
-    Latvian,
-    Malagasy,
-    Marshallese,
-    Maori,
-    Macedonian,
-    Malayalam,
-    Mongolian,
-    Marathi,
-    Malay,
-    Maltese,
-    Burmese,
-    Nauru,
-    NorwegianBokmal,
-    Nepali,
-    Ndonga,
-    Dutch,
+    #[strum(serialize = "dz")]
     Dzongkha,
+    #[strum(serialize = "ee")]
+    Ewe,
+    #[strum(serialize = "el")]
+    Greek,
+    #[strum(serialize = "en")]
+    English,
+    #[strum(serialize = "en-au")]
+    EnglishAustralia,
+    #[strum(serialize = "en-bz")]
+    EnglishBelize,
+    #[strum(serialize = "en-ca")]
+    EnglishCanada,
+    #[strum(serialize = "en-gb")]
+    EnglishUnitedKingdom,
+    #[strum(serialize = "en-ie")]
+    EnglishIreland,
+    #[strum(serialize = "en-jm")]
+    EnglishJamaica,
+    #[strum(serialize = "en-nz")]
+    EnglishNewZealand,
+    #[strum(serialize = "en-ph")]
+    EnglishPhillipines,
+    #[strum(serialize = "en-tt")]
+    EnglishTrinidad,
+    #[strum(serialize = "en-us")]
+    EnglishUnitedStates,
+    #[strum(serialize = "en-za")]
+    EnglishSouthAfrica,
+    #[strum(serialize = "en-zw")]
+    EnglishZimbabwe,
+    #[strum(serialize = "eo")]
+    Esperanto,
+    #[strum(serialize = "es")]
+    Spanish,
+    #[strum(serialize = "es-ar")]
+    SpanishArgentina,
+    #[strum(serialize = "es-bo")]
+    SpanishBolivia,
+    #[strum(serialize = "es-cl")]
+    SpanishChile,
+    #[strum(serialize = "es-co")]
+    SpanishColombia,
+    #[strum(serialize = "es-cr")]
+    SpanishCostaRica,
+    #[strum(serialize = "es-do")]
+    SpanishDominicanRepublic,
+    #[strum(serialize = "es-ec")]
+    SpanishEcuador,
+    #[strum(serialize = "es-es")]
+    SpanishSpain,
+    #[strum(serialize = "es-gt")]
+    SpanishGuatemala,
+    #[strum(serialize = "es-hn")]
+    SpanishHonduras,
+    #[strum(serialize = "es-mx")]
+    SpanishMexico,
+    #[strum(serialize = "es-ni")]
+    SpanishNicaragua,
+    #[strum(serialize = "es-pa")]
+    SpanishPanama,
+    #[strum(serialize = "es-pe")]
+    SpanishPeru,
+    #[strum(serialize = "es-pr")]
+    SpanishPuertoRico,
+    #[strum(serialize = "es-py")]
+    SpanishParaguay,
+    #[strum(serialize = "es-sv")]
+    SpanishElSalvador,
+    #[strum(serialize = "es-uy")]
+    SpanishUruguay,
+    #[strum(serialize = "es-ve")]
+    SpanishVenezuela,
+    #[strum(serialize = "et")]
+    Estonian,
+    #[strum(serialize = "eu")]
+    Basque,
+    #[strum(serialize = "fa")]
+    Persian,
+    #[strum(serialize = "ff")]
+    Fulah,
+    #[strum(serialize = "fi")]
+    Finnish,
+    #[strum(serialize = "fj")]
+    Fijian,
+    #[strum(serialize = "fo")]
+    Faroese,
+    #[strum(serialize = "fr")]
+    French,
+    #[strum(serialize = "fr-be")]
+    FrenchBelgium,
+    #[strum(serialize = "fr-ca")]
+    FrenchCanada,
+    #[strum(serialize = "fr-ch")]
+    FrenchSwitzerland,
+    #[strum(serialize = "fr-fr")]
+    FrenchFrance,
+    #[strum(serialize = "fr-lu")]
+    FrenchLuxembourg,
+    #[strum(serialize = "fr-mc")]
+    FrenchMonaco,
+    #[strum(serialize = "fy")]
+    WesternFrisian,
+    #[strum(serialize = "ga")]
+    Irish,
+    #[strum(serialize = "gd")]
+    Gaelic,
+    #[strum(serialize = "gl")]
+    Galician,
+    #[strum(serialize = "gn")]
+    Guarani,
+    #[strum(serialize = "gu")]
+    Gujarati,
+    #[strum(serialize = "gv")]
+    Manx,
+    #[strum(serialize = "ha")]
+    Hausa,
+    #[strum(serialize = "haw")]
+    Hawaiian,
+    #[strum(serialize = "he")]
+    Hebrew,
+    #[strum(serialize = "hi")]
+    Hindi,
+    #[strum(serialize = "ho")]
+    HiriMotu,
+    #[strum(serialize = "hr")]
+    Croatian,
+    #[strum(serialize = "ht")]
+    Haitian,
+    #[strum(serialize = "hu")]
+    Hungarian,
+    #[strum(serialize = "hy")]
+    Armenian,
+    #[strum(serialize = "hz")]
+    Herero,
+    #[strum(serialize = "ia")]
+    Interlingua,
+    #[strum(serialize = "ie")]
+    Interlingue,
+    #[strum(serialize = "ig")]
+    Igbo,
+    #[strum(serialize = "ii")]
+    SichuanYi,
+    #[strum(serialize = "ik")]
+    Inupiaq,
+    #[strum(serialize = "in")]
+    Indonesian,
+    #[strum(serialize = "io")]
+    Ido,
+    #[strum(serialize = "is")]
+    Icelandic,
+    #[strum(serialize = "it")]
+    Italian,
+    #[strum(serialize = "it-ch")]
+    ItalianSwitzerland,
+    #[strum(serialize = "it-it")]
+    ItalianItaly,
+    #[strum(serialize = "iu")]
+    Inuktitut,
+    #[strum(serialize = "ja")]
+    Japanese,
+    #[strum(serialize = "jv")]
+    Javanese,
+    #[strum(serialize = "ka")]
+    Georgian,
+    #[strum(serialize = "kg")]
+    Kongo,
+    #[strum(serialize = "ki")]
+    KikuyuGikuyu,
+    #[strum(serialize = "kj")]
+    Kuanyama,
+    #[strum(serialize = "kk")]
+    Kazakh,
+    #[strum(serialize = "kl")]
+    Kalaallisut,
+    #[strum(serialize = "km")]
+    CentralKhmer,
+    #[strum(serialize = "kn")]
+    Kannada,
+    #[strum(serialize = "ko")]
+    Korean,
+    #[strum(serialize = "kr")]
+    Kanuri,
+    #[strum(serialize = "ks")]
+    Kashmiri,
+    #[strum(serialize = "ku")]
+    Kurdish,
+    #[strum(serialize = "kv")]
+    Komi,
+    #[strum(serialize = "kw")]
+    Cornish,
+    #[strum(serialize = "ky")]
+    KirghizKyrgyz,
+    #[strum(serialize = "la")]
+    Latin,
+    #[strum(serialize = "lb")]
+    Luxembourgish,
+    #[strum(serialize = "lg")]
+    Ganda,
+    #[strum(serialize = "li")]
+    Limburgan,
+    #[strum(serialize = "ln")]
+    Lingala,
+    #[strum(serialize = "lo")]
+    Lao,
+    #[strum(serialize = "lt")]
+    Lithuanian,
+    #[strum(serialize = "lu")]
+    LubaKatanga,
+    #[strum(serialize = "lv")]
+    Latvian,
+    #[strum(serialize = "mg")]
+    Malagasy,
+    #[strum(serialize = "mh")]
+    Marshallese,
+    #[strum(serialize = "mi")]
+    Maori,
+    #[strum(serialize = "mk")]
+    Macedonian,
+    #[strum(serialize = "ml")]
+    Malayalam,
+    #[strum(serialize = "mn")]
+    Mongolian,
+    #[strum(serialize = "mr")]
+    Marathi,
+    #[strum(serialize = "ms")]
+    Malay,
+    #[strum(serialize = "mt")]
+    Maltese,
+    #[strum(serialize = "my")]
+    Burmese,
+    #[strum(serialize = "na")]
+    Nauru,
+    #[strum(serialize = "nb")]
+    NorwegianBokmal,
+    #[strum(serialize = "ne")]
+    Nepali,
+    #[strum(serialize = "ng")]
+    Ndonga,
+    #[strum(serialize = "nl")]
+    Dutch,
+    #[strum(serialize = "nl-be")]
     DutchBelgium,
+    #[strum(serialize = "nl-nl")]
     DutchNetherlands,
+    #[strum(serialize = "nn")]
     NorwegianNynorsk,
+    #[strum(serialize = "no")]
     Norwegian,
+    #[strum(serialize = "nr")]
     Ndebele,
+    #[strum(serialize = "nv")]
     Navajo,
+    #[strum(serialize = "ny")]
     Chichewa,
+    #[strum(serialize = "oc")]
     Occitan,
+    #[strum(serialize = "oj")]
     Ojibwa,
+    #[strum(serialize = "om")]
     Oromo,
+    #[strum(serialize = "or")]
     Oriya,
+    #[strum(serialize = "os")]
     Ossetian,
+    #[strum(serialize = "pa")]
     Panjabi,
+    #[strum(serialize = "pi")]
     Pali,
+    #[strum(serialize = "pl")]
     Polish,
+    #[strum(serialize = "ps")]
     Pushto,
+    #[strum(serialize = "pt")]
     Portuguese,
+    #[strum(serialize = "pt-br")]
     PortugueseBrazil,
+    #[strum(serialize = "pt-pt")]
     PortuguesePortugal,
+    #[strum(serialize = "qu")]
     Quechua,
+    #[strum(serialize = "rm")]
     Romansh,
+    #[strum(serialize = "rn")]
     Rundi,
+    #[strum(serialize = "ro")]
     Romanian,
+    #[strum(serialize = "ro-mo")]
     RomanianMoldova,
+    #[strum(serialize = "ro-ro")]
     RomanianRomania,
+    #[strum(serialize = "ru")]
     Russian,
+    #[strum(serialize = "ru-mo")]
     RussianMoldova,
+    #[strum(serialize = "ru-ru")]
     RussianRussia,
+    #[strum(serialize = "rw")]
     Kinyarwanda,
+    #[strum(serialize = "sa")]
     Sanskrit,
+    #[strum(serialize = "sc")]
     Sardinian,
+    #[strum(serialize = "sd")]
     Sindhi,
+    #[strum(serialize = "se")]
     NorthernSami,
+    #[strum(serialize = "sg")]
     Sango,
+    #[strum(serialize = "si")]
     Sinhala,
+    #[strum(serialize = "sk")]
     Slovak,
+    #[strum(serialize = "sl")]
     Slovenian,
+    #[strum(serialize = "sm")]
     Samoan,
+    #[strum(serialize = "sn")]
     Shona,
+    #[strum(serialize = "so")]
     Somali,
+    #[strum(serialize = "sq")]
     Albanian,
+    #[strum(serialize = "sr")]
     Serbian,
+    #[strum(serialize = "ss")]
     Swati,
+    #[strum(serialize = "st")]
     SothoSouthern,
+    #[strum(serialize = "su")]
     Sundanese,
+    #[strum(serialize = "sv")]
     Swedish,
+    #[strum(serialize = "sv-fi")]
     SwedishFinland,
+    #[strum(serialize = "sv-se")]
     SwedishSweden,
+    #[strum(serialize = "sw")]
     Swahili,
+    #[strum(serialize = "ta")]
     Tamil,
+    #[strum(serialize = "te")]
     Telugu,
+    #[strum(serialize = "tg")]
     Tajik,
+    #[strum(serialize = "th")]
     Thai,
+    #[strum(serialize = "ti")]
     Tigrinya,
+    #[strum(serialize = "tk")]
     Turkmen,
+    #[strum(serialize = "tl")]
     Tagalog,
+    #[strum(serialize = "tn")]
     Tswana,
+    #[strum(serialize = "to")]
     Tonga,
+    #[strum(serialize = "tr")]
     Turkish,
+    #[strum(serialize = "ts")]
     Tsonga,
+    #[strum(serialize = "tt")]
     Tatar,
+    #[strum(serialize = "tw")]
     Twi,
+    #[strum(serialize = "ty")]
     Tahitian,
+    #[strum(serialize = "ug")]
     Uighur,
+    #[strum(serialize = "uk")]
     Ukrainian,
-    Ukranian,
+    #[strum(serialize = "ur")]
     Urdu,
+    #[strum(serialize = "uz")]
     Uzbek,
+    #[strum(serialize = "ve")]
     Venda,
+    #[strum(serialize = "vi")]
     Vietnamese,
+    #[strum(serialize = "vo")]
     Volapük,
+    #[strum(serialize = "wa")]
     Walloon,
+    #[strum(serialize = "wo")]
     Wolof,
+    #[strum(serialize = "xh")]
     Xhosa,
+    #[strum(serialize = "yi")]
     Yiddish,
+    #[strum(serialize = "yo")]
     Yoruba,
+    #[strum(serialize = "za")]
     Zhuang,
+    #[strum(serialize = "zh")]
     Chinese,
+    #[strum(serialize = "zh-cn")]
     ChineseSimplified,
+    #[strum(serialize = "zh-tw")]
     ChineseTraditional,
+    #[strum(serialize = "zu")]
     Zulu,
 
+    #[strum(disabled)]
     Other(String),
 }
 
@@ -257,247 +498,8 @@ impl<'de> Deserialize<'de> for Language {
             Err(e) => return Err(e),
         };
 
-        match s.as_str() {
-            "aa" => Ok(Language::Afar),
-            "ab" => Ok(Language::Abkhazian),
-            "ae" => Ok(Language::Avestan),
-            "af" => Ok(Language::Afrikaans),
-            "ak" => Ok(Language::Akan),
-            "am" => Ok(Language::Amharic),
-            "an" => Ok(Language::Aragonese),
-            "ar" => Ok(Language::Arabic),
-            "as" => Ok(Language::Assamese),
-            "av" => Ok(Language::Avaric),
-            "ay" => Ok(Language::Aymara),
-            "az" => Ok(Language::Azerbaijani),
-            "ba" => Ok(Language::Bashkir),
-            "be" => Ok(Language::Belarusian),
-            "bg" => Ok(Language::Bulgarian),
-            "bh" => Ok(Language::BihariLanguages),
-            "bi" => Ok(Language::Bislama),
-            "bm" => Ok(Language::Bambara),
-            "bn" => Ok(Language::Bengali),
-            "bo" => Ok(Language::Tibetan),
-            "br" => Ok(Language::Breton),
-            "bs" => Ok(Language::Bosnian),
-            "ca" => Ok(Language::Catalan),
-            "ce" => Ok(Language::Chechen),
-            "ch" => Ok(Language::Chamorro),
-            "co" => Ok(Language::Corsican),
-            "cr" => Ok(Language::Cree),
-            "cs" => Ok(Language::Czech),
-            "cu" => Ok(Language::SlavicChurch),
-            "cv" => Ok(Language::Chuvash),
-            "cy" => Ok(Language::Welsh),
-            "da" => Ok(Language::Danish),
-            "de" => Ok(Language::German),
-            "de-at" => Ok(Language::GermanAustria),
-            "de-ch" => Ok(Language::GermanSwitzerland),
-            "de-de" => Ok(Language::GermanGermany),
-            "de-li" => Ok(Language::GermanLiechtenstein),
-            "de-lu" => Ok(Language::GermanLuxembourg),
-            "dv" => Ok(Language::Divehi),
-            "dz" => Ok(Language::Dzongkha),
-            "ee" => Ok(Language::Ewe),
-            "el" => Ok(Language::Greek),
-            "en" => Ok(Language::English),
-            "en-au" => Ok(Language::EnglishAustralia),
-            "en-bz" => Ok(Language::EnglishBelize),
-            "en-ca" => Ok(Language::EnglishCanada),
-            "en-gb" => Ok(Language::EnglishUnitedKingdom),
-            "en-ie" => Ok(Language::EnglishIreland),
-            "en-jm" => Ok(Language::EnglishJamaica),
-            "en-nz" => Ok(Language::EnglishNewZealand),
-            "en-ph" => Ok(Language::EnglishPhillipines),
-            "en-tt" => Ok(Language::EnglishTrinidad),
-            "en-us" => Ok(Language::EnglishUnitedStates),
-            "en-za" => Ok(Language::EnglishSouthAfrica),
-            "en-zw" => Ok(Language::EnglishZimbabwe),
-            "eo" => Ok(Language::Esperanto),
-            "es" => Ok(Language::Spanish),
-            "es-ar" => Ok(Language::SpanishArgentina),
-            "es-bo" => Ok(Language::SpanishBolivia),
-            "es-cl" => Ok(Language::SpanishChile),
-            "es-co" => Ok(Language::SpanishColombia),
-            "es-cr" => Ok(Language::SpanishCostaRica),
-            "es-do" => Ok(Language::SpanishDominicanRepublic),
-            "es-ec" => Ok(Language::SpanishEcuador),
-            "es-es" => Ok(Language::SpanishSpain),
-            "es-gt" => Ok(Language::SpanishGuatemala),
-            "es-hn" => Ok(Language::SpanishHonduras),
-            "es-mx" => Ok(Language::SpanishMexico),
-            "es-ni" => Ok(Language::SpanishNicaragua),
-            "es-pa" => Ok(Language::SpanishPanama),
-            "es-pe" => Ok(Language::SpanishPeru),
-            "es-pr" => Ok(Language::SpanishPuertoRico),
-            "es-py" => Ok(Language::SpanishParaguay),
-            "es-sv" => Ok(Language::SpanishElSalvador),
-            "es-uy" => Ok(Language::SpanishUruguay),
-            "es-ve" => Ok(Language::SpanishVenezuela),
-            "et" => Ok(Language::Estonian),
-            "eu" => Ok(Language::Basque),
-            "fa" => Ok(Language::Persian),
-            "ff" => Ok(Language::Fulah),
-            "fi" => Ok(Language::Finnish),
-            "fj" => Ok(Language::Fijian),
-            "fo" => Ok(Language::Faroese),
-            "fr" => Ok(Language::French),
-            "fr-be" => Ok(Language::FrenchBelgium),
-            "fr-ca" => Ok(Language::FrenchCanada),
-            "fr-ch" => Ok(Language::FrenchSwitzerland),
-            "fr-fr" => Ok(Language::FrenchFrance),
-            "fr-lu" => Ok(Language::FrenchLuxembourg),
-            "fr-mc" => Ok(Language::FrenchMonaco),
-            "fy" => Ok(Language::WesternFrisian),
-            "ga" => Ok(Language::Irish),
-            "gd" => Ok(Language::Gaelic),
-            "gl" => Ok(Language::Galician),
-            "gn" => Ok(Language::Guarani),
-            "gu" => Ok(Language::Gujarati),
-            "gv" => Ok(Language::Manx),
-            "ha" => Ok(Language::Hausa),
-            "haw" => Ok(Language::Hawaiian),
-            "he" => Ok(Language::Hebrew),
-            "hi" => Ok(Language::Hindi),
-            "ho" => Ok(Language::HiriMotu),
-            "hr" => Ok(Language::Croatian),
-            "ht" => Ok(Language::Haitian),
-            "hu" => Ok(Language::Hungarian),
-            "hy" => Ok(Language::Armenian),
-            "hz" => Ok(Language::Herero),
-            "ia" => Ok(Language::Interlingua),
-            "ie" => Ok(Language::Interlingue),
-            "ig" => Ok(Language::Igbo),
-            "ii" => Ok(Language::SichuanYi),
-            "ik" => Ok(Language::Inupiaq),
-            "in" => Ok(Language::Indonesian),
-            "io" => Ok(Language::Ido),
-            "is" => Ok(Language::Icelandic),
-            "it" => Ok(Language::Italian),
-            "it-ch" => Ok(Language::ItalianSwitzerland),
-            "it-it" => Ok(Language::ItalianItaly),
-            "iu" => Ok(Language::Inuktitut),
-            "ja" => Ok(Language::Japanese),
-            "jv" => Ok(Language::Javanese),
-            "ka" => Ok(Language::Georgian),
-            "kg" => Ok(Language::Kongo),
-            "ki" => Ok(Language::KikuyuGikuyu),
-            "kj" => Ok(Language::Kuanyama),
-            "kk" => Ok(Language::Kazakh),
-            "kl" => Ok(Language::Kalaallisut),
-            "km" => Ok(Language::CentralKhmer),
-            "kn" => Ok(Language::Kannada),
-            "ko" => Ok(Language::Korean),
-            "kr" => Ok(Language::Kanuri),
-            "ks" => Ok(Language::Kashmiri),
-            "ku" => Ok(Language::Kurdish),
-            "kv" => Ok(Language::Komi),
-            "kw" => Ok(Language::Cornish),
-            "ky" => Ok(Language::KirghizKyrgyz),
-            "la" => Ok(Language::Latin),
-            "lb" => Ok(Language::Luxembourgish),
-            "lg" => Ok(Language::Ganda),
-            "li" => Ok(Language::Limburgan),
-            "ln" => Ok(Language::Lingala),
-            "lo" => Ok(Language::Lao),
-            "lt" => Ok(Language::Lithuanian),
-            "lu" => Ok(Language::LubaKatanga),
-            "lv" => Ok(Language::Latvian),
-            "mg" => Ok(Language::Malagasy),
-            "mh" => Ok(Language::Marshallese),
-            "mi" => Ok(Language::Maori),
-            "mk" => Ok(Language::Macedonian),
-            "ml" => Ok(Language::Malayalam),
-            "mn" => Ok(Language::Mongolian),
-            "mr" => Ok(Language::Marathi),
-            "ms" => Ok(Language::Malay),
-            "mt" => Ok(Language::Maltese),
-            "my" => Ok(Language::Burmese),
-            "na" => Ok(Language::Nauru),
-            "nb" => Ok(Language::NorwegianBokmal),
-            "ne" => Ok(Language::Nepali),
-            "ng" => Ok(Language::Ndonga),
-            "nl" => Ok(Language::Dutch),
-            "nl-be" => Ok(Language::DutchBelgium),
-            "nl-nl" => Ok(Language::DutchNetherlands),
-            "nn" => Ok(Language::NorwegianNynorsk),
-            "no" => Ok(Language::Norwegian),
-            "nr" => Ok(Language::Ndebele),
-            "nv" => Ok(Language::Navajo),
-            "ny" => Ok(Language::Chichewa),
-            "oc" => Ok(Language::Occitan),
-            "oj" => Ok(Language::Ojibwa),
-            "om" => Ok(Language::Oromo),
-            "or" => Ok(Language::Oriya),
-            "os" => Ok(Language::Ossetian),
-            "pa" => Ok(Language::Panjabi),
-            "pi" => Ok(Language::Pali),
-            "pl" => Ok(Language::Polish),
-            "ps" => Ok(Language::Pushto),
-            "pt" => Ok(Language::Portuguese),
-            "pt-br" => Ok(Language::PortugueseBrazil),
-            "pt-pt" => Ok(Language::PortuguesePortugal),
-            "qu" => Ok(Language::Quechua),
-            "rm" => Ok(Language::Romansh),
-            "rn" => Ok(Language::Rundi),
-            "ro" => Ok(Language::Romanian),
-            "ro-mo" => Ok(Language::RomanianMoldova),
-            "ro-ro" => Ok(Language::RomanianRomania),
-            "ru" => Ok(Language::Russian),
-            "ru-mo" => Ok(Language::RussianMoldova),
-            "ru-ru" => Ok(Language::RussianRussia),
-            "rw" => Ok(Language::Kinyarwanda),
-            "sa" => Ok(Language::Sanskrit),
-            "sc" => Ok(Language::Sardinian),
-            "sd" => Ok(Language::Sindhi),
-            "se" => Ok(Language::NorthernSami),
-            "sg" => Ok(Language::Sango),
-            "si" => Ok(Language::Sinhala),
-            "sk" => Ok(Language::Slovak),
-            "sl" => Ok(Language::Slovenian),
-            "sm" => Ok(Language::Samoan),
-            "sn" => Ok(Language::Shona),
-            "so" => Ok(Language::Somali),
-            "sq" => Ok(Language::Albanian),
-            "sr" => Ok(Language::Serbian),
-            "ss" => Ok(Language::Swati),
-            "st" => Ok(Language::SothoSouthern),
-            "su" => Ok(Language::Sundanese),
-            "sv" => Ok(Language::Swedish),
-            "sv-fi" => Ok(Language::SwedishFinland),
-            "sv-se" => Ok(Language::SwedishSweden),
-            "sw" => Ok(Language::Swahili),
-            "ta" => Ok(Language::Tamil),
-            "te" => Ok(Language::Telugu),
-            "tg" => Ok(Language::Tajik),
-            "th" => Ok(Language::Thai),
-            "ti" => Ok(Language::Tigrinya),
-            "tk" => Ok(Language::Turkmen),
-            "tl" => Ok(Language::Tagalog),
-            "tn" => Ok(Language::Tswana),
-            "to" => Ok(Language::Tonga),
-            "tr" => Ok(Language::Turkish),
-            "ts" => Ok(Language::Tsonga),
-            "tt" => Ok(Language::Tatar),
-            "tw" => Ok(Language::Twi),
-            "ty" => Ok(Language::Tahitian),
-            "ug" => Ok(Language::Uighur),
-            "uk" => Ok(Language::Ukrainian),
-            "ur" => Ok(Language::Urdu),
-            "uz" => Ok(Language::Uzbek),
-            "ve" => Ok(Language::Venda),
-            "vi" => Ok(Language::Vietnamese),
-            "vo" => Ok(Language::Volapük),
-            "wa" => Ok(Language::Walloon),
-            "wo" => Ok(Language::Wolof),
-            "xh" => Ok(Language::Xhosa),
-            "yi" => Ok(Language::Yiddish),
-            "yo" => Ok(Language::Yoruba),
-            "za" => Ok(Language::Zhuang),
-            "zh" => Ok(Language::Chinese),
-            "zh-cn" => Ok(Language::ChineseSimplified),
-            "zh-tw" => Ok(Language::ChineseTraditional),
-            "zu" => Ok(Language::Zulu),
+        match Language::from_str(s.as_str()) {
+            Ok(l) => Ok(l),
             _ => Ok(Language::Other(s)),
         }
     }
