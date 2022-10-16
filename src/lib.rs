@@ -117,6 +117,11 @@ pub struct Item {
     )]
     pub itunes_duration: Option<Number>,
     #[serde(
+        rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:season",
+        deserialize_with = "basic::option_integer_positive"
+    )]
+    pub itunes_season: Option<Integer>,
+    #[serde(
         rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:episode",
         deserialize_with = "basic::option_integer_positive"
     )]
