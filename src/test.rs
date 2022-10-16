@@ -56,6 +56,7 @@ fn deserialize_element_into_struct() {
       <podcast:person group="non-existent group" role="Non-existent role" href="https://example.com/artist/beckysmith">Becky Smith</podcast:person>
       <podcast:location geo="GEO:-27.86159,153.3169" osm="W43678282">Dreamworld (Queensland)</podcast:location>
       <podcast:episode display="Ch.3">204</podcast:episode>
+      <itunes:episode>204</itunes:episode>
       <podcast:season name="Egyptology: The 19th Century">1</podcast:season>
       <podcast:transcript url="https://example.com/episode1/transcript.json" type="application/json" language="es" rel="captions" />
     </item>
@@ -223,6 +224,7 @@ fn deserialize_element_into_struct() {
                             display: Some("Ch.3".to_string()),
                             value: Some(Number::Integer(204)),
                         }),
+                        itunes_episode: Some(Integer::Integer(204)),
                         podcast_transcripts: vec! {
                             podcast::Transcript{
                                 url: Some("https://example.com/episode1/transcript.json".to_string()),
