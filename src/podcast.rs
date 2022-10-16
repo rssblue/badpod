@@ -18,9 +18,6 @@ pub use person::{PersonGroup, PersonRole};
 mod location;
 pub use location::{Geo, GeoCoordinates, OSMObject, OSMType, OSM};
 
-mod episode;
-pub use episode::EpisodeNumber;
-
 mod license;
 pub use license::LicenseType;
 
@@ -114,8 +111,8 @@ pub struct Season {
 pub struct Episode {
     #[serde(rename = "$attr:display")]
     pub display: Option<String>,
-    #[serde(rename = "$value", deserialize_with = "episode::option_episode_number")]
-    pub value: Option<EpisodeNumber>,
+    #[serde(rename = "$value")]
+    pub value: Option<numbers::NonNegNumber>,
 }
 
 #[derive(Debug, Deserialize, PartialEq, Default)]

@@ -220,7 +220,7 @@ fn deserialize_element_into_struct() {
                         }),
                         podcast_episode: Some(podcast::Episode{
                             display: Some("Ch.3".to_string()),
-                            value: Some(podcast::EpisodeNumber::Number("204".to_string())),
+                            value: Some(NonNegNumber::U64(204)),
                         }),
                         podcast_transcripts: vec! {
                             podcast::Transcript{
