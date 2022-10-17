@@ -26,6 +26,9 @@ pub use alternate_enclosure::IntegrityType;
 mod guid;
 pub use guid::GUID;
 
+mod medium;
+pub use medium::Medium;
+
 mod value;
 pub use value::{ValueMethod, ValueRecipientType, ValueType};
 
