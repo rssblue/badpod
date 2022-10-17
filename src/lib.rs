@@ -1,11 +1,11 @@
 mod basic;
 mod language;
 pub mod mimetype;
+mod rss;
 mod time;
 
 pub mod itunes;
 pub mod podcast;
-pub mod rss;
 
 pub use crate::basic::{Bool, Float, Integer, Number};
 pub use crate::language::Language;
