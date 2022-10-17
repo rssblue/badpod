@@ -3,7 +3,7 @@ use parse_rss::*;
 
 #[test]
 fn deserialize() {
-    let feed = xml_serde::from_str::<Feed>(
+    let feed = parse_rss::from_str(
         r#"
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:podcast="https://podcastindex.org/namespace/1.0" xmlns:unknownNS="https://example.com">
