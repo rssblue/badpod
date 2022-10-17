@@ -62,6 +62,16 @@ fn deserialize() {
       <podcast:season name="Egyptology: The 19th Century">1</podcast:season>
       <podcast:transcript url="https://example.com/episode1/transcript.json" type="application/json" language="es" rel="captions" />
       <itunes:episodeType>full</itunes:episodeType>
+      <podcast:alternateEnclosure type="audio/mpeg" length="2490970" bitrate="160707.74">
+        <podcast:source uri="https://example.com/file-0.mp3" />
+        <podcast:source uri="ipfs://QmdwGqd3d2gFPGeJNLLCshdiPert45fMu84552Y4XHTy4y" />
+        <podcast:source uri="https://example.com/file-0.torrent" contentType="application/x-bittorrent" />
+        <podcast:source uri="http://example.onion/file-0.mp3" />
+      </podcast:alternateEnclosure>
+        
+      <podcast:alternateEnclosure type="video/mp4" length="10562995" bitrate="681483.55" height="1080">
+        <podcast:source uri="https://example.com/file-1080.mp4" />
+      </podcast:alternateEnclosure>
     </item>
   </channel>
 </rss>
@@ -233,6 +243,45 @@ fn deserialize() {
                         },
                     },
                     itunes_block: Some(itunes::Yes::Other("yes".to_string())),
+                    podcast_alternate_enclosures: vec!{
+                        podcast::AlternateEnclosure{
+                            type_: Some(mimetype::Enclosure::MP3),
+                            length: Some(Integer::Integer(2490970)),
+                            bit_rate: Some(Float::Float(160707.74)),
+                            podcast_sources: vec!{
+                                podcast::Source{
+                                    uri: Some("https://example.com/file-0.mp3".to_string()),
+                                    type_: None,
+                                },
+                                podcast::Source{
+                                    uri: Some("ipfs://QmdwGqd3d2gFPGeJNLLCshdiPert45fMu84552Y4XHTy4y".to_string()),
+                                    type_: None,
+                                },
+                                podcast::Source{
+                                    uri: Some("https://example.com/file-0.torrent".to_string()),
+                                    type_: Some(mimetype::Enclosure::Other("application/x-bittorrent".to_string())),
+                                },
+                                podcast::Source{
+                                    uri: Some("http://example.onion/file-0.mp3".to_string()),
+                                    type_: None,
+                                },
+                            },
+                            ..Default::default()
+                        },
+                        podcast::AlternateEnclosure{
+                            type_: Some(mimetype::Enclosure::MP4),
+                            length: Some(Integer::Integer(10562995)),
+                            bit_rate: Some(Float::Float(681483.55)),
+                            height: Some(Integer::Integer(1080)),
+                            podcast_sources: vec!{
+                                podcast::Source{
+                                    uri: Some("https://example.com/file-1080.mp4".to_string()),
+                                    type_: None,
+                                },
+                            },
+                            ..Default::default()
+                        },
+                    },
                     ..Default::default()
                 }},
                 ..Default::default()

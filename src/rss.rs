@@ -165,6 +165,11 @@ pub struct Item {
         default
     )]
     pub podcast_episode: Option<podcast::Episode>,
+    #[serde(
+        rename = "{https://podcastindex.org/namespace/1.0}podcast:alternateEnclosure",
+        default
+    )]
+    pub podcast_alternate_enclosures: Vec<podcast::AlternateEnclosure>,
 }
 
 #[derive(Debug, Deserialize, PartialEq, Default)]

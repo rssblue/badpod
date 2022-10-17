@@ -20,6 +20,9 @@ pub use location::{Geo, GeoCoordinates, OSMObject, OSMType, OSM};
 mod license;
 pub use license::LicenseType;
 
+mod alternate_enclosure;
+pub use alternate_enclosure::IntegrityType;
+
 #[derive(Debug, Deserialize, PartialEq, Default)]
 pub struct Transcript {
     #[serde(rename = "$attr:url")]
@@ -160,4 +163,66 @@ pub struct License {
     pub url: Option<String>,
     #[serde(rename = "$value")]
     pub value: Option<LicenseType>,
+}
+
+#[derive(Debug, Deserialize, PartialEq, Eq, Default)]
+pub struct AlternateEnclosure {
+    #[serde(rename = "$attr:type", default)]
+    pub type_: Option<mimetype::Enclosure>,
+    #[serde(
+        rename = "$attr:length",
+        deserialize_with = "basic::option_integer_nonnegative",
+        default
+    )]
+    pub length: Option<basic::Integer>,
+    #[serde(
+        rename = "$attr:bitrate",
+        deserialize_with = "basic::option_float_nonnegative",
+        default
+    )]
+    pub bit_rate: Option<basic::Float>,
+    #[serde(
+        rename = "$attr:height",
+        deserialize_with = "basic::option_integer_nonnegative",
+        default
+    )]
+    pub height: Option<basic::Integer>,
+    #[serde(rename = "$attr:lang", default)]
+    pub language: Option<Language>,
+    #[serde(rename = "$attr:title", default)]
+    pub title: Option<String>,
+    #[serde(rename = "$attr:rel", default)]
+    pub rel: Option<String>,
+    // TODO: this is quite complicated; will try to do later.
+    // #[serde(rename = "$attr:codecs", default)]
+    // pub codecs: Vec<String>,
+    #[serde(rename = "$attr:default", default)]
+    pub default: Option<basic::Bool>,
+
+    #[serde(
+        rename = "{https://podcastindex.org/namespace/1.0}podcast:source",
+        default
+    )]
+    pub podcast_sources: Vec<Source>,
+    #[serde(
+        rename = "{https://podcastindex.org/namespace/1.0}podcast:integrity",
+        default
+    )]
+    pub podcast_integrity: Option<Integrity>,
+}
+
+#[derive(Debug, Deserialize, PartialEq, Eq, Default)]
+pub struct Source {
+    #[serde(rename = "$attr:contentType")]
+    pub type_: Option<mimetype::Enclosure>,
+    #[serde(rename = "$attr:uri")]
+    pub uri: Option<String>,
+}
+
+#[derive(Debug, Deserialize, PartialEq, Eq, Default)]
+pub struct Integrity {
+    #[serde(rename = "$attr:type")]
+    pub type_: Option<IntegrityType>,
+    #[serde(rename = "$attr:value")]
+    pub value: Option<String>,
 }
