@@ -36,7 +36,7 @@ pub struct Owner {
 
 #[derive(Debug, PartialEq)]
 pub enum Yes {
-    Yes,
+    Ok,
     Other(String),
 }
 
@@ -48,8 +48,8 @@ impl<'de> Deserialize<'de> for Yes {
         };
 
         match s.as_str() {
-            "Yes" => Ok(Yes::Yes),
-            _ => Ok(Yes::Other(s)),
+            "Yes" => Ok(Self::Ok),
+            _ => Ok(Self::Other(s)),
         }
     }
 }

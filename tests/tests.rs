@@ -110,7 +110,7 @@ fn deserialize() {
                     "<p><strong>Example HTML description</strong></p>".to_string()
                 ),
                 itunes_author: Some("Jane Doe".to_string()),
-                itunes_block: Some(itunes::Yes::Yes),
+                itunes_block: Some(itunes::Yes::Ok),
                 itunes_complete: Some(itunes::Yes::Other("No".to_string())),
                 itunes_categories: vec! {itunes::Category{
                     text: Some(itunes::CategoryName::SocietyAndCulture),
@@ -118,7 +118,7 @@ fn deserialize() {
                         text: Some(itunes::SubcategoryName::Documentary),
                     }),
                 }},
-                itunes_explicit: Some(Bool::Bool(false)),
+                itunes_explicit: Some(Bool::Ok(false)),
                 itunes_owner: Some(itunes::Owner {
                     email: Some("jane@example.com".to_string()),
                     name: Some("Jane Doe".to_string()),
@@ -126,7 +126,7 @@ fn deserialize() {
                 itunes_type: Some(itunes::PodcastType::Serial),
                 podcast_locked: Some(podcast::Locked {
                     owner: None,
-                    value: Some(Bool::Bool(false)),
+                    value: Some(Bool::Ok(false)),
                 }),
                 podcast_fundings: vec! {
                     podcast::Funding{
@@ -169,9 +169,9 @@ fn deserialize() {
                 }),
                 podcast_trailers: vec! {
                     podcast::Trailer{
-                        pub_date: Some(parse_rss::DateTime::Rfc2822(chrono::FixedOffset::west(5*60*60).ymd(2021, 4, 1).and_hms(8, 0, 0))),
+                        pub_date: Some(parse_rss::DateTime::Ok(chrono::FixedOffset::west(5*60*60).ymd(2021, 4, 1).and_hms(8, 0, 0))),
                         url: Some("https://example.org/trailers/teaser".to_string()),
-                        length: Some(Integer::Integer(12345678)),
+                        length: Some(Integer::Ok(12345678)),
                         type_: Some(mimetype::Enclosure::MP3),
                         season: None,
                         value: Some("Coming April 1st, 2021".to_string()),
@@ -181,26 +181,26 @@ fn deserialize() {
                     url: None,
                     value: Some(podcast::LicenseType::CreativeCommonsAttribution4_0International),
                 }),
-                podcast_guid: Some(podcast::GUID::GUID(
+                podcast_guid: Some(podcast::GUID::Ok(
                     "917393e3-1b1e-5cef-ace4-edaa54e1f810".to_string()
                 )),
                 podcast_value: Some(podcast::Value {
                     type_: Some(podcast::ValueType::Lightning),
                     method: Some(podcast::ValueMethod::Keysend),
-                    suggested: Some(Float::Float(0.00000015)),
+                    suggested: Some(Float::Ok(0.00000015)),
                     value_recipients: vec! {
                         podcast::ValueRecipient{
                             name: Some("Host".to_string()),
                             type_: Some(podcast::ValueRecipientType::Node),
                             address: Some("032f4ffbbafffbe51726ad3c164a3d0d37ec27bc67b29a159b0f49ae8ac21b8508".to_string()),
-                            split: Some(Integer::Integer(40)),
+                            split: Some(Integer::Ok(40)),
                             ..Default::default()
                         },
                         podcast::ValueRecipient{
                             name: Some("Producer".to_string()),
                             type_: Some(podcast::ValueRecipientType::Node),
                             address: Some("03ae9f91a0cb8ff43840e3c322c4c61f019d8c1c3cea15a25cfc425ac605e61a4a".to_string()),
-                            split: Some(Integer::Integer(10)),
+                            split: Some(Integer::Ok(10)),
                             ..Default::default()
                         },
                     },
@@ -215,8 +215,8 @@ fn deserialize() {
                         type_: Some(mimetype::Enclosure::MP3),
                     }),
                     itunes_duration: Some(Number::Integer(1079)),
-                    itunes_explicit: Some(Bool::Bool(true)),
-                    pub_date: Some(parse_rss::DateTime::Rfc2822(chrono::FixedOffset::west(5).ymd(2022, 10, 10).and_hms(6, 10, 0))),
+                    itunes_explicit: Some(Bool::Ok(true)),
+                    pub_date: Some(parse_rss::DateTime::Ok(chrono::FixedOffset::west(5).ymd(2022, 10, 10).and_hms(6, 10, 0))),
 
                     podcast_chapters: Some(podcast::Chapters{
                         url: Some("https://example.com/episode-1/chapters.json".to_string()),
@@ -224,12 +224,12 @@ fn deserialize() {
                     }),
                     podcast_soundbites: vec! {
                         podcast::Soundbite{
-                            start_time: Some(Float::Float(73.0)),
-                            duration: Some(Float::Float(60.0)),
+                            start_time: Some(Float::Ok(73.0)),
+                            duration: Some(Float::Ok(60.0)),
                             value: None,
                         },
                         podcast::Soundbite{
-                            start_time: Some(Float::Float(1234.5)),
+                            start_time: Some(Float::Ok(1234.5)),
                             duration: Some(Float::Other("-42.25".to_string())),
                             value: Some("Why the Podcast Namespace Matters".to_string()),
                         },
@@ -269,13 +269,13 @@ fn deserialize() {
                     }),
                     podcast_season: Some(podcast::Season{
                         name: Some("Egyptology: The 19th Century".to_string()),
-                        value: Some(Integer::Integer(1)),
+                        value: Some(Integer::Ok(1)),
                     }),
                     podcast_episode: Some(podcast::Episode{
                         display: Some("Ch.3".to_string()),
                         value: Some(Number::Integer(204)),
                     }),
-                    itunes_episode: Some(Integer::Integer(204)),
+                    itunes_episode: Some(Integer::Ok(204)),
                     itunes_season: Some(Integer::Other("Season 1".to_string())),
                     podcast_transcripts: vec! {
                         podcast::Transcript{
@@ -289,8 +289,8 @@ fn deserialize() {
                     podcast_alternate_enclosures: vec!{
                         podcast::AlternateEnclosure{
                             type_: Some(mimetype::Enclosure::MP3),
-                            length: Some(Integer::Integer(2490970)),
-                            bit_rate: Some(Float::Float(160707.74)),
+                            length: Some(Integer::Ok(2490970)),
+                            bit_rate: Some(Float::Ok(160707.74)),
                             podcast_sources: vec!{
                                 podcast::Source{
                                     uri: Some("https://example.com/file-0.mp3".to_string()),
@@ -313,9 +313,9 @@ fn deserialize() {
                         },
                         podcast::AlternateEnclosure{
                             type_: Some(mimetype::Enclosure::MP4),
-                            length: Some(Integer::Integer(10562995)),
-                            bit_rate: Some(Float::Float(681483.55)),
-                            height: Some(Integer::Integer(1080)),
+                            length: Some(Integer::Ok(10562995)),
+                            bit_rate: Some(Float::Ok(681483.55)),
+                            height: Some(Integer::Ok(1080)),
                             podcast_sources: vec!{
                                 podcast::Source{
                                     uri: Some("https://example.com/file-1080.mp4".to_string()),
@@ -328,7 +328,7 @@ fn deserialize() {
                     podcast_value: Some(podcast::Value {
                         type_: Some(podcast::ValueType::Lightning),
                         method: Some(podcast::ValueMethod::Keysend),
-                        suggested: Some(Float::Float(0.00000015)),
+                        suggested: Some(Float::Ok(0.00000015)),
                         value_recipients:vec!{},
                     }),
                     ..Default::default()

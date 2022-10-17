@@ -4,7 +4,7 @@ use serde::{Deserialize, Deserializer};
 
 #[derive(Debug, PartialEq, Eq)]
 pub enum GUID {
-    GUID(String),
+    Ok(String),
     Other(String),
 }
 
@@ -26,6 +26,6 @@ impl<'de> Deserialize<'de> for GUID {
             return Ok(GUID::Other(s));
         }
 
-        Ok(GUID::GUID(s))
+        Ok(GUID::Ok(s))
     }
 }

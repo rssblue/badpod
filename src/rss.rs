@@ -114,7 +114,7 @@ pub struct Item {
     pub title: Option<String>,
     pub enclosure: Option<Enclosure>,
     pub guid: Option<GUID>,
-    #[serde(default, deserialize_with = "time::option_datefmt", rename = "pubDate")]
+    #[serde(default, rename = "pubDate")]
     pub pub_date: Option<time::DateTime>,
 
     #[serde(rename = "{http://purl.org/rss/1.0/modules/content/}content:encoded")]

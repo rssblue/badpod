@@ -142,11 +142,7 @@ pub struct Episode {
 pub struct Trailer {
     #[serde(rename = "$attr:url")]
     pub url: Option<String>,
-    #[serde(
-        rename = "$attr:pubdate",
-        deserialize_with = "crate::time::option_datefmt",
-        default
-    )]
+    #[serde(rename = "$attr:pubdate", default)]
     pub pub_date: Option<DateTime>,
     #[serde(
         rename = "$attr:length",

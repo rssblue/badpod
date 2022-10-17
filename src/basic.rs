@@ -2,7 +2,7 @@ use serde::{Deserialize, Deserializer};
 
 #[derive(Debug, PartialEq, Eq)]
 pub enum Bool {
-    Bool(bool),
+    Ok(bool),
     Other(String),
 }
 
@@ -14,7 +14,7 @@ impl<'de> Deserialize<'de> for Bool {
         };
 
         match s.parse::<bool>() {
-            Ok(x) => Ok(Self::Bool(x)),
+            Ok(x) => Ok(Self::Ok(x)),
             Err(_) => Ok(Self::Other(s)),
         }
     }
@@ -30,15 +30,15 @@ where
     };
 
     match s.as_str() {
-        "no" => Ok(Some(Bool::Bool(false))),
-        "yes" => Ok(Some(Bool::Bool(false))),
+        "no" => Ok(Some(Bool::Ok(false))),
+        "yes" => Ok(Some(Bool::Ok(false))),
         _ => Ok(Some(Bool::Other(s))),
     }
 }
 
 #[derive(Debug, PartialEq, Eq)]
 pub enum Integer {
-    Integer(i64),
+    Ok(i64),
     Other(String),
 }
 
@@ -50,7 +50,7 @@ impl<'de> Deserialize<'de> for Integer {
         };
 
         match s.parse::<i64>() {
-            Ok(x) => Ok(Self::Integer(x)),
+            Ok(x) => Ok(Self::Ok(x)),
             Err(_) => Ok(Self::Other(s)),
         }
     }
@@ -70,7 +70,7 @@ where
             if x < 0 {
                 return Ok(Some(Integer::Other(s)));
             }
-            Ok(Some(Integer::Integer(x)))
+            Ok(Some(Integer::Ok(x)))
         }
         Err(_) => Ok(Some(Integer::Other(s))),
     }
@@ -90,7 +90,7 @@ where
             if x <= 0 {
                 return Ok(Some(Integer::Other(s)));
             }
-            Ok(Some(Integer::Integer(x)))
+            Ok(Some(Integer::Ok(x)))
         }
         Err(_) => Ok(Some(Integer::Other(s))),
     }
@@ -98,7 +98,7 @@ where
 
 #[derive(Debug, PartialEq)]
 pub enum Float {
-    Float(f64),
+    Ok(f64),
     Other(String),
 }
 
@@ -110,7 +110,7 @@ impl<'de> Deserialize<'de> for Float {
         };
 
         match s.parse::<f64>() {
-            Ok(x) => Ok(Self::Float(x)),
+            Ok(x) => Ok(Self::Ok(x)),
             Err(_) => Ok(Self::Other(s)),
         }
     }
@@ -130,7 +130,7 @@ where
             if x < 0.0 {
                 return Ok(Some(Float::Other(s)));
             }
-            Ok(Some(Float::Float(x)))
+            Ok(Some(Float::Ok(x)))
         }
         Err(_) => Ok(Some(Float::Other(s))),
     }
@@ -209,7 +209,7 @@ where
             if x <= 0.0 {
                 return Ok(Some(Float::Other(s)));
             }
-            Ok(Some(Float::Float(x)))
+            Ok(Some(Float::Ok(x)))
         }
         Err(_) => Ok(Some(Float::Other(s))),
     }
