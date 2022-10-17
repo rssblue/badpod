@@ -87,6 +87,12 @@ pub struct Channel {
         default
     )]
     pub podcast_license: Option<podcast::License>,
+    #[serde(
+        rename = "{https://podcastindex.org/namespace/1.0}podcast:guid",
+        default
+    )]
+    pub podcast_guid: Option<podcast::GUID>,
+
     #[serde(rename = "item", default)]
     pub items: Vec<Item>,
 }

@@ -23,6 +23,9 @@ pub use license::LicenseType;
 mod alternate_enclosure;
 pub use alternate_enclosure::IntegrityType;
 
+mod guid;
+pub use guid::GUID;
+
 #[derive(Debug, Deserialize, PartialEq, Default)]
 pub struct Transcript {
     #[serde(rename = "$attr:url")]

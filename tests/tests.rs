@@ -29,6 +29,7 @@ fn deserialize() {
     <podcast:locked>no</podcast:locked>
     <podcast:funding url="https://www.example.com/donations">Support the show!</podcast:funding>
     <podcast:funding url="https://www.example.com/members">Become a member!</podcast:funding>
+    <podcast:guid>917393e3-1b1e-5cef-ace4-edaa54e1f810</podcast:guid>
     <unknownNS:tag>val</unknownNS:tag>
     <podcast:person href="https://example.com/johnsmith/blog" img="http://example.com/images/johnsmith.jpg">John Smith</podcast:person>
     <podcast:person role="guest" href="https://www.imdb.com/name/nm0427852888/" img="http://example.com/images/janedoe.jpg">Jane Doe</podcast:person>
@@ -163,6 +164,9 @@ fn deserialize() {
                     url: None,
                     value: Some(podcast::LicenseType::CreativeCommonsAttribution4_0International),
                 }),
+                podcast_guid: Some(podcast::GUID::GUID(
+                    "917393e3-1b1e-5cef-ace4-edaa54e1f810".to_string()
+                )),
                 items: vec! {
                 Item{
                     title: Some("Example Episode".to_string()),
