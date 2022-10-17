@@ -52,6 +52,7 @@ fn deserialize() {
             split="10"
         />
     </podcast:value>
+    <podcast:medium>music</podcast:medium>
     <item>
       <enclosure
        url="http://example.com/episode-1.mp3" 
@@ -204,6 +205,7 @@ fn deserialize() {
                         },
                     },
                 }),
+                podcast_medium: Some(podcast::Medium::Music),
                 items: vec! {
                 Item{
                     title: Some("Example Episode".to_string()),
