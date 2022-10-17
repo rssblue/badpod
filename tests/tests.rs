@@ -38,6 +38,20 @@ fn deserialize() {
     <unknown1>val</unknown1>
     <podcast:license>cc-by-4.0</podcast:license>
     <unknown2>val</unknown2>
+    <podcast:value type="lightning" method="keysend" suggested="0.00000015000">
+        <podcast:valueRecipient
+            name="Host"
+            type="node"
+            address="032f4ffbbafffbe51726ad3c164a3d0d37ec27bc67b29a159b0f49ae8ac21b8508"
+            split="40"
+        />
+        <podcast:valueRecipient
+            name="Producer"
+            type="node"
+            address="03ae9f91a0cb8ff43840e3c322c4c61f019d8c1c3cea15a25cfc425ac605e61a4a"
+            split="10"
+        />
+    </podcast:value>
     <item>
       <enclosure
        url="http://example.com/episode-1.mp3" 
@@ -69,10 +83,12 @@ fn deserialize() {
         <podcast:source uri="https://example.com/file-0.torrent" contentType="application/x-bittorrent" />
         <podcast:source uri="http://example.onion/file-0.mp3" />
       </podcast:alternateEnclosure>
-        
+
       <podcast:alternateEnclosure type="video/mp4" length="10562995" bitrate="681483.55" height="1080">
         <podcast:source uri="https://example.com/file-1080.mp4" />
       </podcast:alternateEnclosure>
+      <podcast:value type="lightning" method="keysend" suggested="0.00000015000">
+      </podcast:value>
     </item>
   </channel>
 </rss>
@@ -167,6 +183,27 @@ fn deserialize() {
                 podcast_guid: Some(podcast::GUID::GUID(
                     "917393e3-1b1e-5cef-ace4-edaa54e1f810".to_string()
                 )),
+                podcast_value: Some(podcast::Value {
+                    type_: Some(podcast::ValueType::Lightning),
+                    method: Some(podcast::ValueMethod::Keysend),
+                    suggested: Some(Float::Float(0.00000015)),
+                    value_recipients: vec! {
+                        podcast::ValueRecipient{
+                            name: Some("Host".to_string()),
+                            type_: Some(podcast::ValueRecipientType::Node),
+                            address: Some("032f4ffbbafffbe51726ad3c164a3d0d37ec27bc67b29a159b0f49ae8ac21b8508".to_string()),
+                            split: Some(Integer::Integer(40)),
+                            ..Default::default()
+                        },
+                        podcast::ValueRecipient{
+                            name: Some("Producer".to_string()),
+                            type_: Some(podcast::ValueRecipientType::Node),
+                            address: Some("03ae9f91a0cb8ff43840e3c322c4c61f019d8c1c3cea15a25cfc425ac605e61a4a".to_string()),
+                            split: Some(Integer::Integer(10)),
+                            ..Default::default()
+                        },
+                    },
+                }),
                 items: vec! {
                 Item{
                     title: Some("Example Episode".to_string()),
@@ -286,6 +323,12 @@ fn deserialize() {
                             ..Default::default()
                         },
                     },
+                    podcast_value: Some(podcast::Value {
+                        type_: Some(podcast::ValueType::Lightning),
+                        method: Some(podcast::ValueMethod::Keysend),
+                        suggested: Some(Float::Float(0.00000015)),
+                        value_recipients:vec!{},
+                    }),
                     ..Default::default()
                 }},
                 ..Default::default()

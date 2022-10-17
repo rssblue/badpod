@@ -26,6 +26,9 @@ pub use alternate_enclosure::IntegrityType;
 mod guid;
 pub use guid::GUID;
 
+mod value;
+pub use value::{ValueMethod, ValueRecipientType, ValueType};
+
 #[derive(Debug, Deserialize, PartialEq, Default)]
 pub struct Transcript {
     #[serde(rename = "$attr:url")]
@@ -228,4 +231,45 @@ pub struct Integrity {
     pub type_: Option<IntegrityType>,
     #[serde(rename = "$attr:value")]
     pub value: Option<String>,
+}
+
+#[derive(Debug, Deserialize, PartialEq, Eq, Default)]
+pub struct Value {
+    #[serde(rename = "$attr:type", default)]
+    pub type_: Option<ValueType>,
+    #[serde(rename = "$attr:method", default)]
+    pub method: Option<ValueMethod>,
+    #[serde(
+        rename = "$attr:suggested",
+        deserialize_with = "basic::option_float_positive",
+        default
+    )]
+    pub suggested: Option<basic::Float>,
+    #[serde(
+        rename = "{https://podcastindex.org/namespace/1.0}podcast:valueRecipient",
+        default
+    )]
+    pub value_recipients: Vec<ValueRecipient>,
+}
+
+#[derive(Debug, Deserialize, PartialEq, Eq, Default)]
+pub struct ValueRecipient {
+    #[serde(rename = "$attr:name")]
+    pub name: Option<String>,
+    #[serde(rename = "$attr:customKey")]
+    pub custom_key: Option<String>,
+    #[serde(rename = "$attr:customValue")]
+    pub custom_value: Option<String>,
+    #[serde(rename = "$attr:type", default)]
+    pub type_: Option<ValueRecipientType>,
+    #[serde(rename = "$attr:address")]
+    pub address: Option<String>,
+    #[serde(
+        rename = "$attr:split",
+        deserialize_with = "basic::option_integer_positive",
+        default
+    )]
+    pub split: Option<basic::Integer>,
+    #[serde(rename = "$attr:fee", default)]
+    pub fee: Option<basic::Bool>,
 }

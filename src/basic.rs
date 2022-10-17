@@ -87,7 +87,7 @@ where
 
     match s.parse::<i64>() {
         Ok(x) => {
-            if x < 1 {
+            if x <= 0 {
                 return Ok(Some(Integer::Other(s)));
             }
             Ok(Some(Integer::Integer(x)))
@@ -192,5 +192,25 @@ where
             Ok(Some(Number::Float(x)))
         }
         Err(_) => Ok(Some(Number::Other(s))),
+    }
+}
+
+pub fn option_float_positive<'de, D>(d: D) -> Result<Option<Float>, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    let s = match String::deserialize(d) {
+        Ok(s) => s,
+        Err(e) => return Err(e),
+    };
+
+    match s.parse::<f64>() {
+        Ok(x) => {
+            if x <= 0.0 {
+                return Ok(Some(Float::Other(s)));
+            }
+            Ok(Some(Float::Float(x)))
+        }
+        Err(_) => Ok(Some(Float::Other(s))),
     }
 }
