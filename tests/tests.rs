@@ -65,13 +65,12 @@ fn deserialize() {
     </item>
   </channel>
 </rss>
-            "#
-            )
-            .unwrap();
+            "#,
+    );
 
     pretty_assertions::assert_eq!(
         rss,
-        RSS {
+        Ok(RSS {
             version: Some("2.0".to_string()),
             channel: Some(Channel {
                 copyright: Some("© Example Company".to_string()),
@@ -238,6 +237,6 @@ fn deserialize() {
                 }},
                 ..Default::default()
             }),
-        }
+        })
     );
 }
