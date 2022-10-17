@@ -47,7 +47,8 @@ pub enum Transcript {
     JSON,
     #[strum(serialize = "application/x-subrip")]
     SRT,
-    // Legacy: not supported by IANA, but was once part of podcast namespace specification.
+    /// Not supported by IANA, but was once part of podcast namespace specification.
+    #[deprecated]
     #[strum(serialize = "application/srt")]
     ApplicationSRT,
 
