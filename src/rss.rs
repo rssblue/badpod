@@ -9,7 +9,7 @@ use crate::mimetype;
 use crate::time;
 
 #[derive(Debug, Deserialize, PartialEq, Default)]
-pub struct Feed {
+pub struct XML {
     pub rss: RSS,
 }
 

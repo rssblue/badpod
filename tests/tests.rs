@@ -3,7 +3,7 @@ use parse_rss::*;
 
 #[test]
 fn deserialize() {
-    let feed = parse_rss::from_str(
+    let rss = parse_rss::from_str(
         r#"
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:podcast="https://podcastindex.org/namespace/1.0" xmlns:unknownNS="https://example.com">
@@ -70,180 +70,174 @@ fn deserialize() {
             .unwrap();
 
     pretty_assertions::assert_eq!(
-        feed,
-        Feed {
-            rss: RSS {
-                version: Some("2.0".to_string()),
-                channel: Some(Channel {
-                    copyright: Some("© Example Company".to_string()),
-                    description: Some(
-                        "<p><strong>Example HTML description</strong></p>".to_string()
-                    ),
-                    language: Some(Language::EnglishUnitedStates),
-                    link: Some("https://example.com".to_string()),
-                    title: Some("Example Podcast".to_string()),
-                    content_encoded: Some(
-                        "<p><strong>Example HTML description</strong></p>".to_string()
-                    ),
-                    itunes_author: Some("Jane Doe".to_string()),
-                    itunes_block: Some(itunes::Yes::Yes),
-                    itunes_complete: Some(itunes::Yes::Other("No".to_string())),
-                    itunes_categories: vec! {itunes::Category{
-                        text: Some(itunes::CategoryName::SocietyAndCulture),
-                        subcategory: Some(itunes::Subcategory{
-                            text: Some(itunes::SubcategoryName::Documentary),
-                        }),
-                    }},
-                    itunes_explicit: Some(Bool::Bool(false)),
-                    itunes_owner: Some(itunes::Owner {
-                        email: Some("jane@example.com".to_string()),
-                        name: Some("Jane Doe".to_string()),
+        rss,
+        RSS {
+            version: Some("2.0".to_string()),
+            channel: Some(Channel {
+                copyright: Some("© Example Company".to_string()),
+                description: Some("<p><strong>Example HTML description</strong></p>".to_string()),
+                language: Some(Language::EnglishUnitedStates),
+                link: Some("https://example.com".to_string()),
+                title: Some("Example Podcast".to_string()),
+                content_encoded: Some(
+                    "<p><strong>Example HTML description</strong></p>".to_string()
+                ),
+                itunes_author: Some("Jane Doe".to_string()),
+                itunes_block: Some(itunes::Yes::Yes),
+                itunes_complete: Some(itunes::Yes::Other("No".to_string())),
+                itunes_categories: vec! {itunes::Category{
+                    text: Some(itunes::CategoryName::SocietyAndCulture),
+                    subcategory: Some(itunes::Subcategory{
+                        text: Some(itunes::SubcategoryName::Documentary),
                     }),
-                    itunes_type: Some(itunes::PodcastType::Serial),
-                    podcast_locked: Some(podcast::Locked {
-                        owner: None,
-                        value: Some(Bool::Bool(false)),
+                }},
+                itunes_explicit: Some(Bool::Bool(false)),
+                itunes_owner: Some(itunes::Owner {
+                    email: Some("jane@example.com".to_string()),
+                    name: Some("Jane Doe".to_string()),
+                }),
+                itunes_type: Some(itunes::PodcastType::Serial),
+                podcast_locked: Some(podcast::Locked {
+                    owner: None,
+                    value: Some(Bool::Bool(false)),
+                }),
+                podcast_fundings: vec! {
+                    podcast::Funding{
+                        url: Some("https://www.example.com/donations".to_string()),
+                        value: Some("Support the show!".to_string()),
+                    },
+                    podcast::Funding{
+                        url: Some("https://www.example.com/members".to_string()),
+                        value: Some("Become a member!".to_string()),
+                    },
+                },
+                podcast_persons: vec! {
+                    podcast::Person{
+                        href: Some("https://example.com/johnsmith/blog".to_string()),
+                        img: Some("http://example.com/images/johnsmith.jpg".to_string()),
+                        value: Some("John Smith".to_string()),
+                        ..Default::default()
+                    },
+                    podcast::Person{
+                        role: Some(podcast::PersonRole::Guest),
+                        href: Some("https://www.imdb.com/name/nm0427852888/".to_string()),
+                        img: Some("http://example.com/images/janedoe.jpg".to_string()),
+                        value: Some("Jane Doe".to_string()),
+                        ..Default::default()
+                    },
+                },
+                podcast_location: Some(podcast::Location {
+                    geo: Some(podcast::Geo::Geo(podcast::GeoCoordinates {
+                        latitude: 33.51601,
+                        longitude: -86.81455,
+                        altitude: None,
+                        uncertainty: None
+                    })),
+                    osm: Some(podcast::OSM::OSM(podcast::OSMObject {
+                        type_: podcast::OSMType::Relation,
+                        id: 6930627,
+                        revision: None,
+                    })),
+                    value: Some("Birmingham Civil Rights Museum".to_string()),
+                }),
+                podcast_trailers: vec! {
+                    podcast::Trailer{
+                        pub_date: Some(parse_rss::DateTime::Rfc2822(chrono::FixedOffset::west(5*60*60).ymd(2021, 4, 1).and_hms(8, 0, 0))),
+                        url: Some("https://example.org/trailers/teaser".to_string()),
+                        length: Some(Integer::Integer(12345678)),
+                        type_: Some(mimetype::Enclosure::MP3),
+                        season: None,
+                        value: Some("Coming April 1st, 2021".to_string()),
+                    },
+                },
+                podcast_license: Some(podcast::License {
+                    url: None,
+                    value: Some(podcast::LicenseType::CreativeCommonsAttribution4_0International),
+                }),
+                items: vec! {
+                Item{
+                    title: Some("Example Episode".to_string()),
+                    enclosure: Some(Enclosure{
+                        url: Some("http://example.com/episode-1.mp3".to_string()),
+                        length: Some(100200),
+                        type_: Some(mimetype::Enclosure::MP3),
                     }),
-                    podcast_fundings: vec! {
-                        podcast::Funding{
-                            url: Some("https://www.example.com/donations".to_string()),
-                            value: Some("Support the show!".to_string()),
+                    itunes_duration: Some(Number::Integer(1079)),
+                    itunes_explicit: Some(Bool::Bool(true)),
+                    pub_date: Some(parse_rss::DateTime::Rfc2822(chrono::FixedOffset::west(5).ymd(2022, 10, 10).and_hms(6, 10, 0))),
+
+                    podcast_chapters: Some(podcast::Chapters{
+                        url: Some("https://example.com/episode-1/chapters.json".to_string()),
+                        type_: Some(podcast::ChaptersType::ApplicationJSONChapters),
+                    }),
+                    podcast_soundbites: vec! {
+                        podcast::Soundbite{
+                            start_time: Some(Float::Float(73.0)),
+                            duration: Some(Float::Float(60.0)),
+                            value: None,
                         },
-                        podcast::Funding{
-                            url: Some("https://www.example.com/members".to_string()),
-                            value: Some("Become a member!".to_string()),
+                        podcast::Soundbite{
+                            start_time: Some(Float::Float(1234.5)),
+                            duration: Some(Float::Other("-42.25".to_string())),
+                            value: Some("Why the Podcast Namespace Matters".to_string()),
                         },
                     },
+                    itunes_type: Some(itunes::EpisodeType::Full),
                     podcast_persons: vec! {
                         podcast::Person{
-                            href: Some("https://example.com/johnsmith/blog".to_string()),
-                            img: Some("http://example.com/images/johnsmith.jpg".to_string()),
-                            value: Some("John Smith".to_string()),
+                            role: Some(podcast::PersonRole::Guest),
+                            href: Some("https://www.wikipedia/alicebrown".to_string()),
+                            img: Some("http://example.com/images/alicebrown.jpg".to_string()),
+                            value: Some("Alice Brown".to_string()),
                             ..Default::default()
                         },
                         podcast::Person{
+                            group: Some(podcast::PersonGroup::Writing),
                             role: Some(podcast::PersonRole::Guest),
-                            href: Some("https://www.imdb.com/name/nm0427852888/".to_string()),
-                            img: Some("http://example.com/images/janedoe.jpg".to_string()),
-                            value: Some("Jane Doe".to_string()),
+                            href: Some("https://www.wikipedia/alicebrown".to_string()),
+                            img: Some("http://example.com/images/alicebrown.jpg".to_string()),
+                            value: Some("Alice Brown".to_string()),
+                        },
+                        podcast::Person{
+                            group: Some(podcast::PersonGroup::Other("non-existent group".to_string())),
+                            role: Some(podcast::PersonRole::Other("Non-existent role".to_string())),
+                            href: Some("https://example.com/artist/beckysmith".to_string()),
+                            value: Some("Becky Smith".to_string()),
                             ..Default::default()
                         },
                     },
                     podcast_location: Some(podcast::Location {
-                        geo: Some(podcast::Geo::Geo(podcast::GeoCoordinates {
-                            latitude: 33.51601,
-                            longitude: -86.81455,
-                            altitude: None,
-                            uncertainty: None
-                        })),
+                        geo: Some(podcast::Geo::Other("GEO:-27.86159,153.3169".to_string())),
                         osm: Some(podcast::OSM::OSM(podcast::OSMObject {
-                            type_: podcast::OSMType::Relation,
-                            id: 6930627,
+                            type_: podcast::OSMType::Way,
+                            id: 43678282,
                             revision: None,
                         })),
-                        value: Some("Birmingham Civil Rights Museum".to_string()),
+                        value: Some("Dreamworld (Queensland)".to_string()),
                     }),
-                    podcast_trailers: vec! {
-                        podcast::Trailer{
-                            pub_date: Some(parse_rss::DateTime::Rfc2822(chrono::FixedOffset::west(5*60*60).ymd(2021, 4, 1).and_hms(8, 0, 0))),
-                            url: Some("https://example.org/trailers/teaser".to_string()),
-                            length: Some(Integer::Integer(12345678)),
-                            type_: Some(mimetype::Enclosure::MP3),
-                            season: None,
-                            value: Some("Coming April 1st, 2021".to_string()),
+                    podcast_season: Some(podcast::Season{
+                        name: Some("Egyptology: The 19th Century".to_string()),
+                        value: Some(Integer::Integer(1)),
+                    }),
+                    podcast_episode: Some(podcast::Episode{
+                        display: Some("Ch.3".to_string()),
+                        value: Some(Number::Integer(204)),
+                    }),
+                    itunes_episode: Some(Integer::Integer(204)),
+                    itunes_season: Some(Integer::Other("Season 1".to_string())),
+                    podcast_transcripts: vec! {
+                        podcast::Transcript{
+                            url: Some("https://example.com/episode1/transcript.json".to_string()),
+                            type_: Some(mimetype::Transcript::JSON),
+                            language: Some(Language::Spanish),
+                            rel: Some(podcast::TranscriptRel::Captions),
                         },
                     },
-                    podcast_license: Some(podcast::License {
-                        url: None,
-                        value: Some(
-                            podcast::LicenseType::CreativeCommonsAttribution4_0International
-                        ),
-                    }),
-                    items: vec! {
-                    Item{
-                        title: Some("Example Episode".to_string()),
-                        enclosure: Some(Enclosure{
-                            url: Some("http://example.com/episode-1.mp3".to_string()),
-                            length: Some(100200),
-                            type_: Some(mimetype::Enclosure::MP3),
-                        }),
-                        itunes_duration: Some(Number::Integer(1079)),
-                        itunes_explicit: Some(Bool::Bool(true)),
-                        pub_date: Some(parse_rss::DateTime::Rfc2822(chrono::FixedOffset::west(5).ymd(2022, 10, 10).and_hms(6, 10, 0))),
-
-                        podcast_chapters: Some(podcast::Chapters{
-                            url: Some("https://example.com/episode-1/chapters.json".to_string()),
-                            type_: Some(podcast::ChaptersType::ApplicationJSONChapters),
-                        }),
-                        podcast_soundbites: vec! {
-                            podcast::Soundbite{
-                                start_time: Some(Float::Float(73.0)),
-                                duration: Some(Float::Float(60.0)),
-                                value: None,
-                            },
-                            podcast::Soundbite{
-                                start_time: Some(Float::Float(1234.5)),
-                                duration: Some(Float::Other("-42.25".to_string())),
-                                value: Some("Why the Podcast Namespace Matters".to_string()),
-                            },
-                        },
-                        itunes_type: Some(itunes::EpisodeType::Full),
-                        podcast_persons: vec! {
-                            podcast::Person{
-                                role: Some(podcast::PersonRole::Guest),
-                                href: Some("https://www.wikipedia/alicebrown".to_string()),
-                                img: Some("http://example.com/images/alicebrown.jpg".to_string()),
-                                value: Some("Alice Brown".to_string()),
-                                ..Default::default()
-                            },
-                            podcast::Person{
-                                group: Some(podcast::PersonGroup::Writing),
-                                role: Some(podcast::PersonRole::Guest),
-                                href: Some("https://www.wikipedia/alicebrown".to_string()),
-                                img: Some("http://example.com/images/alicebrown.jpg".to_string()),
-                                value: Some("Alice Brown".to_string()),
-                            },
-                            podcast::Person{
-                                group: Some(podcast::PersonGroup::Other("non-existent group".to_string())),
-                                role: Some(podcast::PersonRole::Other("Non-existent role".to_string())),
-                                href: Some("https://example.com/artist/beckysmith".to_string()),
-                                value: Some("Becky Smith".to_string()),
-                                ..Default::default()
-                            },
-                        },
-                        podcast_location: Some(podcast::Location {
-                            geo: Some(podcast::Geo::Other("GEO:-27.86159,153.3169".to_string())),
-                            osm: Some(podcast::OSM::OSM(podcast::OSMObject {
-                                type_: podcast::OSMType::Way,
-                                id: 43678282,
-                                revision: None,
-                            })),
-                            value: Some("Dreamworld (Queensland)".to_string()),
-                        }),
-                        podcast_season: Some(podcast::Season{
-                            name: Some("Egyptology: The 19th Century".to_string()),
-                            value: Some(Integer::Integer(1)),
-                        }),
-                        podcast_episode: Some(podcast::Episode{
-                            display: Some("Ch.3".to_string()),
-                            value: Some(Number::Integer(204)),
-                        }),
-                        itunes_episode: Some(Integer::Integer(204)),
-                        itunes_season: Some(Integer::Other("Season 1".to_string())),
-                        podcast_transcripts: vec! {
-                            podcast::Transcript{
-                                url: Some("https://example.com/episode1/transcript.json".to_string()),
-                                type_: Some(mimetype::Transcript::JSON),
-                                language: Some(Language::Spanish),
-                                rel: Some(podcast::TranscriptRel::Captions),
-                            },
-                        },
-                        itunes_block: Some(itunes::Yes::Other("yes".to_string())),
-                        ..Default::default()
-                    }},
+                    itunes_block: Some(itunes::Yes::Other("yes".to_string())),
                     ..Default::default()
-                }),
-            }
+                }},
+                ..Default::default()
+            }),
         }
     );
 }
