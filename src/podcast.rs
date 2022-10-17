@@ -32,6 +32,9 @@ pub use medium::Medium;
 mod value;
 pub use value::{ValueMethod, ValueRecipientType, ValueType};
 
+mod image;
+pub use image::{Image, Images};
+
 #[derive(Debug, Deserialize, PartialEq, Default)]
 pub struct Transcript {
     #[serde(rename = "$attr:url")]

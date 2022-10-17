@@ -53,6 +53,11 @@ fn deserialize() {
         />
     </podcast:value>
     <podcast:medium>music</podcast:medium>
+    <podcast:images
+        srcset="https://example.com/images/ep1/pci_avatar-massive.jpg 1500w,
+                https://example.com/images/ep1/pci_avatar-middle.jpg 6o0w,
+                https://example.com/images/ep1/pci_avatar-small.jpg 300w"
+    />
     <item>
       <enclosure
        url="http://example.com/episode-1.mp3" 
@@ -206,6 +211,13 @@ fn deserialize() {
                     },
                 }),
                 podcast_medium: Some(podcast::Medium::Music),
+                podcast_images: Some(podcast::Images {
+                    srcset: vec! {
+                        podcast::Image::Ok("https://example.com/images/ep1/pci_avatar-massive.jpg".to_string(), 1500),
+                        podcast::Image::Other("https://example.com/images/ep1/pci_avatar-middle.jpg 6o0w".to_string()),
+                        podcast::Image::Ok("https://example.com/images/ep1/pci_avatar-small.jpg".to_string(), 300),
+                    },
+                }),
                 items: vec! {
                 Item{
                     title: Some("Example Episode".to_string()),

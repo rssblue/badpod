@@ -102,6 +102,11 @@ pub struct Channel {
         default
     )]
     pub podcast_medium: Option<podcast::Medium>,
+    #[serde(
+        rename = "{https://podcastindex.org/namespace/1.0}podcast:images",
+        default
+    )]
+    pub podcast_images: Option<podcast::Images>,
 
     #[serde(rename = "item", default)]
     pub items: Vec<Item>,
@@ -191,6 +196,11 @@ pub struct Item {
         default
     )]
     pub podcast_value: Option<podcast::Value>,
+    #[serde(
+        rename = "{https://podcastindex.org/namespace/1.0}podcast:images",
+        default
+    )]
+    pub podcast_images: Option<podcast::Images>,
 }
 
 #[derive(Debug, Deserialize, PartialEq, Default)]
