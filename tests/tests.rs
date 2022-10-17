@@ -1,9 +1,9 @@
-use super::*;
 use chrono::prelude::*;
+use parse_rss::*;
 
 #[test]
-fn deserialize_element_into_struct() {
-    let feed = xml_serde::from_str::<super::Feed>(
+fn deserialize() {
+    let feed = xml_serde::from_str::<Feed>(
         r#"
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:podcast="https://podcastindex.org/namespace/1.0" xmlns:unknownNS="https://example.com">
@@ -145,7 +145,7 @@ fn deserialize_element_into_struct() {
                     }),
                     podcast_trailers: vec! {
                         podcast::Trailer{
-                            pub_date: Some(time::DateTime::Rfc2822(chrono::FixedOffset::west(5*60*60).ymd(2021, 4, 1).and_hms(8, 0, 0))),
+                            pub_date: Some(parse_rss::DateTime::Rfc2822(chrono::FixedOffset::west(5*60*60).ymd(2021, 4, 1).and_hms(8, 0, 0))),
                             url: Some("https://example.org/trailers/teaser".to_string()),
                             length: Some(Integer::Integer(12345678)),
                             type_: Some(mimetype::Enclosure::MP3),
@@ -169,7 +169,7 @@ fn deserialize_element_into_struct() {
                         }),
                         itunes_duration: Some(Number::Integer(1079)),
                         itunes_explicit: Some(Bool::Bool(true)),
-                        pub_date: Some(time::DateTime::Rfc2822(chrono::FixedOffset::west(5).ymd(2022, 10, 10).and_hms(6, 10, 0))),
+                        pub_date: Some(parse_rss::DateTime::Rfc2822(chrono::FixedOffset::west(5).ymd(2022, 10, 10).and_hms(6, 10, 0))),
 
                         podcast_chapters: Some(podcast::Chapters{
                             url: Some("https://example.com/episode-1/chapters.json".to_string()),

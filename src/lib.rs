@@ -12,9 +12,6 @@ pub use crate::basic::{Bool, Float, Integer, Number};
 pub use crate::language::Language;
 pub use crate::time::DateTime;
 
-#[cfg(test)]
-mod test;
-
 #[derive(Debug, Deserialize, PartialEq, Default)]
 pub struct Feed {
     pub rss: RSS,
