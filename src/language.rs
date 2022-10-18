@@ -2,8 +2,10 @@ use serde::{Deserialize, Deserializer};
 use std::str::FromStr;
 use strum_macros::{Display, EnumString};
 
-// Language codes taken from <https://www.rssboard.org/rss-language-codes> and
-// <https://www.loc.gov/standards/iso639-2/php/code_list.php>.
+/// Used for deserializing timestamps.
+///
+/// Language codes taken from <https://www.rssboard.org/rss-language-codes> and
+/// <https://www.loc.gov/standards/iso639-2/php/code_list.php>.
 #[derive(Debug, PartialEq, Eq, EnumString, Display)]
 pub enum Language {
     #[strum(serialize = "aa")]

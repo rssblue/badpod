@@ -1,5 +1,6 @@
 use serde::{Deserialize, Deserializer};
 
+/// Used for deserializing combined dates and times.
 #[derive(Debug, PartialEq)]
 pub enum DateTime {
     Ok(chrono::DateTime<chrono::FixedOffset>),

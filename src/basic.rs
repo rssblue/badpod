@@ -1,5 +1,6 @@
 use serde::{Deserialize, Deserializer};
 
+/// Used for deserializing boolean values.
 #[derive(Debug, PartialEq, Eq)]
 pub enum Bool {
     Ok(bool),
@@ -36,6 +37,7 @@ where
     }
 }
 
+/// Used for deserializing integer values.
 #[derive(Debug, PartialEq, Eq)]
 pub enum Integer {
     Ok(i64),
@@ -96,6 +98,7 @@ where
     }
 }
 
+/// Used for deserializing floating-point values.
 #[derive(Debug, PartialEq)]
 pub enum Float {
     Ok(f64),
@@ -136,7 +139,9 @@ where
     }
 }
 
-// Tries to convert to integer if possible, float otherwise.
+/// Used for deserializing values that could be either integers or floats.
+///
+/// Preference is given to the *former*.
 #[derive(Debug, PartialEq)]
 pub enum Number {
     Integer(i64),
