@@ -121,9 +121,9 @@ pub struct Person {
 
 #[derive(Debug, Deserialize, PartialEq, Default)]
 pub struct Location {
-    #[serde(rename = "$attr:geo", deserialize_with = "location::option_geo")]
+    #[serde(rename = "$attr:geo")]
     pub geo: Option<Geo>,
-    #[serde(rename = "$attr:osm", deserialize_with = "location::option_osm")]
+    #[serde(rename = "$attr:osm")]
     pub osm: Option<OSM>,
     #[serde(rename = "$value")]
     pub value: Option<String>,

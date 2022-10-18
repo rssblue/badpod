@@ -10,22 +10,21 @@ pub struct GeoCoordinates {
 
 #[derive(Debug, PartialEq)]
 pub enum Geo {
-    Geo(GeoCoordinates),
+    Ok(GeoCoordinates),
     Other(String),
 }
 
-pub fn option_geo<'de, D>(deserializer: D) -> Result<Option<Geo>, D::Error>
-where
-    D: Deserializer<'de>,
-{
-    let s = match String::deserialize(deserializer) {
-        Ok(s) => s,
-        Err(e) => return Err(e),
-    };
+impl<'de> Deserialize<'de> for Geo {
+    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+        let s = match String::deserialize(d) {
+            Ok(s) => s,
+            Err(e) => return Err(e),
+        };
 
-    match parse_geo(s.clone()) {
-        Ok(geo_coordinates) => Ok(Some(Geo::Geo(geo_coordinates))),
-        Err(_) => Ok(Some(Geo::Other(s))),
+        match parse_geo(s.clone()) {
+            Ok(geo_coordinates) => Ok(Geo::Ok(geo_coordinates)),
+            Err(_) => Ok(Geo::Other(s)),
+        }
     }
 }
 
@@ -125,27 +124,26 @@ pub struct OSMObject {
 
 #[derive(Debug, PartialEq)]
 pub enum OSM {
-    OSM(OSMObject),
+    Ok(OSMObject),
     Other(String),
 }
 
-pub fn option_osm<'de, D>(deserializer: D) -> Result<Option<OSM>, D::Error>
-where
-    D: Deserializer<'de>,
-{
-    let s = match String::deserialize(deserializer) {
-        Ok(s) => s,
-        Err(e) => return Err(e),
-    };
+impl<'de> Deserialize<'de> for OSM {
+    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+        let s = match String::deserialize(d) {
+            Ok(s) => s,
+            Err(e) => return Err(e),
+        };
 
-    match parse_osm(s.clone()) {
-        Ok(osm_coordinates) => Ok(Some(OSM::OSM(osm_coordinates))),
-        Err(_) => Ok(Some(OSM::Other(s))),
+        match parse_osm(s.clone()) {
+            Ok(osm_coordinates) => Ok(OSM::Ok(osm_coordinates)),
+            Err(_) => Ok(OSM::Other(s)),
+        }
     }
 }
 
 fn parse_osm(s: String) -> Result<OSMObject, String> {
-    let has_revision = s.matches("#").count() > 0;
+    let has_revision = s.matches('#').count() > 0;
 
     let pattern = {
         if has_revision {
