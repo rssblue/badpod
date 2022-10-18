@@ -109,26 +109,26 @@ fn parse_geo(s: String) -> Result<GeoCoordinates, String> {
 }
 
 #[derive(Debug, PartialEq)]
-pub enum OSMType {
+pub enum OsmType {
     Node,
     Way,
     Relation,
 }
 
 #[derive(Debug, PartialEq)]
-pub struct OSMObject {
-    pub type_: OSMType,
+pub struct OsmObject {
+    pub type_: OsmType,
     pub id: u64,
     pub revision: Option<u64>,
 }
 
 #[derive(Debug, PartialEq)]
-pub enum OSM {
-    Ok(OSMObject),
+pub enum Osm {
+    Ok(OsmObject),
     Other(String),
 }
 
-impl<'de> Deserialize<'de> for OSM {
+impl<'de> Deserialize<'de> for Osm {
     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
         let s = match String::deserialize(d) {
             Ok(s) => s,
@@ -136,13 +136,13 @@ impl<'de> Deserialize<'de> for OSM {
         };
 
         match parse_osm(s.clone()) {
-            Ok(osm_coordinates) => Ok(OSM::Ok(osm_coordinates)),
-            Err(_) => Ok(OSM::Other(s)),
+            Ok(osm_coordinates) => Ok(Osm::Ok(osm_coordinates)),
+            Err(_) => Ok(Osm::Other(s)),
         }
     }
 }
 
-fn parse_osm(s: String) -> Result<OSMObject, String> {
+fn parse_osm(s: String) -> Result<OsmObject, String> {
     let has_revision = s.matches('#').count() > 0;
 
     let pattern = {
@@ -163,9 +163,9 @@ fn parse_osm(s: String) -> Result<OSMObject, String> {
     };
 
     let type_ = match &caps["type_"] {
-        "N" => OSMType::Node,
-        "W" => OSMType::Way,
-        "R" => OSMType::Relation,
+        "N" => OsmType::Node,
+        "W" => OsmType::Way,
+        "R" => OsmType::Relation,
         _ => return Err("something went wrong".to_string()),
     };
 
@@ -182,7 +182,7 @@ fn parse_osm(s: String) -> Result<OSMObject, String> {
         };
     }
 
-    Ok(OSMObject {
+    Ok(OsmObject {
         type_: type_,
         id: id,
         revision: revision,
@@ -245,8 +245,8 @@ mod tests {
     fn test_parse_osm() {
         pretty_assertions::assert_eq!(
             parse_osm("R148838".to_string()),
-            Ok(OSMObject {
-                type_: OSMType::Relation,
+            Ok(OsmObject {
+                type_: OsmType::Relation,
                 id: 148838,
                 revision: None,
             })
@@ -254,8 +254,8 @@ mod tests {
 
         pretty_assertions::assert_eq!(
             parse_osm("W5013364".to_string()),
-            Ok(OSMObject {
-                type_: OSMType::Way,
+            Ok(OsmObject {
+                type_: OsmType::Way,
                 id: 5013364,
                 revision: None,
             })
@@ -263,8 +263,8 @@ mod tests {
 
         pretty_assertions::assert_eq!(
             parse_osm("R7444#188".to_string()),
-            Ok(OSMObject {
-                type_: OSMType::Relation,
+            Ok(OsmObject {
+                type_: OsmType::Relation,
                 id: 7444,
                 revision: Some(188),
             })

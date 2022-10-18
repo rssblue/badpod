@@ -6,9 +6,9 @@ use strum_macros::{Display, EnumString};
 #[derive(Debug, PartialEq, Eq, EnumString, Display)]
 pub enum IntegrityType {
     #[strum(serialize = "sri")]
-    SRI,
+    Sri,
     #[strum(serialize = "pgp-signature")]
-    PGP,
+    Pgp,
 
     #[strum(disabled)]
     Other(String),

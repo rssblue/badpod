@@ -28,7 +28,7 @@ pub enum CategoryName {
     #[strum(serialize = "True Crime")]
     TrueCrime,
     #[strum(serialize = "TV & Film")]
-    TVAndFilm,
+    TvAndFilm,
 
     #[strum(disabled)]
     Other(String),
@@ -180,7 +180,7 @@ pub enum SubcategoryName {
     #[strum(serialize = "Film Reviews")]
     FilmReviews,
     #[strum(serialize = "TV Reviews")]
-    TVReviews,
+    TvReviews,
 
     #[strum(disabled)]
     Other(String),

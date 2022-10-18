@@ -5,9 +5,9 @@ use strum_macros::{Display, EnumString};
 #[derive(Debug, PartialEq, Eq, EnumString, Display)]
 pub enum ChaptersType {
     #[strum(serialize = "application/json+chapters")]
-    ApplicationJSONChapters,
+    ApplicationJsonChapters,
     #[strum(serialize = "application/json")]
-    ApplicationJSON,
+    ApplicationJson,
 
     #[strum(disabled)]
     Other(String),

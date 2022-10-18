@@ -8,8 +8,8 @@ pub enum ValueType {
     Bitcoin,
     #[strum(serialize = "lightning")]
     Lightning,
-    #[strum(serialize = "keysend")]
-    AMP,
+    #[strum(serialize = "amp")]
+    Amp,
 
     #[strum(disabled)]
     Other(String),
@@ -28,7 +28,6 @@ impl<'de> Deserialize<'de> for ValueType {
         }
     }
 }
-
 
 #[derive(Debug, PartialEq, Eq, EnumString, Display)]
 pub enum ValueMethod {

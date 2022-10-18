@@ -113,7 +113,7 @@ fn deserialize() {
 
     pretty_assertions::assert_eq!(
         rss,
-        RSS {
+        Rss {
             version: Some("2.0".to_string()),
             channel: Some(Channel {
                 copyright: Some("© Example Company".to_string()),
@@ -189,8 +189,8 @@ fn deserialize() {
                         altitude: None,
                         uncertainty: None
                     })),
-                    osm: Some(podcast::OSM::Ok(podcast::OSMObject {
-                        type_: podcast::OSMType::Relation,
+                    osm: Some(podcast::Osm::Ok(podcast::OsmObject {
+                        type_: podcast::OsmType::Relation,
                         id: 6930627,
                         revision: None,
                     })),
@@ -201,7 +201,7 @@ fn deserialize() {
                         pub_date: Some(parse_rss::DateTime::Ok(chrono::FixedOffset::west(5*60*60).ymd(2021, 4, 1).and_hms(8, 0, 0))),
                         url: Some("https://example.org/trailers/teaser".to_string()),
                         length: Some(Integer::Ok(12345678)),
-                        type_: Some(mimetype::Enclosure::MP3),
+                        type_: Some(mimetype::Enclosure::Mp3),
                         season: None,
                         value: Some("Coming April 1st, 2021".to_string()),
                     },
@@ -210,7 +210,7 @@ fn deserialize() {
                     url: None,
                     value: Some(podcast::LicenseType::CreativeCommonsAttribution4_0International),
                 }),
-                podcast_guid: Some(podcast::GUID::Ok(
+                podcast_guid: Some(podcast::Guid::Ok(
                     "917393e3-1b1e-5cef-ace4-edaa54e1f810".to_string()
                 )),
                 podcast_value: Some(podcast::Value {
@@ -248,7 +248,7 @@ fn deserialize() {
                     enclosure: Some(Enclosure{
                         url: Some("http://example.com/episode-1.mp3".to_string()),
                         length: Some(Integer::Ok(100200)),
-                        type_: Some(mimetype::Enclosure::MP3),
+                        type_: Some(mimetype::Enclosure::Mp3),
                     }),
                     itunes_duration: Some(Number::Integer(1079)),
                     itunes_explicit: Some(Bool::Ok(true)),
@@ -256,7 +256,7 @@ fn deserialize() {
 
                     podcast_chapters: Some(podcast::Chapters{
                         url: Some("https://example.com/episode-1/chapters.json".to_string()),
-                        type_: Some(podcast::ChaptersType::ApplicationJSONChapters),
+                        type_: Some(podcast::ChaptersType::ApplicationJsonChapters),
                     }),
                     podcast_soundbites: vec! {
                         podcast::Soundbite{
@@ -296,8 +296,8 @@ fn deserialize() {
                     },
                     podcast_location: Some(podcast::Location {
                         geo: Some(podcast::Geo::Other("GEO:-27.86159,153.3169".to_string())),
-                        osm: Some(podcast::OSM::Ok(podcast::OSMObject {
-                            type_: podcast::OSMType::Way,
+                        osm: Some(podcast::Osm::Ok(podcast::OsmObject {
+                            type_: podcast::OsmType::Way,
                             id: 43678282,
                             revision: None,
                         })),
@@ -316,7 +316,7 @@ fn deserialize() {
                     podcast_transcripts: vec! {
                         podcast::Transcript{
                             url: Some("https://example.com/episode1/transcript.json".to_string()),
-                            type_: Some(mimetype::Transcript::JSON),
+                            type_: Some(mimetype::Transcript::Json),
                             language: Some(Language::Spanish),
                             rel: Some(podcast::TranscriptRel::Captions),
                         },
@@ -324,7 +324,7 @@ fn deserialize() {
                     itunes_block: Some(itunes::Yes::Other("yes".to_string())),
                     podcast_alternate_enclosures: vec!{
                         podcast::AlternateEnclosure{
-                            type_: Some(mimetype::Enclosure::MP3),
+                            type_: Some(mimetype::Enclosure::Mp3),
                             length: Some(Integer::Ok(2490970)),
                             bit_rate: Some(Float::Ok(160707.74)),
                             podcast_sources: vec!{
@@ -348,7 +348,7 @@ fn deserialize() {
                             ..Default::default()
                         },
                         podcast::AlternateEnclosure{
-                            type_: Some(mimetype::Enclosure::MP4),
+                            type_: Some(mimetype::Enclosure::Mp4),
                             length: Some(Integer::Ok(10562995)),
                             bit_rate: Some(Float::Ok(681483.55)),
                             height: Some(Integer::Ok(1080)),
@@ -383,14 +383,14 @@ fn deserialize() {
                         start: Some(parse_rss::DateTime::Ok(chrono::FixedOffset::west(6*60*60).ymd(2021, 9, 26).and_hms(7, 30, 0))),
                         end: Some(parse_rss::DateTime::Ok(chrono::FixedOffset::west(6*60*60).ymd(2021, 9, 26).and_hms(9, 30, 0))),
                         title: Some("Podcasting 2.0 Live Stream".to_string()),
-                        guid: Some(GUID{
+                        guid: Some(Guid{
                             is_permalink: None,
                             value: Some("e32b4890-983b-4ce5-8b46-f2d6bc1d8819".to_string()),
                         }),
                         enclosure: Some(Enclosure{
                             url: Some("https://example.com/pc20/livestream?format=.mp3".to_string()),
                             length: Some(Integer::Ok(312)),
-                            type_: Some(mimetype::Enclosure::MP3),
+                            type_: Some(mimetype::Enclosure::Mp3),
                         }),
                         content_links: vec!{
                             podcast::ContentLink{

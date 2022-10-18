@@ -9,12 +9,12 @@ use crate::mimetype;
 use crate::time;
 
 #[derive(Debug, Deserialize, PartialEq, Default)]
-pub struct XML {
-    pub rss: RSS,
+pub struct Xml {
+    pub rss: Rss,
 }
 
 #[derive(Debug, Deserialize, PartialEq, Default)]
-pub struct RSS {
+pub struct Rss {
     #[serde(rename = "$attr:version")]
     pub version: Option<String>,
 
@@ -91,7 +91,7 @@ pub struct Channel {
         rename = "{https://podcastindex.org/namespace/1.0}podcast:guid",
         default
     )]
-    pub podcast_guid: Option<podcast::GUID>,
+    pub podcast_guid: Option<podcast::Guid>,
     #[serde(
         rename = "{https://podcastindex.org/namespace/1.0}podcast:value",
         default
@@ -125,7 +125,7 @@ pub struct Item {
     pub link: Option<String>,
     pub title: Option<String>,
     pub enclosure: Option<Enclosure>,
-    pub guid: Option<GUID>,
+    pub guid: Option<Guid>,
     #[serde(default, rename = "pubDate")]
     pub pub_date: Option<time::DateTime>,
 
@@ -229,7 +229,7 @@ pub struct Enclosure {
 }
 
 #[derive(Debug, Deserialize, PartialEq, Default)]
-pub struct GUID {
+pub struct Guid {
     #[serde(rename = "$attr:isPermaLink")]
     pub is_permalink: Option<basic::Bool>,
     #[serde(rename = "$value")]

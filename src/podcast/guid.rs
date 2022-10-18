@@ -3,12 +3,12 @@ use serde::de::Error;
 use serde::{Deserialize, Deserializer};
 
 #[derive(Debug, PartialEq, Eq)]
-pub enum GUID {
+pub enum Guid {
     Ok(String),
     Other(String),
 }
 
-impl<'de> Deserialize<'de> for GUID {
+impl<'de> Deserialize<'de> for Guid {
     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
         let s = match String::deserialize(d) {
             Ok(s) => s,
@@ -23,9 +23,9 @@ impl<'de> Deserialize<'de> for GUID {
         };
 
         if !re.is_match(s.as_str()) {
-            return Ok(GUID::Other(s));
+            return Ok(Self::Other(s));
         }
 
-        Ok(GUID::Ok(s))
+        Ok(Self::Ok(s))
     }
 }

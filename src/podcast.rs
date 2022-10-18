@@ -16,7 +16,7 @@ mod person;
 pub use person::{PersonGroup, PersonRole};
 
 mod location;
-pub use location::{Geo, GeoCoordinates, OSMObject, OSMType, OSM};
+pub use location::{Geo, GeoCoordinates, Osm, OsmObject, OsmType};
 
 mod license;
 pub use license::LicenseType;
@@ -25,7 +25,7 @@ mod alternate_enclosure;
 pub use alternate_enclosure::IntegrityType;
 
 mod guid;
-pub use guid::GUID;
+pub use guid::Guid;
 
 mod medium;
 pub use medium::Medium;
@@ -124,7 +124,7 @@ pub struct Location {
     #[serde(rename = "$attr:geo")]
     pub geo: Option<Geo>,
     #[serde(rename = "$attr:osm")]
-    pub osm: Option<OSM>,
+    pub osm: Option<Osm>,
     #[serde(rename = "$value")]
     pub value: Option<String>,
 }
@@ -292,7 +292,7 @@ pub struct LiveItem {
     pub link: Option<String>,
     pub title: Option<String>,
     pub enclosure: Option<crate::Enclosure>,
-    pub guid: Option<crate::GUID>,
+    pub guid: Option<crate::Guid>,
     #[serde(default, rename = "pubDate")]
     pub pub_date: Option<DateTime>,
 
