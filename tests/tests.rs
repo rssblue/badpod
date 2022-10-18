@@ -58,6 +58,12 @@ fn deserialize() {
                 https://example.com/images/ep1/pci_avatar-middle.jpg 6o0w,
                 https://example.com/images/ep1/pci_avatar-small.jpg 300w"
     />
+    <podcast:liveItem status="live" start="2021-09-26T07:30:00.000-0600" end="2021-09-26T09:30:00.000-0600">
+        <title>Podcasting 2.0 Live Stream</title>
+        <guid>e32b4890-983b-4ce5-8b46-f2d6bc1d8819</guid>
+        <enclosure url="https://example.com/pc20/livestream?format=.mp3" type="audio/mpeg" length="312" />
+        <podcast:contentLink href="https://example.com/html/livestream">Listen Live!</podcast:contentLink>
+    </podcast:liveItem>
     <item>
       <enclosure
        url="http://example.com/episode-1.mp3" 
@@ -99,11 +105,11 @@ fn deserialize() {
   </channel>
 </rss>
             "#,
-    );
+    ).unwrap();
 
     pretty_assertions::assert_eq!(
         rss,
-        Ok(RSS {
+        RSS {
             version: Some("2.0".to_string()),
             channel: Some(Channel {
                 copyright: Some("© Example Company".to_string()),
@@ -223,12 +229,12 @@ fn deserialize() {
                     title: Some("Example Episode".to_string()),
                     enclosure: Some(Enclosure{
                         url: Some("http://example.com/episode-1.mp3".to_string()),
-                        length: Some(100200),
+                        length: Some(Integer::Ok(100200)),
                         type_: Some(mimetype::Enclosure::MP3),
                     }),
                     itunes_duration: Some(Number::Integer(1079)),
                     itunes_explicit: Some(Bool::Ok(true)),
-                    pub_date: Some(parse_rss::DateTime::Ok(chrono::FixedOffset::west(5).ymd(2022, 10, 10).and_hms(6, 10, 0))),
+                    pub_date: Some(parse_rss::DateTime::Ok(chrono::FixedOffset::west(0).ymd(2022, 10, 10).and_hms(6, 10, 5))),
 
                     podcast_chapters: Some(podcast::Chapters{
                         url: Some("https://example.com/episode-1/chapters.json".to_string()),
@@ -345,8 +351,26 @@ fn deserialize() {
                     }),
                     ..Default::default()
                 }},
+                podcast_live_items: vec! {
+                    podcast::LiveItem{
+                        status: Some(podcast::LiveItemStatus::Live),
+                        start: Some(parse_rss::DateTime::Ok(chrono::FixedOffset::west(6*60*60).ymd(2021, 9, 26).and_hms(7, 30, 0))),
+                        end: Some(parse_rss::DateTime::Ok(chrono::FixedOffset::west(6*60*60).ymd(2021, 9, 26).and_hms(9, 30, 0))),
+                        title: Some("Podcasting 2.0 Live Stream".to_string()),
+                        guid: Some(GUID{
+                            is_permalink: None,
+                            value: Some("e32b4890-983b-4ce5-8b46-f2d6bc1d8819".to_string()),
+                        }),
+                        enclosure: Some(Enclosure{
+                            url: Some("https://example.com/pc20/livestream?format=.mp3".to_string()),
+                            length: Some(Integer::Ok(312)),
+                            type_: Some(mimetype::Enclosure::MP3),
+                        }),
+                        ..Default::default()
+                    },
+                },
                 ..Default::default()
             }),
-        })
+        }
     );
 }

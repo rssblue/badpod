@@ -1,6 +1,7 @@
 use serde::Deserialize;
 
 use crate::basic;
+use crate::itunes;
 use crate::language::Language;
 use crate::mimetype;
 pub use crate::time::DateTime;
@@ -34,6 +35,9 @@ pub use value::{ValueMethod, ValueRecipientType, ValueType};
 
 mod image;
 pub use image::{Image, Images};
+
+mod live_item;
+pub use live_item::LiveItemStatus;
 
 #[derive(Debug, Deserialize, PartialEq, Default)]
 pub struct Transcript {
@@ -274,4 +278,113 @@ pub struct ValueRecipient {
     pub split: Option<basic::Integer>,
     #[serde(rename = "$attr:fee", default)]
     pub fee: Option<basic::Bool>,
+}
+
+#[derive(Debug, Deserialize, PartialEq, Default)]
+pub struct LiveItem {
+    pub description: Option<String>,
+    pub link: Option<String>,
+    pub title: Option<String>,
+    pub enclosure: Option<crate::Enclosure>,
+    pub guid: Option<crate::GUID>,
+    #[serde(default, rename = "pubDate")]
+    pub pub_date: Option<DateTime>,
+
+    #[serde(rename = "$attr:status", default)]
+    pub status: Option<LiveItemStatus>,
+    #[serde(
+        rename = "$attr:start",
+        deserialize_with = "crate::time::option_datetime_iso8601",
+        default
+    )]
+    pub start: Option<DateTime>,
+    #[serde(
+        rename = "$attr:end",
+        deserialize_with = "crate::time::option_datetime_iso8601",
+        default
+    )]
+    pub end: Option<DateTime>,
+
+    #[serde(rename = "{http://purl.org/rss/1.0/modules/content/}content:encoded")]
+    pub content_encoded: Option<String>,
+
+    #[serde(rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:block")]
+    pub itunes_block: Option<itunes::Yes>,
+    #[serde(
+        rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:duration",
+        deserialize_with = "basic::option_number_nonnegative",
+        default
+    )]
+    pub itunes_duration: Option<basic::Number>,
+    #[serde(
+        rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:season",
+        deserialize_with = "basic::option_integer_positive",
+        default
+    )]
+    pub itunes_season: Option<basic::Integer>,
+    #[serde(
+        rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:episode",
+        deserialize_with = "basic::option_integer_positive",
+        default
+    )]
+    pub itunes_episode: Option<basic::Integer>,
+    #[serde(
+        default,
+        rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:explicit"
+    )]
+    pub itunes_explicit: Option<basic::Bool>,
+    #[serde(rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:image")]
+    pub itunes_image: Option<itunes::Image>,
+    #[serde(rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:title")]
+    pub itunes_title: Option<String>,
+    #[serde(rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:episodeType")]
+    pub itunes_type: Option<itunes::EpisodeType>,
+
+    #[serde(
+        rename = "{https://podcastindex.org/namespace/1.0}podcast:transcript",
+        default
+    )]
+    pub podcast_transcripts: Vec<Transcript>,
+    #[serde(rename = "{https://podcastindex.org/namespace/1.0}podcast:chapters")]
+    pub podcast_chapters: Option<Chapters>,
+    #[serde(
+        rename = "{https://podcastindex.org/namespace/1.0}podcast:soundbite",
+        default
+    )]
+    pub podcast_soundbites: Vec<Soundbite>,
+    #[serde(
+        rename = "{https://podcastindex.org/namespace/1.0}podcast:person",
+        default
+    )]
+    pub podcast_persons: Vec<Person>,
+    #[serde(
+        rename = "{https://podcastindex.org/namespace/1.0}podcast:location",
+        default
+    )]
+    pub podcast_location: Option<Location>,
+    #[serde(
+        rename = "{https://podcastindex.org/namespace/1.0}podcast:season",
+        default
+    )]
+    pub podcast_season: Option<Season>,
+    #[serde(
+        rename = "{https://podcastindex.org/namespace/1.0}podcast:episode",
+        default
+    )]
+    pub podcast_episode: Option<Episode>,
+    #[serde(
+        rename = "{https://podcastindex.org/namespace/1.0}podcast:alternateEnclosure",
+        default
+    )]
+    pub podcast_alternate_enclosures: Vec<AlternateEnclosure>,
+    #[serde(
+        rename = "{https://podcastindex.org/namespace/1.0}podcast:value",
+        default
+    )]
+    pub podcast_value: Option<Value>,
+    #[serde(
+        rename = "{https://podcastindex.org/namespace/1.0}podcast:images",
+        default
+    )]
+    pub podcast_images: Option<Images>,
 }

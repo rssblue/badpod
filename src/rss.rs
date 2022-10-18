@@ -107,6 +107,11 @@ pub struct Channel {
         default
     )]
     pub podcast_images: Option<podcast::Images>,
+    #[serde(
+        rename = "{https://podcastindex.org/namespace/1.0}podcast:liveItem",
+        default
+    )]
+    pub podcast_live_items: Vec<podcast::LiveItem>,
 
     #[serde(rename = "item", default)]
     pub items: Vec<Item>,
@@ -129,17 +134,20 @@ pub struct Item {
     pub itunes_block: Option<itunes::Yes>,
     #[serde(
         rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:duration",
-        deserialize_with = "basic::option_number_nonnegative"
+        deserialize_with = "basic::option_number_nonnegative",
+        default
     )]
     pub itunes_duration: Option<basic::Number>,
     #[serde(
         rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:season",
-        deserialize_with = "basic::option_integer_positive"
+        deserialize_with = "basic::option_integer_positive",
+        default
     )]
     pub itunes_season: Option<basic::Integer>,
     #[serde(
         rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:episode",
-        deserialize_with = "basic::option_integer_positive"
+        deserialize_with = "basic::option_integer_positive",
+        default
     )]
     pub itunes_episode: Option<basic::Integer>,
     #[serde(
@@ -208,7 +216,7 @@ pub struct Enclosure {
     #[serde(rename = "$attr:url")]
     pub url: Option<String>,
     #[serde(rename = "$attr:length")]
-    pub length: Option<usize>,
+    pub length: Option<basic::Integer>,
     #[serde(rename = "$attr:type")]
     pub type_: Option<mimetype::Enclosure>,
 }
