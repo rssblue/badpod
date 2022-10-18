@@ -500,7 +500,7 @@ impl<'de> Deserialize<'de> for Language {
             Err(e) => return Err(e),
         };
 
-        match Language::from_str(s.as_str()) {
+        match Language::from_str(s.to_lowercase().as_str()) {
             Ok(x) => Ok(x),
             Err(_) => Ok(Language::Other(s)),
         }

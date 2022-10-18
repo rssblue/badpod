@@ -8,6 +8,19 @@ use crate::language;
 use crate::mimetype;
 use crate::time;
 
+pub fn from_str(feed_str: &str) -> Result<Rss, String> {
+    // TODO: Both namespaces should be supported, but this ugly fix should be improved.
+    let feed_str = &feed_str.replace(
+        "https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md",
+        "https://podcastindex.org/namespace/1.0",
+    );
+
+    match xml_serde::from_str::<Xml>(feed_str) {
+        Ok(feed) => Ok(feed.rss),
+        Err(e) => Err(e.to_string()),
+    }
+}
+
 #[derive(Debug, Deserialize, PartialEq, Default)]
 pub struct Xml {
     pub rss: Rss,
@@ -112,7 +125,10 @@ pub struct Channel {
         default
     )]
     pub podcast_live_items: Vec<podcast::LiveItem>,
-    #[serde(rename = "{https://podcastindex.org/namespace/1.0}podcast:block")]
+    #[serde(
+        rename = "{https://podcastindex.org/namespace/1.0}podcast:block",
+        default
+    )]
     pub podcast_blocks: Vec<podcast::Block>,
 
     #[serde(rename = "item", default)]
