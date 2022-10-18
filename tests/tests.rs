@@ -999,6 +999,12 @@ fn deserialize() {
             }),
         }),
         ),
+        (
+            include_str!("data/empty_feed.xml"),
+            Ok(Rss{
+                ..Default::default()
+            }),
+            ),
     ];
 
     for (input, expected) in conditions {
