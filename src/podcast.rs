@@ -42,6 +42,9 @@ pub use live_item::LiveItemStatus;
 mod social_interact;
 pub use social_interact::SocialProtocol;
 
+mod block;
+pub use block::Service;
+
 #[derive(Debug, Deserialize, PartialEq, Default)]
 pub struct Transcript {
     #[serde(rename = "$attr:url")]
@@ -423,4 +426,12 @@ pub struct SocialInteract {
     pub account_url: Option<String>,
     #[serde(rename = "$attr:priority", default)]
     pub priority: Option<basic::Integer>,
+}
+
+#[derive(Debug, Deserialize, PartialEq, Default)]
+pub struct Block {
+    #[serde(rename = "$attr:id", default)]
+    pub id: Option<Service>,
+    #[serde(rename = "$value", deserialize_with = "basic::option_bool_yn")]
+    pub value: Option<basic::Bool>,
 }

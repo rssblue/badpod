@@ -38,6 +38,9 @@ fn deserialize() {
     <unknown1>val</unknown1>
     <podcast:license>cc-by-4.0</podcast:license>
     <unknown2>val</unknown2>
+    <podcast:block>yes</podcast:block>
+    <podcast:block id="youtube">no</podcast:block>
+    <podcast:block id="amazon">no</podcast:block>
     <podcast:value type="lightning" method="keysend" suggested="0.00000015000">
         <podcast:valueRecipient
             name="Host"
@@ -163,6 +166,20 @@ fn deserialize() {
                         img: Some("http://example.com/images/janedoe.jpg".to_string()),
                         value: Some("Jane Doe".to_string()),
                         ..Default::default()
+                    },
+                },
+                podcast_blocks: vec! {
+                    podcast::Block{
+                        id: None,
+                        value: Some(Bool::Ok(true)),
+                    },
+                    podcast::Block{
+                        id: Some(podcast::Service::YouTube),
+                        value: Some(Bool::Ok(false)),
+                    },
+                    podcast::Block{
+                        id: Some(podcast::Service::Amazon),
+                        value: Some(Bool::Ok(false)),
                     },
                 },
                 podcast_location: Some(podcast::Location {

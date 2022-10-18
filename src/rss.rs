@@ -112,6 +112,8 @@ pub struct Channel {
         default
     )]
     pub podcast_live_items: Vec<podcast::LiveItem>,
+    #[serde(rename = "{https://podcastindex.org/namespace/1.0}podcast:block")]
+    pub podcast_blocks: Vec<podcast::Block>,
 
     #[serde(rename = "item", default)]
     pub items: Vec<Item>,
