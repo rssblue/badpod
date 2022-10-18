@@ -366,6 +366,12 @@ fn deserialize() {
                             length: Some(Integer::Ok(312)),
                             type_: Some(mimetype::Enclosure::MP3),
                         }),
+                        content_links: vec!{
+                            podcast::ContentLink{
+                                href: Some("https://example.com/html/livestream".to_string()),
+                                value: Some("Listen Live!".to_string()),
+                            },
+                        },
                         ..Default::default()
                     },
                 },

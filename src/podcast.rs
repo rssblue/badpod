@@ -387,4 +387,18 @@ pub struct LiveItem {
         default
     )]
     pub podcast_images: Option<Images>,
+
+    #[serde(
+        rename = "{https://podcastindex.org/namespace/1.0}podcast:contentLink",
+        default
+    )]
+    pub content_links: Vec<ContentLink>,
+}
+
+#[derive(Debug, Deserialize, PartialEq, Default)]
+pub struct ContentLink {
+    #[serde(rename = "$attr:href", default)]
+    pub href: Option<String>,
+    #[serde(rename = "$value")]
+    pub value: Option<String>,
 }
