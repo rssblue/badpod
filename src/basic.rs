@@ -31,7 +31,7 @@ where
 
     match s.as_str() {
         "no" => Ok(Some(Bool::Ok(false))),
-        "yes" => Ok(Some(Bool::Ok(false))),
+        "yes" => Ok(Some(Bool::Ok(true))),
         _ => Ok(Some(Bool::Other(s))),
     }
 }
