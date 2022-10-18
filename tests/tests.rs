@@ -101,6 +101,7 @@ fn deserialize() {
       </podcast:alternateEnclosure>
       <podcast:value type="lightning" method="keysend" suggested="0.00000015000">
       </podcast:value>
+      <podcast:socialInteract uri="https://podcastindex.social/web/@dave/108013847520053258" protocol="activitypub" accountId="@dave" />
     </item>
   </channel>
 </rss>
@@ -349,6 +350,14 @@ fn deserialize() {
                         suggested: Some(Float::Ok(0.00000015)),
                         value_recipients:vec!{},
                     }),
+                    podcast_social_interacts: vec! {
+                        podcast::SocialInteract{
+                            uri: Some("https://podcastindex.social/web/@dave/108013847520053258".to_string()),
+                            protocol: Some(podcast::SocialProtocol::ActivityPub),
+                            account_id: Some("@dave".to_string()),
+                            ..Default::default()
+                        },
+                    },
                     ..Default::default()
                 }},
                 podcast_live_items: vec! {

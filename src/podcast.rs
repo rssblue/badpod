@@ -39,6 +39,9 @@ pub use image::{Image, Images};
 mod live_item;
 pub use live_item::LiveItemStatus;
 
+mod social_interact;
+pub use social_interact::SocialProtocol;
+
 #[derive(Debug, Deserialize, PartialEq, Default)]
 pub struct Transcript {
     #[serde(rename = "$attr:url")]
@@ -393,6 +396,11 @@ pub struct LiveItem {
         default
     )]
     pub content_links: Vec<ContentLink>,
+    #[serde(
+        rename = "{https://podcastindex.org/namespace/1.0}podcast:socialInteract",
+        default
+    )]
+    pub podcast_social_interacts: Vec<SocialInteract>,
 }
 
 #[derive(Debug, Deserialize, PartialEq, Default)]
@@ -401,4 +409,18 @@ pub struct ContentLink {
     pub href: Option<String>,
     #[serde(rename = "$value")]
     pub value: Option<String>,
+}
+
+#[derive(Debug, Deserialize, PartialEq, Default)]
+pub struct SocialInteract {
+    #[serde(rename = "$attr:uri", default)]
+    pub uri: Option<String>,
+    #[serde(rename = "$attr:protocol", default)]
+    pub protocol: Option<SocialProtocol>,
+    #[serde(rename = "$attr:accountId", default)]
+    pub account_id: Option<String>,
+    #[serde(rename = "$attr:accountUrl", default)]
+    pub account_url: Option<String>,
+    #[serde(rename = "$attr:priority", default)]
+    pub priority: Option<basic::Integer>,
 }

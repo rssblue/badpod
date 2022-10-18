@@ -209,6 +209,11 @@ pub struct Item {
         default
     )]
     pub podcast_images: Option<podcast::Images>,
+    #[serde(
+        rename = "{https://podcastindex.org/namespace/1.0}podcast:socialInteract",
+        default
+    )]
+    pub podcast_social_interacts: Vec<podcast::SocialInteract>,
 }
 
 #[derive(Debug, Deserialize, PartialEq, Default)]
