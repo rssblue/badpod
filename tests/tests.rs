@@ -3,117 +3,13 @@ use parse_rss::*;
 
 #[test]
 fn deserialize() {
-    let rss = parse_rss::from_str(
-        r#"
-<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:podcast="https://podcastindex.org/namespace/1.0" xmlns:unknownNS="https://example.com">
-  <channel>
-    <copyright>© Example Company</copyright>
-    <description><![CDATA[<p><strong>Example HTML description</strong></p>]]></description>
-    <language>en-us</language>
-    <link>https://example.com</link>
-    <title>Example Podcast</title>
-    <content:encoded>&lt;p&gt;&lt;strong&gt;Example HTML description&lt;/strong&gt;&lt;/p&gt;</content:encoded>
-    <itunes:author>Jane Doe</itunes:author>
-    <itunes:block>Yes</itunes:block>
-    <itunes:complete>No</itunes:complete>
-    <itunes:category text="Society &amp; Culture">
-      <itunes:category text="Documentary"></itunes:category>
-    </itunes:category>
-    <itunes:explicit>false</itunes:explicit>
-    <itunes:owner>
-      <itunes:name>Jane Doe</itunes:name>
-      <itunes:email>jane@example.com</itunes:email>
-    </itunes:owner>
-    <itunes:type>serial</itunes:type>
-    <podcast:locked>no</podcast:locked>
-    <podcast:funding url="https://www.example.com/donations">Support the show!</podcast:funding>
-    <podcast:funding url="https://www.example.com/members">Become a member!</podcast:funding>
-    <podcast:guid>917393e3-1b1e-5cef-ace4-edaa54e1f810</podcast:guid>
-    <unknownNS:tag>val</unknownNS:tag>
-    <podcast:person href="https://example.com/johnsmith/blog" img="http://example.com/images/johnsmith.jpg">John Smith</podcast:person>
-    <podcast:person role="guest" href="https://www.imdb.com/name/nm0427852888/" img="http://example.com/images/janedoe.jpg">Jane Doe</podcast:person>
-    <podcast:location geo="geo:33.51601,-86.81455" osm="R6930627">Birmingham Civil Rights Museum</podcast:location>
-    <podcast:trailer pubdate="Thu, 01 Apr 2021 08:00:00 EST" url="https://example.org/trailers/teaser" length="12345678" type="audio/mpeg">Coming April 1st, 2021</podcast:trailer>
-    <unknown1>val</unknown1>
-    <podcast:license>cc-by-4.0</podcast:license>
-    <unknown2>val</unknown2>
-    <podcast:block>yes</podcast:block>
-    <podcast:block id="youtube">no</podcast:block>
-    <podcast:block id="amazon">no</podcast:block>
-    <podcast:value type="lightning" method="keysend" suggested="0.00000015000">
-        <podcast:valueRecipient
-            name="Host"
-            type="node"
-            address="032f4ffbbafffbe51726ad3c164a3d0d37ec27bc67b29a159b0f49ae8ac21b8508"
-            split="40"
-        />
-        <podcast:valueRecipient
-            name="Producer"
-            type="node"
-            address="03ae9f91a0cb8ff43840e3c322c4c61f019d8c1c3cea15a25cfc425ac605e61a4a"
-            split="10"
-        />
-    </podcast:value>
-    <podcast:medium>music</podcast:medium>
-    <podcast:images
-        srcset="https://example.com/images/ep1/pci_avatar-massive.jpg 1500w,
-                https://example.com/images/ep1/pci_avatar-middle.jpg 6o0w,
-                https://example.com/images/ep1/pci_avatar-small.jpg 300w"
-    />
-    <podcast:liveItem status="live" start="2021-09-26T07:30:00.000-0600" end="2021-09-26T09:30:00.000-0600">
-        <title>Podcasting 2.0 Live Stream</title>
-        <guid>e32b4890-983b-4ce5-8b46-f2d6bc1d8819</guid>
-        <enclosure url="https://example.com/pc20/livestream?format=.mp3" type="audio/mpeg" length="312" />
-        <podcast:contentLink href="https://example.com/html/livestream">Listen Live!</podcast:contentLink>
-    </podcast:liveItem>
-    <item>
-      <enclosure
-       url="http://example.com/episode-1.mp3" 
-       length="100200"
-       type="audio/mpeg"
-       unknown_attr="val"
-      />
-      <itunes:block>yes</itunes:block>
-      <itunes:explicit>true</itunes:explicit>
-      <itunes:duration>1079</itunes:duration>
-      <pubDate>Mon, 10 Oct 2022 06:10:05 GMT</pubDate>
-      <title>Example Episode</title>
-      <podcast:chapters url="https://example.com/episode-1/chapters.json" type="application/json+chapters" />
-      <podcast:soundbite startTime="73.0" duration="60.0" />
-      <podcast:soundbite startTime="1234.5" duration="-42.25">Why the Podcast Namespace Matters</podcast:soundbite>
-      <podcast:person role="guest" href="https://www.wikipedia/alicebrown" img="http://example.com/images/alicebrown.jpg">Alice Brown</podcast:person>
-      <podcast:person group="Writing" role="Guest" href="https://www.wikipedia/alicebrown" img="http://example.com/images/alicebrown.jpg">Alice Brown</podcast:person>
-      <podcast:person group="non-existent group" role="Non-existent role" href="https://example.com/artist/beckysmith">Becky Smith</podcast:person>
-      <podcast:location geo="GEO:-27.86159,153.3169" osm="W43678282">Dreamworld (Queensland)</podcast:location>
-      <podcast:episode display="Ch.3">204</podcast:episode>
-      <itunes:episode>204</itunes:episode>
-      <itunes:season>Season 1</itunes:season>
-      <podcast:season name="Egyptology: The 19th Century">1</podcast:season>
-      <podcast:transcript url="https://example.com/episode1/transcript.json" type="application/json" language="es" rel="captions" />
-      <itunes:episodeType>full</itunes:episodeType>
-      <podcast:alternateEnclosure type="audio/mpeg" length="2490970" bitrate="160707.74">
-        <podcast:source uri="https://example.com/file-0.mp3" />
-        <podcast:source uri="ipfs://QmdwGqd3d2gFPGeJNLLCshdiPert45fMu84552Y4XHTy4y" />
-        <podcast:source uri="https://example.com/file-0.torrent" contentType="application/x-bittorrent" />
-        <podcast:source uri="http://example.onion/file-0.mp3" />
-      </podcast:alternateEnclosure>
+    let input = include_str!("data/test_feed.xml");
 
-      <podcast:alternateEnclosure type="video/mp4" length="10562995" bitrate="681483.55" height="1080">
-        <podcast:source uri="https://example.com/file-1080.mp4" />
-      </podcast:alternateEnclosure>
-      <podcast:value type="lightning" method="keysend" suggested="0.00000015000">
-      </podcast:value>
-      <podcast:socialInteract uri="https://podcastindex.social/web/@dave/108013847520053258" protocol="activitypub" accountId="@dave" />
-    </item>
-  </channel>
-</rss>
-            "#,
-    ).unwrap();
+    let rss = parse_rss::from_str(input);
 
     pretty_assertions::assert_eq!(
         rss,
-        Rss {
+        Ok(Rss {
             version: Some("2.0".to_string()),
             channel: Some(Channel {
                 copyright: Some("© Example Company".to_string()),
@@ -403,6 +299,6 @@ fn deserialize() {
                 },
                 ..Default::default()
             }),
-        }
+        })
     );
 }
