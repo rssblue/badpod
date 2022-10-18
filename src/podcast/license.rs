@@ -6,43 +6,43 @@ use strum_macros::{Display, EnumString};
 #[derive(Debug, PartialEq, Eq, EnumString, Display)]
 pub enum LicenseType {
     #[strum(serialize = "0bsd")]
-    BsdZeroClauseLicense,
+    BsdZeroClause,
     #[strum(serialize = "aal")]
-    AttributionAssuranceLicense,
+    AttributionAssurance,
     #[strum(serialize = "abstyles")]
-    AbstylesLicense,
+    Abstyles,
     #[strum(serialize = "adobe-2006")]
-    AdobeSystemsIncorporatedSourceCodeLicenseAgreement,
+    AdobeSystemsIncorporatedSourceCodeAgreement,
     #[strum(serialize = "adobe-glyph")]
-    AdobeGlyphListLicense,
+    AdobeGlyphList,
     #[strum(serialize = "adsl")]
-    AmazonDigitalServicesLicense,
+    AmazonDigitalServices,
     #[strum(serialize = "afl-1.1")]
-    AcademicFreeLicensev1_1,
+    AcademicFreev1_1,
     #[strum(serialize = "afl-1.2")]
-    AcademicFreeLicensev1_2,
+    AcademicFreev1_2,
     #[strum(serialize = "afl-2.0")]
-    AcademicFreeLicensev2_0,
+    AcademicFreev2_0,
     #[strum(serialize = "afl-2.1")]
-    AcademicFreeLicensev2_1,
+    AcademicFreev2_1,
     #[strum(serialize = "afl-3.0")]
-    AcademicFreeLicensev3_0,
+    AcademicFreev3_0,
     #[strum(serialize = "afmparse")]
-    AfmparseLicense,
+    Afmparse,
     #[strum(serialize = "agpl-1.0-only")]
-    AfferoGeneralPublicLicensev1_0only,
+    AfferoGeneralPublicv1_0only,
     #[strum(serialize = "agpl-1.0-or-later")]
-    AfferoGeneralPublicLicensev1_0OrLater,
+    AfferoGeneralPublicv1_0OrLater,
     #[strum(serialize = "agpl-3.0-only")]
-    GnuAfferoGeneralPublicLicensev3_0only,
+    GnuAfferoGeneralPublicv3_0only,
     #[strum(serialize = "agpl-3.0-or-later")]
-    GnuAfferoGeneralPublicLicensev3_0OrLater,
+    GnuAfferoGeneralPublicv3_0OrLater,
     #[strum(serialize = "aladdin")]
-    AladdinFreePublicLicense,
+    AladdinFreePublic,
     #[strum(serialize = "amdplpa")]
-    AmdPlpaMapCLicense,
+    AmdPlpaMapC,
     #[strum(serialize = "aml")]
-    AppleMitLicense,
+    AppleMit,
     #[strum(serialize = "ampas")]
     AcademyofMotionPictureArtsAndSciencesBsd,
     #[strum(serialize = "antlr-pd")]
@@ -50,109 +50,109 @@ pub enum LicenseType {
     #[strum(serialize = "antlr-pd-fallback")]
     AntlrSoftwareRightsNoticewithlicensefallback,
     #[strum(serialize = "apache-1.0")]
-    ApacheLicense1_0,
+    Apache1_0,
     #[strum(serialize = "apache-1.1")]
-    ApacheLicense1_1,
+    Apache1_1,
     #[strum(serialize = "apache-2.0")]
-    ApacheLicense2_0,
+    Apache2_0,
     #[strum(serialize = "apafml")]
-    AdobePostscriptAfmLicense,
+    AdobePostscriptAfm,
     #[strum(serialize = "apl-1.0")]
-    AdaptivePublicLicense1_0,
+    AdaptivePublic1_0,
     #[strum(serialize = "app-s2p")]
-    AppS2pLicense,
+    AppS2p,
     #[strum(serialize = "apsl-1.0")]
-    ApplePublicSourceLicense1_0,
+    ApplePublicSource1_0,
     #[strum(serialize = "apsl-1.1")]
-    ApplePublicSourceLicense1_1,
+    ApplePublicSource1_1,
     #[strum(serialize = "apsl-1.2")]
-    ApplePublicSourceLicense1_2,
+    ApplePublicSource1_2,
     #[strum(serialize = "apsl-2.0")]
-    ApplePublicSourceLicense2_0,
+    ApplePublicSource2_0,
     #[strum(serialize = "arphic-1999")]
-    ArphicPublicLicense,
+    ArphicPublic,
     #[strum(serialize = "artistic-1.0")]
-    ArtisticLicense1_0,
+    Artistic1_0,
     #[strum(serialize = "artistic-1.0-cl8")]
-    ArtisticLicense1_0wClause8,
+    Artistic1_0wClause8,
     #[strum(serialize = "artistic-1.0-perl")]
-    ArtisticLicense1_0Perl,
+    Artistic1_0Perl,
     #[strum(serialize = "artistic-2.0")]
-    ArtisticLicense2_0,
+    Artistic2_0,
     #[strum(serialize = "baekmuk")]
-    BaekmukLicense,
+    Baekmuk,
     #[strum(serialize = "bahyph")]
-    BahyphLicense,
+    Bahyph,
     #[strum(serialize = "barr")]
-    BarrLicense,
+    Barr,
     #[strum(serialize = "beerware")]
-    BeerwareLicense,
+    Beerware,
     #[strum(serialize = "bitstream-vera")]
-    BitstreamVeraFontLicense,
+    BitstreamVeraFont,
     #[strum(serialize = "bittorrent-1.0")]
-    BitTorrentOpenSourceLicensev1_0,
+    BitTorrentOpenSourcev1_0,
     #[strum(serialize = "bittorrent-1.1")]
-    BitTorrentOpenSourceLicensev1_1,
+    BitTorrentOpenSourcev1_1,
     #[strum(serialize = "blessing")]
     SqliteBlessing,
     #[strum(serialize = "blueoak-1.0.0")]
-    BlueOakModelLicense1_0_0,
+    BlueOakModel1_0_0,
     #[strum(serialize = "borceux")]
     Borceuxlicense,
     #[strum(serialize = "bsd-1-clause")]
-    Bsd1ClauseLicense,
+    Bsd1Clause,
     #[strum(serialize = "bsd-2-clause")]
-    Bsd2ClauseSimplifiedLicense,
+    Bsd2ClauseSimplified,
     #[strum(serialize = "bsd-2-clause-patent")]
-    Bsd2ClausePlusPatentLicense,
+    Bsd2ClausePlusPatent,
     #[strum(serialize = "bsd-2-clause-views")]
     Bsd2Clausewithviewssentence,
     #[strum(serialize = "bsd-3-clause")]
-    Bsd3ClauseNewOrRevisedLicense,
+    Bsd3ClauseNewOrRevised,
     #[strum(serialize = "bsd-3-clause-attribution")]
     BsdWithAttribution,
     #[strum(serialize = "bsd-3-clause-clear")]
-    Bsd3ClauseClearLicense,
+    Bsd3ClauseClear,
     #[strum(serialize = "bsd-3-clause-lbnl")]
     LawrenceBerkeleyNationalLabsBsdVariantlicense,
     #[strum(serialize = "bsd-3-clause-modification")]
     Bsd3ClauseModification,
     #[strum(serialize = "bsd-3-clause-no-military-license")]
-    Bsd3ClauseNoMilitaryLicense,
+    Bsd3ClauseNoMilitary,
     #[strum(serialize = "bsd-3-clause-no-nuclear-license")]
-    Bsd3ClauseNoNuclearLicense,
+    Bsd3ClauseNoNuclear,
     #[strum(serialize = "bsd-3-clause-no-nuclear-license-2014")]
-    Bsd3ClauseNoNuclearLicense2014,
+    Bsd3ClauseNoNuclear2014,
     #[strum(serialize = "bsd-3-clause-no-nuclear-warranty")]
     Bsd3ClauseNoNuclearWarranty,
     #[strum(serialize = "bsd-3-clause-open-mpi")]
     Bsd3ClauseOpenMpiVariant,
     #[strum(serialize = "bsd-4-clause")]
-    Bsd4ClauseOriginalOrOldLicense,
+    Bsd4ClauseOriginalOrOld,
     #[strum(serialize = "bsd-4-clause-shortened")]
     Bsd4ClauseShortened,
     #[strum(serialize = "bsd-4-clause-uc")]
     Bsd4ClauseUniversityofCaliforniaSpecific,
     #[strum(serialize = "bsd-protection")]
-    BsdProtectionLicense,
+    BsdProtection,
     #[strum(serialize = "bsd-source-code")]
     BsdSourceCodeAttribution,
     #[strum(serialize = "bsl-1.0")]
-    BoostSoftwareLicense1_0,
+    BoostSoftware1_0,
     #[strum(serialize = "busl-1.1")]
-    BusinessSourceLicense1_1,
+    BusinessSource1_1,
     #[strum(serialize = "bzip2-1.0.6")]
     Bzip2AndLibbzip2Licensev1_0_6,
     #[strum(serialize = "c-uda-1.0")]
     ComputationalUseofDataAgreementv1_0,
     #[strum(serialize = "cal-1.0")]
-    CryptographicAutonomyLicense1_0,
+    CryptographicAutonomy1_0,
     #[strum(serialize = "cal-1.0-combined-work-exception")]
-    CryptographicAutonomyLicense1_0CombinedWorkException,
+    CryptographicAutonomy1_0CombinedWorkException,
     #[strum(serialize = "caldera")]
-    CalderaLicense,
+    Caldera,
     #[strum(serialize = "catosl-1.1")]
-    ComputerAssociatesTrustedOpenSourceLicense1_1,
+    ComputerAssociatesTrustedOpenSource1_1,
     #[strum(serialize = "cc-by-1.0")]
     CreativeCommonsAttribution1_0Generic,
     #[strum(serialize = "cc-by-2.0")]
@@ -254,29 +254,29 @@ pub enum LicenseType {
     #[strum(serialize = "cc0-1.0")]
     CreativeCommonsZerov1_0Universal,
     #[strum(serialize = "cddl-1.0")]
-    CommonDevelopmentAndDistributionLicense1_0,
+    CommonDevelopmentAndDistribution1_0,
     #[strum(serialize = "cddl-1.1")]
-    CommonDevelopmentAndDistributionLicense1_1,
+    CommonDevelopmentAndDistribution1_1,
     #[strum(serialize = "cdl-1.0")]
-    CommonDocumentationLicense1_0,
+    CommonDocumentation1_0,
     #[strum(serialize = "cdla-permissive-1.0")]
-    CommunityDataLicenseAgreementPermissive1_0,
+    CommunityDataAgreementPermissive1_0,
     #[strum(serialize = "cdla-permissive-2.0")]
-    CommunityDataLicenseAgreementPermissive2_0,
+    CommunityDataAgreementPermissive2_0,
     #[strum(serialize = "cdla-sharing-1.0")]
-    CommunityDataLicenseAgreementSharing1_0,
+    CommunityDataAgreementSharing1_0,
     #[strum(serialize = "cecill-1.0")]
-    CeCillFreeSoftwareLicenseAgreementv1_0,
+    CeCillFreeSoftwareAgreementv1_0,
     #[strum(serialize = "cecill-1.1")]
-    CeCillFreeSoftwareLicenseAgreementv1_1,
+    CeCillFreeSoftwareAgreementv1_1,
     #[strum(serialize = "cecill-2.0")]
-    CeCillFreeSoftwareLicenseAgreementv2_0,
+    CeCillFreeSoftwareAgreementv2_0,
     #[strum(serialize = "cecill-2.1")]
-    CeCillFreeSoftwareLicenseAgreementv2_1,
+    CeCillFreeSoftwareAgreementv2_1,
     #[strum(serialize = "cecill-b")]
-    CeCillBFreeSoftwareLicenseAgreement,
+    CeCillBFreeSoftwareAgreement,
     #[strum(serialize = "cecill-c")]
-    CeCillCFreeSoftwareLicenseAgreement,
+    CeCillCFreeSoftwareAgreement,
     #[strum(serialize = "cern-ohl-1.1")]
     CernOpenHardwareLicencev1_1,
     #[strum(serialize = "cern-ohl-1.2")]
@@ -288,245 +288,245 @@ pub enum LicenseType {
     #[strum(serialize = "cern-ohl-w-2.0")]
     CernOpenHardwareLicenceVersion2WeaklyReciprocal,
     #[strum(serialize = "clartistic")]
-    ClarifiedArtisticLicense,
+    ClarifiedArtistic,
     #[strum(serialize = "cnri-jython")]
-    CnriJythonLicense,
+    CnriJython,
     #[strum(serialize = "cnri-python")]
-    CnriPythonLicense,
+    CnriPython,
     #[strum(serialize = "cnri-python-gpl-compatible")]
-    CnriPythonOpenSourceGplCompatibleLicenseAgreement,
+    CnriPythonOpenSourceGplCompatibleAgreement,
     #[strum(serialize = "coil-1.0")]
-    CopyfreeOpenInnovationLicense,
+    CopyfreeOpenInnovation,
     #[strum(serialize = "community-spec-1.0")]
-    CommunitySpecificationLicense1_0,
+    CommunitySpecification1_0,
     #[strum(serialize = "condor-1.1")]
-    CondorPublicLicensev1_1,
+    CondorPublicv1_1,
     #[strum(serialize = "copyleft-next-0.3.0")]
     Copyleftnext0_3_0,
     #[strum(serialize = "copyleft-next-0.3.1")]
     Copyleftnext0_3_1,
     #[strum(serialize = "cpal-1.0")]
-    CommonPublicAttributionLicense1_0,
+    CommonPublicAttribution1_0,
     #[strum(serialize = "cpl-1.0")]
-    CommonPublicLicense1_0,
+    CommonPublic1_0,
     #[strum(serialize = "cpol-1.02")]
-    CodeProjectOpenLicense1_02,
+    CodeProjectOpen1_02,
     #[strum(serialize = "crossword")]
-    CrosswordLicense,
+    Crossword,
     #[strum(serialize = "crystalstacker")]
-    CrystalStackerLicense,
+    CrystalStacker,
     #[strum(serialize = "cua-opl-1.0")]
-    CuaOfficePublicLicensev1_0,
+    CuaOfficePublicv1_0,
     #[strum(serialize = "cube")]
-    CubeLicense,
+    Cube,
     #[strum(serialize = "curl")]
-    CurlLicense,
+    Curl,
     #[strum(serialize = "d-fsl-1.0")]
     DeutscheFreieSoftwareLizenz,
     #[strum(serialize = "diffmark")]
-    DiffmarkLicense,
+    Diffmark,
     #[strum(serialize = "dl-de-by-2.0")]
     DatalicenceGermanyAttributionVersion2_0,
     #[strum(serialize = "doc")]
-    DocLicense,
+    Doc,
     #[strum(serialize = "dotseqn")]
-    DotseqnLicense,
+    Dotseqn,
     #[strum(serialize = "drl-1.0")]
-    DetectionRuleLicense1_0,
+    DetectionRule1_0,
     #[strum(serialize = "dsdp")]
-    DsdpLicense,
+    Dsdp,
     #[strum(serialize = "dvipdfm")]
-    DvipdfmLicense,
+    Dvipdfm,
     #[strum(serialize = "ecl-1.0")]
-    EducationalCommunityLicensev1_0,
+    EducationalCommunityv1_0,
     #[strum(serialize = "ecl-2.0")]
-    EducationalCommunityLicensev2_0,
+    EducationalCommunityv2_0,
     #[strum(serialize = "efl-1.0")]
-    EiffelForumLicensev1_0,
+    EiffelForumv1_0,
     #[strum(serialize = "efl-2.0")]
-    EiffelForumLicensev2_0,
+    EiffelForumv2_0,
     #[strum(serialize = "egenix")]
-    EGenixComPublicLicense1_1_0,
+    EGenixComPublic1_1_0,
     #[strum(serialize = "elastic-2.0")]
-    ElasticLicense2_0,
+    Elastic2_0,
     #[strum(serialize = "entessa")]
-    EntessaPublicLicensev1_0,
+    EntessaPublicv1_0,
     #[strum(serialize = "epics")]
-    EpicsOpenLicense,
+    EpicsOpen,
     #[strum(serialize = "epl-1.0")]
-    EclipsePublicLicense1_0,
+    EclipsePublic1_0,
     #[strum(serialize = "epl-2.0")]
-    EclipsePublicLicense2_0,
+    EclipsePublic2_0,
     #[strum(serialize = "erlpl-1.1")]
-    ErlangPublicLicensev1_1,
+    ErlangPublicv1_1,
     #[strum(serialize = "etalab-2.0")]
-    EtalabOpenLicense2_0,
+    EtalabOpen2_0,
     #[strum(serialize = "eudatagrid")]
-    EuDataGridSoftwareLicense,
+    EuDataGridSoftware,
     #[strum(serialize = "eupl-1.0")]
-    EuropeanUnionPublicLicense1_0,
+    EuropeanUnionPublic1_0,
     #[strum(serialize = "eupl-1.1")]
-    EuropeanUnionPublicLicense1_1,
+    EuropeanUnionPublic1_1,
     #[strum(serialize = "eupl-1.2")]
-    EuropeanUnionPublicLicense1_2,
+    EuropeanUnionPublic1_2,
     #[strum(serialize = "eurosym")]
-    EurosymLicense,
+    Eurosym,
     #[strum(serialize = "fair")]
-    FairLicense,
+    Fair,
     #[strum(serialize = "fdk-aac")]
     FraunhoferFdkAacCodecLibrary,
     #[strum(serialize = "frameworx-1.0")]
-    FrameworxOpenLicense1_0,
+    FrameworxOpen1_0,
     #[strum(serialize = "freebsd-doc")]
-    FreeBsdDocumentationLicense,
+    FreeBsdDocumentation,
     #[strum(serialize = "freeimage")]
-    FreeImagePublicLicensev1_0,
+    FreeImagePublicv1_0,
     #[strum(serialize = "fsfap")]
-    FsfAllPermissiveLicense,
+    FsfAllPermissive,
     #[strum(serialize = "fsful")]
-    FsfUnlimitedLicense,
+    FsfUnlimited,
     #[strum(serialize = "fsfullr")]
-    FsfUnlimitedLicenseWithLicenseRetention,
+    FsfUnlimitedWithLicenseRetention,
     #[strum(serialize = "ftl")]
-    FreetypeProjectLicense,
+    FreetypeProject,
     #[strum(serialize = "gd")]
-    GdLicense,
+    Gd,
     #[strum(serialize = "gfdl-1.1-invariants-only")]
-    GnuFreeDocumentationLicensev1_1OnlyInvariants,
+    GnuFreeDocumentationv1_1OnlyInvariants,
     #[strum(serialize = "gfdl-1.1-invariants-or-later")]
-    GnuFreeDocumentationLicensev1_1OrLaterInvariants,
+    GnuFreeDocumentationv1_1OrLaterInvariants,
     #[strum(serialize = "gfdl-1.1-no-invariants-only")]
-    GnuFreeDocumentationLicensev1_1OnlyNoInvariants,
+    GnuFreeDocumentationv1_1OnlyNoInvariants,
     #[strum(serialize = "gfdl-1.1-no-invariants-or-later")]
-    GnuFreeDocumentationLicensev1_1OrLaterNoInvariants,
+    GnuFreeDocumentationv1_1OrLaterNoInvariants,
     #[strum(serialize = "gfdl-1.1-only")]
-    GnuFreeDocumentationLicensev1_1Only,
+    GnuFreeDocumentationv1_1Only,
     #[strum(serialize = "gfdl-1.1-or-later")]
-    GnuFreeDocumentationLicensev1_1OrLater,
+    GnuFreeDocumentationv1_1OrLater,
     #[strum(serialize = "gfdl-1.2-invariants-only")]
-    GnuFreeDocumentationLicensev1_2OnlyInvariants,
+    GnuFreeDocumentationv1_2OnlyInvariants,
     #[strum(serialize = "gfdl-1.2-invariants-or-later")]
-    GnuFreeDocumentationLicensev1_2OrLaterInvariants,
+    GnuFreeDocumentationv1_2OrLaterInvariants,
     #[strum(serialize = "gfdl-1.2-no-invariants-only")]
-    GnuFreeDocumentationLicensev1_2OnlyNoInvariants,
+    GnuFreeDocumentationv1_2OnlyNoInvariants,
     #[strum(serialize = "gfdl-1.2-no-invariants-or-later")]
-    GnuFreeDocumentationLicensev1_2OrLaterNoInvariants,
+    GnuFreeDocumentationv1_2OrLaterNoInvariants,
     #[strum(serialize = "gfdl-1.2-only")]
-    GnuFreeDocumentationLicensev1_2Only,
+    GnuFreeDocumentationv1_2Only,
     #[strum(serialize = "gfdl-1.2-or-later")]
-    GnuFreeDocumentationLicensev1_2OrLater,
+    GnuFreeDocumentationv1_2OrLater,
     #[strum(serialize = "gfdl-1.3-invariants-only")]
-    GnuFreeDocumentationLicensev1_3OnlyInvariants,
+    GnuFreeDocumentationv1_3OnlyInvariants,
     #[strum(serialize = "gfdl-1.3-invariants-or-later")]
-    GnuFreeDocumentationLicensev1_3OrLaterInvariants,
+    GnuFreeDocumentationv1_3OrLaterInvariants,
     #[strum(serialize = "gfdl-1.3-no-invariants-only")]
-    GnuFreeDocumentationLicensev1_3OnlyNoInvariants,
+    GnuFreeDocumentationv1_3OnlyNoInvariants,
     #[strum(serialize = "gfdl-1.3-no-invariants-or-later")]
-    GnuFreeDocumentationLicensev1_3OrLaterNoInvariants,
+    GnuFreeDocumentationv1_3OrLaterNoInvariants,
     #[strum(serialize = "gfdl-1.3-only")]
-    GnuFreeDocumentationLicensev1_3Only,
+    GnuFreeDocumentationv1_3Only,
     #[strum(serialize = "gfdl-1.3-or-later")]
-    GnuFreeDocumentationLicensev1_3OrLater,
+    GnuFreeDocumentationv1_3OrLater,
     #[strum(serialize = "giftware")]
-    GiftwareLicense,
+    Giftware,
     #[strum(serialize = "gl2ps")]
-    Gl2psLicense,
+    Gl2ps,
     #[strum(serialize = "glide")]
-    DfxGlideLicense,
+    DfxGlide,
     #[strum(serialize = "glulxe")]
-    GlulxeLicense,
+    Glulxe,
     #[strum(serialize = "glwtpl")]
-    GoodLuckWithThatPublicLicense,
+    GoodLuckWithThatPublic,
     #[strum(serialize = "gnuplot")]
-    GnuPlotLicense,
+    GnuPlot,
     #[strum(serialize = "gpl-1.0-only")]
-    GnuGeneralPublicLicensev1_0only,
+    GnuGeneralPublicv1_0only,
     #[strum(serialize = "gpl-1.0-or-later")]
-    GnuGeneralPublicLicensev1_0OrLater,
+    GnuGeneralPublicv1_0OrLater,
     #[strum(serialize = "gpl-2.0-only")]
-    GnuGeneralPublicLicensev2_0only,
+    GnuGeneralPublicv2_0only,
     #[strum(serialize = "gpl-2.0-or-later")]
-    GnuGeneralPublicLicensev2_0OrLater,
+    GnuGeneralPublicv2_0OrLater,
     #[strum(serialize = "gpl-3.0-only")]
-    GnuGeneralPublicLicensev3_0only,
+    GnuGeneralPublicv3_0only,
     #[strum(serialize = "gpl-3.0-or-later")]
-    GnuGeneralPublicLicensev3_0OrLater,
+    GnuGeneralPublicv3_0OrLater,
     #[strum(serialize = "gsoap-1.3b")]
-    GsoapPublicLicensev1_3b,
+    GsoapPublicv1_3b,
     #[strum(serialize = "haskellreport")]
-    HaskellLanguageReportLicense,
+    HaskellLanguageReport,
     #[strum(serialize = "hippocratic-2.1")]
-    HippocraticLicense2_1,
+    Hippocratic2_1,
     #[strum(serialize = "hpnd")]
     HistoricalPermissionNoticeAndDisclaimer,
     #[strum(serialize = "hpnd-sell-variant")]
     HistoricalPermissionNoticeAndDisclaimersellvariant,
     #[strum(serialize = "htmltidy")]
-    HtmlTidyLicense,
+    HtmlTidy,
     #[strum(serialize = "ibm-pibs")]
     IbmPowerPcInitializationAndBootSoftware,
     #[strum(serialize = "icu")]
-    IcuLicense,
+    Icu,
     #[strum(serialize = "ijg")]
-    IndependentJpegGroupLicense,
+    IndependentJpegGroup,
     #[strum(serialize = "imagemagick")]
-    ImageMagickLicense,
+    ImageMagick,
     #[strum(serialize = "imatix")]
     IMatixStAndardFunctionLibraryAgreement,
     #[strum(serialize = "imlib2")]
     Imlib2License,
     #[strum(serialize = "info-zip")]
-    InfoZipLicense,
+    InfoZip,
     #[strum(serialize = "intel")]
-    IntelOpenSourceLicense,
+    IntelOpenSource,
     #[strum(serialize = "intel-acpi")]
-    IntelAcpiSoftwareLicenseAgreement,
+    IntelAcpiSoftwareAgreement,
     #[strum(serialize = "interbase-1.0")]
-    InterbasePublicLicensev1_0,
+    InterbasePublicv1_0,
     #[strum(serialize = "ipa")]
-    IpaFontLicense,
+    IpaFont,
     #[strum(serialize = "ipl-1.0")]
-    IbmPublicLicensev1_0,
+    IbmPublicv1_0,
     #[strum(serialize = "isc")]
-    IscLicense,
+    Isc,
     #[strum(serialize = "jam")]
-    JamLicense,
+    Jam,
     #[strum(serialize = "jasper-2.0")]
-    JasPerLicense,
+    JasPer,
     #[strum(serialize = "jpnic")]
-    JapanNetworkInformationCenterLicense,
+    JapanNetworkInformationCenter,
     #[strum(serialize = "json")]
-    JsonLicense,
+    Json,
     #[strum(serialize = "lal-1.2")]
     LicenceArtLibre1_2,
     #[strum(serialize = "lal-1.3")]
     LicenceArtLibre1_3,
     #[strum(serialize = "latex2e")]
-    Latex2eLicense,
+    Latex2e,
     #[strum(serialize = "leptonica")]
-    LeptonicaLicense,
+    Leptonica,
     #[strum(serialize = "lgpl-2.0-only")]
-    GnuLibraryGeneralPublicLicenseV2only,
+    GnuLibraryGeneralPublicV2only,
     #[strum(serialize = "lgpl-2.0-or-later")]
-    GnuLibraryGeneralPublicLicenseV2OrLater,
+    GnuLibraryGeneralPublicV2OrLater,
     #[strum(serialize = "lgpl-2.1-only")]
-    GnuLesserGeneralPublicLicenseV2_1only,
+    GnuLesserGeneralPublicV2_1only,
     #[strum(serialize = "lgpl-2.1-or-later")]
-    GnuLesserGeneralPublicLicenseV2_1OrLater,
+    GnuLesserGeneralPublicV2_1OrLater,
     #[strum(serialize = "lgpl-3.0-only")]
-    GnuLesserGeneralPublicLicenseV3_0Only,
+    GnuLesserGeneralPublicV3_0Only,
     #[strum(serialize = "lgpl-3.0-or-later")]
-    GnuLesserGeneralPublicLicensev3_0OrLater,
+    GnuLesserGeneralPublicv3_0OrLater,
     #[strum(serialize = "lgpllr")]
-    LesserGeneralPublicLicenseForLinguisticResources,
+    LesserGeneralPublicForLinguisticResources,
     #[strum(serialize = "libpng")]
-    LibpngLicense,
+    Libpng,
     #[strum(serialize = "libpng-2.0")]
     PngReferenceLibraryversion2,
     #[strum(serialize = "libselinux-1.0")]
     LibselinuxPublicDomaiNnotice,
     #[strum(serialize = "libtiff")]
-    LibtiffLicense,
+    Libtiff,
     #[strum(serialize = "liliq-p-1.1")]
     LicenceLibreduQuebecPermissiveversion1_1,
     #[strum(serialize = "liliq-r-1.1")]
@@ -536,103 +536,103 @@ pub enum LicenseType {
     #[strum(serialize = "linux-man-pages-copyleft")]
     LinuxmanpagesCopyleft,
     #[strum(serialize = "linux-openib")]
-    LinuxKernelVariantofOpenIbOrgLicense,
+    LinuxKernelVariantofOpenIbOrg,
     #[strum(serialize = "lpl-1.0")]
-    LucentPublicLicenseVersion1_0,
+    LucentPublicVersion1_0,
     #[strum(serialize = "lpl-1.02")]
-    LucentPublicLicensev1_02,
+    LucentPublicv1_02,
     #[strum(serialize = "lppl-1.0")]
-    LaTeXProjectPublicLicensev1_0,
+    LaTeXProjectPublicv1_0,
     #[strum(serialize = "lppl-1.1")]
-    LaTeXProjectPublicLicensev1_1,
+    LaTeXProjectPublicv1_1,
     #[strum(serialize = "lppl-1.2")]
-    LaTeXProjectPublicLicensev1_2,
+    LaTeXProjectPublicv1_2,
     #[strum(serialize = "lppl-1.3a")]
-    LaTeXProjectPublicLicensev1_3a,
+    LaTeXProjectPublicv1_3a,
     #[strum(serialize = "lppl-1.3c")]
-    LaTeXProjectPublicLicensev1_3c,
+    LaTeXProjectPublicv1_3c,
     #[strum(serialize = "lzma-sdk-9.11-to-9.20")]
-    LzmaSdkLicenseVersions9_11To9_20,
+    LzmaSdkVersions9_11To9_20,
     #[strum(serialize = "lzma-sdk-9.22")]
-    LzmaSdkLicenseVersions9_22AndBeyond,
+    LzmaSdkVersions9_22AndBeyond,
     #[strum(serialize = "makeindex")]
-    MakeIndexLicense,
+    MakeIndex,
     #[strum(serialize = "minpack")]
-    MinpackLicense,
+    Minpack,
     #[strum(serialize = "miros")]
     TheMirOsLicence,
     #[strum(serialize = "mit")]
-    MitLicense,
+    Mit,
     #[strum(serialize = "mit-0")]
     MitNoAttribution,
     #[strum(serialize = "mit-advertising")]
-    EnlightenmentLicenseE16,
+    EnlightenmentE16,
     #[strum(serialize = "mit-cmu")]
-    CmuLicense,
+    Cmu,
     #[strum(serialize = "mit-enna")]
-    EnnaLicense,
+    Enna,
     #[strum(serialize = "mit-feh")]
-    FehLicense,
+    Feh,
     #[strum(serialize = "mit-modern-variant")]
-    MitLicenseModernVariant,
+    MitModernVariant,
     #[strum(serialize = "mit-open-group")]
     MitOpenGroupvariant,
     #[strum(serialize = "mitnfa")]
-    MitNoFalseAttribsLicense,
+    MitNoFalseAttribs,
     #[strum(serialize = "motosoto")]
-    MotosotoLicense,
+    Motosoto,
     #[strum(serialize = "mpi-permissive")]
-    MpiPermissiveLicense,
+    MpiPermissive,
     #[strum(serialize = "mpich2")]
     Mpich2License,
     #[strum(serialize = "mpl-1.0")]
-    MozillaPublicLicense1_0,
+    MozillaPublic1_0,
     #[strum(serialize = "mpl-1.1")]
-    MozillaPublicLicense1_1,
+    MozillaPublic1_1,
     #[strum(serialize = "mpl-2.0")]
-    MozillaPublicLicense2_0,
+    MozillaPublic2_0,
     #[strum(serialize = "mpl-2.0-no-copyleft-exception")]
-    MozillaPublicLicense2_0nocopyleftexception,
+    MozillaPublic2_0nocopyleftexception,
     #[strum(serialize = "mplus")]
-    MplusFontLicense,
+    MplusFont,
     #[strum(serialize = "ms-lpl")]
-    MicrosoftLimitedPublicLicense,
+    MicrosoftLimitedPublic,
     #[strum(serialize = "ms-pl")]
-    MicrosoftPublicLicense,
+    MicrosoftPublic,
     #[strum(serialize = "ms-rl")]
-    MicrosoftReciprocalLicense,
+    MicrosoftReciprocal,
     #[strum(serialize = "mtll")]
-    MatrixTemplateLibraryLicense,
+    MatrixTemplateLibrary,
     #[strum(serialize = "mulanpsl-1.0")]
-    MulanPermissiveSoftwareLicenseVersion1,
+    MulanPermissiveSoftwareVersion1,
     #[strum(serialize = "mulanpsl-2.0")]
-    MulanPermissiveSoftwareLicenseVersion2,
+    MulanPermissiveSoftwareVersion2,
     #[strum(serialize = "multics")]
-    MulticsLicense,
+    Multics,
     #[strum(serialize = "mup")]
-    MupLicense,
+    Mup,
     #[strum(serialize = "naist-2003")]
-    NaraInstituteofScienceAndTechnologyLicense2003,
+    NaraInstituteofScienceAndTechnology2003,
     #[strum(serialize = "nasa-1.3")]
     NasaOpenSourceAgreement1_3,
     #[strum(serialize = "naumen")]
-    NaumenPublicLicense,
+    NaumenPublic,
     #[strum(serialize = "nbpl-1.0")]
-    NetBooleanPublicLicensev1,
+    NetBooleanPublicv1,
     #[strum(serialize = "ncgl-uk-2.0")]
     NonCommercialGovernmentLicence,
     #[strum(serialize = "ncsa")]
-    UniversityofIllinoisNcsaOpenSourceLicense,
+    UniversityofIllinoisNcsaOpenSource,
     #[strum(serialize = "net-snmp")]
-    NetSnmpLicense,
+    NetSnmp,
     #[strum(serialize = "netcdf")]
-    NetCdfLicense,
+    NetCdf,
     #[strum(serialize = "newsletr")]
-    NewsletrLicense,
+    Newsletr,
     #[strum(serialize = "ngpl")]
-    NethackGeneralPublicLicense,
+    NethackGeneralPublic,
     #[strum(serialize = "nicta-1.0")]
-    NictaPublicSoftwareLicense,
+    NictaPublicSoftware,
     Version1_0,
     #[strum(serialize = "nist-pd")]
     NistPublicDomainNotice,
@@ -643,51 +643,51 @@ pub enum LicenseType {
     #[strum(serialize = "nlod-2.0")]
     NorwegianLicenceforOpenGovernmentDataNlod2_0,
     #[strum(serialize = "nlpl")]
-    NoLimitPublicLicense,
+    NoLimitPublic,
     #[strum(serialize = "nokia")]
-    NokiaOpenSourceLicense,
+    NokiaOpenSource,
     #[strum(serialize = "nosl")]
-    NetizenOpenSourceLicense,
+    NetizenOpenSource,
     #[strum(serialize = "noweb")]
-    NowebLicense,
+    Noweb,
     #[strum(serialize = "npl-1.0")]
-    NetscapePublicLicensev1_0,
+    NetscapePublicv1_0,
     #[strum(serialize = "npl-1.1")]
-    NetscapePublicLicensev1_1,
+    NetscapePublicv1_1,
     #[strum(serialize = "nposl-3.0")]
-    NonProfitOpenSoftwareLicense3_0,
+    NonProfitOpenSoftware3_0,
     #[strum(serialize = "nrl")]
-    NrlLicense,
+    Nrl,
     #[strum(serialize = "ntp")]
-    NtpLicense,
+    Ntp,
     #[strum(serialize = "ntp-0")]
     NtpNoAttribution,
     #[strum(serialize = "o-uda-1.0")]
     OpenUseofDataAgreementv1_0,
     #[strum(serialize = "occt-pl")]
-    OpenCascadeTechnologyPublicLicense,
+    OpenCascadeTechnologyPublic,
     #[strum(serialize = "oclc-2.0")]
-    OclcResearchPublicLicense2_0,
+    OclcResearchPublic2_0,
     #[strum(serialize = "odbl-1.0")]
-    OpenDataCommonsOpenDatabaseLicensev1_0,
+    OpenDataCommonsOpenDatabasev1_0,
     #[strum(serialize = "odc-by-1.0")]
-    OpenDataCommonsAttributionLicensev1_0,
+    OpenDataCommonsAttributionv1_0,
     #[strum(serialize = "ofl-1.0")]
-    SilOpenFontLicense1_0,
+    SilOpenFont1_0,
     #[strum(serialize = "ofl-1.0-no-rfn")]
-    SilOpenFontLicense1_0withnoReservedFontName,
+    SilOpenFont1_0withnoReservedFontName,
     #[strum(serialize = "ofl-1.0-rfn")]
-    SilOpenFontLicense1_0withReservedFontName,
+    SilOpenFont1_0withReservedFontName,
     #[strum(serialize = "ofl-1.1")]
-    SilOpenFontLicense1_1,
+    SilOpenFont1_1,
     #[strum(serialize = "ofl-1.1-no-rfn")]
-    SilOpenFontLicense1_1withnoReservedFontName,
+    SilOpenFont1_1withnoReservedFontName,
     #[strum(serialize = "ofl-1.1-rfn")]
-    SilOpenFontLicense1_1withReservedFontName,
+    SilOpenFont1_1withReservedFontName,
     #[strum(serialize = "ogc-1.0")]
-    OgcSoftwareLicenseVersion1_0,
+    OgcSoftwareVersion1_0,
     #[strum(serialize = "ogdl-taiwan-1.0")]
-    TaiwanOpenGovernmentDataLicenseVersion1_0,
+    TaiwanOpenGovernmentDataVersion1_0,
     #[strum(serialize = "ogl-canada-2.0")]
     OpenGovernmentLicenceCanada,
     #[strum(serialize = "ogl-uk-1.0")]
@@ -697,246 +697,246 @@ pub enum LicenseType {
     #[strum(serialize = "ogl-uk-3.0")]
     OpenGovernmentLicencev3_0,
     #[strum(serialize = "ogtsl")]
-    OpenGroupTestSuiteLicense,
+    OpenGroupTestSuite,
     #[strum(serialize = "oldap-1.1")]
-    OpenLdapPublicLicensev1_1,
+    OpenLdapPublicv1_1,
     #[strum(serialize = "oldap-1.2")]
-    OpenLdapPublicLicensev1_2,
+    OpenLdapPublicv1_2,
     #[strum(serialize = "oldap-1.3")]
-    OpenLdapPublicLicensev1_3,
+    OpenLdapPublicv1_3,
     #[strum(serialize = "oldap-1.4")]
-    OpenLdapPublicLicensev1_4,
+    OpenLdapPublicv1_4,
     #[strum(serialize = "oldap-2.0")]
-    OpenLdapPublicLicensev2_0OrPossibly2_0AAnd2_0B,
+    OpenLdapPublicv2_0OrPossibly2_0AAnd2_0B,
     #[strum(serialize = "oldap-2.0.1")]
-    OpenLdapPublicLicensev2_0_1,
+    OpenLdapPublicv2_0_1,
     #[strum(serialize = "oldap-2.1")]
-    OpenLdapPublicLicensev2_1,
+    OpenLdapPublicv2_1,
     #[strum(serialize = "oldap-2.2")]
-    OpenLdapPublicLicensev2_2,
+    OpenLdapPublicv2_2,
     #[strum(serialize = "oldap-2.2.1")]
-    OpenLdapPublicLicensev2_2_1,
+    OpenLdapPublicv2_2_1,
     #[strum(serialize = "oldap-2.2.2")]
-    OpenLdapPublicLicense2_2_2,
+    OpenLdapPublic2_2_2,
     #[strum(serialize = "oldap-2.3")]
-    OpenLdapPublicLicensev2_3,
+    OpenLdapPublicv2_3,
     #[strum(serialize = "oldap-2.4")]
-    OpenLdapPublicLicensev2_4,
+    OpenLdapPublicv2_4,
     #[strum(serialize = "oldap-2.5")]
-    OpenLdapPublicLicensev2_5,
+    OpenLdapPublicv2_5,
     #[strum(serialize = "oldap-2.6")]
-    OpenLdapPublicLicensev2_6,
+    OpenLdapPublicv2_6,
     #[strum(serialize = "oldap-2.7")]
-    OpenLdapPublicLicensev2_7,
+    OpenLdapPublicv2_7,
     #[strum(serialize = "oldap-2.8")]
-    OpenLdapPublicLicensev2_8,
+    OpenLdapPublicv2_8,
     #[strum(serialize = "oml")]
-    OpenMarketLicense,
+    OpenMarket,
     #[strum(serialize = "openssl")]
-    OpenSslLicense,
+    OpenSsl,
     #[strum(serialize = "opl-1.0")]
-    OpenPublicLicensev1_0,
+    OpenPublicv1_0,
     #[strum(serialize = "opubl-1.0")]
-    OpenPublicationLicensev1_0,
+    OpenPublicationv1_0,
     #[strum(serialize = "oset-pl-2.1")]
-    OsetPublicLicenseversion2_1,
+    OsetPublicversion2_1,
     #[strum(serialize = "osl-1.0")]
-    OpenSoftwareLicense1_0,
+    OpenSoftware1_0,
     #[strum(serialize = "osl-1.1")]
-    OpenSoftwareLicense1_1,
+    OpenSoftware1_1,
     #[strum(serialize = "osl-2.0")]
-    OpenSoftwareLicense2_0,
+    OpenSoftware2_0,
     #[strum(serialize = "osl-2.1")]
-    OpenSoftwareLicense2_1,
+    OpenSoftware2_1,
     #[strum(serialize = "osl-3.0")]
-    OpenSoftwareLicense3_0,
+    OpenSoftware3_0,
     #[strum(serialize = "parity-6.0.0")]
-    TheParityPublicLicense6_0_0,
+    TheParityPublic6_0_0,
     #[strum(serialize = "parity-7.0.0")]
-    TheParityPublicLicense7_0_0,
+    TheParityPublic7_0_0,
     #[strum(serialize = "pddl-1.0")]
-    OpenDataCommonsPublicDomainDedicationLicense1_0,
+    OpenDataCommonsPublicDomainDedication1_0,
     #[strum(serialize = "php-3.0")]
-    PhpLicensev3_0,
+    Phpv3_0,
     #[strum(serialize = "php-3.01")]
-    PhpLicensev3_01,
+    Phpv3_01,
     #[strum(serialize = "plexus")]
-    PlexusClassworldsLicense,
+    PlexusClassworlds,
     #[strum(serialize = "polyform-noncommercial-1.0.0")]
-    PolyFormNoncommercialLicense1_0_0,
+    PolyFormNoncommercial1_0_0,
     #[strum(serialize = "polyform-small-business-1.0.0")]
-    PolyFormSmallBusinessLicense1_0_0,
+    PolyFormSmallBusiness1_0_0,
     #[strum(serialize = "postgresql")]
-    PostgreSqlLicense,
+    PostgreSql,
     #[strum(serialize = "psf-2.0")]
-    PythonSoftwareFoundationLicense2_0,
+    PythonSoftwareFoundation2_0,
     #[strum(serialize = "psfrag")]
-    PsfragLicense,
+    Psfrag,
     #[strum(serialize = "psutils")]
-    PsutilsLicense,
+    Psutils,
     #[strum(serialize = "python-2.0")]
-    PythonLicense2_0,
+    Python2_0,
     #[strum(serialize = "python-2.0.1")]
-    PythonLicense2_0_1,
+    Python2_0_1,
     #[strum(serialize = "qhull")]
-    QhullLicense,
+    Qhull,
     #[strum(serialize = "qpl-1.0")]
-    QPublicLicense1_0,
+    QPublic1_0,
     #[strum(serialize = "rdisc")]
-    RdiscLicense,
+    Rdisc,
     #[strum(serialize = "rhecos-1.1")]
-    RedHateCosPublicLicensev1_1,
+    RedHateCosPublicv1_1,
     #[strum(serialize = "rpl-1.1")]
-    ReciprocalPublicLicense1_1,
+    ReciprocalPublic1_1,
     #[strum(serialize = "rpl-1.5")]
-    ReciprocalPublicLicense1_5,
+    ReciprocalPublic1_5,
     #[strum(serialize = "rpsl-1.0")]
-    RealNetworksPublicSourceLicensev1_0,
+    RealNetworksPublicSourcev1_0,
     #[strum(serialize = "rsa-md")]
-    RsaMessageDigestLicense,
+    RsaMessageDigest,
     #[strum(serialize = "rscpl")]
-    RicohSourceCodePublicLicense,
+    RicohSourceCodePublic,
     #[strum(serialize = "ruby")]
-    RubyLicense,
+    Ruby,
     #[strum(serialize = "sax-pd")]
     SaxPublicDomainNotice,
     #[strum(serialize = "saxpath")]
-    SaxpathLicense,
+    Saxpath,
     #[strum(serialize = "scea")]
-    SceaSharedSourceLicense,
+    SceaSharedSource,
     #[strum(serialize = "schemereport")]
-    SchemeLanguageReportLicense,
+    SchemeLanguageReport,
     #[strum(serialize = "sendmail")]
-    SendmailLicense,
+    Sendmail,
     #[strum(serialize = "sendmail-8.23")]
-    SendmailLicense8_23,
+    Sendmail8_23,
     #[strum(serialize = "sgi-b-1.0")]
-    SgiFreeSoftwareLicenseBv1_0,
+    SgiFreeSoftwareBv1_0,
     #[strum(serialize = "sgi-b-1.1")]
-    SgiFreeSoftwareLicenseBv1_1,
+    SgiFreeSoftwareBv1_1,
     #[strum(serialize = "sgi-b-2.0")]
-    SgiFreeSoftwareLicenseBv2_0,
+    SgiFreeSoftwareBv2_0,
     #[strum(serialize = "shl-0.5")]
-    SolderpadHardwareLicensev0_5,
+    SolderpadHardwarev0_5,
     #[strum(serialize = "shl-0.51")]
-    SolderpadHardwareLicense,
+    SolderpadHardware,
     Version0_51,
     #[strum(serialize = "simpl-2.0")]
-    SimplePublicLicense2_0,
+    SimplePublic2_0,
     #[strum(serialize = "sissl")]
-    SunIndustryStandardsSourceLicensev1_1,
+    SunIndustryStandardsSourcev1_1,
     #[strum(serialize = "sissl-1.2")]
-    SunIndustryStandardsSourceLicensev1_2,
+    SunIndustryStandardsSourcev1_2,
     #[strum(serialize = "sleepycat")]
-    SleepycatLicense,
+    Sleepycat,
     #[strum(serialize = "smlnj")]
-    StandardMlOfNewJerseyLicense,
+    StandardMlOfNewJersey,
     #[strum(serialize = "smppl")]
-    SecureMessagingProtocolPublicLicense,
+    SecureMessagingProtocolPublic,
     #[strum(serialize = "snia")]
-    SniaPublicLicense1_1,
+    SniaPublic1_1,
     #[strum(serialize = "spencer-86")]
-    SpencerLicense86,
+    Spencer86,
     #[strum(serialize = "spencer-94")]
-    SpencerLicense94,
+    Spencer94,
     #[strum(serialize = "spencer-99")]
-    SpencerLicense99,
+    Spencer99,
     #[strum(serialize = "spl-1.0")]
-    SunPublicLicensev1_0,
+    SunPublicv1_0,
     #[strum(serialize = "ssh-openssh")]
     SshOpenSshlicense,
     #[strum(serialize = "ssh-short")]
     SshShortNotice,
     #[strum(serialize = "sspl-1.0")]
-    ServerSidePublicLicensev1,
+    ServerSidePublicv1,
     #[strum(serialize = "sugarcrm-1.1.3")]
-    SugarCrmPublicLicensev1_1_3,
+    SugarCrmPublicv1_1_3,
     #[strum(serialize = "swl")]
-    SchemeWidgetLibrarySwlSoftwareLicenseAgreement,
+    SchemeWidgetLibrarySwlSoftwareAgreement,
     #[strum(serialize = "tapr-ohl-1.0")]
-    TaprOpenHardwareLicensev1_0,
+    TaprOpenHardwarev1_0,
     #[strum(serialize = "tcl")]
-    TclTkLicense,
+    TclTk,
     #[strum(serialize = "tcp-wrappers")]
-    TcpWrappersLicense,
+    TcpWrappers,
     #[strum(serialize = "tmate")]
-    TMateOpenSourceLicense,
+    TMateOpenSource,
     #[strum(serialize = "torque-1.1")]
-    TorqueV2_5SoftwareLicensev1_1,
+    TorqueV2_5Softwarev1_1,
     #[strum(serialize = "tosl")]
-    TrussterOpenSourceLicense,
+    TrussterOpenSource,
     #[strum(serialize = "tu-berlin-1.0")]
-    TechnischeUniversitaetBerlinLicense1_0,
+    TechnischeUniversitaetBerlin1_0,
     #[strum(serialize = "tu-berlin-2.0")]
-    TechnischeUniversitaetBerlinLicense2_0,
+    TechnischeUniversitaetBerlin2_0,
     #[strum(serialize = "ucl-1.0")]
-    UpstreamCompatibilityLicensev1_0,
+    UpstreamCompatibilityv1_0,
     #[strum(serialize = "unicode-dfs-2015")]
-    UnicodeLicenseAgreementDataFilesAndSoftware2015,
+    UnicodeAgreementDataFilesAndSoftware2015,
     #[strum(serialize = "unicode-dfs-2016")]
-    UnicodeLicenseAgreementDataFilesAndSoftware2016,
+    UnicodeAgreementDataFilesAndSoftware2016,
     #[strum(serialize = "unicode-tou")]
     UnicodeTermsofUse,
     #[strum(serialize = "unlicense")]
     TheUnlicense,
     #[strum(serialize = "upl-1.0")]
-    UniversalPermissiveLicensev1_0,
+    UniversalPermissivev1_0,
     #[strum(serialize = "vim")]
-    VimLicense,
+    Vim,
     #[strum(serialize = "vostrom")]
-    VostromPublicLicenseforOpenSource,
+    VostromPublicforOpenSource,
     #[strum(serialize = "vsl-1.0")]
-    VovidaSoftwareLicensev1_0,
+    VovidaSoftwarev1_0,
     #[strum(serialize = "w3c")]
-    W3cSoftwareNoticeAndLicense20021231,
+    W3cSoftwareNoticeAnd20021231,
     #[strum(serialize = "w3c-19980720")]
-    W3cSoftwareNoticeAndLicense19980720,
+    W3cSoftwareNoticeAnd19980720,
     #[strum(serialize = "w3c-20150513")]
-    W3cSoftwareNoticeAndDocumentLicense20150513,
+    W3cSoftwareNoticeAndDocument20150513,
     #[strum(serialize = "watcom-1.0")]
-    SybaseOpenWatcomPublicLicense1_0,
+    SybaseOpenWatcomPublic1_0,
     #[strum(serialize = "wsuipa")]
-    WsuipaLicense,
+    Wsuipa,
     #[strum(serialize = "wtfpl")]
-    DoWhatTheFckYouWantToPublicLicense,
+    DoWhatTheFckYouWantToPublic,
     #[strum(serialize = "x11")]
     X11License,
     #[strum(serialize = "x11-distribute-modifications-variant")]
     X11LicenseDistributionModificationVariant,
     #[strum(serialize = "xerox")]
-    XeroxLicense,
+    Xerox,
     #[strum(serialize = "xfree86-1.1")]
     XFree86License1_1,
     #[strum(serialize = "xinetd")]
-    XinetdLicense,
+    Xinetd,
     #[strum(serialize = "xnet")]
-    XNetLicense,
+    XNet,
     #[strum(serialize = "xpp")]
-    XppLicense,
+    Xpp,
     #[strum(serialize = "xskat")]
-    XSkatLicense,
+    XSkat,
     #[strum(serialize = "ypl-1.0")]
-    YahooPublicLicensev1_0,
+    YahooPublicv1_0,
     #[strum(serialize = "ypl-1.1")]
-    YahooPublicLicensev1_1,
+    YahooPublicv1_1,
     #[strum(serialize = "zed")]
-    ZedLicense,
+    Zed,
     #[strum(serialize = "zend-2.0")]
-    ZendLicensev2_0,
+    Zendv2_0,
     #[strum(serialize = "zimbra-1.3")]
-    ZimbraPublicLicensev1_3,
+    ZimbraPublicv1_3,
     #[strum(serialize = "zimbra-1.4")]
-    ZimbraPublicLicensev1_4,
+    ZimbraPublicv1_4,
     #[strum(serialize = "zlib")]
-    ZlibLicense,
+    Zlib,
     #[strum(serialize = "zlib-acknowledgement")]
-    ZlibLibpngLicensewithAcknowledgement,
+    ZlibLibpngwithAcknowledgement,
     #[strum(serialize = "zpl-1.1")]
-    ZopePublicLicense1_1,
+    ZopePublic1_1,
     #[strum(serialize = "zpl-2.0")]
-    ZopePublicLicense2_0,
+    ZopePublic2_0,
     #[strum(serialize = "zpl-2.1")]
-    ZopePublicLicense2_1,
+    ZopePublic2_1,
 
     #[strum(disabled)]
     Other(String),
