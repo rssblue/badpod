@@ -76,12 +76,12 @@ fn deserialize() {
                     },
                 },
                 podcast_location: Some(podcast::Location {
-                    geo: Some(podcast::Geo::Ok(podcast::GeoCoordinates {
+                    geo: Some(podcast::Geo::Ok{
                         latitude: 33.51601,
                         longitude: -86.81455,
                         altitude: None,
                         uncertainty: None
-                    })),
+                    }),
                     osm: Some(podcast::Osm::Ok(podcast::OsmObject {
                         type_: podcast::OsmType::Relation,
                         id: 6930627,
@@ -339,12 +339,12 @@ fn deserialize() {
                     },
                 },
                 podcast_location: Some(podcast::Location{
-                    geo: Some(podcast::Geo::Ok(podcast::GeoCoordinates{
+                    geo: Some(podcast::Geo::Ok{
                         latitude: 30.2672,
                         longitude: 97.7431,
                         altitude: None,
                         uncertainty: None,
-                    })),
+                    }),
                     osm: Some(podcast::Osm::Ok(podcast::OsmObject{
                         type_: podcast::OsmType::Relation,
                         id: 113314,

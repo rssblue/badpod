@@ -13,7 +13,7 @@ mod person;
 pub use person::{PersonGroup, PersonRole};
 
 mod location;
-pub use location::{Geo, GeoCoordinates, Osm, OsmObject, OsmType};
+pub use location::{Geo, Osm, OsmObject, OsmType};
 
 mod license;
 pub use license::LicenseType;

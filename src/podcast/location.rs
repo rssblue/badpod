@@ -1,16 +1,14 @@
+use serde::de::Error;
 use serde::{Deserialize, Deserializer};
 
 #[derive(Debug, PartialEq)]
-pub struct GeoCoordinates {
-    pub latitude: f64,
-    pub longitude: f64,
-    pub altitude: Option<f64>,
-    pub uncertainty: Option<f64>,
-}
-
-#[derive(Debug, PartialEq)]
 pub enum Geo {
-    Ok(GeoCoordinates),
+    Ok {
+        latitude: f64,
+        longitude: f64,
+        altitude: Option<f64>,
+        uncertainty: Option<f64>,
+    },
     Other(String),
 }
 
@@ -21,30 +19,30 @@ impl<'de> Deserialize<'de> for Geo {
             Err(e) => return Err(e),
         };
 
-        match parse_geo(s.clone()) {
-            Ok(geo_coordinates) => Ok(Geo::Ok(geo_coordinates)),
-            Err(_) => Ok(Geo::Other(s)),
+        match parse_geo(s) {
+            Ok(geo) => Ok(geo),
+            Err(e) => Err(e).map_err(D::Error::custom),
         }
     }
 }
 
-fn parse_geo(s: String) -> Result<GeoCoordinates, String> {
+fn parse_geo(s: String) -> Result<Geo, String> {
     if s.len() < 5 || !s.starts_with("geo:") {
-        return Err("should start with \"geo:\"".to_string());
+        return Ok(Geo::Other(s));
     }
 
     // Part after "geo:"
     let data = s[4..].to_string();
 
-    let num_commas = data.matches(",").count();
+    let num_commas = data.matches(',').count();
     if num_commas > 2 {
-        return Err("should not have more than two commas".to_string());
+        return Ok(Geo::Other(s));
     }
     let has_altitude = num_commas == 2;
 
-    let num_semicolons = data.matches(";").count();
+    let num_semicolons = data.matches(';').count();
     if num_semicolons > 1 {
-        return Err("should not have more than one semicolon".to_string());
+        return Ok(Geo::Other(s));
     }
     let has_uncertainty = num_semicolons == 1;
 
@@ -69,26 +67,26 @@ fn parse_geo(s: String) -> Result<GeoCoordinates, String> {
     };
     let caps = match re.captures(data.as_str()) {
         Some(caps) => caps,
-        None => return Err("wrong pattern".to_string()),
+        None => return Ok(Geo::Other(s)),
     };
 
     let latitude = &caps["latitude"];
     let latitude = match latitude.parse::<f64>() {
         Ok(latitude) => latitude,
-        Err(e) => return Err(e.to_string()),
+        Err(_) => return Ok(Geo::Other(s)),
     };
 
     let longitude = &caps["longitude"];
     let longitude = match longitude.parse::<f64>() {
         Ok(longitude) => longitude,
-        Err(e) => return Err(e.to_string()),
+        Err(_) => return Ok(Geo::Other(s)),
     };
 
     let mut altitude: Option<f64> = None;
     if has_altitude {
         altitude = match &caps["altitude"].parse::<f64>() {
             Ok(altitude) => Some(*altitude),
-            Err(e) => return Err(e.to_string()),
+            Err(_) => return Ok(Geo::Other(s)),
         };
     }
 
@@ -96,15 +94,15 @@ fn parse_geo(s: String) -> Result<GeoCoordinates, String> {
     if has_uncertainty {
         uncertainty = match &caps["uncertainty"].parse::<f64>() {
             Ok(uncertainty) => Some(*uncertainty),
-            Err(e) => return Err(e.to_string()),
+            Err(_) => return Ok(Geo::Other(s)),
         };
     }
 
-    Ok(GeoCoordinates {
-        latitude: latitude,
-        longitude: longitude,
-        altitude: altitude,
-        uncertainty: uncertainty,
+    Ok(Geo::Ok {
+        latitude,
+        longitude,
+        altitude,
+        uncertainty,
     })
 }
 
@@ -197,7 +195,7 @@ mod tests {
     fn test_parse_geo() {
         pretty_assertions::assert_eq!(
             parse_geo("geo:37.786971,-122.399677".to_string()),
-            Ok(GeoCoordinates {
+            Ok(Geo::Ok {
                 latitude: 37.786971,
                 longitude: -122.399677,
                 altitude: None,
@@ -207,7 +205,7 @@ mod tests {
 
         pretty_assertions::assert_eq!(
             parse_geo("geo:37.786971,-122.399677,250".to_string()),
-            Ok(GeoCoordinates {
+            Ok(Geo::Ok {
                 latitude: 37.786971,
                 longitude: -122.399677,
                 altitude: Some(250.0),
@@ -217,7 +215,7 @@ mod tests {
 
         pretty_assertions::assert_eq!(
             parse_geo("geo:37.786971,-122.399677;u=350".to_string()),
-            Ok(GeoCoordinates {
+            Ok(Geo::Ok {
                 latitude: 37.786971,
                 longitude: -122.399677,
                 altitude: None,
@@ -227,7 +225,7 @@ mod tests {
 
         pretty_assertions::assert_eq!(
             parse_geo("geo:37.786971,-122.399677,250;u=350".to_string()),
-            Ok(GeoCoordinates {
+            Ok(Geo::Ok {
                 latitude: 37.786971,
                 longitude: -122.399677,
                 altitude: Some(250.0),
@@ -237,7 +235,9 @@ mod tests {
 
         pretty_assertions::assert_eq!(
             parse_geo("geo:37.786971,-122.399677,250,u=350".to_string()),
-            Err("should not have more than two commas".to_string()),
+            Ok(Geo::Other(
+                "geo:37.786971,-122.399677,250,u=350".to_string()
+            )),
         );
     }
 
