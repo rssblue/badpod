@@ -480,17 +480,17 @@ pub enum LanguageFrench {
     #[strum(serialize = "fr")]
     Default,
     #[strum(serialize = "fr-be")]
-    FrenchBelgium,
+    Belgium,
     #[strum(serialize = "fr-ca")]
-    FrenchCanada,
+    Canada,
     #[strum(serialize = "fr-ch")]
-    FrenchSwitzerland,
+    Switzerland,
     #[strum(serialize = "fr-fr")]
-    FrenchFrance,
+    France,
     #[strum(serialize = "fr-lu")]
-    FrenchLuxembourg,
+    Luxembourg,
     #[strum(serialize = "fr-mc")]
-    FrenchMonaco,
+    Monaco,
 }
 
 #[derive(Debug, PartialEq, Eq, EnumString, Display, Default)]
@@ -499,9 +499,9 @@ pub enum LanguageItalian {
     #[strum(serialize = "it")]
     Default,
     #[strum(serialize = "it-ch")]
-    ItalianSwitzerland,
+    Switzerland,
     #[strum(serialize = "it-it")]
-    ItalianItaly,
+    Italy,
 }
 
 #[derive(Debug, PartialEq, Eq, EnumString, Display, Default)]
@@ -510,9 +510,9 @@ pub enum LanguageDutch {
     #[strum(serialize = "nl")]
     Default,
     #[strum(serialize = "nl-be")]
-    DutchBelgium,
+    Belgium,
     #[strum(serialize = "nl-nl")]
-    DutchNetherlands,
+    Netherlands,
 }
 
 #[derive(Debug, PartialEq, Eq, EnumString, Display, Default)]
@@ -521,9 +521,9 @@ pub enum LanguagePortugese {
     #[strum(serialize = "pt")]
     Default,
     #[strum(serialize = "pt-br")]
-    PortugueseBrazil,
+    Brazil,
     #[strum(serialize = "pt-pt")]
-    PortuguesePortugal,
+    Portugal,
 }
 
 #[derive(Debug, PartialEq, Eq, EnumString, Display, Default)]
@@ -532,9 +532,9 @@ pub enum LanguageRomanian {
     #[strum(serialize = "ro")]
     Default,
     #[strum(serialize = "ro-mo")]
-    RomanianMoldova,
+    Moldova,
     #[strum(serialize = "ro-ro")]
-    RomanianRomania,
+    Romania,
 }
 
 #[derive(Debug, PartialEq, Eq, EnumString, Display, Default)]
@@ -543,9 +543,9 @@ pub enum LanguageRussian {
     #[strum(serialize = "ru")]
     Default,
     #[strum(serialize = "ru-mo")]
-    RussianMoldova,
+    Moldova,
     #[strum(serialize = "ru-ru")]
-    RussianRussia,
+    Russia,
 }
 
 #[derive(Debug, PartialEq, Eq, EnumString, Display, Default)]
@@ -554,9 +554,9 @@ pub enum LanguageSwedish {
     #[strum(serialize = "sv")]
     Default,
     #[strum(serialize = "sv-fi")]
-    SwedishFinland,
+    Finland,
     #[strum(serialize = "sv-se")]
-    SwedishSweden,
+    Sweden,
 }
 
 #[derive(Debug, PartialEq, Eq, EnumString, Display, Default)]
@@ -565,9 +565,9 @@ pub enum LanguageChinese {
     #[strum(serialize = "zh")]
     Default,
     #[strum(serialize = "zh-cn")]
-    ChineseSimplified,
+    Simplified,
     #[strum(serialize = "zh-tw")]
-    ChineseTraditional,
+    Traditional,
 }
 
 impl<'de> Deserialize<'de> for Language {
@@ -580,77 +580,77 @@ impl<'de> Deserialize<'de> for Language {
 
         if s.starts_with("de") {
             return match LanguageGerman::from_str(s.as_str()) {
-                Ok(variant) => Ok(Language::German(variant)),
+                Ok(region) => Ok(Language::German(region)),
                 Err(_) => Ok(Language::Other(s)),
             };
         }
 
         if s.starts_with("en") {
             return match LanguageEnglish::from_str(s.as_str()) {
-                Ok(variant) => Ok(Language::English(variant)),
+                Ok(region) => Ok(Language::English(region)),
                 Err(_) => Ok(Language::Other(s)),
             };
         }
 
         if s.starts_with("es") {
             return match LanguageSpanish::from_str(s.as_str()) {
-                Ok(variant) => Ok(Language::Spanish(variant)),
+                Ok(region) => Ok(Language::Spanish(region)),
                 Err(_) => Ok(Language::Other(s)),
             };
         }
 
         if s.starts_with("fr") {
             return match LanguageFrench::from_str(s.as_str()) {
-                Ok(variant) => Ok(Language::French(variant)),
+                Ok(region) => Ok(Language::French(region)),
                 Err(_) => Ok(Language::Other(s)),
             };
         }
 
         if s.starts_with("it") {
             return match LanguageItalian::from_str(s.as_str()) {
-                Ok(variant) => Ok(Language::Italian(variant)),
+                Ok(region) => Ok(Language::Italian(region)),
                 Err(_) => Ok(Language::Other(s)),
             };
         }
 
         if s.starts_with("nl") {
             return match LanguageDutch::from_str(s.as_str()) {
-                Ok(variant) => Ok(Language::Dutch(variant)),
+                Ok(region) => Ok(Language::Dutch(region)),
                 Err(_) => Ok(Language::Other(s)),
             };
         }
 
         if s.starts_with("pt") {
             return match LanguagePortugese::from_str(s.as_str()) {
-                Ok(variant) => Ok(Language::Portuguese(variant)),
+                Ok(region) => Ok(Language::Portuguese(region)),
                 Err(_) => Ok(Language::Other(s)),
             };
         }
 
         if s.starts_with("ro") {
             return match LanguageRomanian::from_str(s.as_str()) {
-                Ok(variant) => Ok(Language::Romanian(variant)),
+                Ok(region) => Ok(Language::Romanian(region)),
                 Err(_) => Ok(Language::Other(s)),
             };
         }
 
         if s.starts_with("ru") {
             return match LanguageRussian::from_str(s.as_str()) {
-                Ok(variant) => Ok(Language::Russian(variant)),
+                Ok(region) => Ok(Language::Russian(region)),
                 Err(_) => Ok(Language::Other(s)),
             };
         }
 
         if s.starts_with("sv") {
             return match LanguageSwedish::from_str(s.as_str()) {
-                Ok(variant) => Ok(Language::Swedish(variant)),
+                Ok(region) => Ok(Language::Swedish(region)),
                 Err(_) => Ok(Language::Other(s)),
             };
         }
 
         if s.starts_with("zh") {
             return match LanguageChinese::from_str(s.as_str()) {
-                Ok(variant) => Ok(Language::Chinese(variant)),
+                Ok(region) => Ok(Language::Chinese(region)),
                 Err(_) => Ok(Language::Other(s)),
             };
         }
