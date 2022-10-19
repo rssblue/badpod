@@ -1,5 +1,5 @@
 use chrono::prelude::*;
-use parse_rss::*;
+use badpod::*;
 
 #[test]
 fn deserialize() {
@@ -91,7 +91,7 @@ fn deserialize() {
                 }),
                 podcast_trailers: vec! {
                     podcast::Trailer{
-                        pub_date: Some(parse_rss::DateTime::Ok(chrono::FixedOffset::west(5*60*60).ymd(2021, 4, 1).and_hms(8, 0, 0))),
+                        pub_date: Some(badpod::DateTime::Ok(chrono::FixedOffset::west(5*60*60).ymd(2021, 4, 1).and_hms(8, 0, 0))),
                         url: Some("https://example.org/trailers/teaser".to_string()),
                         length: Some(Integer::Ok(12345678)),
                         type_: Some(MimeEnclosure::Mp3),
@@ -145,7 +145,7 @@ fn deserialize() {
                     }),
                     itunes_duration: Some(Number::Integer(1079)),
                     itunes_explicit: Some(Bool::Ok(true)),
-                    pub_date: Some(parse_rss::DateTime::Ok(chrono::FixedOffset::west(0).ymd(2022, 10, 10).and_hms(6, 10, 5))),
+                    pub_date: Some(badpod::DateTime::Ok(chrono::FixedOffset::west(0).ymd(2022, 10, 10).and_hms(6, 10, 5))),
 
                     podcast_chapters: Some(podcast::Chapters{
                         url: Some("https://example.com/episode-1/chapters.json".to_string()),
@@ -273,8 +273,8 @@ fn deserialize() {
                 podcast_live_items: vec! {
                     podcast::LiveItem{
                         status: Some(podcast::LiveItemStatus::Live),
-                        start: Some(parse_rss::DateTime::Ok(chrono::FixedOffset::west(6*60*60).ymd(2021, 9, 26).and_hms(7, 30, 0))),
-                        end: Some(parse_rss::DateTime::Ok(chrono::FixedOffset::west(6*60*60).ymd(2021, 9, 26).and_hms(9, 30, 0))),
+                        start: Some(badpod::DateTime::Ok(chrono::FixedOffset::west(6*60*60).ymd(2021, 9, 26).and_hms(7, 30, 0))),
+                        end: Some(badpod::DateTime::Ok(chrono::FixedOffset::west(6*60*60).ymd(2021, 9, 26).and_hms(9, 30, 0))),
                         title: Some("Podcasting 2.0 Live Stream".to_string()),
                         guid: Some(Guid{
                             is_permalink: None,
@@ -377,7 +377,7 @@ fn deserialize() {
                 podcast_trailers: vec!{
                     podcast::Trailer{
                         url: Some("https://example.org/trailers/teaser".to_string()),
-                        pub_date: Some(parse_rss::DateTime::Ok(chrono::FixedOffset::west(5*60*60).ymd(2021, 4, 1).and_hms(8, 0, 0))),
+                        pub_date: Some(badpod::DateTime::Ok(chrono::FixedOffset::west(5*60*60).ymd(2021, 4, 1).and_hms(8, 0, 0))),
                         length: Some(Integer::Ok(12345678)),
                         type_: Some(MimeEnclosure::Other("audio/mp3".to_string())),
                         value: Some("Coming April 1st, 2021".to_string()),
@@ -387,8 +387,8 @@ fn deserialize() {
                 podcast_live_items: vec!{
                     podcast::LiveItem{
                         status: Some(podcast::LiveItemStatus::Live),
-                        start: Some(parse_rss::DateTime::Ok(chrono::FixedOffset::west(6*60*60).ymd(2021, 9, 26).and_hms(7, 30, 0))),
-                        end: Some(parse_rss::DateTime::Ok(chrono::FixedOffset::west(6*60*60).ymd(2021, 9, 26).and_hms(9, 30, 0))),
+                        start: Some(badpod::DateTime::Ok(chrono::FixedOffset::west(6*60*60).ymd(2021, 9, 26).and_hms(7, 30, 0))),
+                        end: Some(badpod::DateTime::Ok(chrono::FixedOffset::west(6*60*60).ymd(2021, 9, 26).and_hms(9, 30, 0))),
                         title: Some("Podcasting 2.0 Live Show".to_string()),
                         description: Some("A look into the future of podcasting and how we get to Podcasting 2.0!".to_string()),
                         link: Some("https://example.com/podcast/live".to_string()),
@@ -459,7 +459,7 @@ fn deserialize() {
                             is_permalink: Some(Bool::Ok(true)),
                             value: Some("https://example.com/ep0003".to_string()),
                         }),
-                        pub_date: Some(parse_rss::DateTime::Ok(chrono::FixedOffset::west(0).ymd(2020, 10, 9).and_hms(4, 30, 38))),
+                        pub_date: Some(badpod::DateTime::Ok(chrono::FixedOffset::west(0).ymd(2020, 10, 9).and_hms(4, 30, 38))),
                         enclosure: Some(Enclosure{
                             url: Some("https://example.com/file-03.mp3".to_string()),
                             length: Some(Integer::Ok(43200000)),
@@ -675,7 +675,7 @@ fn deserialize() {
                             is_permalink: Some(Bool::Ok(true)),
                             value: Some("https://example.com/ep0002".to_string()),
                         }),
-                        pub_date: Some(parse_rss::DateTime::Ok(chrono::FixedOffset::west(0).ymd(2020, 10, 8).and_hms(4, 30, 38))),
+                        pub_date: Some(badpod::DateTime::Ok(chrono::FixedOffset::west(0).ymd(2020, 10, 8).and_hms(4, 30, 38))),
                         enclosure: Some(Enclosure{
                             url: Some("https://example.com/file-02.mp3".to_string()),
                             length: Some(Integer::Ok(43113000)),
@@ -852,7 +852,7 @@ fn deserialize() {
                             is_permalink: Some(Bool::Ok(true)),
                             value: Some("https://example.com/ep0001".to_string()),
                         }),
-                        pub_date: Some(parse_rss::DateTime::Ok(chrono::FixedOffset::west(0).ymd(2020, 10, 7).and_hms(4, 30, 38))),
+                        pub_date: Some(badpod::DateTime::Ok(chrono::FixedOffset::west(0).ymd(2020, 10, 7).and_hms(4, 30, 38))),
                         enclosure: Some(Enclosure{
                             url: Some("https://example.com/file-01.mp3".to_string()),
                             length: Some(Integer::Ok(43111403)),
@@ -1008,7 +1008,7 @@ fn deserialize() {
     ];
 
     for (input, expected) in conditions {
-        let output = parse_rss::from_str(input);
+        let output = badpod::from_str(input);
         pretty_assertions::assert_eq!(output, *expected);
     }
 }
