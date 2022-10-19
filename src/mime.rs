@@ -5,21 +5,21 @@ use strum_macros::{Display, EnumString};
 #[derive(Debug, PartialEq, Eq, EnumString, Display)]
 pub enum Enclosure {
     #[strum(serialize = "audio/x-m4a")]
-    M4a,
+    AudioM4a,
     #[strum(serialize = "audio/mpeg")]
-    Mp3,
+    AudioMp3,
     #[strum(serialize = "video/quicktime")]
-    Mov,
+    VideoQuicktime,
     #[strum(serialize = "video/mp4")]
-    Mp4,
+    VideoMp4,
     #[strum(serialize = "video/x-m4v")]
-    M4v,
+    VideoM4v,
     #[strum(serialize = "application/pdf")]
-    Pdf,
+    ApplicationPdf,
     #[strum(serialize = "audio/opus")]
-    Opus,
+    AudioOpus,
     #[strum(serialize = "audio/aac")]
-    Aac,
+    AudioAac,
 
     #[strum(disabled)]
     Other(String),
@@ -42,15 +42,15 @@ impl<'de> Deserialize<'de> for Enclosure {
 #[derive(Debug, PartialEq, Eq, EnumString, Display)]
 pub enum Transcript {
     #[strum(serialize = "text/plain")]
-    Plain,
+    TextPlain,
     #[strum(serialize = "text/html")]
-    Html,
+    TextHtml,
     #[strum(serialize = "text/vtt")]
-    Vtt,
+    TextVtt,
     #[strum(serialize = "application/json")]
-    Json,
+    ApplicationJson,
     #[strum(serialize = "application/x-subrip")]
-    Srt,
+    ApplicationSubrip,
     /// Not supported by IANA, but was once part of podcast namespace specification.
     #[deprecated]
     #[strum(serialize = "application/srt")]

@@ -94,7 +94,7 @@ fn deserialize() {
                         pub_date: Some(badpod::DateTime::Ok(chrono::FixedOffset::west(5*60*60).ymd(2021, 4, 1).and_hms(8, 0, 0))),
                         url: Some("https://example.org/trailers/teaser".to_string()),
                         length: Some(Integer::Ok(12345678)),
-                        type_: Some(MimeEnclosure::Mp3),
+                        type_: Some(MimeEnclosure::AudioMp3),
                         season: None,
                         value: Some("Coming April 1st, 2021".to_string()),
                     },
@@ -141,7 +141,7 @@ fn deserialize() {
                     enclosure: Some(Enclosure{
                         url: Some("http://example.com/episode-1.mp3".to_string()),
                         length: Some(Integer::Ok(100200)),
-                        type_: Some(MimeEnclosure::Mp3),
+                        type_: Some(MimeEnclosure::AudioMp3),
                     }),
                     itunes_duration: Some(Number::Integer(1079)),
                     itunes_explicit: Some(Bool::Ok(true)),
@@ -209,7 +209,7 @@ fn deserialize() {
                     podcast_transcripts: vec! {
                         podcast::Transcript{
                             url: Some("https://example.com/episode1/transcript.json".to_string()),
-                            type_: Some(MimeTranscript::Json),
+                            type_: Some(MimeTranscript::ApplicationJson),
                             language: Some(Language::Spanish(LanguageSpanish::Default)),
                             rel: Some(podcast::TranscriptRel::Captions),
                         },
@@ -217,7 +217,7 @@ fn deserialize() {
                     itunes_block: Some(itunes::Yes::Other("yes".to_string())),
                     podcast_alternate_enclosures: vec!{
                         podcast::AlternateEnclosure{
-                            type_: Some(MimeEnclosure::Mp3),
+                            type_: Some(MimeEnclosure::AudioMp3),
                             length: Some(Integer::Ok(2490970)),
                             bit_rate: Some(Float::Ok(160707.74)),
                             podcast_sources: vec!{
@@ -241,7 +241,7 @@ fn deserialize() {
                             ..Default::default()
                         },
                         podcast::AlternateEnclosure{
-                            type_: Some(MimeEnclosure::Mp4),
+                            type_: Some(MimeEnclosure::VideoMp4),
                             length: Some(Integer::Ok(10562995)),
                             bit_rate: Some(Float::Ok(681483.55)),
                             height: Some(Integer::Ok(1080)),
@@ -283,7 +283,7 @@ fn deserialize() {
                         enclosure: Some(Enclosure{
                             url: Some("https://example.com/pc20/livestream?format=.mp3".to_string()),
                             length: Some(Integer::Ok(312)),
-                            type_: Some(MimeEnclosure::Mp3),
+                            type_: Some(MimeEnclosure::AudioMp3),
                         }),
                         content_links: vec!{
                             podcast::ContentLink{
@@ -398,7 +398,7 @@ fn deserialize() {
                         }),
                         podcast_alternate_enclosures: vec!{
                             podcast::AlternateEnclosure{
-                                type_: Some(MimeEnclosure::Mp3),
+                                type_: Some(MimeEnclosure::AudioMp3),
                                 length: Some(Integer::Ok(312)),
                                 default: Some(Bool::Ok(true)),
                                 podcast_sources: vec!{
@@ -412,7 +412,7 @@ fn deserialize() {
                         },
                         enclosure: Some(Enclosure {
                             url: Some("https://example.com/pc20/livestream?format=.mp3".to_string()),
-                            type_: Some(MimeEnclosure::Mp3),
+                            type_: Some(MimeEnclosure::AudioMp3),
                             length: Some(Integer::Ok(312)),
                         }),
                         content_links: vec!{
@@ -463,7 +463,7 @@ fn deserialize() {
                         enclosure: Some(Enclosure{
                             url: Some("https://example.com/file-03.mp3".to_string()),
                             length: Some(Integer::Ok(43200000)),
-                            type_: Some(MimeEnclosure::Mp3),
+                            type_: Some(MimeEnclosure::AudioMp3),
                         }),
 
                         itunes_image: Some(itunes::Image{
@@ -501,7 +501,7 @@ fn deserialize() {
                         podcast_transcripts: vec!{
                             podcast::Transcript{
                                 url: Some("https://example.com/ep3/transcript.txt".to_string()),
-                                type_: Some(MimeTranscript::Plain),
+                                type_: Some(MimeTranscript::TextPlain),
                                 ..Default::default()
                             },
                         },
@@ -529,7 +529,7 @@ fn deserialize() {
                         },
                         podcast_alternate_enclosures: vec!{
                             podcast::AlternateEnclosure{
-                                type_: Some(MimeEnclosure::Mp3),
+                                type_: Some(MimeEnclosure::AudioMp3),
                                 length: Some(Integer::Ok(43200000)),
                                 bit_rate: Some(Float::Ok(128000.0)),
                                 default: Some(Bool::Ok(true)),
@@ -547,7 +547,7 @@ fn deserialize() {
                                 ..Default::default()
                             },
                             podcast::AlternateEnclosure{
-                                type_: Some(MimeEnclosure::Opus),
+                                type_: Some(MimeEnclosure::AudioOpus),
                                 length: Some(Integer::Ok(32400000)),
                                 bit_rate: Some(Float::Ok(96000.0)),
                                 title: Some("High quality".to_string()),
@@ -564,7 +564,7 @@ fn deserialize() {
                                 ..Default::default()
                             },
                             podcast::AlternateEnclosure{
-                                type_: Some(MimeEnclosure::Aac),
+                                type_: Some(MimeEnclosure::AudioAac),
                                 length: Some(Integer::Ok(54000000)),
                                 bit_rate: Some(Float::Ok(160000.0)),
                                 title: Some("High quality AAC".to_string()),
@@ -581,7 +581,7 @@ fn deserialize() {
                                 ..Default::default()
                             },
                             podcast::AlternateEnclosure{
-                                type_: Some(MimeEnclosure::Opus),
+                                type_: Some(MimeEnclosure::AudioOpus),
                                 length: Some(Integer::Ok(5400000)),
                                 bit_rate: Some(Float::Ok(16000.0)),
                                 title: Some("Low bandwidth".to_string()),
@@ -598,7 +598,7 @@ fn deserialize() {
                                 ..Default::default()
                             },
                             podcast::AlternateEnclosure{
-                                type_: Some(MimeEnclosure::Mp4),
+                                type_: Some(MimeEnclosure::VideoMp4),
                                 length: Some(Integer::Ok(7924786)),
                                 bit_rate: Some(Float::Ok(511276.52)),
                                 height: Some(Integer::Ok(720)),
@@ -679,7 +679,7 @@ fn deserialize() {
                         enclosure: Some(Enclosure{
                             url: Some("https://example.com/file-02.mp3".to_string()),
                             length: Some(Integer::Ok(43113000)),
-                            type_: Some(MimeEnclosure::Mp3),
+                            type_: Some(MimeEnclosure::AudioMp3),
                         }),
 
                         itunes_image: Some(itunes::Image{
@@ -717,7 +717,7 @@ fn deserialize() {
                         podcast_transcripts: vec!{
                             podcast::Transcript{
                                 url: Some("https://example.com/ep2/transcript.txt".to_string()),
-                                type_: Some(MimeTranscript::Plain),
+                                type_: Some(MimeTranscript::TextPlain),
                                 ..Default::default()
                             },
                         },
@@ -745,7 +745,7 @@ fn deserialize() {
                         },
                         podcast_alternate_enclosures: vec!{
                             podcast::AlternateEnclosure{
-                                type_: Some(MimeEnclosure::Mp3),
+                                type_: Some(MimeEnclosure::AudioMp3),
                                 length: Some(Integer::Ok(43200000)),
                                 bit_rate: Some(Float::Ok(128000.0)),
                                 default: Some(Bool::Ok(true)),
@@ -763,7 +763,7 @@ fn deserialize() {
                                 ..Default::default()
                             },
                             podcast::AlternateEnclosure{
-                                type_: Some(MimeEnclosure::Opus),
+                                type_: Some(MimeEnclosure::AudioOpus),
                                 length: Some(Integer::Ok(32400000)),
                                 bit_rate: Some(Float::Ok(96000.0)),
                                 title: Some("High quality".to_string()),
@@ -780,7 +780,7 @@ fn deserialize() {
                                 ..Default::default()
                             },
                             podcast::AlternateEnclosure{
-                                type_: Some(MimeEnclosure::Aac),
+                                type_: Some(MimeEnclosure::AudioAac),
                                 length: Some(Integer::Ok(54000000)),
                                 bit_rate: Some(Float::Ok(160000.0)),
                                 title: Some("High quality AAC".to_string()),
@@ -797,7 +797,7 @@ fn deserialize() {
                                 ..Default::default()
                             },
                             podcast::AlternateEnclosure{
-                                type_: Some(MimeEnclosure::Opus),
+                                type_: Some(MimeEnclosure::AudioOpus),
                                 length: Some(Integer::Ok(5400000)),
                                 bit_rate: Some(Float::Ok(16000.0)),
                                 title: Some("Low bandwidth".to_string()),
@@ -856,7 +856,7 @@ fn deserialize() {
                         enclosure: Some(Enclosure{
                             url: Some("https://example.com/file-01.mp3".to_string()),
                             length: Some(Integer::Ok(43111403)),
-                            type_: Some(MimeEnclosure::Mp3),
+                            type_: Some(MimeEnclosure::AudioMp3),
                         }),
 
                         itunes_image: Some(itunes::Image{
@@ -894,7 +894,7 @@ fn deserialize() {
                         podcast_transcripts: vec!{
                             podcast::Transcript{
                                 url: Some("https://example.com/ep1/transcript.txt".to_string()),
-                                type_: Some(MimeTranscript::Plain),
+                                type_: Some(MimeTranscript::TextPlain),
                                 ..Default::default()
                             },
                         },
@@ -922,7 +922,7 @@ fn deserialize() {
                         },
                         podcast_alternate_enclosures: vec!{
                             podcast::AlternateEnclosure{
-                                type_: Some(MimeEnclosure::Mp3),
+                                type_: Some(MimeEnclosure::AudioMp3),
                                 length: Some(Integer::Ok(43203200)),
                                 bit_rate: Some(Float::Ok(128000.0)),
                                 default: Some(Bool::Ok(true)),
@@ -940,7 +940,7 @@ fn deserialize() {
                                 ..Default::default()
                             },
                             podcast::AlternateEnclosure{
-                                type_: Some(MimeEnclosure::Opus),
+                                type_: Some(MimeEnclosure::AudioOpus),
                                 length: Some(Integer::Ok(32406000)),
                                 bit_rate: Some(Float::Ok(96000.0)),
                                 title: Some("High quality".to_string()),
@@ -957,7 +957,7 @@ fn deserialize() {
                                 ..Default::default()
                             },
                             podcast::AlternateEnclosure{
-                                type_: Some(MimeEnclosure::Aac),
+                                type_: Some(MimeEnclosure::AudioAac),
                                 length: Some(Integer::Ok(5400300)),
                                 bit_rate: Some(Float::Ok(160000.0)),
                                 title: Some("High quality AAC".to_string()),
@@ -974,7 +974,7 @@ fn deserialize() {
                                 ..Default::default()
                             },
                             podcast::AlternateEnclosure{
-                                type_: Some(MimeEnclosure::Opus),
+                                type_: Some(MimeEnclosure::AudioOpus),
                                 length: Some(Integer::Ok(5042000)),
                                 bit_rate: Some(Float::Ok(16000.0)),
                                 title: Some("Low bandwidth".to_string()),
