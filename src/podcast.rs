@@ -9,9 +9,6 @@ pub use crate::time::DateTime;
 mod transcript;
 pub use transcript::TranscriptRel;
 
-mod chapters;
-pub use chapters::ChaptersType;
-
 mod person;
 pub use person::{PersonGroup, PersonRole};
 
@@ -78,7 +75,7 @@ pub struct Chapters {
     #[serde(rename = "$attr:url")]
     pub url: Option<String>,
     #[serde(rename = "$attr:type")]
-    pub type_: Option<ChaptersType>,
+    pub type_: Option<mimetype::Chapters>,
 }
 
 #[derive(Debug, Deserialize, PartialEq, Default)]

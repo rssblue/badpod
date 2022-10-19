@@ -149,7 +149,7 @@ fn deserialize() {
 
                     podcast_chapters: Some(podcast::Chapters{
                         url: Some("https://example.com/episode-1/chapters.json".to_string()),
-                        type_: Some(podcast::ChaptersType::ApplicationJsonChapters),
+                        type_: Some(mimetype::Chapters::ApplicationJsonChapters),
                     }),
                     podcast_soundbites: vec! {
                         podcast::Soundbite{
@@ -489,7 +489,7 @@ fn deserialize() {
                         }),
                         podcast_chapters: Some(podcast::Chapters{
                             url: Some("https://example.com/ep3_chapters.json".to_string()),
-                            type_: Some(podcast::ChaptersType::ApplicationJson),
+                            type_: Some(mimetype::Chapters::ApplicationJson),
                         }),
                         podcast_soundbites: vec!{
                             podcast::Soundbite{
@@ -705,7 +705,7 @@ fn deserialize() {
                         }),
                         podcast_chapters: Some(podcast::Chapters{
                             url: Some("https://example.com/ep2_chapters.json".to_string()),
-                            type_: Some(podcast::ChaptersType::ApplicationJson),
+                            type_: Some(mimetype::Chapters::ApplicationJson),
                         }),
                         podcast_soundbites: vec!{
                             podcast::Soundbite{
@@ -882,7 +882,7 @@ fn deserialize() {
                         }),
                         podcast_chapters: Some(podcast::Chapters{
                             url: Some("https://example.com/ep1_chapters.json".to_string()),
-                            type_: Some(podcast::ChaptersType::ApplicationJson),
+                            type_: Some(mimetype::Chapters::ApplicationJson),
                         }),
                         podcast_soundbites: vec!{
                             podcast::Soundbite{

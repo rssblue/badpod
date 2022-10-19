@@ -69,3 +69,28 @@ impl<'de> Deserialize<'de> for Transcript {
         }
     }
 }
+
+#[derive(Debug, PartialEq, Eq, EnumString, Display)]
+pub enum Chapters {
+    #[strum(serialize = "application/json+chapters")]
+    ApplicationJsonChapters,
+    #[strum(serialize = "application/json")]
+    ApplicationJson,
+
+    #[strum(disabled)]
+    Other(String),
+}
+
+impl<'de> Deserialize<'de> for Chapters {
+    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+        let s = match String::deserialize(d) {
+            Ok(s) => s,
+            Err(e) => return Err(e),
+        };
+
+        match Self::from_str(s.as_str()) {
+            Ok(x) => Ok(x),
+            Err(_) => Ok(Self::Other(s)),
+        }
+    }
+}
