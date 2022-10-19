@@ -82,11 +82,11 @@ fn deserialize() {
                         altitude: None,
                         uncertainty: None
                     }),
-                    osm: Some(podcast::Osm::Ok(podcast::OsmObject {
+                    osm: Some(podcast::Osm::Ok{
                         type_: podcast::OsmType::Relation,
                         id: 6930627,
                         revision: None,
-                    })),
+                    }),
                     value: Some("Birmingham Civil Rights Museum".to_string()),
                 }),
                 podcast_trailers: vec! {
@@ -189,11 +189,11 @@ fn deserialize() {
                     },
                     podcast_location: Some(podcast::Location {
                         geo: Some(podcast::Geo::Other("GEO:-27.86159,153.3169".to_string())),
-                        osm: Some(podcast::Osm::Ok(podcast::OsmObject {
+                        osm: Some(podcast::Osm::Ok{
                             type_: podcast::OsmType::Way,
                             id: 43678282,
                             revision: None,
-                        })),
+                        }),
                         value: Some("Dreamworld (Queensland)".to_string()),
                     }),
                     podcast_season: Some(podcast::Season{
@@ -345,11 +345,11 @@ fn deserialize() {
                         altitude: None,
                         uncertainty: None,
                     }),
-                    osm: Some(podcast::Osm::Ok(podcast::OsmObject{
+                    osm: Some(podcast::Osm::Ok{
                         type_: podcast::OsmType::Relation,
                         id: 113314,
                         revision: None,
-                    })),
+                    }),
                     value: Some("Austin, TX".to_string()),
                 }),
                 podcast_medium: Some(podcast::Medium::Podcast),
