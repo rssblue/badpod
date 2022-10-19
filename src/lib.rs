@@ -1,6 +1,6 @@
 mod basic;
 mod language;
-pub mod mimetype;
+mod mime;
 mod rss;
 mod time;
 
@@ -12,6 +12,9 @@ pub use crate::language::{
     Language, LanguageChinese, LanguageDutch, LanguageEnglish, LanguageFrench, LanguageGerman,
     LanguageItalian, LanguagePortugese, LanguageRomanian, LanguageRussian, LanguageSpanish,
     LanguageSwedish,
+};
+pub use crate::mime::{
+    Chapters as MimeChapters, Enclosure as MimeEnclosure, Transcript as MimeTranscript,
 };
 pub use crate::time::DateTime;
 pub use rss::from_str;

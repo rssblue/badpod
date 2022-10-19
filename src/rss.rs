@@ -5,7 +5,7 @@ use crate::podcast;
 
 use crate::basic;
 use crate::language;
-use crate::mimetype;
+use crate::mime;
 use crate::time;
 
 pub fn from_str(feed_str: &str) -> Result<Rss, String> {
@@ -241,7 +241,7 @@ pub struct Enclosure {
     #[serde(rename = "$attr:length")]
     pub length: Option<basic::Integer>,
     #[serde(rename = "$attr:type")]
-    pub type_: Option<mimetype::Enclosure>,
+    pub type_: Option<mime::Enclosure>,
 }
 
 #[derive(Debug, Deserialize, PartialEq, Eq, Default)]

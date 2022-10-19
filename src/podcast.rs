@@ -3,7 +3,7 @@ use serde::Deserialize;
 use crate::basic;
 use crate::itunes;
 use crate::language::Language;
-use crate::mimetype;
+use crate::mime;
 pub use crate::time::DateTime;
 
 mod transcript;
@@ -47,7 +47,7 @@ pub struct Transcript {
     #[serde(rename = "$attr:url")]
     pub url: Option<String>,
     #[serde(rename = "$attr:type")]
-    pub type_: Option<mimetype::Transcript>,
+    pub type_: Option<mime::Transcript>,
     #[serde(rename = "$attr:language")]
     pub language: Option<Language>,
     #[serde(rename = "$attr:rel")]
@@ -75,7 +75,7 @@ pub struct Chapters {
     #[serde(rename = "$attr:url")]
     pub url: Option<String>,
     #[serde(rename = "$attr:type")]
-    pub type_: Option<mimetype::Chapters>,
+    pub type_: Option<mime::Chapters>,
 }
 
 #[derive(Debug, Deserialize, PartialEq, Default)]
@@ -161,7 +161,7 @@ pub struct Trailer {
     )]
     pub length: Option<basic::Integer>,
     #[serde(rename = "$attr:type")]
-    pub type_: Option<mimetype::Enclosure>,
+    pub type_: Option<mime::Enclosure>,
     #[serde(
         rename = "$attr:season",
         deserialize_with = "basic::option_integer_nonnegative",
@@ -183,7 +183,7 @@ pub struct License {
 #[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct AlternateEnclosure {
     #[serde(rename = "$attr:type", default)]
-    pub type_: Option<mimetype::Enclosure>,
+    pub type_: Option<mime::Enclosure>,
     #[serde(
         rename = "$attr:length",
         deserialize_with = "basic::option_integer_nonnegative",
@@ -229,7 +229,7 @@ pub struct AlternateEnclosure {
 #[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct Source {
     #[serde(rename = "$attr:contentType")]
-    pub type_: Option<mimetype::Enclosure>,
+    pub type_: Option<mime::Enclosure>,
     #[serde(rename = "$attr:uri")]
     pub uri: Option<String>,
 }
