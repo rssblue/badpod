@@ -2,6 +2,7 @@ use serde::{Deserialize, Deserializer};
 use std::str::FromStr;
 use strum_macros::{Display, EnumString};
 
+/// Used for deserializing mime types of enclosures.
 #[derive(Debug, PartialEq, Eq, EnumString, Display)]
 pub enum Enclosure {
     #[strum(serialize = "audio/x-m4a")]
@@ -39,6 +40,7 @@ impl<'de> Deserialize<'de> for Enclosure {
     }
 }
 
+/// Used for deserializing mime types of transcripts.
 #[derive(Debug, PartialEq, Eq, EnumString, Display)]
 pub enum Transcript {
     #[strum(serialize = "text/plain")]
@@ -74,6 +76,7 @@ impl<'de> Deserialize<'de> for Transcript {
     }
 }
 
+/// Used for deserializing mime types of chapters.
 #[derive(Debug, PartialEq, Eq, EnumString, Display)]
 pub enum Chapters {
     #[strum(serialize = "application/json+chapters")]

@@ -381,6 +381,7 @@ pub enum Language {
     Other(String),
 }
 
+/// German language regions.
 #[derive(Debug, PartialEq, Eq, EnumString, Display, Default)]
 pub enum LanguageGerman {
     #[default]
@@ -398,6 +399,7 @@ pub enum LanguageGerman {
     Luxembourg,
 }
 
+/// English language regions.
 #[derive(Debug, PartialEq, Eq, EnumString, Display, Default)]
 pub enum LanguageEnglish {
     #[default]
@@ -429,6 +431,7 @@ pub enum LanguageEnglish {
     Zimbabwe,
 }
 
+/// Spanish language regions.
 #[derive(Debug, PartialEq, Eq, EnumString, Display, Default)]
 pub enum LanguageSpanish {
     #[default]
@@ -474,6 +477,7 @@ pub enum LanguageSpanish {
     Venezuela,
 }
 
+/// French language regions.
 #[derive(Debug, PartialEq, Eq, EnumString, Display, Default)]
 pub enum LanguageFrench {
     #[default]
@@ -493,6 +497,7 @@ pub enum LanguageFrench {
     Monaco,
 }
 
+/// Italian language regions.
 #[derive(Debug, PartialEq, Eq, EnumString, Display, Default)]
 pub enum LanguageItalian {
     #[default]
@@ -504,6 +509,7 @@ pub enum LanguageItalian {
     Italy,
 }
 
+/// Dutch language regions.
 #[derive(Debug, PartialEq, Eq, EnumString, Display, Default)]
 pub enum LanguageDutch {
     #[default]
@@ -515,6 +521,7 @@ pub enum LanguageDutch {
     Netherlands,
 }
 
+/// Portuguese language regions.
 #[derive(Debug, PartialEq, Eq, EnumString, Display, Default)]
 pub enum LanguagePortugese {
     #[default]
@@ -526,6 +533,7 @@ pub enum LanguagePortugese {
     Portugal,
 }
 
+/// Romanian language regions.
 #[derive(Debug, PartialEq, Eq, EnumString, Display, Default)]
 pub enum LanguageRomanian {
     #[default]
@@ -537,6 +545,7 @@ pub enum LanguageRomanian {
     Romania,
 }
 
+/// Russian language regions.
 #[derive(Debug, PartialEq, Eq, EnumString, Display, Default)]
 pub enum LanguageRussian {
     #[default]
@@ -548,6 +557,7 @@ pub enum LanguageRussian {
     Russia,
 }
 
+/// Swedish language regions.
 #[derive(Debug, PartialEq, Eq, EnumString, Display, Default)]
 pub enum LanguageSwedish {
     #[default]
@@ -559,6 +569,7 @@ pub enum LanguageSwedish {
     Sweden,
 }
 
+/// Chinese language regions.
 #[derive(Debug, PartialEq, Eq, EnumString, Display, Default)]
 pub enum LanguageChinese {
     #[default]

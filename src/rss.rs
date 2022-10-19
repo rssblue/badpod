@@ -8,6 +8,7 @@ use crate::language;
 use crate::mime;
 use crate::time;
 
+/// Converts contents of an XML file of podcast's RSS feed to [`Rss`](Rss) struct.
 pub fn from_str(feed_str: &str) -> Result<Rss, String> {
     // TODO: Both namespaces should be supported, but this ugly fix should be improved.
     let feed_str = &feed_str.replace(
@@ -26,6 +27,7 @@ pub struct Xml {
     pub rss: Rss,
 }
 
+/// RSS feed.
 #[derive(Debug, Deserialize, PartialEq, Default)]
 pub struct Rss {
     #[serde(rename = "$attr:version")]
@@ -34,6 +36,7 @@ pub struct Rss {
     pub channel: Option<Channel>,
 }
 
+/// Podcast feed.
 #[derive(Debug, Deserialize, PartialEq, Default)]
 pub struct Channel {
     pub copyright: Option<String>,
@@ -135,6 +138,7 @@ pub struct Channel {
     pub items: Vec<Item>,
 }
 
+/// Podcast episode.
 #[derive(Debug, Deserialize, PartialEq, Default)]
 pub struct Item {
     pub description: Option<String>,
@@ -234,6 +238,7 @@ pub struct Item {
     pub podcast_social_interacts: Vec<podcast::SocialInteract>,
 }
 
+/// Episode's media content.
 #[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct Enclosure {
     #[serde(rename = "$attr:url")]
@@ -244,6 +249,7 @@ pub struct Enclosure {
     pub type_: Option<mime::Enclosure>,
 }
 
+/// Episode's globally unique identifier.
 #[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct Guid {
     #[serde(rename = "$attr:isPermaLink")]
