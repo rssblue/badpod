@@ -73,17 +73,7 @@ pub enum Language {
     #[strum(serialize = "da")]
     Danish,
     #[strum(serialize = "de")]
-    German,
-    #[strum(serialize = "de-at")]
-    GermanAustria,
-    #[strum(serialize = "de-ch")]
-    GermanSwitzerland,
-    #[strum(serialize = "de-de")]
-    GermanGermany,
-    #[strum(serialize = "de-li")]
-    GermanLiechtenstein,
-    #[strum(serialize = "de-lu")]
-    GermanLuxembourg,
+    German(LanguageGerman),
     #[strum(serialize = "dv")]
     Divehi,
     #[strum(serialize = "dz")]
@@ -93,73 +83,11 @@ pub enum Language {
     #[strum(serialize = "el")]
     Greek,
     #[strum(serialize = "en")]
-    English,
-    #[strum(serialize = "en-au")]
-    EnglishAustralia,
-    #[strum(serialize = "en-bz")]
-    EnglishBelize,
-    #[strum(serialize = "en-ca")]
-    EnglishCanada,
-    #[strum(serialize = "en-gb")]
-    EnglishUnitedKingdom,
-    #[strum(serialize = "en-ie")]
-    EnglishIreland,
-    #[strum(serialize = "en-jm")]
-    EnglishJamaica,
-    #[strum(serialize = "en-nz")]
-    EnglishNewZealand,
-    #[strum(serialize = "en-ph")]
-    EnglishPhillipines,
-    #[strum(serialize = "en-tt")]
-    EnglishTrinidad,
-    #[strum(serialize = "en-us")]
-    EnglishUnitedStates,
-    #[strum(serialize = "en-za")]
-    EnglishSouthAfrica,
-    #[strum(serialize = "en-zw")]
-    EnglishZimbabwe,
+    English(LanguageEnglish),
     #[strum(serialize = "eo")]
     Esperanto,
     #[strum(serialize = "es")]
-    Spanish,
-    #[strum(serialize = "es-ar")]
-    SpanishArgentina,
-    #[strum(serialize = "es-bo")]
-    SpanishBolivia,
-    #[strum(serialize = "es-cl")]
-    SpanishChile,
-    #[strum(serialize = "es-co")]
-    SpanishColombia,
-    #[strum(serialize = "es-cr")]
-    SpanishCostaRica,
-    #[strum(serialize = "es-do")]
-    SpanishDominicanRepublic,
-    #[strum(serialize = "es-ec")]
-    SpanishEcuador,
-    #[strum(serialize = "es-es")]
-    SpanishSpain,
-    #[strum(serialize = "es-gt")]
-    SpanishGuatemala,
-    #[strum(serialize = "es-hn")]
-    SpanishHonduras,
-    #[strum(serialize = "es-mx")]
-    SpanishMexico,
-    #[strum(serialize = "es-ni")]
-    SpanishNicaragua,
-    #[strum(serialize = "es-pa")]
-    SpanishPanama,
-    #[strum(serialize = "es-pe")]
-    SpanishPeru,
-    #[strum(serialize = "es-pr")]
-    SpanishPuertoRico,
-    #[strum(serialize = "es-py")]
-    SpanishParaguay,
-    #[strum(serialize = "es-sv")]
-    SpanishElSalvador,
-    #[strum(serialize = "es-uy")]
-    SpanishUruguay,
-    #[strum(serialize = "es-ve")]
-    SpanishVenezuela,
+    Spanish(LanguageSpanish),
     #[strum(serialize = "et")]
     Estonian,
     #[strum(serialize = "eu")]
@@ -175,19 +103,7 @@ pub enum Language {
     #[strum(serialize = "fo")]
     Faroese,
     #[strum(serialize = "fr")]
-    French,
-    #[strum(serialize = "fr-be")]
-    FrenchBelgium,
-    #[strum(serialize = "fr-ca")]
-    FrenchCanada,
-    #[strum(serialize = "fr-ch")]
-    FrenchSwitzerland,
-    #[strum(serialize = "fr-fr")]
-    FrenchFrance,
-    #[strum(serialize = "fr-lu")]
-    FrenchLuxembourg,
-    #[strum(serialize = "fr-mc")]
-    FrenchMonaco,
+    French(LanguageFrench),
     #[strum(serialize = "fy")]
     WesternFrisian,
     #[strum(serialize = "ga")]
@@ -239,11 +155,7 @@ pub enum Language {
     #[strum(serialize = "is")]
     Icelandic,
     #[strum(serialize = "it")]
-    Italian,
-    #[strum(serialize = "it-ch")]
-    ItalianSwitzerland,
-    #[strum(serialize = "it-it")]
-    ItalianItaly,
+    Italian(LanguageItalian),
     #[strum(serialize = "iu")]
     Inuktitut,
     #[strum(serialize = "ja")]
@@ -327,11 +239,7 @@ pub enum Language {
     #[strum(serialize = "ng")]
     Ndonga,
     #[strum(serialize = "nl")]
-    Dutch,
-    #[strum(serialize = "nl-be")]
-    DutchBelgium,
-    #[strum(serialize = "nl-nl")]
-    DutchNetherlands,
+    Dutch(LanguageDutch),
     #[strum(serialize = "nn")]
     NorwegianNynorsk,
     #[strum(serialize = "no")]
@@ -361,11 +269,7 @@ pub enum Language {
     #[strum(serialize = "ps")]
     Pushto,
     #[strum(serialize = "pt")]
-    Portuguese,
-    #[strum(serialize = "pt-br")]
-    PortugueseBrazil,
-    #[strum(serialize = "pt-pt")]
-    PortuguesePortugal,
+    Portuguese(LanguagePortugese),
     #[strum(serialize = "qu")]
     Quechua,
     #[strum(serialize = "rm")]
@@ -373,17 +277,9 @@ pub enum Language {
     #[strum(serialize = "rn")]
     Rundi,
     #[strum(serialize = "ro")]
-    Romanian,
-    #[strum(serialize = "ro-mo")]
-    RomanianMoldova,
-    #[strum(serialize = "ro-ro")]
-    RomanianRomania,
+    Romanian(LanguageRomanian),
     #[strum(serialize = "ru")]
-    Russian,
-    #[strum(serialize = "ru-mo")]
-    RussianMoldova,
-    #[strum(serialize = "ru-ru")]
-    RussianRussia,
+    Russian(LanguageRussian),
     #[strum(serialize = "rw")]
     Kinyarwanda,
     #[strum(serialize = "sa")]
@@ -419,11 +315,7 @@ pub enum Language {
     #[strum(serialize = "su")]
     Sundanese,
     #[strum(serialize = "sv")]
-    Swedish,
-    #[strum(serialize = "sv-fi")]
-    SwedishFinland,
-    #[strum(serialize = "sv-se")]
-    SwedishSweden,
+    Swedish(LanguageSwedish),
     #[strum(serialize = "sw")]
     Swahili,
     #[strum(serialize = "ta")]
@@ -481,11 +373,7 @@ pub enum Language {
     #[strum(serialize = "za")]
     Zhuang,
     #[strum(serialize = "zh")]
-    Chinese,
-    #[strum(serialize = "zh-cn")]
-    ChineseSimplified,
-    #[strum(serialize = "zh-tw")]
-    ChineseTraditional,
+    Chinese(LanguageChinese),
     #[strum(serialize = "zu")]
     Zulu,
 
@@ -493,14 +381,281 @@ pub enum Language {
     Other(String),
 }
 
+#[derive(Debug, PartialEq, Eq, EnumString, Display, Default)]
+pub enum LanguageGerman {
+    #[default]
+    #[strum(serialize = "de")]
+    Default,
+    #[strum(serialize = "de-at")]
+    Austria,
+    #[strum(serialize = "de-ch")]
+    Switzerland,
+    #[strum(serialize = "de-de")]
+    Germany,
+    #[strum(serialize = "de-li")]
+    Liechtenstein,
+    #[strum(serialize = "de-lu")]
+    Luxembourg,
+}
+
+#[derive(Debug, PartialEq, Eq, EnumString, Display, Default)]
+pub enum LanguageEnglish {
+    #[default]
+    #[strum(serialize = "en")]
+    Default,
+    #[strum(serialize = "en-au")]
+    Australia,
+    #[strum(serialize = "en-bz")]
+    Belize,
+    #[strum(serialize = "en-ca")]
+    Canada,
+    #[strum(serialize = "en-gb")]
+    UnitedKingdom,
+    #[strum(serialize = "en-ie")]
+    Ireland,
+    #[strum(serialize = "en-jm")]
+    Jamaica,
+    #[strum(serialize = "en-nz")]
+    NewZealand,
+    #[strum(serialize = "en-ph")]
+    Phillipines,
+    #[strum(serialize = "en-tt")]
+    Trinidad,
+    #[strum(serialize = "en-us")]
+    UnitedStates,
+    #[strum(serialize = "en-za")]
+    SouthAfrica,
+    #[strum(serialize = "en-zw")]
+    Zimbabwe,
+}
+
+#[derive(Debug, PartialEq, Eq, EnumString, Display, Default)]
+pub enum LanguageSpanish {
+    #[default]
+    #[strum(serialize = "es")]
+    Default,
+    #[strum(serialize = "es-ar")]
+    Argentina,
+    #[strum(serialize = "es-bo")]
+    Bolivia,
+    #[strum(serialize = "es-cl")]
+    Chile,
+    #[strum(serialize = "es-co")]
+    Colombia,
+    #[strum(serialize = "es-cr")]
+    CostaRica,
+    #[strum(serialize = "es-do")]
+    DominicanRepublic,
+    #[strum(serialize = "es-ec")]
+    Ecuador,
+    #[strum(serialize = "es-es")]
+    Spain,
+    #[strum(serialize = "es-gt")]
+    Guatemala,
+    #[strum(serialize = "es-hn")]
+    Honduras,
+    #[strum(serialize = "es-mx")]
+    Mexico,
+    #[strum(serialize = "es-ni")]
+    Nicaragua,
+    #[strum(serialize = "es-pa")]
+    Panama,
+    #[strum(serialize = "es-pe")]
+    Peru,
+    #[strum(serialize = "es-pr")]
+    PuertoRico,
+    #[strum(serialize = "es-py")]
+    Paraguay,
+    #[strum(serialize = "es-sv")]
+    ElSalvador,
+    #[strum(serialize = "es-uy")]
+    Uruguay,
+    #[strum(serialize = "es-ve")]
+    Venezuela,
+}
+
+#[derive(Debug, PartialEq, Eq, EnumString, Display, Default)]
+pub enum LanguageFrench {
+    #[default]
+    #[strum(serialize = "fr")]
+    Default,
+    #[strum(serialize = "fr-be")]
+    FrenchBelgium,
+    #[strum(serialize = "fr-ca")]
+    FrenchCanada,
+    #[strum(serialize = "fr-ch")]
+    FrenchSwitzerland,
+    #[strum(serialize = "fr-fr")]
+    FrenchFrance,
+    #[strum(serialize = "fr-lu")]
+    FrenchLuxembourg,
+    #[strum(serialize = "fr-mc")]
+    FrenchMonaco,
+}
+
+#[derive(Debug, PartialEq, Eq, EnumString, Display, Default)]
+pub enum LanguageItalian {
+    #[default]
+    #[strum(serialize = "it")]
+    Default,
+    #[strum(serialize = "it-ch")]
+    ItalianSwitzerland,
+    #[strum(serialize = "it-it")]
+    ItalianItaly,
+}
+
+#[derive(Debug, PartialEq, Eq, EnumString, Display, Default)]
+pub enum LanguageDutch {
+    #[default]
+    #[strum(serialize = "nl")]
+    Default,
+    #[strum(serialize = "nl-be")]
+    DutchBelgium,
+    #[strum(serialize = "nl-nl")]
+    DutchNetherlands,
+}
+
+#[derive(Debug, PartialEq, Eq, EnumString, Display, Default)]
+pub enum LanguagePortugese {
+    #[default]
+    #[strum(serialize = "pt")]
+    Default,
+    #[strum(serialize = "pt-br")]
+    PortugueseBrazil,
+    #[strum(serialize = "pt-pt")]
+    PortuguesePortugal,
+}
+
+#[derive(Debug, PartialEq, Eq, EnumString, Display, Default)]
+pub enum LanguageRomanian {
+    #[default]
+    #[strum(serialize = "ro")]
+    Default,
+    #[strum(serialize = "ro-mo")]
+    RomanianMoldova,
+    #[strum(serialize = "ro-ro")]
+    RomanianRomania,
+}
+
+#[derive(Debug, PartialEq, Eq, EnumString, Display, Default)]
+pub enum LanguageRussian {
+    #[default]
+    #[strum(serialize = "ru")]
+    Default,
+    #[strum(serialize = "ru-mo")]
+    RussianMoldova,
+    #[strum(serialize = "ru-ru")]
+    RussianRussia,
+}
+
+#[derive(Debug, PartialEq, Eq, EnumString, Display, Default)]
+pub enum LanguageSwedish {
+    #[default]
+    #[strum(serialize = "sv")]
+    Default,
+    #[strum(serialize = "sv-fi")]
+    SwedishFinland,
+    #[strum(serialize = "sv-se")]
+    SwedishSweden,
+}
+
+#[derive(Debug, PartialEq, Eq, EnumString, Display, Default)]
+pub enum LanguageChinese {
+    #[default]
+    #[strum(serialize = "zh")]
+    Default,
+    #[strum(serialize = "zh-cn")]
+    ChineseSimplified,
+    #[strum(serialize = "zh-tw")]
+    ChineseTraditional,
+}
+
 impl<'de> Deserialize<'de> for Language {
     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        let s = match String::deserialize(d) {
+        let mut s = match String::deserialize(d) {
             Ok(s) => s,
             Err(e) => return Err(e),
         };
+        s = s.to_lowercase();
 
-        match Language::from_str(s.to_lowercase().as_str()) {
+        if s.starts_with("de") {
+            return match LanguageGerman::from_str(s.as_str()) {
+                Ok(variant) => Ok(Language::German(variant)),
+                Err(_) => Ok(Language::Other(s)),
+            };
+        }
+
+        if s.starts_with("en") {
+            return match LanguageEnglish::from_str(s.as_str()) {
+                Ok(variant) => Ok(Language::English(variant)),
+                Err(_) => Ok(Language::Other(s)),
+            };
+        }
+
+        if s.starts_with("es") {
+            return match LanguageSpanish::from_str(s.as_str()) {
+                Ok(variant) => Ok(Language::Spanish(variant)),
+                Err(_) => Ok(Language::Other(s)),
+            };
+        }
+
+        if s.starts_with("fr") {
+            return match LanguageFrench::from_str(s.as_str()) {
+                Ok(variant) => Ok(Language::French(variant)),
+                Err(_) => Ok(Language::Other(s)),
+            };
+        }
+
+        if s.starts_with("it") {
+            return match LanguageItalian::from_str(s.as_str()) {
+                Ok(variant) => Ok(Language::Italian(variant)),
+                Err(_) => Ok(Language::Other(s)),
+            };
+        }
+
+        if s.starts_with("nl") {
+            return match LanguageDutch::from_str(s.as_str()) {
+                Ok(variant) => Ok(Language::Dutch(variant)),
+                Err(_) => Ok(Language::Other(s)),
+            };
+        }
+
+        if s.starts_with("pt") {
+            return match LanguagePortugese::from_str(s.as_str()) {
+                Ok(variant) => Ok(Language::Portuguese(variant)),
+                Err(_) => Ok(Language::Other(s)),
+            };
+        }
+
+        if s.starts_with("ro") {
+            return match LanguageRomanian::from_str(s.as_str()) {
+                Ok(variant) => Ok(Language::Romanian(variant)),
+                Err(_) => Ok(Language::Other(s)),
+            };
+        }
+
+        if s.starts_with("ru") {
+            return match LanguageRussian::from_str(s.as_str()) {
+                Ok(variant) => Ok(Language::Russian(variant)),
+                Err(_) => Ok(Language::Other(s)),
+            };
+        }
+
+        if s.starts_with("sv") {
+            return match LanguageSwedish::from_str(s.as_str()) {
+                Ok(variant) => Ok(Language::Swedish(variant)),
+                Err(_) => Ok(Language::Other(s)),
+            };
+        }
+
+        if s.starts_with("zh") {
+            return match LanguageChinese::from_str(s.as_str()) {
+                Ok(variant) => Ok(Language::Chinese(variant)),
+                Err(_) => Ok(Language::Other(s)),
+            };
+        }
+
+        match Language::from_str(s.as_str()) {
             Ok(x) => Ok(x),
             Err(_) => Ok(Language::Other(s)),
         }

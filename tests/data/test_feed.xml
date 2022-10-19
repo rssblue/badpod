@@ -3,7 +3,7 @@
   <channel>
     <copyright>© Example Company</copyright>
     <description><![CDATA[<p><strong>Example HTML description</strong></p>]]></description>
-    <language>en-us</language>
+    <language>lt</language>
     <link>https://example.com</link>
     <title>Example Podcast</title>
     <content:encoded>&lt;p&gt;&lt;strong&gt;Example HTML description&lt;/strong&gt;&lt;/p&gt;</content:encoded>

@@ -11,7 +11,7 @@ fn deserialize() {
             channel: Some(Channel {
                 copyright: Some("© Example Company".to_string()),
                 description: Some("<p><strong>Example HTML description</strong></p>".to_string()),
-                language: Some(Language::EnglishUnitedStates),
+                language: Some(Language::Lithuanian),
                 link: Some("https://example.com".to_string()),
                 title: Some("Example Podcast".to_string()),
                 content_encoded: Some(
@@ -210,7 +210,7 @@ fn deserialize() {
                         podcast::Transcript{
                             url: Some("https://example.com/episode1/transcript.json".to_string()),
                             type_: Some(mimetype::Transcript::Json),
-                            language: Some(Language::Spanish),
+                            language: Some(Language::Spanish(LanguageSpanish::Default)),
                             rel: Some(podcast::TranscriptRel::Captions),
                         },
                     },
@@ -306,7 +306,7 @@ fn deserialize() {
                 title: Some("Podcasting 2.0 Namespace Example".to_string()),
                 description: Some("This is a fake show that exists only as an example of the \"podcast\" namespace tag usage.".to_string()),
                 link: Some("http://example.com/podcast".to_string()),
-                language: Some(Language::EnglishUnitedStates),
+                language: Some(Language::English(LanguageEnglish::UnitedStates)),
                 generator: Some("Freedom Controller".to_string()),
 
                 podcast_guid: Some(podcast::Guid::Other("y0ur-gu1d-g035-h3r3".to_string())),
