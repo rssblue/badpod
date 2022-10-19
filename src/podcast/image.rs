@@ -1,6 +1,6 @@
 use serde::{Deserialize, Deserializer};
 
-#[derive(Debug, Deserialize, PartialEq, Default)]
+#[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct Images {
     #[serde(rename = "$attr:srcset", deserialize_with = "vec_image", default)]
     pub srcset: Vec<Image>,

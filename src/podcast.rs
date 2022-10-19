@@ -45,7 +45,7 @@ pub use social_interact::SocialProtocol;
 mod block;
 pub use block::Service;
 
-#[derive(Debug, Deserialize, PartialEq, Default)]
+#[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct Transcript {
     #[serde(rename = "$attr:url")]
     pub url: Option<String>,
@@ -57,7 +57,7 @@ pub struct Transcript {
     pub rel: Option<TranscriptRel>,
 }
 
-#[derive(Debug, Deserialize, PartialEq, Default)]
+#[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct Locked {
     #[serde(rename = "$attr:owner")]
     pub owner: Option<String>,
@@ -65,7 +65,7 @@ pub struct Locked {
     pub value: Option<basic::Bool>,
 }
 
-#[derive(Debug, Deserialize, PartialEq, Default)]
+#[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct Funding {
     #[serde(rename = "$attr:url")]
     pub url: Option<String>,
@@ -73,7 +73,7 @@ pub struct Funding {
     pub value: Option<String>,
 }
 
-#[derive(Debug, Deserialize, PartialEq, Default)]
+#[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct Chapters {
     #[serde(rename = "$attr:url")]
     pub url: Option<String>,
@@ -129,7 +129,7 @@ pub struct Location {
     pub value: Option<String>,
 }
 
-#[derive(Debug, Deserialize, PartialEq, Default)]
+#[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct Season {
     #[serde(rename = "$attr:name")]
     pub name: Option<String>,
@@ -151,7 +151,7 @@ pub struct Episode {
     pub value: Option<basic::Number>,
 }
 
-#[derive(Debug, Deserialize, PartialEq, Default)]
+#[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct Trailer {
     #[serde(rename = "$attr:url")]
     pub url: Option<String>,
@@ -175,7 +175,7 @@ pub struct Trailer {
     pub value: Option<String>,
 }
 
-#[derive(Debug, Deserialize, PartialEq, Default)]
+#[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct License {
     #[serde(rename = "$attr:url")]
     pub url: Option<String>,
@@ -406,7 +406,7 @@ pub struct LiveItem {
     pub podcast_social_interacts: Vec<SocialInteract>,
 }
 
-#[derive(Debug, Deserialize, PartialEq, Default)]
+#[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct ContentLink {
     #[serde(rename = "$attr:href", default)]
     pub href: Option<String>,
@@ -414,7 +414,7 @@ pub struct ContentLink {
     pub value: Option<String>,
 }
 
-#[derive(Debug, Deserialize, PartialEq, Default)]
+#[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct SocialInteract {
     #[serde(rename = "$attr:uri", default)]
     pub uri: Option<String>,
@@ -428,7 +428,7 @@ pub struct SocialInteract {
     pub priority: Option<basic::Integer>,
 }
 
-#[derive(Debug, Deserialize, PartialEq, Default)]
+#[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct Block {
     #[serde(rename = "$attr:id", default)]
     pub id: Option<Service>,

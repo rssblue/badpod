@@ -2,7 +2,7 @@ use serde::{Deserialize, Deserializer};
 use std::str::FromStr;
 use strum_macros::{Display, EnumString};
 
-/// Used for deserializing timestamps.
+/// Used for deserializing languages.
 ///
 /// Language codes taken from <https://www.rssboard.org/rss-language-codes> and
 /// <https://www.loc.gov/standards/iso639-2/php/code_list.php>.

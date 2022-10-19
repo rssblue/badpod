@@ -5,7 +5,7 @@ use strum_macros::{Display, EnumString};
 mod category;
 pub use category::{CategoryName, SubcategoryName};
 
-#[derive(Debug, Deserialize, PartialEq, Default)]
+#[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct Category {
     #[serde(rename = "$attr:text")]
     pub text: Option<CategoryName>,
@@ -14,13 +14,13 @@ pub struct Category {
     pub subcategory: Option<Subcategory>,
 }
 
-#[derive(Debug, Deserialize, PartialEq, Default)]
+#[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct Subcategory {
     #[serde(rename = "$attr:text")]
     pub text: Option<SubcategoryName>,
 }
 
-#[derive(Debug, Deserialize, PartialEq, Default)]
+#[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct Image {
     #[serde(rename = "$attr:href")]
     pub href: Option<String>,
@@ -34,7 +34,7 @@ pub struct Owner {
     pub name: Option<String>,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq)]
 pub enum Yes {
     Ok,
     Other(String),

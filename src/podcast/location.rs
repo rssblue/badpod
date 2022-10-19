@@ -108,21 +108,21 @@ fn parse_geo(s: String) -> Result<GeoCoordinates, String> {
     })
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq)]
 pub enum OsmType {
     Node,
     Way,
     Relation,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq)]
 pub struct OsmObject {
     pub type_: OsmType,
     pub id: u64,
     pub revision: Option<u64>,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Eq)]
 pub enum Osm {
     Ok(OsmObject),
     Other(String),

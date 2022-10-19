@@ -234,7 +234,7 @@ pub struct Item {
     pub podcast_social_interacts: Vec<podcast::SocialInteract>,
 }
 
-#[derive(Debug, Deserialize, PartialEq, Default)]
+#[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct Enclosure {
     #[serde(rename = "$attr:url")]
     pub url: Option<String>,
@@ -244,7 +244,7 @@ pub struct Enclosure {
     pub type_: Option<mimetype::Enclosure>,
 }
 
-#[derive(Debug, Deserialize, PartialEq, Default)]
+#[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct Guid {
     #[serde(rename = "$attr:isPermaLink")]
     pub is_permalink: Option<basic::Bool>,
