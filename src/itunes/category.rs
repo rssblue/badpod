@@ -2,6 +2,7 @@ use serde::{Deserialize, Deserializer};
 use std::str::FromStr;
 use strum_macros::{Display, EnumString};
 
+/// Apple Podcasts podcast category names.
 #[derive(Debug, PartialEq, Eq, EnumString, Display)]
 pub enum CategoryName {
     Arts,
@@ -48,6 +49,7 @@ impl<'de> Deserialize<'de> for CategoryName {
     }
 }
 
+/// Apple Podcasts podcast subcategory names.
 #[derive(Debug, PartialEq, Eq, EnumString, Display)]
 pub enum SubcategoryName {
     Books,

@@ -5,6 +5,7 @@ use strum_macros::{Display, EnumString};
 mod category;
 pub use category::{CategoryName, SubcategoryName};
 
+/// Apple Podcasts podcast category.
 #[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct Category {
     #[serde(rename = "$attr:text")]
@@ -14,19 +15,25 @@ pub struct Category {
     pub subcategory: Option<Subcategory>,
 }
 
+/// Apple Podcasts podcast subcategory.
+///
+/// Just because a subcategory is deserialized does not mean that it is compatible with the
+/// category in the parent tag.
 #[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct Subcategory {
     #[serde(rename = "$attr:text")]
     pub text: Option<SubcategoryName>,
 }
 
+/// Artwork associated with a podcast or episode.
 #[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct Image {
     #[serde(rename = "$attr:href")]
     pub href: Option<String>,
 }
 
-#[derive(Debug, Deserialize, PartialEq, Default)]
+/// Podcast owner's contact information.
+#[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct Owner {
     #[serde(rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:email")]
     pub email: Option<String>,
@@ -34,6 +41,9 @@ pub struct Owner {
     pub name: Option<String>,
 }
 
+/// Used for deserializing values in some of [`itunes`](crate::itunes) tags.
+///
+/// The only possible value in some of the tags is "Yes", which this enum is meant to reflect.
 #[derive(Debug, PartialEq, Eq)]
 pub enum Yes {
     Ok,
@@ -54,6 +64,7 @@ impl<'de> Deserialize<'de> for Yes {
     }
 }
 
+/// Apple Podcasts podcast type.
 #[derive(Debug, PartialEq, Eq, EnumString, Display)]
 #[strum(serialize_all = "snake_case")]
 pub enum PodcastType {
@@ -78,6 +89,7 @@ impl<'de> Deserialize<'de> for PodcastType {
     }
 }
 
+/// Apple Podcasts episode type.
 #[derive(Debug, PartialEq, Eq, EnumString, Display)]
 #[strum(serialize_all = "snake_case")]
 pub enum EpisodeType {
