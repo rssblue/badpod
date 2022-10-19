@@ -16,6 +16,8 @@ pub enum Enclosure {
     M4v,
     #[strum(serialize = "application/pdf")]
     Pdf,
+    #[strum(serialize = "audio/opus")]
+    Opus,
 
     #[strum(disabled)]
     Other(String),

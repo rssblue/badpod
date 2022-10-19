@@ -547,7 +547,7 @@ fn deserialize() {
                                 ..Default::default()
                             },
                             podcast::AlternateEnclosure{
-                                type_: Some(MimeEnclosure::Other("audio/opus".to_string())),
+                                type_: Some(MimeEnclosure::Opus),
                                 length: Some(Integer::Ok(32400000)),
                                 bit_rate: Some(Float::Ok(96000.0)),
                                 title: Some("High quality".to_string()),
@@ -581,7 +581,7 @@ fn deserialize() {
                                 ..Default::default()
                             },
                             podcast::AlternateEnclosure{
-                                type_: Some(MimeEnclosure::Other("audio/opus".to_string())),
+                                type_: Some(MimeEnclosure::Opus),
                                 length: Some(Integer::Ok(5400000)),
                                 bit_rate: Some(Float::Ok(16000.0)),
                                 title: Some("Low bandwidth".to_string()),
@@ -763,7 +763,7 @@ fn deserialize() {
                                 ..Default::default()
                             },
                             podcast::AlternateEnclosure{
-                                type_: Some(MimeEnclosure::Other("audio/opus".to_string())),
+                                type_: Some(MimeEnclosure::Opus),
                                 length: Some(Integer::Ok(32400000)),
                                 bit_rate: Some(Float::Ok(96000.0)),
                                 title: Some("High quality".to_string()),
@@ -797,7 +797,7 @@ fn deserialize() {
                                 ..Default::default()
                             },
                             podcast::AlternateEnclosure{
-                                type_: Some(MimeEnclosure::Other("audio/opus".to_string())),
+                                type_: Some(MimeEnclosure::Opus),
                                 length: Some(Integer::Ok(5400000)),
                                 bit_rate: Some(Float::Ok(16000.0)),
                                 title: Some("Low bandwidth".to_string()),
@@ -940,7 +940,7 @@ fn deserialize() {
                                 ..Default::default()
                             },
                             podcast::AlternateEnclosure{
-                                type_: Some(MimeEnclosure::Other("audio/opus".to_string())),
+                                type_: Some(MimeEnclosure::Opus),
                                 length: Some(Integer::Ok(32406000)),
                                 bit_rate: Some(Float::Ok(96000.0)),
                                 title: Some("High quality".to_string()),
@@ -974,7 +974,7 @@ fn deserialize() {
                                 ..Default::default()
                             },
                             podcast::AlternateEnclosure{
-                                type_: Some(MimeEnclosure::Other("audio/opus".to_string())),
+                                type_: Some(MimeEnclosure::Opus),
                                 length: Some(Integer::Ok(5042000)),
                                 bit_rate: Some(Float::Ok(16000.0)),
                                 title: Some("Low bandwidth".to_string()),
