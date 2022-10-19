@@ -18,6 +18,8 @@ pub enum Enclosure {
     Pdf,
     #[strum(serialize = "audio/opus")]
     Opus,
+    #[strum(serialize = "audio/aac")]
+    Aac,
 
     #[strum(disabled)]
     Other(String),

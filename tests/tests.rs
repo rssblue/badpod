@@ -564,7 +564,7 @@ fn deserialize() {
                                 ..Default::default()
                             },
                             podcast::AlternateEnclosure{
-                                type_: Some(MimeEnclosure::Other("audio/aac".to_string())),
+                                type_: Some(MimeEnclosure::Aac),
                                 length: Some(Integer::Ok(54000000)),
                                 bit_rate: Some(Float::Ok(160000.0)),
                                 title: Some("High quality AAC".to_string()),
@@ -780,7 +780,7 @@ fn deserialize() {
                                 ..Default::default()
                             },
                             podcast::AlternateEnclosure{
-                                type_: Some(MimeEnclosure::Other("audio/aac".to_string())),
+                                type_: Some(MimeEnclosure::Aac),
                                 length: Some(Integer::Ok(54000000)),
                                 bit_rate: Some(Float::Ok(160000.0)),
                                 title: Some("High quality AAC".to_string()),
@@ -957,7 +957,7 @@ fn deserialize() {
                                 ..Default::default()
                             },
                             podcast::AlternateEnclosure{
-                                type_: Some(MimeEnclosure::Other("audio/aac".to_string())),
+                                type_: Some(MimeEnclosure::Aac),
                                 length: Some(Integer::Ok(5400300)),
                                 bit_rate: Some(Float::Ok(160000.0)),
                                 title: Some("High quality AAC".to_string()),
