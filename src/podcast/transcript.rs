@@ -2,6 +2,7 @@ use serde::{Deserialize, Deserializer};
 use std::str::FromStr;
 use strum_macros::{Display, EnumString};
 
+/// Used for deserializing `rel` attribute of [Transcript](crate::podcast::Transcript).
 #[derive(Debug, PartialEq, Eq, EnumString, Display)]
 pub enum TranscriptRel {
     #[strum(serialize = "captions")]

@@ -4,7 +4,7 @@ use crate::basic;
 use crate::itunes;
 use crate::language::Language;
 use crate::mime;
-pub use crate::time::DateTime;
+use crate::time::DateTime;
 
 mod transcript;
 pub use transcript::TranscriptRel;
@@ -42,6 +42,7 @@ pub use social_interact::SocialProtocol;
 mod block;
 pub use block::Service;
 
+/// A transcript or closed captions file.
 #[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct Transcript {
     #[serde(rename = "$attr:url")]
@@ -54,6 +55,7 @@ pub struct Transcript {
     pub rel: Option<TranscriptRel>,
 }
 
+/// Indicates whether podcast hosting platforms are allowed to import the feed.
 #[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct Locked {
     #[serde(rename = "$attr:owner")]
@@ -62,6 +64,7 @@ pub struct Locked {
     pub value: Option<basic::Bool>,
 }
 
+/// Donation/funding link.
 #[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct Funding {
     #[serde(rename = "$attr:url")]
@@ -70,6 +73,7 @@ pub struct Funding {
     pub value: Option<String>,
 }
 
+/// Chapter data for an episode.
 #[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct Chapters {
     #[serde(rename = "$attr:url")]
@@ -78,6 +82,7 @@ pub struct Chapters {
     pub type_: Option<mime::Chapters>,
 }
 
+/// Soundbite of an episode.
 #[derive(Debug, Deserialize, PartialEq, Default)]
 pub struct Soundbite {
     #[serde(
@@ -94,6 +99,7 @@ pub struct Soundbite {
     pub value: Option<String>,
 }
 
+/// A person of interest to the podcast.
 #[derive(Debug, Deserialize, PartialEq, Default)]
 pub struct Person {
     #[serde(
@@ -116,6 +122,7 @@ pub struct Person {
     pub value: Option<String>,
 }
 
+/// Location of editorial focus for a podcast's content.
 #[derive(Debug, Deserialize, PartialEq, Default)]
 pub struct Location {
     #[serde(rename = "$attr:geo")]
@@ -126,6 +133,7 @@ pub struct Location {
     pub value: Option<String>,
 }
 
+/// Indicates the season that a particular episode belongs to.
 #[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct Season {
     #[serde(rename = "$attr:name")]
@@ -137,6 +145,7 @@ pub struct Season {
     pub value: Option<basic::Integer>,
 }
 
+/// Allows to specify episode number and how it should be displayed.
 #[derive(Debug, Deserialize, PartialEq, Default)]
 pub struct Episode {
     #[serde(rename = "$attr:display")]
@@ -148,6 +157,7 @@ pub struct Episode {
     pub value: Option<basic::Number>,
 }
 
+/// A trailer for the entire podcast or a specific season.
 #[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct Trailer {
     #[serde(rename = "$attr:url")]
@@ -172,6 +182,7 @@ pub struct Trailer {
     pub value: Option<String>,
 }
 
+/// License for a podcast or episode.
 #[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct License {
     #[serde(rename = "$attr:url")]
@@ -180,6 +191,7 @@ pub struct License {
     pub value: Option<LicenseType>,
 }
 
+/// Different version of or a companion media to the file in [Enclosure](crate::Enclosure).
 #[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct AlternateEnclosure {
     #[serde(rename = "$attr:type", default)]
@@ -226,6 +238,7 @@ pub struct AlternateEnclosure {
     pub podcast_integrity: Option<Integrity>,
 }
 
+/// Location of a media file in [AlternateEnclosure](AlternateEnclosure).
 #[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct Source {
     #[serde(rename = "$attr:contentType")]
@@ -234,6 +247,8 @@ pub struct Source {
     pub uri: Option<String>,
 }
 
+/// Method of verifying the integrity of the media in
+/// [AlternateEnclosure](AlternateEnclosure).
 #[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct Integrity {
     #[serde(rename = "$attr:type")]
@@ -242,6 +257,7 @@ pub struct Integrity {
     pub value: Option<String>,
 }
 
+/// Describes cryptocurrency or payment layer used for transactions.
 #[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct Value {
     #[serde(rename = "$attr:type", default)]
@@ -261,6 +277,7 @@ pub struct Value {
     pub value_recipients: Vec<ValueRecipient>,
 }
 
+/// Destination for payments to be sent to during consumption of enclosed media.
 #[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct ValueRecipient {
     #[serde(rename = "$attr:name")]
@@ -283,6 +300,7 @@ pub struct ValueRecipient {
     pub fee: Option<basic::Bool>,
 }
 
+/// Used to deliver a live audio or video stream.
 #[derive(Debug, Deserialize, PartialEq, Default)]
 pub struct LiveItem {
     pub description: Option<String>,
@@ -403,6 +421,7 @@ pub struct LiveItem {
     pub podcast_social_interacts: Vec<SocialInteract>,
 }
 
+/// Used to indicate that the content being delivered by [LiveItem](LiveItem) can be found at an external location.
 #[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct ContentLink {
     #[serde(rename = "$attr:href", default)]
@@ -411,6 +430,7 @@ pub struct ContentLink {
     pub value: Option<String>,
 }
 
+/// Allows a podcaster to attach the URL of a "root post" of a comment thread to an episode.
 #[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct SocialInteract {
     #[serde(rename = "$attr:uri", default)]
@@ -425,6 +445,7 @@ pub struct SocialInteract {
     pub priority: Option<basic::Integer>,
 }
 
+/// Allows a podcaster to express which platforms are allowed to publicly display this feed and its contents.
 #[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct Block {
     #[serde(rename = "$attr:id", default)]

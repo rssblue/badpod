@@ -2,6 +2,7 @@ use serde::{Deserialize, Deserializer};
 use std::str::FromStr;
 use strum_macros::{Display, EnumString};
 
+/// Type of [Value](crate::podcast::Value).
 #[derive(Debug, PartialEq, Eq, EnumString, Display)]
 pub enum ValueType {
     #[strum(serialize = "bitcoin")]
@@ -29,6 +30,7 @@ impl<'de> Deserialize<'de> for ValueType {
     }
 }
 
+/// Method of [Value](crate::podcast::Value).
 #[derive(Debug, PartialEq, Eq, EnumString, Display)]
 pub enum ValueMethod {
     #[strum(serialize = "default")]
@@ -54,6 +56,7 @@ impl<'de> Deserialize<'de> for ValueMethod {
     }
 }
 
+/// Type of [ValueRecipient](crate::podcast::ValueRecipient).
 #[derive(Debug, PartialEq, Eq, EnumString, Display)]
 pub enum ValueRecipientType {
     #[strum(serialize = "wallet")]

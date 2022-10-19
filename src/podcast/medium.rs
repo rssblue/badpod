@@ -2,6 +2,7 @@ use serde::{Deserialize, Deserializer};
 use std::str::FromStr;
 use strum_macros::{Display, EnumString};
 
+/// Medium of the feed.
 #[derive(Debug, PartialEq, Eq, EnumString, Display)]
 pub enum Medium {
     #[strum(serialize = "podcast")]

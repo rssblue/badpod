@@ -2,7 +2,7 @@ use serde::{Deserialize, Deserializer};
 use std::str::FromStr;
 use strum_macros::{Display, EnumString};
 
-// TODO: improve variant names.
+/// Type of [License](crate::podcast::License).
 #[derive(Debug, PartialEq, Eq, EnumString, Display)]
 pub enum LicenseType {
     #[strum(serialize = "0bsd")]

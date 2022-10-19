@@ -1,5 +1,6 @@
 use serde::{Deserialize, Deserializer};
 
+/// Group (as defined by [Podcast Taxonomy Project](https://podcasttaxonomy.com/)) of [Person](crate::podcast::Person).
 #[derive(Debug, PartialEq, Eq)]
 pub enum PersonGroup {
     CreativeDirection,
@@ -41,6 +42,7 @@ where
     }
 }
 
+/// Role (as defined by [Podcast Taxonomy Project](https://podcasttaxonomy.com/)) of [Person](crate::podcast::Person).
 #[derive(Debug, PartialEq, Eq)]
 pub enum PersonRole {
     Director,

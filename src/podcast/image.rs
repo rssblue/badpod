@@ -1,11 +1,13 @@
 use serde::{Deserialize, Deserializer};
 
+/// Allows specifying different image sizes at either the episode or channel level.
 #[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct Images {
     #[serde(rename = "$attr:srcset", deserialize_with = "vec_image", default)]
     pub srcset: Vec<Image>,
 }
 
+/// Individual image in [Images](Images) object.
 #[derive(Debug, PartialEq, Eq)]
 pub enum Image {
     Ok(String, i64),

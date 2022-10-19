@@ -2,7 +2,9 @@ use serde::{Deserialize, Deserializer};
 use std::str::FromStr;
 use strum_macros::{Display, EnumString};
 
-/// Service slugs taken from
+/// Podcast platforms.
+///
+/// Taken from
 /// <https://raw.githubusercontent.com/Podcastindex-org/podcast-namespace/main/serviceslugs.txt>.
 #[derive(Debug, PartialEq, Eq, EnumString, Display)]
 #[strum(serialize_all = "snake_case")]

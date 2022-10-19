@@ -2,6 +2,7 @@ use regex::Regex;
 use serde::de::Error;
 use serde::{Deserialize, Deserializer};
 
+/// Global unique identifier for a podcast.
 #[derive(Debug, PartialEq, Eq)]
 pub enum Guid {
     Ok(String),

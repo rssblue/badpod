@@ -1,6 +1,7 @@
 use serde::de::Error;
 use serde::{Deserialize, Deserializer};
 
+/// Geographical coordinates.
 #[derive(Debug, PartialEq)]
 pub enum Geo {
     Ok {
@@ -106,6 +107,7 @@ fn parse_geo(s: String) -> Result<Geo, String> {
     })
 }
 
+/// Type of [Osm](Osm) object.
 #[derive(Debug, PartialEq, Eq)]
 pub enum OsmType {
     Node,
@@ -113,6 +115,7 @@ pub enum OsmType {
     Relation,
 }
 
+/// Open Street Map object.
 #[derive(Debug, PartialEq, Eq)]
 pub enum Osm {
     Ok {

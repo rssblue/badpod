@@ -2,7 +2,7 @@ use serde::{Deserialize, Deserializer};
 use std::str::FromStr;
 use strum_macros::{Display, EnumString};
 
-
+/// Type of [Integrity](crate::podcast::Integrity).
 #[derive(Debug, PartialEq, Eq, EnumString, Display)]
 pub enum IntegrityType {
     #[strum(serialize = "sri")]

@@ -8,7 +8,7 @@ use crate::language;
 use crate::mime;
 use crate::time;
 
-/// Converts contents of an XML file of podcast's RSS feed to [`Rss`](Rss) struct.
+/// Converts contents of an XML file of podcast's RSS feed to [Rss](Rss) struct.
 pub fn from_str(feed_str: &str) -> Result<Rss, String> {
     // TODO: Both namespaces should be supported, but this ugly fix should be improved.
     let feed_str = &feed_str.replace(

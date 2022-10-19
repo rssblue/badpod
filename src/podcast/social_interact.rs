@@ -2,6 +2,7 @@ use serde::{Deserialize, Deserializer};
 use std::str::FromStr;
 use strum_macros::{Display, EnumString};
 
+/// Social protocols that can be used in [SocialInteract](crate::podcast::SocialInteract).
 #[derive(Debug, PartialEq, Eq, EnumString, Display)]
 pub enum SocialProtocol {
     #[strum(serialize = "disabled")]
