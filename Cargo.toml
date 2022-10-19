@@ -1,6 +1,12 @@
 [package]
 name = "badpod"
 version = "0.1.0"
+license = "MIT"
+description = "A Rust crate for working with imperfect podcast feeds."
+repository = "https://github.com/rssblue/badpod"
+readme = "README.md"
+categories = ["parsing"]
+keywords = ["podcast", "rss", "xml"]
 edition = "2021"
 
 [dependencies]
