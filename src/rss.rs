@@ -236,6 +236,11 @@ pub struct Item {
         default
     )]
     pub podcast_social_interacts: Vec<podcast::SocialInteract>,
+    #[serde(
+        rename = "{https://podcastindex.org/namespace/1.0}podcast:license",
+        default
+    )]
+    pub podcast_license: Option<podcast::License>,
 }
 
 /// Episode's media content.
