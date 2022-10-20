@@ -2,7 +2,7 @@
 name = "badpod"
 version = "0.1.0"
 license = "MIT"
-description = "A Rust crate for working with imperfect podcast feeds."
+description = "A Rust crate for interpreting imperfect feeds of podcasts."
 repository = "https://github.com/rssblue/badpod"
 readme = "README.md"
 categories = ["parsing"]
