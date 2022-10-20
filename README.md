@@ -41,7 +41,7 @@ let rss = match badpod::from_str(feed_str) {
     // Usually, this shouldn't happen, even if the feed doesn't conform
     // to the traditional schema.
     Err(_) => panic!("Something went terribly wrong."),
-}
+};
 ```
 
 ## Features
@@ -55,7 +55,7 @@ This allows to detect whether an XML tag or attribute is included in the feed th
 match channel.podcast_value {
     Some(_) => println!("You support Value4Value! Awesome!"),
     None => println!("Have you considered receiving payment from listeners?"),
-}
+};
 ```
 
 ### Deserializing complicated tags
@@ -113,5 +113,5 @@ match channel.itunes_explicit {
         }
     }
     None => println!("<itunes:explicit> not found."),
-}
+};
 ```
