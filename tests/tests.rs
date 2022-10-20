@@ -1009,6 +1009,10 @@ fn deserialize() {
             include_str!("data/empty_xml.xml"),
             Err("2:1 Unexpected end of stream: no root element found".to_string()),
             ),
+        (
+            include_str!("data/empty_file.xml"),
+            Err("1:1 Unexpected end of stream: no root element found".to_string()),
+            ),
     ];
 
     for (input, expected) in conditions {
