@@ -1000,10 +1000,14 @@ fn deserialize() {
         }),
         ),
         (
-            include_str!("data/empty_feed.xml"),
+            include_str!("data/empty_rss.xml"),
             Ok(Rss{
                 ..Default::default()
             }),
+            ),
+        (
+            include_str!("data/empty_xml.xml"),
+            Err("2:1 Unexpected end of stream: no root element found".to_string()),
             ),
     ];
 
