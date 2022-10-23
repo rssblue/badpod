@@ -39,12 +39,24 @@ pub struct Rss {
 /// Podcast feed.
 #[derive(Debug, Deserialize, PartialEq, Default)]
 pub struct Channel {
+    #[serde(rename = "category", default)]
+    pub categories: Vec<String>,
     pub copyright: Option<String>,
     pub description: Option<String>,
     pub generator: Option<String>,
     pub language: Option<language::Language>,
+    #[serde(rename = "lastBuildDate")]
+    pub last_build_date: Option<time::DateTime>,
     pub link: Option<String>,
+    #[serde(rename = "managingEditor")]
+    pub managing_editor: Option<String>,
+    #[serde(rename = "pubDate")]
+    pub pub_date: Option<time::DateTime>,
     pub title: Option<String>,
+    #[serde(deserialize_with = "basic::option_integer_positive", default)]
+    pub ttl: Option<basic::Integer>,
+    #[serde(rename = "webMaster")]
+    pub web_master: Option<String>,
 
     #[serde(rename = "{http://purl.org/rss/1.0/modules/content/}content:encoded")]
     pub content_encoded: Option<String>,

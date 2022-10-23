@@ -308,6 +308,10 @@ fn deserialize() {
                 link: Some("http://example.com/podcast".to_string()),
                 language: Some(Language::English(LanguageEnglish::UnitedStates)),
                 generator: Some("Freedom Controller".to_string()),
+                managing_editor: Some("john@example.com (John Doe)".to_string()),
+                web_master: Some("support@example.com (Tech Support)".to_string()),
+                pub_date: Some(badpod::DateTime::Ok(chrono::FixedOffset::west(0).ymd(2020, 10, 9).and_hms(4, 30, 38))),
+                last_build_date: Some(badpod::DateTime::Ok(chrono::FixedOffset::west(0).ymd(2020, 10, 9).and_hms(4, 30, 38))),
 
                 podcast_guid: Some(podcast::Guid::Other("y0ur-gu1d-g035-h3r3".to_string())),
                 podcast_license: Some(podcast::License{
