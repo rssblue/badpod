@@ -1,19 +1,14 @@
 use serde::{Deserialize, Deserializer};
 use std::fmt;
-use strum::{EnumProperty, IntoEnumIterator};
-use strum_macros::{EnumIter, EnumProperty};
+use strum::IntoEnumIterator;
+use strum_macros::EnumIter;
 
 /// Social protocols that can be used in [SocialInteract](crate::podcast::SocialInteract).
-#[derive(Debug, PartialEq, Eq, EnumProperty, EnumIter)]
+#[derive(Debug, PartialEq, Eq, EnumIter)]
 pub enum SocialProtocol {
-    #[strum(props(str = "disabled"))]
     Disabled,
-    #[strum(props(str = "activitypub"))]
     ActivityPub,
-    #[strum(props(str = "twitter"))]
     Twitter,
-    // TODO: change to lowercase.
-    #[strum(props(str = "Lightning"))]
     Lightning,
 
     Other(String),
@@ -23,10 +18,10 @@ impl fmt::Display for SocialProtocol {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Self::Other(s) => write!(f, "{s}"),
-            _ => match self.get_str("str") {
-                Some(s) => write!(f, "{}", s),
-                None => write!(f, "{:?}", self),
-            },
+            _ => {
+                let s = format!("{:?}", self);
+                write!(f, "{}", s.to_lowercase())
+            }
         }
     }
 }
