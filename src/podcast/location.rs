@@ -1,8 +1,11 @@
 use serde::de::Error;
 use serde::{Deserialize, Deserializer};
+use std::fmt;
+use std::str::FromStr;
+use strum_macros::{Display, EnumString};
 
 /// Geographical coordinates.
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub enum Geo {
     Ok {
         latitude: f64,
@@ -11,6 +14,29 @@ pub enum Geo {
         uncertainty: Option<f64>,
     },
     Other(String),
+}
+
+impl fmt::Display for Geo {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Ok {
+                latitude,
+                longitude,
+                altitude,
+                uncertainty,
+            } => {
+                let mut s = format!("geo:{latitude},{longitude}");
+                if let Some(altitude) = altitude {
+                    s = format!("{s},{altitude}");
+                };
+                if let Some(uncertainty) = uncertainty {
+                    s = format!("{s};u={uncertainty}");
+                };
+                write!(f, "{s}")
+            }
+            Self::Other(s) => write!(f, "{s}"),
+        }
+    }
 }
 
 impl<'de> Deserialize<'de> for Geo {
@@ -108,15 +134,18 @@ fn parse_geo(s: String) -> Result<Geo, String> {
 }
 
 /// Type of [Osm](Osm) object.
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, EnumString, Display, Clone)]
 pub enum OsmType {
+    #[strum(serialize = "N")]
     Node,
+    #[strum(serialize = "W")]
     Way,
+    #[strum(serialize = "R")]
     Relation,
 }
 
 /// Open Street Map object.
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub enum Osm {
     Ok {
         type_: OsmType,
@@ -124,6 +153,25 @@ pub enum Osm {
         revision: Option<u64>,
     },
     Other(String),
+}
+
+impl fmt::Display for Osm {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Ok {
+                type_,
+                id,
+                revision,
+            } => {
+                let mut s = format!("{type_}{id}");
+                if let Some(revision) = revision {
+                    s = format!("{s}#{revision}");
+                };
+                write!(f, "{s}")
+            }
+            Self::Other(s) => write!(f, "{s}"),
+        }
+    }
 }
 
 impl<'de> Deserialize<'de> for Osm {
@@ -160,10 +208,8 @@ fn parse_osm(s: String) -> Result<Osm, String> {
         None => return Ok(Osm::Other(s)),
     };
 
-    let type_ = match &caps["type_"] {
-        "N" => OsmType::Node,
-        "W" => OsmType::Way,
-        "R" => OsmType::Relation,
+    let type_ = match OsmType::from_str(&caps["type_"]) {
+        Ok(type_) => type_,
         _ => return Err("something went wrong".to_string()),
     };
 
@@ -192,87 +238,73 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_parse_geo() {
-        pretty_assertions::assert_eq!(
-            parse_geo("geo:37.786971,-122.399677".to_string()),
-            Ok(Geo::Ok {
+    fn test_geo() {
+        let strings = vec![
+            "geo:37.786971,-122.399677",
+            "geo:37.786971,-122.399677,250",
+            "geo:37.786971,-122.399677;u=350",
+            "geo:37.786971,-122.399677,250;u=350",
+            "geo:37.786971,-122.399677,250,u=350",
+        ];
+        let geos = vec![
+            Geo::Ok {
                 latitude: 37.786971,
                 longitude: -122.399677,
                 altitude: None,
                 uncertainty: None,
-            })
-        );
-
-        pretty_assertions::assert_eq!(
-            parse_geo("geo:37.786971,-122.399677,250".to_string()),
-            Ok(Geo::Ok {
+            },
+            Geo::Ok {
                 latitude: 37.786971,
                 longitude: -122.399677,
                 altitude: Some(250.0),
                 uncertainty: None,
-            })
-        );
-
-        pretty_assertions::assert_eq!(
-            parse_geo("geo:37.786971,-122.399677;u=350".to_string()),
-            Ok(Geo::Ok {
+            },
+            Geo::Ok {
                 latitude: 37.786971,
                 longitude: -122.399677,
                 altitude: None,
                 uncertainty: Some(350.0),
-            })
-        );
-
-        pretty_assertions::assert_eq!(
-            parse_geo("geo:37.786971,-122.399677,250;u=350".to_string()),
-            Ok(Geo::Ok {
+            },
+            Geo::Ok {
                 latitude: 37.786971,
                 longitude: -122.399677,
                 altitude: Some(250.0),
                 uncertainty: Some(350.0),
-            })
-        );
+            },
+            Geo::Other("geo:37.786971,-122.399677,250,u=350".to_string()),
+        ];
 
-        pretty_assertions::assert_eq!(
-            parse_geo("geo:37.786971,-122.399677,250,u=350".to_string()),
-            Ok(Geo::Other(
-                "geo:37.786971,-122.399677,250,u=350".to_string()
-            )),
-        );
+        for (s, geo) in strings.iter().zip(geos.iter()) {
+            pretty_assertions::assert_eq!(parse_geo(s.to_string()), Ok(geo.clone()));
+            pretty_assertions::assert_eq!(format!("{}", geo), *s);
+        }
     }
 
     #[test]
     fn test_parse_osm() {
-        pretty_assertions::assert_eq!(
-            parse_osm("R148838".to_string()),
-            Ok(Osm::Ok {
+        let strings = vec!["R148838", "W5013364", "R7444#188", "7444#188"];
+        let osms = vec![
+            Osm::Ok {
                 type_: OsmType::Relation,
                 id: 148838,
                 revision: None,
-            })
-        );
-
-        pretty_assertions::assert_eq!(
-            parse_osm("W5013364".to_string()),
-            Ok(Osm::Ok {
+            },
+            Osm::Ok {
                 type_: OsmType::Way,
                 id: 5013364,
                 revision: None,
-            })
-        );
-
-        pretty_assertions::assert_eq!(
-            parse_osm("R7444#188".to_string()),
-            Ok(Osm::Ok {
+            },
+            Osm::Ok {
                 type_: OsmType::Relation,
                 id: 7444,
                 revision: Some(188),
-            })
-        );
+            },
+            Osm::Other("7444#188".to_string()),
+        ];
 
-        pretty_assertions::assert_eq!(
-            parse_osm("7444#188".to_string()),
-            Ok(Osm::Other("7444#188".to_string())),
-        );
+        for (s, osm) in strings.iter().zip(osms.iter()) {
+            pretty_assertions::assert_eq!(parse_osm(s.to_string()), Ok(osm.clone()));
+            pretty_assertions::assert_eq!(format!("{}", osm), *s);
+        }
     }
 }
