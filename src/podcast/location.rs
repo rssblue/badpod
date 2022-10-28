@@ -16,6 +16,90 @@ pub enum Geo {
     Other(String),
 }
 
+impl std::str::FromStr for Geo {
+    type Err = String;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        if s.len() < 5 || !s.starts_with("geo:") {
+            return Ok(Geo::Other(s.to_string()));
+        }
+
+        // Part after "geo:"
+        let data = s[4..].to_string();
+
+        let num_commas = data.matches(',').count();
+        if num_commas > 2 {
+            return Ok(Geo::Other(s.to_string()));
+        }
+        let has_altitude = num_commas == 2;
+
+        let num_semicolons = data.matches(';').count();
+        if num_semicolons > 1 {
+            return Ok(Geo::Other(s.to_string()));
+        }
+        let has_uncertainty = num_semicolons == 1;
+
+        let pattern = match (has_altitude, has_uncertainty) {
+            (false, false) => {
+                r"(?P<latitude>[+-]?([0-9]*[.])?[0-9]+),(?P<longitude>[+-]?([0-9]*[.])?[0-9]+)"
+            }
+            (false, true) => {
+                r"(?P<latitude>[+-]?([0-9]*[.])?[0-9]+),(?P<longitude>[+-]?([0-9]*[.])?[0-9]+);u=(?P<uncertainty>[+-]?([0-9]*[.])?[0-9]+)"
+            }
+            (true, false) => {
+                r"(?P<latitude>[+-]?([0-9]*[.])?[0-9]+),(?P<longitude>[+-]?([0-9]*[.])?[0-9]+),(?P<altitude>[+-]?([0-9]*[.])?[0-9]+)"
+            }
+            (true, true) => {
+                r"(?P<latitude>[+-]?([0-9]*[.])?[0-9]+),(?P<longitude>[+-]?([0-9]*[.])?[0-9]+),(?P<altitude>[+-]?([0-9]*[.])?[0-9]+);u=(?P<uncertainty>[+-]?([0-9]*[.])?[0-9]+)"
+            }
+        };
+
+        let re = match regex::Regex::new(pattern) {
+            Ok(re) => re,
+            Err(e) => return Err(e.to_string()),
+        };
+        let caps = match re.captures(data.as_str()) {
+            Some(caps) => caps,
+            None => return Ok(Geo::Other(s.to_string())),
+        };
+
+        let latitude = &caps["latitude"];
+        let latitude = match latitude.parse::<f64>() {
+            Ok(latitude) => latitude,
+            Err(_) => return Ok(Geo::Other(s.to_string())),
+        };
+
+        let longitude = &caps["longitude"];
+        let longitude = match longitude.parse::<f64>() {
+            Ok(longitude) => longitude,
+            Err(_) => return Ok(Geo::Other(s.to_string())),
+        };
+
+        let mut altitude: Option<f64> = None;
+        if has_altitude {
+            altitude = match &caps["altitude"].parse::<f64>() {
+                Ok(altitude) => Some(*altitude),
+                Err(_) => return Ok(Geo::Other(s.to_string())),
+            };
+        }
+
+        let mut uncertainty: Option<f64> = None;
+        if has_uncertainty {
+            uncertainty = match &caps["uncertainty"].parse::<f64>() {
+                Ok(uncertainty) => Some(*uncertainty),
+                Err(_) => return Ok(Geo::Other(s.to_string())),
+            };
+        }
+
+        Ok(Geo::Ok {
+            latitude,
+            longitude,
+            altitude,
+            uncertainty,
+        })
+    }
+}
+
 impl fmt::Display for Geo {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
@@ -46,91 +130,11 @@ impl<'de> Deserialize<'de> for Geo {
             Err(e) => return Err(e),
         };
 
-        match parse_geo(s) {
+        match Geo::from_str(s.as_str()) {
             Ok(geo) => Ok(geo),
             Err(e) => Err(e).map_err(D::Error::custom),
         }
     }
-}
-
-fn parse_geo(s: String) -> Result<Geo, String> {
-    if s.len() < 5 || !s.starts_with("geo:") {
-        return Ok(Geo::Other(s));
-    }
-
-    // Part after "geo:"
-    let data = s[4..].to_string();
-
-    let num_commas = data.matches(',').count();
-    if num_commas > 2 {
-        return Ok(Geo::Other(s));
-    }
-    let has_altitude = num_commas == 2;
-
-    let num_semicolons = data.matches(';').count();
-    if num_semicolons > 1 {
-        return Ok(Geo::Other(s));
-    }
-    let has_uncertainty = num_semicolons == 1;
-
-    let pattern = match (has_altitude, has_uncertainty) {
-        (false, false) => {
-            r"(?P<latitude>[+-]?([0-9]*[.])?[0-9]+),(?P<longitude>[+-]?([0-9]*[.])?[0-9]+)"
-        }
-        (false, true) => {
-            r"(?P<latitude>[+-]?([0-9]*[.])?[0-9]+),(?P<longitude>[+-]?([0-9]*[.])?[0-9]+);u=(?P<uncertainty>[+-]?([0-9]*[.])?[0-9]+)"
-        }
-        (true, false) => {
-            r"(?P<latitude>[+-]?([0-9]*[.])?[0-9]+),(?P<longitude>[+-]?([0-9]*[.])?[0-9]+),(?P<altitude>[+-]?([0-9]*[.])?[0-9]+)"
-        }
-        (true, true) => {
-            r"(?P<latitude>[+-]?([0-9]*[.])?[0-9]+),(?P<longitude>[+-]?([0-9]*[.])?[0-9]+),(?P<altitude>[+-]?([0-9]*[.])?[0-9]+);u=(?P<uncertainty>[+-]?([0-9]*[.])?[0-9]+)"
-        }
-    };
-
-    let re = match regex::Regex::new(pattern) {
-        Ok(re) => re,
-        Err(e) => return Err(e.to_string()),
-    };
-    let caps = match re.captures(data.as_str()) {
-        Some(caps) => caps,
-        None => return Ok(Geo::Other(s)),
-    };
-
-    let latitude = &caps["latitude"];
-    let latitude = match latitude.parse::<f64>() {
-        Ok(latitude) => latitude,
-        Err(_) => return Ok(Geo::Other(s)),
-    };
-
-    let longitude = &caps["longitude"];
-    let longitude = match longitude.parse::<f64>() {
-        Ok(longitude) => longitude,
-        Err(_) => return Ok(Geo::Other(s)),
-    };
-
-    let mut altitude: Option<f64> = None;
-    if has_altitude {
-        altitude = match &caps["altitude"].parse::<f64>() {
-            Ok(altitude) => Some(*altitude),
-            Err(_) => return Ok(Geo::Other(s)),
-        };
-    }
-
-    let mut uncertainty: Option<f64> = None;
-    if has_uncertainty {
-        uncertainty = match &caps["uncertainty"].parse::<f64>() {
-            Ok(uncertainty) => Some(*uncertainty),
-            Err(_) => return Ok(Geo::Other(s)),
-        };
-    }
-
-    Ok(Geo::Ok {
-        latitude,
-        longitude,
-        altitude,
-        uncertainty,
-    })
 }
 
 /// Type of [Osm](Osm) object.
@@ -153,6 +157,55 @@ pub enum Osm {
         revision: Option<u64>,
     },
     Other(String),
+}
+
+impl std::str::FromStr for Osm {
+    type Err = String;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let has_revision = s.matches('#').count() > 0;
+
+        let pattern = {
+            if has_revision {
+                r"(?P<type_>[NWR])(?P<id>\d+)#(?P<revision>\d+)"
+            } else {
+                r"(?P<type_>[NWR])(?P<id>\d+)"
+            }
+        };
+
+        let re = match regex::Regex::new(pattern) {
+            Ok(re) => re,
+            Err(e) => return Err(e.to_string()),
+        };
+        let caps = match re.captures(s) {
+            Some(caps) => caps,
+            None => return Ok(Osm::Other(s.to_string())),
+        };
+
+        let type_ = match OsmType::from_str(&caps["type_"]) {
+            Ok(type_) => type_,
+            _ => return Err("something went wrong".to_string()),
+        };
+
+        let id = match &caps["id"].parse::<u64>() {
+            Ok(id) => *id,
+            Err(_) => return Ok(Osm::Other(s.to_string())),
+        };
+
+        let mut revision: Option<u64> = None;
+        if has_revision {
+            revision = match &caps["revision"].parse::<u64>() {
+                Ok(revision) => Some(*revision),
+                Err(_) => return Ok(Osm::Other(s.to_string())),
+            };
+        }
+
+        Ok(Osm::Ok {
+            type_,
+            id,
+            revision,
+        })
+    }
 }
 
 impl fmt::Display for Osm {
@@ -181,56 +234,11 @@ impl<'de> Deserialize<'de> for Osm {
             Err(e) => return Err(e),
         };
 
-        match parse_osm(s) {
+        match Osm::from_str(s.as_str()) {
             Ok(geo) => Ok(geo),
             Err(e) => Err(e).map_err(D::Error::custom),
         }
     }
-}
-
-fn parse_osm(s: String) -> Result<Osm, String> {
-    let has_revision = s.matches('#').count() > 0;
-
-    let pattern = {
-        if has_revision {
-            r"(?P<type_>[NWR])(?P<id>\d+)#(?P<revision>\d+)"
-        } else {
-            r"(?P<type_>[NWR])(?P<id>\d+)"
-        }
-    };
-
-    let re = match regex::Regex::new(pattern) {
-        Ok(re) => re,
-        Err(e) => return Err(e.to_string()),
-    };
-    let caps = match re.captures(s.as_str()) {
-        Some(caps) => caps,
-        None => return Ok(Osm::Other(s)),
-    };
-
-    let type_ = match OsmType::from_str(&caps["type_"]) {
-        Ok(type_) => type_,
-        _ => return Err("something went wrong".to_string()),
-    };
-
-    let id = match &caps["id"].parse::<u64>() {
-        Ok(id) => *id,
-        Err(_) => return Ok(Osm::Other(s)),
-    };
-
-    let mut revision: Option<u64> = None;
-    if has_revision {
-        revision = match &caps["revision"].parse::<u64>() {
-            Ok(revision) => Some(*revision),
-            Err(_) => return Ok(Osm::Other(s)),
-        };
-    }
-
-    Ok(Osm::Ok {
-        type_,
-        id,
-        revision,
-    })
 }
 
 #[cfg(test)]
@@ -275,13 +283,13 @@ mod tests {
         ];
 
         for (s, geo) in strings.iter().zip(geos.iter()) {
-            pretty_assertions::assert_eq!(parse_geo(s.to_string()), Ok(geo.clone()));
+            pretty_assertions::assert_eq!(Geo::from_str(s), Ok(geo.clone()));
             pretty_assertions::assert_eq!(format!("{}", geo), *s);
         }
     }
 
     #[test]
-    fn test_parse_osm() {
+    fn test_osm() {
         let strings = vec!["R148838", "W5013364", "R7444#188", "7444#188"];
         let osms = vec![
             Osm::Ok {
@@ -303,7 +311,7 @@ mod tests {
         ];
 
         for (s, osm) in strings.iter().zip(osms.iter()) {
-            pretty_assertions::assert_eq!(parse_osm(s.to_string()), Ok(osm.clone()));
+            pretty_assertions::assert_eq!(Osm::from_str(s), Ok(osm.clone()));
             pretty_assertions::assert_eq!(format!("{}", osm), *s);
         }
     }
