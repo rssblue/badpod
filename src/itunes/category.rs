@@ -1,9 +1,10 @@
 use serde::{Deserialize, Deserializer};
-use std::str::FromStr;
-use strum_macros::{Display, EnumString};
+use std::fmt;
+use strum::{EnumProperty, IntoEnumIterator};
+use strum_macros::{EnumIter, EnumProperty};
 
 /// Apple Podcasts podcast category names.
-#[derive(Debug, PartialEq, Eq, EnumString, Display)]
+#[derive(Debug, PartialEq, Eq, EnumProperty, EnumIter)]
 pub enum CategoryName {
     Arts,
     Business,
@@ -12,27 +13,38 @@ pub enum CategoryName {
     Fiction,
     Government,
     History,
-    #[strum(serialize = "Health & Fitness")]
+    #[strum(props(str = "Health & Fitness"))]
     HealthAndFitness,
-    #[strum(serialize = "Kids & Family")]
+    #[strum(props(str = "Kids & Family"))]
     KidsAndFamily,
     Leisure,
     Music,
     News,
-    #[strum(serialize = "Religion & Spirituality")]
+    #[strum(props(str = "Religion & Spirituality"))]
     ReligionAndSpirituality,
     Science,
-    #[strum(serialize = "Society & Culture")]
+    #[strum(props(str = "Society & Culture"))]
     SocietyAndCulture,
     Sports,
     Technology,
-    #[strum(serialize = "True Crime")]
+    #[strum(props(str = "True Crime"))]
     TrueCrime,
-    #[strum(serialize = "TV & Film")]
+    #[strum(props(str = "TV & Film"))]
     TvAndFilm,
 
-    #[strum(disabled)]
     Other(String),
+}
+
+impl fmt::Display for CategoryName {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Other(s) => write!(f, "{s}"),
+            _ => match self.get_str("str") {
+                Some(s) => write!(f, "{}", s),
+                None => write!(f, "{:?}", self),
+            },
+        }
+    }
 }
 
 impl<'de> Deserialize<'de> for CategoryName {
@@ -42,93 +54,96 @@ impl<'de> Deserialize<'de> for CategoryName {
             Err(e) => return Err(e),
         };
 
-        match CategoryName::from_str(s.as_str()) {
-            Ok(x) => Ok(x),
-            Err(_) => Ok(CategoryName::Other(s)),
+        for variant in Self::iter() {
+            if format!("{variant}") == s {
+                return Ok(variant);
+            };
         }
+
+        Ok(Self::Other(s))
     }
 }
 
 /// Apple Podcasts podcast subcategory names.
-#[derive(Debug, PartialEq, Eq, EnumString, Display)]
+#[derive(Debug, PartialEq, Eq, EnumProperty, EnumIter)]
 pub enum SubcategoryName {
     Books,
     Design,
-    #[strum(serialize = "Fashion & Beauty")]
+    #[strum(props(str = "Fashion & Beauty"))]
     FashionAndBeauty,
     Food,
-    #[strum(serialize = "Performing Arts")]
+    #[strum(props(str = "Performing Arts"))]
     PerformingArts,
-    #[strum(serialize = "Visual Arts")]
+    #[strum(props(str = "Visual Arts"))]
     VisualArts,
     Careers,
     Entrepreneurship,
     Investing,
     Management,
     Marketing,
-    #[strum(serialize = "Non-Profit")]
+    #[strum(props(str = "Non-Profit"))]
     NonProfit,
-    #[strum(serialize = "Comedy Interviews")]
+    #[strum(props(str = "Comedy Interviews"))]
     ComedyInterviews,
     Improv,
-    #[strum(serialize = "Stand-Up")]
+    #[strum(props(str = "Stand-Up"))]
     StandUp,
     Courses,
-    #[strum(serialize = "How To")]
+    #[strum(props(str = "How To"))]
     HowTo,
-    #[strum(serialize = "Language Learning")]
+    #[strum(props(str = "Language Learning"))]
     LanguageLearning,
-    #[strum(serialize = "Self Improvement")]
+    #[strum(props(str = "Self Improvement"))]
     SelfImprovement,
-    #[strum(serialize = "Comedy Fiction")]
+    #[strum(props(str = "Comedy Fiction"))]
     ComedyFiction,
     Drama,
-    #[strum(serialize = "Science Fiction")]
+    #[strum(props(str = "Science Fiction"))]
     ScienceFiction,
-    #[strum(serialize = "Alternative Health")]
+    #[strum(props(str = "Alternative Health"))]
     AlternativeHealth,
     Fitness,
     Medicine,
-    #[strum(serialize = "Mental Health")]
+    #[strum(props(str = "Mental Health"))]
     MentalHealth,
     Nutrition,
     Sexuality,
-    #[strum(serialize = "Education for Kids")]
+    #[strum(props(str = "Education for Kids"))]
     EducationForKids,
     Parenting,
-    #[strum(serialize = "Pets & Animals")]
+    #[strum(props(str = "Pets & Animals"))]
     PetsAndAnimals,
-    #[strum(serialize = "Stories for Kids")]
+    #[strum(props(str = "Stories for Kids"))]
     StoriesForKids,
-    #[strum(serialize = "Animation & Manga")]
+    #[strum(props(str = "Animation & Manga"))]
     AnimationAndManga,
     Automotive,
     Aviation,
     Crafts,
     Games,
     Hobbies,
-    #[strum(serialize = "Home & Garden")]
+    #[strum(props(str = "Home & Garden"))]
     HomeAndGarden,
-    #[strum(serialize = "Video Games")]
+    #[strum(props(str = "Video Games"))]
     VideoGames,
-    #[strum(serialize = "Music Commentary")]
+    #[strum(props(str = "Music Commentary"))]
     MusicCommentary,
-    #[strum(serialize = "Music History")]
+    #[strum(props(str = "Music History"))]
     MusicHistory,
-    #[strum(serialize = "Music Interviews")]
+    #[strum(props(str = "Music Interviews"))]
     MusicInterviews,
-    #[strum(serialize = "Business News")]
+    #[strum(props(str = "Business News"))]
     BusinessNews,
-    #[strum(serialize = "Daily News")]
+    #[strum(props(str = "Daily News"))]
     DailyNews,
-    #[strum(serialize = "Entertainment News")]
+    #[strum(props(str = "Entertainment News"))]
     EntertainmentNews,
-    #[strum(serialize = "News Commentary")]
+    #[strum(props(str = "News Commentary"))]
     NewsCommentary,
     Politics,
-    #[strum(serialize = "Sports News")]
+    #[strum(props(str = "Sports News"))]
     SportsNews,
-    #[strum(serialize = "Tech News")]
+    #[strum(props(str = "Tech News"))]
     TechNews,
     Buddhism,
     Christianity,
@@ -139,28 +154,28 @@ pub enum SubcategoryName {
     Spirituality,
     Astronomy,
     Chemistry,
-    #[strum(serialize = "Earth Sciences")]
+    #[strum(props(str = "Earth Sciences"))]
     EarthSciences,
-    #[strum(serialize = "Life Sciences")]
+    #[strum(props(str = "Life Sciences"))]
     LifeSciences,
     Mathematics,
-    #[strum(serialize = "Natural Sciences")]
+    #[strum(props(str = "Natural Sciences"))]
     NaturalSciences,
     Nature,
     Physics,
-    #[strum(serialize = "Social Sciences")]
+    #[strum(props(str = "Social Sciences"))]
     SocialSciences,
     Documentary,
-    #[strum(serialize = "Personal Journals")]
+    #[strum(props(str = "Personal Journals"))]
     PersonalJournals,
     Philosophy,
-    #[strum(serialize = "Places & Travel")]
+    #[strum(props(str = "Places & Travel"))]
     PlacesAndTravel,
     Relationships,
     Baseball,
     Basketball,
     Cricket,
-    #[strum(serialize = "Fantasy Sports")]
+    #[strum(props(str = "Fantasy Sports"))]
     FantasySports,
     Football,
     Golf,
@@ -173,19 +188,30 @@ pub enum SubcategoryName {
     Volleyball,
     Wilderness,
     Wrestling,
-    #[strum(serialize = "After Shows")]
+    #[strum(props(str = "After Shows"))]
     AfterShows,
-    #[strum(serialize = "Film History")]
+    #[strum(props(str = "Film History"))]
     FilmHistory,
-    #[strum(serialize = "Film Interviews")]
+    #[strum(props(str = "Film Interviews"))]
     FilmInterviews,
-    #[strum(serialize = "Film Reviews")]
+    #[strum(props(str = "Film Reviews"))]
     FilmReviews,
-    #[strum(serialize = "TV Reviews")]
+    #[strum(props(str = "TV Reviews"))]
     TvReviews,
 
-    #[strum(disabled)]
     Other(String),
+}
+
+impl fmt::Display for SubcategoryName {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Other(s) => write!(f, "{s}"),
+            _ => match self.get_str("str") {
+                Some(s) => write!(f, "{}", s),
+                None => write!(f, "{:?}", self),
+            },
+        }
+    }
 }
 
 impl<'de> Deserialize<'de> for SubcategoryName {
@@ -195,9 +221,31 @@ impl<'de> Deserialize<'de> for SubcategoryName {
             Err(e) => return Err(e),
         };
 
-        match SubcategoryName::from_str(s.as_str()) {
-            Ok(x) => Ok(x),
-            Err(_) => Ok(SubcategoryName::Other(s)),
+        for variant in Self::iter() {
+            if format!("{variant}") == s {
+                return Ok(variant);
+            };
         }
+
+        Ok(Self::Other(s))
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_fmt() {
+        pretty_assertions::assert_eq!(format!("{}", CategoryName::Business), "Business");
+        pretty_assertions::assert_eq!(format!("{}", CategoryName::TrueCrime), "True Crime");
+        pretty_assertions::assert_eq!(
+            format!("{}", CategoryName::HealthAndFitness),
+            "Health & Fitness"
+        );
+        pretty_assertions::assert_eq!(
+            format!("{}", CategoryName::Other("other-category".to_string())),
+            "other-category"
+        );
     }
 }

@@ -1,27 +1,32 @@
 use serde::{Deserialize, Deserializer};
-use std::str::FromStr;
-use strum_macros::{Display, EnumString};
+use std::fmt;
+use strum::IntoEnumIterator;
+use strum_macros::EnumIter;
 
 /// Medium of the feed.
-#[derive(Debug, PartialEq, Eq, EnumString, Display)]
+#[derive(Debug, PartialEq, Eq, EnumIter)]
 pub enum Medium {
-    #[strum(serialize = "podcast")]
     Podcast,
-    #[strum(serialize = "music")]
     Music,
-    #[strum(serialize = "video")]
     Video,
-    #[strum(serialize = "film")]
     Film,
-    #[strum(serialize = "audiobook")]
     Audiobook,
-    #[strum(serialize = "newsletter")]
     Newsletter,
-    #[strum(serialize = "blog")]
     Blog,
 
-    #[strum(disabled)]
     Other(String),
+}
+
+impl fmt::Display for Medium {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Other(s) => write!(f, "{s}"),
+            _ => {
+                let s = format!("{:?}", self);
+                write!(f, "{}", s.to_lowercase())
+            }
+        }
+    }
 }
 
 impl<'de> Deserialize<'de> for Medium {
@@ -31,9 +36,12 @@ impl<'de> Deserialize<'de> for Medium {
             Err(e) => return Err(e),
         };
 
-        match Self::from_str(s.as_str()) {
-            Ok(x) => Ok(x),
-            Err(_) => Ok(Self::Other(s)),
+        for variant in Self::iter() {
+            if format!("{variant}") == s {
+                return Ok(variant);
+            };
         }
+
+        Ok(Self::Other(s))
     }
 }

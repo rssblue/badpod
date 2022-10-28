@@ -1,384 +1,397 @@
 use serde::{Deserialize, Deserializer};
+use std::fmt;
 use std::str::FromStr;
-use strum_macros::{Display, EnumString};
+use strum::{EnumProperty, IntoEnumIterator};
+use strum_macros::{Display, EnumIter, EnumProperty, EnumString};
 
 /// Used for deserializing languages.
 ///
 /// Language codes taken from <https://www.rssboard.org/rss-language-codes> and
 /// <https://www.loc.gov/standards/iso639-2/php/code_list.php>.
-#[derive(Debug, PartialEq, Eq, EnumString, Display)]
+#[derive(Debug, PartialEq, Eq, EnumProperty, EnumIter)]
 pub enum Language {
-    #[strum(serialize = "aa")]
+    #[strum(props(str = "aa"))]
     Afar,
-    #[strum(serialize = "ab")]
+    #[strum(props(str = "ab"))]
     Abkhazian,
-    #[strum(serialize = "ae")]
+    #[strum(props(str = "ae"))]
     Avestan,
-    #[strum(serialize = "af")]
+    #[strum(props(str = "af"))]
     Afrikaans,
-    #[strum(serialize = "ak")]
+    #[strum(props(str = "ak"))]
     Akan,
-    #[strum(serialize = "am")]
+    #[strum(props(str = "am"))]
     Amharic,
-    #[strum(serialize = "an")]
+    #[strum(props(str = "an"))]
     Aragonese,
-    #[strum(serialize = "ar")]
+    #[strum(props(str = "ar"))]
     Arabic,
-    #[strum(serialize = "as")]
+    #[strum(props(str = "as"))]
     Assamese,
-    #[strum(serialize = "av")]
+    #[strum(props(str = "av"))]
     Avaric,
-    #[strum(serialize = "ay")]
+    #[strum(props(str = "ay"))]
     Aymara,
-    #[strum(serialize = "az")]
+    #[strum(props(str = "az"))]
     Azerbaijani,
-    #[strum(serialize = "ba")]
+    #[strum(props(str = "ba"))]
     Bashkir,
-    #[strum(serialize = "be")]
+    #[strum(props(str = "be"))]
     Belarusian,
-    #[strum(serialize = "bg")]
+    #[strum(props(str = "bg"))]
     Bulgarian,
-    #[strum(serialize = "bh")]
+    #[strum(props(str = "bh"))]
     BihariLanguages,
-    #[strum(serialize = "bi")]
+    #[strum(props(str = "bi"))]
     Bislama,
-    #[strum(serialize = "bm")]
+    #[strum(props(str = "bm"))]
     Bambara,
-    #[strum(serialize = "bn")]
+    #[strum(props(str = "bn"))]
     Bengali,
-    #[strum(serialize = "bo")]
+    #[strum(props(str = "bo"))]
     Tibetan,
-    #[strum(serialize = "br")]
+    #[strum(props(str = "br"))]
     Breton,
-    #[strum(serialize = "bs")]
+    #[strum(props(str = "bs"))]
     Bosnian,
-    #[strum(serialize = "ca")]
+    #[strum(props(str = "ca"))]
     Catalan,
-    #[strum(serialize = "ce")]
+    #[strum(props(str = "ce"))]
     Chechen,
-    #[strum(serialize = "ch")]
+    #[strum(props(str = "ch"))]
     Chamorro,
-    #[strum(serialize = "co")]
+    #[strum(props(str = "co"))]
     Corsican,
-    #[strum(serialize = "cr")]
+    #[strum(props(str = "cr"))]
     Cree,
-    #[strum(serialize = "cs")]
+    #[strum(props(str = "cs"))]
     Czech,
-    #[strum(serialize = "cu")]
+    #[strum(props(str = "cu"))]
     SlavicChurch,
-    #[strum(serialize = "cv")]
+    #[strum(props(str = "cv"))]
     Chuvash,
-    #[strum(serialize = "cy")]
+    #[strum(props(str = "cy"))]
     Welsh,
-    #[strum(serialize = "da")]
+    #[strum(props(str = "da"))]
     Danish,
-    #[strum(serialize = "de")]
     German(LanguageGerman),
-    #[strum(serialize = "dv")]
+    #[strum(props(str = "dv"))]
     Divehi,
-    #[strum(serialize = "dz")]
+    #[strum(props(str = "dz"))]
     Dzongkha,
-    #[strum(serialize = "ee")]
+    #[strum(props(str = "ee"))]
     Ewe,
-    #[strum(serialize = "el")]
+    #[strum(props(str = "el"))]
     Greek,
-    #[strum(serialize = "en")]
     English(LanguageEnglish),
-    #[strum(serialize = "eo")]
+    #[strum(props(str = "eo"))]
     Esperanto,
-    #[strum(serialize = "es")]
     Spanish(LanguageSpanish),
-    #[strum(serialize = "et")]
+    #[strum(props(str = "et"))]
     Estonian,
-    #[strum(serialize = "eu")]
+    #[strum(props(str = "eu"))]
     Basque,
-    #[strum(serialize = "fa")]
+    #[strum(props(str = "fa"))]
     Persian,
-    #[strum(serialize = "ff")]
+    #[strum(props(str = "ff"))]
     Fulah,
-    #[strum(serialize = "fi")]
+    #[strum(props(str = "fi"))]
     Finnish,
-    #[strum(serialize = "fj")]
+    #[strum(props(str = "fj"))]
     Fijian,
-    #[strum(serialize = "fo")]
+    #[strum(props(str = "fo"))]
     Faroese,
-    #[strum(serialize = "fr")]
     French(LanguageFrench),
-    #[strum(serialize = "fy")]
+    #[strum(props(str = "fy"))]
     WesternFrisian,
-    #[strum(serialize = "ga")]
+    #[strum(props(str = "ga"))]
     Irish,
-    #[strum(serialize = "gd")]
+    #[strum(props(str = "gd"))]
     Gaelic,
-    #[strum(serialize = "gl")]
+    #[strum(props(str = "gl"))]
     Galician,
-    #[strum(serialize = "gn")]
+    #[strum(props(str = "gn"))]
     Guarani,
-    #[strum(serialize = "gu")]
+    #[strum(props(str = "gu"))]
     Gujarati,
-    #[strum(serialize = "gv")]
+    #[strum(props(str = "gv"))]
     Manx,
-    #[strum(serialize = "ha")]
+    #[strum(props(str = "ha"))]
     Hausa,
-    #[strum(serialize = "haw")]
+    #[strum(props(str = "haw"))]
     Hawaiian,
-    #[strum(serialize = "he")]
+    #[strum(props(str = "he"))]
     Hebrew,
-    #[strum(serialize = "hi")]
+    #[strum(props(str = "hi"))]
     Hindi,
-    #[strum(serialize = "ho")]
+    #[strum(props(str = "ho"))]
     HiriMotu,
-    #[strum(serialize = "hr")]
+    #[strum(props(str = "hr"))]
     Croatian,
-    #[strum(serialize = "ht")]
+    #[strum(props(str = "ht"))]
     Haitian,
-    #[strum(serialize = "hu")]
+    #[strum(props(str = "hu"))]
     Hungarian,
-    #[strum(serialize = "hy")]
+    #[strum(props(str = "hy"))]
     Armenian,
-    #[strum(serialize = "hz")]
+    #[strum(props(str = "hz"))]
     Herero,
-    #[strum(serialize = "ia")]
+    #[strum(props(str = "ia"))]
     Interlingua,
-    #[strum(serialize = "ie")]
+    #[strum(props(str = "ie"))]
     Interlingue,
-    #[strum(serialize = "ig")]
+    #[strum(props(str = "ig"))]
     Igbo,
-    #[strum(serialize = "ii")]
+    #[strum(props(str = "ii"))]
     SichuanYi,
-    #[strum(serialize = "ik")]
+    #[strum(props(str = "ik"))]
     Inupiaq,
-    #[strum(serialize = "in")]
+    #[strum(props(str = "in"))]
     Indonesian,
-    #[strum(serialize = "io")]
+    #[strum(props(str = "io"))]
     Ido,
-    #[strum(serialize = "is")]
+    #[strum(props(str = "is"))]
     Icelandic,
-    #[strum(serialize = "it")]
     Italian(LanguageItalian),
-    #[strum(serialize = "iu")]
+    #[strum(props(str = "iu"))]
     Inuktitut,
-    #[strum(serialize = "ja")]
+    #[strum(props(str = "ja"))]
     Japanese,
-    #[strum(serialize = "jv")]
+    #[strum(props(str = "jv"))]
     Javanese,
-    #[strum(serialize = "ka")]
+    #[strum(props(str = "ka"))]
     Georgian,
-    #[strum(serialize = "kg")]
+    #[strum(props(str = "kg"))]
     Kongo,
-    #[strum(serialize = "ki")]
+    #[strum(props(str = "ki"))]
     KikuyuGikuyu,
-    #[strum(serialize = "kj")]
+    #[strum(props(str = "kj"))]
     Kuanyama,
-    #[strum(serialize = "kk")]
+    #[strum(props(str = "kk"))]
     Kazakh,
-    #[strum(serialize = "kl")]
+    #[strum(props(str = "kl"))]
     Kalaallisut,
-    #[strum(serialize = "km")]
+    #[strum(props(str = "km"))]
     CentralKhmer,
-    #[strum(serialize = "kn")]
+    #[strum(props(str = "kn"))]
     Kannada,
-    #[strum(serialize = "ko")]
+    #[strum(props(str = "ko"))]
     Korean,
-    #[strum(serialize = "kr")]
+    #[strum(props(str = "kr"))]
     Kanuri,
-    #[strum(serialize = "ks")]
+    #[strum(props(str = "ks"))]
     Kashmiri,
-    #[strum(serialize = "ku")]
+    #[strum(props(str = "ku"))]
     Kurdish,
-    #[strum(serialize = "kv")]
+    #[strum(props(str = "kv"))]
     Komi,
-    #[strum(serialize = "kw")]
+    #[strum(props(str = "kw"))]
     Cornish,
-    #[strum(serialize = "ky")]
+    #[strum(props(str = "ky"))]
     KirghizKyrgyz,
-    #[strum(serialize = "la")]
+    #[strum(props(str = "la"))]
     Latin,
-    #[strum(serialize = "lb")]
+    #[strum(props(str = "lb"))]
     Luxembourgish,
-    #[strum(serialize = "lg")]
+    #[strum(props(str = "lg"))]
     Ganda,
-    #[strum(serialize = "li")]
+    #[strum(props(str = "li"))]
     Limburgan,
-    #[strum(serialize = "ln")]
+    #[strum(props(str = "ln"))]
     Lingala,
-    #[strum(serialize = "lo")]
+    #[strum(props(str = "lo"))]
     Lao,
-    #[strum(serialize = "lt")]
+    #[strum(props(str = "lt"))]
     Lithuanian,
-    #[strum(serialize = "lu")]
+    #[strum(props(str = "lu"))]
     LubaKatanga,
-    #[strum(serialize = "lv")]
+    #[strum(props(str = "lv"))]
     Latvian,
-    #[strum(serialize = "mg")]
+    #[strum(props(str = "mg"))]
     Malagasy,
-    #[strum(serialize = "mh")]
+    #[strum(props(str = "mh"))]
     Marshallese,
-    #[strum(serialize = "mi")]
+    #[strum(props(str = "mi"))]
     Maori,
-    #[strum(serialize = "mk")]
+    #[strum(props(str = "mk"))]
     Macedonian,
-    #[strum(serialize = "ml")]
+    #[strum(props(str = "ml"))]
     Malayalam,
-    #[strum(serialize = "mn")]
+    #[strum(props(str = "mn"))]
     Mongolian,
-    #[strum(serialize = "mr")]
+    #[strum(props(str = "mr"))]
     Marathi,
-    #[strum(serialize = "ms")]
+    #[strum(props(str = "ms"))]
     Malay,
-    #[strum(serialize = "mt")]
+    #[strum(props(str = "mt"))]
     Maltese,
-    #[strum(serialize = "my")]
+    #[strum(props(str = "my"))]
     Burmese,
-    #[strum(serialize = "na")]
+    #[strum(props(str = "na"))]
     Nauru,
-    #[strum(serialize = "nb")]
+    #[strum(props(str = "nb"))]
     NorwegianBokmal,
-    #[strum(serialize = "ne")]
+    #[strum(props(str = "ne"))]
     Nepali,
-    #[strum(serialize = "ng")]
+    #[strum(props(str = "ng"))]
     Ndonga,
-    #[strum(serialize = "nl")]
     Dutch(LanguageDutch),
-    #[strum(serialize = "nn")]
+    #[strum(props(str = "nn"))]
     NorwegianNynorsk,
-    #[strum(serialize = "no")]
+    #[strum(props(str = "no"))]
     Norwegian,
-    #[strum(serialize = "nr")]
+    #[strum(props(str = "nr"))]
     Ndebele,
-    #[strum(serialize = "nv")]
+    #[strum(props(str = "nv"))]
     Navajo,
-    #[strum(serialize = "ny")]
+    #[strum(props(str = "ny"))]
     Chichewa,
-    #[strum(serialize = "oc")]
+    #[strum(props(str = "oc"))]
     Occitan,
-    #[strum(serialize = "oj")]
+    #[strum(props(str = "oj"))]
     Ojibwa,
-    #[strum(serialize = "om")]
+    #[strum(props(str = "om"))]
     Oromo,
-    #[strum(serialize = "or")]
+    #[strum(props(str = "or"))]
     Oriya,
-    #[strum(serialize = "os")]
+    #[strum(props(str = "os"))]
     Ossetian,
-    #[strum(serialize = "pa")]
+    #[strum(props(str = "pa"))]
     Panjabi,
-    #[strum(serialize = "pi")]
+    #[strum(props(str = "pi"))]
     Pali,
-    #[strum(serialize = "pl")]
+    #[strum(props(str = "pl"))]
     Polish,
-    #[strum(serialize = "ps")]
+    #[strum(props(str = "ps"))]
     Pushto,
-    #[strum(serialize = "pt")]
     Portuguese(LanguagePortugese),
-    #[strum(serialize = "qu")]
+    #[strum(props(str = "qu"))]
     Quechua,
-    #[strum(serialize = "rm")]
+    #[strum(props(str = "rm"))]
     Romansh,
-    #[strum(serialize = "rn")]
+    #[strum(props(str = "rn"))]
     Rundi,
-    #[strum(serialize = "ro")]
     Romanian(LanguageRomanian),
-    #[strum(serialize = "ru")]
     Russian(LanguageRussian),
-    #[strum(serialize = "rw")]
+    #[strum(props(str = "rw"))]
     Kinyarwanda,
-    #[strum(serialize = "sa")]
+    #[strum(props(str = "sa"))]
     Sanskrit,
-    #[strum(serialize = "sc")]
+    #[strum(props(str = "sc"))]
     Sardinian,
-    #[strum(serialize = "sd")]
+    #[strum(props(str = "sd"))]
     Sindhi,
-    #[strum(serialize = "se")]
+    #[strum(props(str = "se"))]
     NorthernSami,
-    #[strum(serialize = "sg")]
+    #[strum(props(str = "sg"))]
     Sango,
-    #[strum(serialize = "si")]
+    #[strum(props(str = "si"))]
     Sinhala,
-    #[strum(serialize = "sk")]
+    #[strum(props(str = "sk"))]
     Slovak,
-    #[strum(serialize = "sl")]
+    #[strum(props(str = "sl"))]
     Slovenian,
-    #[strum(serialize = "sm")]
+    #[strum(props(str = "sm"))]
     Samoan,
-    #[strum(serialize = "sn")]
+    #[strum(props(str = "sn"))]
     Shona,
-    #[strum(serialize = "so")]
+    #[strum(props(str = "so"))]
     Somali,
-    #[strum(serialize = "sq")]
+    #[strum(props(str = "sq"))]
     Albanian,
-    #[strum(serialize = "sr")]
+    #[strum(props(str = "sr"))]
     Serbian,
-    #[strum(serialize = "ss")]
+    #[strum(props(str = "ss"))]
     Swati,
-    #[strum(serialize = "st")]
+    #[strum(props(str = "st"))]
     SothoSouthern,
-    #[strum(serialize = "su")]
+    #[strum(props(str = "su"))]
     Sundanese,
-    #[strum(serialize = "sv")]
     Swedish(LanguageSwedish),
-    #[strum(serialize = "sw")]
+    #[strum(props(str = "sw"))]
     Swahili,
-    #[strum(serialize = "ta")]
+    #[strum(props(str = "ta"))]
     Tamil,
-    #[strum(serialize = "te")]
+    #[strum(props(str = "te"))]
     Telugu,
-    #[strum(serialize = "tg")]
+    #[strum(props(str = "tg"))]
     Tajik,
-    #[strum(serialize = "th")]
+    #[strum(props(str = "th"))]
     Thai,
-    #[strum(serialize = "ti")]
+    #[strum(props(str = "ti"))]
     Tigrinya,
-    #[strum(serialize = "tk")]
+    #[strum(props(str = "tk"))]
     Turkmen,
-    #[strum(serialize = "tl")]
+    #[strum(props(str = "tl"))]
     Tagalog,
-    #[strum(serialize = "tn")]
+    #[strum(props(str = "tn"))]
     Tswana,
-    #[strum(serialize = "to")]
+    #[strum(props(str = "to"))]
     Tonga,
-    #[strum(serialize = "tr")]
+    #[strum(props(str = "tr"))]
     Turkish,
-    #[strum(serialize = "ts")]
+    #[strum(props(str = "ts"))]
     Tsonga,
-    #[strum(serialize = "tt")]
+    #[strum(props(str = "tt"))]
     Tatar,
-    #[strum(serialize = "tw")]
+    #[strum(props(str = "tw"))]
     Twi,
-    #[strum(serialize = "ty")]
+    #[strum(props(str = "ty"))]
     Tahitian,
-    #[strum(serialize = "ug")]
+    #[strum(props(str = "ug"))]
     Uighur,
-    #[strum(serialize = "uk")]
+    #[strum(props(str = "uk"))]
     Ukrainian,
-    #[strum(serialize = "ur")]
+    #[strum(props(str = "ur"))]
     Urdu,
-    #[strum(serialize = "uz")]
+    #[strum(props(str = "uz"))]
     Uzbek,
-    #[strum(serialize = "ve")]
+    #[strum(props(str = "ve"))]
     Venda,
-    #[strum(serialize = "vi")]
+    #[strum(props(str = "vi"))]
     Vietnamese,
-    #[strum(serialize = "vo")]
+    #[strum(props(str = "vo"))]
     Volapük,
-    #[strum(serialize = "wa")]
+    #[strum(props(str = "wa"))]
     Walloon,
-    #[strum(serialize = "wo")]
+    #[strum(props(str = "wo"))]
     Wolof,
-    #[strum(serialize = "xh")]
+    #[strum(props(str = "xh"))]
     Xhosa,
-    #[strum(serialize = "yi")]
+    #[strum(props(str = "yi"))]
     Yiddish,
-    #[strum(serialize = "yo")]
+    #[strum(props(str = "yo"))]
     Yoruba,
-    #[strum(serialize = "za")]
+    #[strum(props(str = "za"))]
     Zhuang,
-    #[strum(serialize = "zh")]
     Chinese(LanguageChinese),
-    #[strum(serialize = "zu")]
+    #[strum(props(str = "zu"))]
     Zulu,
 
-    #[strum(disabled)]
     Other(String),
+}
+
+impl fmt::Display for Language {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Language::Other(s) => write!(f, "{s}"),
+            Language::Chinese(region) => write!(f, "{region}"),
+            Language::Dutch(region) => write!(f, "{region}"),
+            Language::English(region) => write!(f, "{region}"),
+            Language::French(region) => write!(f, "{region}"),
+            Language::German(region) => write!(f, "{region}"),
+            Language::Italian(region) => write!(f, "{region}"),
+            Language::Portuguese(region) => write!(f, "{region}"),
+            Language::Romanian(region) => write!(f, "{region}"),
+            Language::Russian(region) => write!(f, "{region}"),
+            Language::Spanish(region) => write!(f, "{region}"),
+            Language::Swedish(region) => write!(f, "{region}"),
+            _ => match self.get_str("str") {
+                Some(s) => write!(f, "{}", s),
+                None => Err("property \"str\" not found").map_err(|_| fmt::Error),
+            },
+        }
+    }
 }
 
 /// German language regions.
@@ -666,9 +679,34 @@ impl<'de> Deserialize<'de> for Language {
             };
         }
 
-        match Language::from_str(s.as_str()) {
-            Ok(x) => Ok(x),
-            Err(_) => Ok(Language::Other(s)),
+        for lang in Language::iter() {
+            if format!("{lang}") == s {
+                return Ok(lang);
+            };
         }
+
+        Ok(Language::Other(s))
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_fmt() {
+        pretty_assertions::assert_eq!(format!("{}", Language::Czech), "cs");
+        pretty_assertions::assert_eq!(
+            format!("{}", Language::English(LanguageEnglish::Default)),
+            "en"
+        );
+        pretty_assertions::assert_eq!(
+            format!("{}", Language::English(LanguageEnglish::UnitedKingdom)),
+            "en-gb"
+        );
+        pretty_assertions::assert_eq!(
+            format!("{}", Language::Other("other-language".to_string())),
+            "other-language"
+        );
     }
 }

@@ -1,29 +1,41 @@
 use serde::{Deserialize, Deserializer};
-use std::str::FromStr;
-use strum_macros::{Display, EnumString};
+use std::fmt;
+use strum::{EnumProperty, IntoEnumIterator};
+use strum_macros::{EnumIter, EnumProperty};
 
 /// Used for deserializing mime types of enclosures.
-#[derive(Debug, PartialEq, Eq, EnumString, Display)]
+#[derive(Debug, PartialEq, Eq, EnumProperty, EnumIter)]
 pub enum Enclosure {
-    #[strum(serialize = "audio/x-m4a")]
+    #[strum(props(str = "audio/x-m4a"))]
     AudioM4a,
-    #[strum(serialize = "audio/mpeg")]
+    #[strum(props(str = "audio/mpeg"))]
     AudioMp3,
-    #[strum(serialize = "video/quicktime")]
+    #[strum(props(str = "video/quicktime"))]
     VideoQuicktime,
-    #[strum(serialize = "video/mp4")]
+    #[strum(props(str = "video/mp4"))]
     VideoMp4,
-    #[strum(serialize = "video/x-m4v")]
+    #[strum(props(str = "video/x-m4v"))]
     VideoM4v,
-    #[strum(serialize = "application/pdf")]
+    #[strum(props(str = "application/pdf"))]
     ApplicationPdf,
-    #[strum(serialize = "audio/opus")]
+    #[strum(props(str = "audio/opus"))]
     AudioOpus,
-    #[strum(serialize = "audio/aac")]
+    #[strum(props(str = "audio/aac"))]
     AudioAac,
 
-    #[strum(disabled)]
     Other(String),
+}
+
+impl fmt::Display for Enclosure {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Other(s) => write!(f, "{s}"),
+            _ => match self.get_str("str") {
+                Some(s) => write!(f, "{}", s),
+                None => write!(f, "{:?}", self),
+            },
+        }
+    }
 }
 
 impl<'de> Deserialize<'de> for Enclosure {
@@ -33,33 +45,47 @@ impl<'de> Deserialize<'de> for Enclosure {
             Err(e) => return Err(e),
         };
 
-        match Enclosure::from_str(s.as_str()) {
-            Ok(x) => Ok(x),
-            Err(_) => Ok(Enclosure::Other(s)),
+        for variant in Self::iter() {
+            if format!("{variant}") == s {
+                return Ok(variant);
+            };
         }
+
+        Ok(Self::Other(s))
     }
 }
 
 /// Used for deserializing mime types of transcripts.
-#[derive(Debug, PartialEq, Eq, EnumString, Display)]
+#[derive(Debug, PartialEq, Eq, EnumProperty, EnumIter)]
 pub enum Transcript {
-    #[strum(serialize = "text/plain")]
+    #[strum(props(str = "text/plain"))]
     TextPlain,
-    #[strum(serialize = "text/html")]
+    #[strum(props(str = "text/html"))]
     TextHtml,
-    #[strum(serialize = "text/vtt")]
+    #[strum(props(str = "text/vtt"))]
     TextVtt,
-    #[strum(serialize = "application/json")]
+    #[strum(props(str = "application/json"))]
     ApplicationJson,
-    #[strum(serialize = "application/x-subrip")]
+    #[strum(props(str = "application/x-subrip"))]
     ApplicationSubrip,
     /// Not supported by IANA, but was once part of podcast namespace specification.
     #[deprecated]
-    #[strum(serialize = "application/srt")]
+    #[strum(props(str = "application/srt"))]
     ApplicationSrt,
 
-    #[strum(disabled)]
     Other(String),
+}
+
+impl fmt::Display for Transcript {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Other(s) => write!(f, "{s}"),
+            _ => match self.get_str("str") {
+                Some(s) => write!(f, "{}", s),
+                None => write!(f, "{:?}", self),
+            },
+        }
+    }
 }
 
 impl<'de> Deserialize<'de> for Transcript {
@@ -69,23 +95,37 @@ impl<'de> Deserialize<'de> for Transcript {
             Err(e) => return Err(e),
         };
 
-        match Transcript::from_str(s.as_str()) {
-            Ok(x) => Ok(x),
-            Err(_) => Ok(Transcript::Other(s)),
+        for variant in Self::iter() {
+            if format!("{variant}") == s {
+                return Ok(variant);
+            };
         }
+
+        Ok(Self::Other(s))
     }
 }
 
 /// Used for deserializing mime types of chapters.
-#[derive(Debug, PartialEq, Eq, EnumString, Display)]
+#[derive(Debug, PartialEq, Eq, EnumProperty, EnumIter)]
 pub enum Chapters {
-    #[strum(serialize = "application/json+chapters")]
+    #[strum(props(str = "application/json+chapters"))]
     ApplicationJsonChapters,
-    #[strum(serialize = "application/json")]
+    #[strum(props(str = "application/json"))]
     ApplicationJson,
 
-    #[strum(disabled)]
     Other(String),
+}
+
+impl fmt::Display for Chapters {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Other(s) => write!(f, "{s}"),
+            _ => match self.get_str("str") {
+                Some(s) => write!(f, "{}", s),
+                None => write!(f, "{:?}", self),
+            },
+        }
+    }
 }
 
 impl<'de> Deserialize<'de> for Chapters {
@@ -95,9 +135,12 @@ impl<'de> Deserialize<'de> for Chapters {
             Err(e) => return Err(e),
         };
 
-        match Self::from_str(s.as_str()) {
-            Ok(x) => Ok(x),
-            Err(_) => Ok(Self::Other(s)),
+        for variant in Self::iter() {
+            if format!("{variant}") == s {
+                return Ok(variant);
+            };
         }
+
+        Ok(Self::Other(s))
     }
 }

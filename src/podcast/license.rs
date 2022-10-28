@@ -1,945 +1,957 @@
 use serde::{Deserialize, Deserializer};
-use std::str::FromStr;
-use strum_macros::{Display, EnumString};
+use std::fmt;
+use strum::{EnumProperty, IntoEnumIterator};
+use strum_macros::{EnumIter, EnumProperty};
 
 /// Type of [License](crate::podcast::License).
-#[derive(Debug, PartialEq, Eq, EnumString, Display)]
+#[derive(Debug, PartialEq, Eq, EnumProperty, EnumIter)]
 pub enum LicenseType {
-    #[strum(serialize = "0bsd")]
+    #[strum(props(str = "0bsd"))]
     BsdZeroClause,
-    #[strum(serialize = "aal")]
+    #[strum(props(str = "aal"))]
     AttributionAssurance,
-    #[strum(serialize = "abstyles")]
+    #[strum(props(str = "abstyles"))]
     Abstyles,
-    #[strum(serialize = "adobe-2006")]
+    #[strum(props(str = "adobe-2006"))]
     AdobeSystemsIncorporatedSourceCodeAgreement,
-    #[strum(serialize = "adobe-glyph")]
+    #[strum(props(str = "adobe-glyph"))]
     AdobeGlyphList,
-    #[strum(serialize = "adsl")]
+    #[strum(props(str = "adsl"))]
     AmazonDigitalServices,
-    #[strum(serialize = "afl-1.1")]
+    #[strum(props(str = "afl-1.1"))]
     AcademicFreeV1_1,
-    #[strum(serialize = "afl-1.2")]
+    #[strum(props(str = "afl-1.2"))]
     AcademicFreeV1_2,
-    #[strum(serialize = "afl-2.0")]
+    #[strum(props(str = "afl-2.0"))]
     AcademicFreeV2_0,
-    #[strum(serialize = "afl-2.1")]
+    #[strum(props(str = "afl-2.1"))]
     AcademicFreeV2_1,
-    #[strum(serialize = "afl-3.0")]
+    #[strum(props(str = "afl-3.0"))]
     AcademicFreeV3_0,
-    #[strum(serialize = "afmparse")]
+    #[strum(props(str = "afmparse"))]
     Afmparse,
-    #[strum(serialize = "agpl-1.0-only")]
+    #[strum(props(str = "agpl-1.0-only"))]
     AfferoGeneralPublicV1_0only,
-    #[strum(serialize = "agpl-1.0-or-later")]
+    #[strum(props(str = "agpl-1.0-or-later"))]
     AfferoGeneralPublicV1_0OrLater,
-    #[strum(serialize = "agpl-3.0-only")]
+    #[strum(props(str = "agpl-3.0-only"))]
     GnuAfferoGeneralPublicV3_0only,
-    #[strum(serialize = "agpl-3.0-or-later")]
+    #[strum(props(str = "agpl-3.0-or-later"))]
     GnuAfferoGeneralPublicV3_0OrLater,
-    #[strum(serialize = "aladdin")]
+    #[strum(props(str = "aladdin"))]
     AladdinFreePublic,
-    #[strum(serialize = "amdplpa")]
+    #[strum(props(str = "amdplpa"))]
     AmdPlpaMapC,
-    #[strum(serialize = "aml")]
+    #[strum(props(str = "aml"))]
     AppleMit,
-    #[strum(serialize = "ampas")]
+    #[strum(props(str = "ampas"))]
     AcademyofMotionPictureArtsAndSciencesBsd,
-    #[strum(serialize = "antlr-pd")]
+    #[strum(props(str = "antlr-pd"))]
     AntlrSoftwareRightsNotice,
-    #[strum(serialize = "antlr-pd-fallback")]
+    #[strum(props(str = "antlr-pd-fallback"))]
     AntlrSoftwareRightsNoticewithlicensefallback,
-    #[strum(serialize = "apache-1.0")]
+    #[strum(props(str = "apache-1.0"))]
     Apache1_0,
-    #[strum(serialize = "apache-1.1")]
+    #[strum(props(str = "apache-1.1"))]
     Apache1_1,
-    #[strum(serialize = "apache-2.0")]
+    #[strum(props(str = "apache-2.0"))]
     Apache2_0,
-    #[strum(serialize = "apafml")]
+    #[strum(props(str = "apafml"))]
     AdobePostscriptAfm,
-    #[strum(serialize = "apl-1.0")]
+    #[strum(props(str = "apl-1.0"))]
     AdaptivePublic1_0,
-    #[strum(serialize = "app-s2p")]
+    #[strum(props(str = "app-s2p"))]
     AppS2p,
-    #[strum(serialize = "apsl-1.0")]
+    #[strum(props(str = "apsl-1.0"))]
     ApplePublicSource1_0,
-    #[strum(serialize = "apsl-1.1")]
+    #[strum(props(str = "apsl-1.1"))]
     ApplePublicSource1_1,
-    #[strum(serialize = "apsl-1.2")]
+    #[strum(props(str = "apsl-1.2"))]
     ApplePublicSource1_2,
-    #[strum(serialize = "apsl-2.0")]
+    #[strum(props(str = "apsl-2.0"))]
     ApplePublicSource2_0,
-    #[strum(serialize = "arphic-1999")]
+    #[strum(props(str = "arphic-1999"))]
     ArphicPublic,
-    #[strum(serialize = "artistic-1.0")]
+    #[strum(props(str = "artistic-1.0"))]
     Artistic1_0,
-    #[strum(serialize = "artistic-1.0-cl8")]
+    #[strum(props(str = "artistic-1.0-cl8"))]
     Artistic1_0wClause8,
-    #[strum(serialize = "artistic-1.0-perl")]
+    #[strum(props(str = "artistic-1.0-perl"))]
     Artistic1_0Perl,
-    #[strum(serialize = "artistic-2.0")]
+    #[strum(props(str = "artistic-2.0"))]
     Artistic2_0,
-    #[strum(serialize = "baekmuk")]
+    #[strum(props(str = "baekmuk"))]
     Baekmuk,
-    #[strum(serialize = "bahyph")]
+    #[strum(props(str = "bahyph"))]
     Bahyph,
-    #[strum(serialize = "barr")]
+    #[strum(props(str = "barr"))]
     Barr,
-    #[strum(serialize = "beerware")]
+    #[strum(props(str = "beerware"))]
     Beerware,
-    #[strum(serialize = "bitstream-vera")]
+    #[strum(props(str = "bitstream-vera"))]
     BitstreamVeraFont,
-    #[strum(serialize = "bittorrent-1.0")]
+    #[strum(props(str = "bittorrent-1.0"))]
     BitTorrentOpenSourceV1_0,
-    #[strum(serialize = "bittorrent-1.1")]
+    #[strum(props(str = "bittorrent-1.1"))]
     BitTorrentOpenSourceV1_1,
-    #[strum(serialize = "blessing")]
+    #[strum(props(str = "blessing"))]
     SqliteBlessing,
-    #[strum(serialize = "blueoak-1.0.0")]
+    #[strum(props(str = "blueoak-1.0.0"))]
     BlueOakModel1_0_0,
-    #[strum(serialize = "borceux")]
+    #[strum(props(str = "borceux"))]
     Borceuxlicense,
-    #[strum(serialize = "bsd-1-clause")]
+    #[strum(props(str = "bsd-1-clause"))]
     Bsd1Clause,
-    #[strum(serialize = "bsd-2-clause")]
+    #[strum(props(str = "bsd-2-clause"))]
     Bsd2ClauseSimplified,
-    #[strum(serialize = "bsd-2-clause-patent")]
+    #[strum(props(str = "bsd-2-clause-patent"))]
     Bsd2ClausePlusPatent,
-    #[strum(serialize = "bsd-2-clause-views")]
+    #[strum(props(str = "bsd-2-clause-views"))]
     Bsd2Clausewithviewssentence,
-    #[strum(serialize = "bsd-3-clause")]
+    #[strum(props(str = "bsd-3-clause"))]
     Bsd3ClauseNewOrRevised,
-    #[strum(serialize = "bsd-3-clause-attribution")]
+    #[strum(props(str = "bsd-3-clause-attribution"))]
     BsdWithAttribution,
-    #[strum(serialize = "bsd-3-clause-clear")]
+    #[strum(props(str = "bsd-3-clause-clear"))]
     Bsd3ClauseClear,
-    #[strum(serialize = "bsd-3-clause-lbnl")]
+    #[strum(props(str = "bsd-3-clause-lbnl"))]
     LawrenceBerkeleyNationalLabsBsdVariantlicense,
-    #[strum(serialize = "bsd-3-clause-modification")]
+    #[strum(props(str = "bsd-3-clause-modification"))]
     Bsd3ClauseModification,
-    #[strum(serialize = "bsd-3-clause-no-military-license")]
+    #[strum(props(str = "bsd-3-clause-no-military-license"))]
     Bsd3ClauseNoMilitary,
-    #[strum(serialize = "bsd-3-clause-no-nuclear-license")]
+    #[strum(props(str = "bsd-3-clause-no-nuclear-license"))]
     Bsd3ClauseNoNuclear,
-    #[strum(serialize = "bsd-3-clause-no-nuclear-license-2014")]
+    #[strum(props(str = "bsd-3-clause-no-nuclear-license-2014"))]
     Bsd3ClauseNoNuclear2014,
-    #[strum(serialize = "bsd-3-clause-no-nuclear-warranty")]
+    #[strum(props(str = "bsd-3-clause-no-nuclear-warranty"))]
     Bsd3ClauseNoNuclearWarranty,
-    #[strum(serialize = "bsd-3-clause-open-mpi")]
+    #[strum(props(str = "bsd-3-clause-open-mpi"))]
     Bsd3ClauseOpenMpiVariant,
-    #[strum(serialize = "bsd-4-clause")]
+    #[strum(props(str = "bsd-4-clause"))]
     Bsd4ClauseOriginalOrOld,
-    #[strum(serialize = "bsd-4-clause-shortened")]
+    #[strum(props(str = "bsd-4-clause-shortened"))]
     Bsd4ClauseShortened,
-    #[strum(serialize = "bsd-4-clause-uc")]
+    #[strum(props(str = "bsd-4-clause-uc"))]
     Bsd4ClauseUniversityofCaliforniaSpecific,
-    #[strum(serialize = "bsd-protection")]
+    #[strum(props(str = "bsd-protection"))]
     BsdProtection,
-    #[strum(serialize = "bsd-source-code")]
+    #[strum(props(str = "bsd-source-code"))]
     BsdSourceCodeAttribution,
-    #[strum(serialize = "bsl-1.0")]
+    #[strum(props(str = "bsl-1.0"))]
     BoostSoftware1_0,
-    #[strum(serialize = "busl-1.1")]
+    #[strum(props(str = "busl-1.1"))]
     BusinessSource1_1,
-    #[strum(serialize = "bzip2-1.0.6")]
+    #[strum(props(str = "bzip2-1.0.6"))]
     Bzip2AndLibbzip2LicenseV1_0_6,
-    #[strum(serialize = "c-uda-1.0")]
+    #[strum(props(str = "c-uda-1.0"))]
     ComputationalUseofDataAgreementV1_0,
-    #[strum(serialize = "cal-1.0")]
+    #[strum(props(str = "cal-1.0"))]
     CryptographicAutonomy1_0,
-    #[strum(serialize = "cal-1.0-combined-work-exception")]
+    #[strum(props(str = "cal-1.0-combined-work-exception"))]
     CryptographicAutonomy1_0CombinedWorkException,
-    #[strum(serialize = "caldera")]
+    #[strum(props(str = "caldera"))]
     Caldera,
-    #[strum(serialize = "catosl-1.1")]
+    #[strum(props(str = "catosl-1.1"))]
     ComputerAssociatesTrustedOpenSource1_1,
-    #[strum(serialize = "cc-by-1.0")]
+    #[strum(props(str = "cc-by-1.0"))]
     CreativeCommonsAttribution1_0Generic,
-    #[strum(serialize = "cc-by-2.0")]
+    #[strum(props(str = "cc-by-2.0"))]
     CreativeCommonsAttribution2_0Generic,
-    #[strum(serialize = "cc-by-2.5")]
+    #[strum(props(str = "cc-by-2.5"))]
     CreativeCommonsAttribution2_5Generic,
-    #[strum(serialize = "cc-by-2.5-au")]
+    #[strum(props(str = "cc-by-2.5-au"))]
     CreativeCommonsAttribution2_5Australia,
-    #[strum(serialize = "cc-by-3.0")]
+    #[strum(props(str = "cc-by-3.0"))]
     CreativeCommonsAttribution3_0Unported,
-    #[strum(serialize = "cc-by-3.0-at")]
+    #[strum(props(str = "cc-by-3.0-at"))]
     CreativeCommonsAttribution3_0Austria,
-    #[strum(serialize = "cc-by-3.0-de")]
+    #[strum(props(str = "cc-by-3.0-de"))]
     CreativeCommonsAttribution3_0Germany,
-    #[strum(serialize = "cc-by-3.0-igo")]
+    #[strum(props(str = "cc-by-3.0-igo"))]
     CreativeCommonsAttribution3_0Igo,
-    #[strum(serialize = "cc-by-3.0-nl")]
+    #[strum(props(str = "cc-by-3.0-nl"))]
     CreativeCommonsAttribution3_0Netherlands,
-    #[strum(serialize = "cc-by-3.0-us")]
+    #[strum(props(str = "cc-by-3.0-us"))]
     CreativeCommonsAttribution3_0UnitedStates,
-    #[strum(serialize = "cc-by-4.0")]
+    #[strum(props(str = "cc-by-4.0"))]
     CreativeCommonsAttribution4_0International,
-    #[strum(serialize = "cc-by-nc-1.0")]
+    #[strum(props(str = "cc-by-nc-1.0"))]
     CreativeCommonsAttributionNonCommercial1_0Generic,
-    #[strum(serialize = "cc-by-nc-2.0")]
+    #[strum(props(str = "cc-by-nc-2.0"))]
     CreativeCommonsAttributionNonCommercial2_0Generic,
-    #[strum(serialize = "cc-by-nc-2.5")]
+    #[strum(props(str = "cc-by-nc-2.5"))]
     CreativeCommonsAttributionNonCommercial2_5Generic,
-    #[strum(serialize = "cc-by-nc-3.0")]
+    #[strum(props(str = "cc-by-nc-3.0"))]
     CreativeCommonsAttributionNonCommercial3_0Unported,
-    #[strum(serialize = "cc-by-nc-3.0-de")]
+    #[strum(props(str = "cc-by-nc-3.0-de"))]
     CreativeCommonsAttributionNonCommercial3_0Germany,
-    #[strum(serialize = "cc-by-nc-4.0")]
+    #[strum(props(str = "cc-by-nc-4.0"))]
     CreativeCommonsAttributionNonCommercial4_0International,
-    #[strum(serialize = "cc-by-nc-nd-1.0")]
+    #[strum(props(str = "cc-by-nc-nd-1.0"))]
     CreativeCommonsAttributionNonCommercialNoDerivatives1_0Generic,
-    #[strum(serialize = "cc-by-nc-nd-2.0")]
+    #[strum(props(str = "cc-by-nc-nd-2.0"))]
     CreativeCommonsAttributionNonCommercialNoDerivatives2_0Generic,
-    #[strum(serialize = "cc-by-nc-nd-2.5")]
+    #[strum(props(str = "cc-by-nc-nd-2.5"))]
     CreativeCommonsAttributionNonCommercialNoDerivatives2_5Generic,
-    #[strum(serialize = "cc-by-nc-nd-3.0")]
+    #[strum(props(str = "cc-by-nc-nd-3.0"))]
     CreativeCommonsAttributionNonCommercialNoDerivatives3_0Unported,
-    #[strum(serialize = "cc-by-nc-nd-3.0-de")]
+    #[strum(props(str = "cc-by-nc-nd-3.0-de"))]
     CreativeCommonsAttributionNonCommercialNoDerivatives3_0Germany,
-    #[strum(serialize = "cc-by-nc-nd-3.0-igo")]
+    #[strum(props(str = "cc-by-nc-nd-3.0-igo"))]
     CreativeCommonsAttributionNonCommercialNoDerivatives3_0Igo,
-    #[strum(serialize = "cc-by-nc-nd-4.0")]
+    #[strum(props(str = "cc-by-nc-nd-4.0"))]
     CreativeCommonsAttributionNonCommercialNoDerivatives4_0International,
-    #[strum(serialize = "cc-by-nc-sa-1.0")]
+    #[strum(props(str = "cc-by-nc-sa-1.0"))]
     CreativeCommonsAttributionNonCommercialShareAlike1_0Generic,
-    #[strum(serialize = "cc-by-nc-sa-2.0")]
+    #[strum(props(str = "cc-by-nc-sa-2.0"))]
     CreativeCommonsAttributionNonCommercialShareAlike2_0Generic,
-    #[strum(serialize = "cc-by-nc-sa-2.0-fr")]
+    #[strum(props(str = "cc-by-nc-sa-2.0-fr"))]
     CreativeCommonsAttributionNonCommercialShareAlike2_0France,
-    #[strum(serialize = "cc-by-nc-sa-2.0-uk")]
+    #[strum(props(str = "cc-by-nc-sa-2.0-uk"))]
     CreativeCommonsAttributionNonCommercialShareAlike2_0EnglandandWales,
-    #[strum(serialize = "cc-by-nc-sa-2.5")]
+    #[strum(props(str = "cc-by-nc-sa-2.5"))]
     CreativeCommonsAttributionNonCommercialShareAlike2_5Generic,
-    #[strum(serialize = "cc-by-nc-sa-3.0")]
+    #[strum(props(str = "cc-by-nc-sa-3.0"))]
     CreativeCommonsAttributionNonCommercialShareAlike3_0Unported,
-    #[strum(serialize = "cc-by-nc-sa-3.0-de")]
+    #[strum(props(str = "cc-by-nc-sa-3.0-de"))]
     CreativeCommonsAttributionNonCommercialShareAlike3_0Germany,
-    #[strum(serialize = "cc-by-nc-sa-3.0-igo")]
+    #[strum(props(str = "cc-by-nc-sa-3.0-igo"))]
     CreativeCommonsAttributionNonCommercialShareAlike3_0Igo,
-    #[strum(serialize = "cc-by-nc-sa-4.0")]
+    #[strum(props(str = "cc-by-nc-sa-4.0"))]
     CreativeCommonsAttributionNonCommercialShareAlike4_0International,
-    #[strum(serialize = "cc-by-nd-1.0")]
+    #[strum(props(str = "cc-by-nd-1.0"))]
     CreativeCommonsAttributionNoDerivatives1_0Generic,
-    #[strum(serialize = "cc-by-nd-2.0")]
+    #[strum(props(str = "cc-by-nd-2.0"))]
     CreativeCommonsAttributionNoDerivatives2_0Generic,
-    #[strum(serialize = "cc-by-nd-2.5")]
+    #[strum(props(str = "cc-by-nd-2.5"))]
     CreativeCommonsAttributionNoDerivatives2_5Generic,
-    #[strum(serialize = "cc-by-nd-3.0")]
+    #[strum(props(str = "cc-by-nd-3.0"))]
     CreativeCommonsAttributionNoDerivatives3_0Unported,
-    #[strum(serialize = "cc-by-nd-3.0-de")]
+    #[strum(props(str = "cc-by-nd-3.0-de"))]
     CreativeCommonsAttributionNoDerivatives3_0Germany,
-    #[strum(serialize = "cc-by-nd-4.0")]
+    #[strum(props(str = "cc-by-nd-4.0"))]
     CreativeCommonsAttributionNoDerivatives4_0International,
-    #[strum(serialize = "cc-by-sa-1.0")]
+    #[strum(props(str = "cc-by-sa-1.0"))]
     CreativeCommonsAttributionShareAlike1_0Generic,
-    #[strum(serialize = "cc-by-sa-2.0")]
+    #[strum(props(str = "cc-by-sa-2.0"))]
     CreativeCommonsAttributionShareAlike2_0Generic,
-    #[strum(serialize = "cc-by-sa-2.0-uk")]
+    #[strum(props(str = "cc-by-sa-2.0-uk"))]
     CreativeCommonsAttributionShareAlike2_0EnglAndandWales,
-    #[strum(serialize = "cc-by-sa-2.1-jp")]
+    #[strum(props(str = "cc-by-sa-2.1-jp"))]
     CreativeCommonsAttributionShareAlike2_1Japan,
-    #[strum(serialize = "cc-by-sa-2.5")]
+    #[strum(props(str = "cc-by-sa-2.5"))]
     CreativeCommonsAttributionShareAlike2_5Generic,
-    #[strum(serialize = "cc-by-sa-3.0")]
+    #[strum(props(str = "cc-by-sa-3.0"))]
     CreativeCommonsAttributionShareAlike3_0Unported,
-    #[strum(serialize = "cc-by-sa-3.0-at")]
+    #[strum(props(str = "cc-by-sa-3.0-at"))]
     CreativeCommonsAttributionShareAlike3_0Austria,
-    #[strum(serialize = "cc-by-sa-3.0-de")]
+    #[strum(props(str = "cc-by-sa-3.0-de"))]
     CreativeCommonsAttributionShareAlike3_0Germany,
-    #[strum(serialize = "cc-by-sa-4.0")]
+    #[strum(props(str = "cc-by-sa-4.0"))]
     CreativeCommonsAttributionShareAlike4_0International,
-    #[strum(serialize = "cc-pddc")]
+    #[strum(props(str = "cc-pddc"))]
     CreativeCommonsPublicDomainDedicationAndCertification,
-    #[strum(serialize = "cc0-1.0")]
+    #[strum(props(str = "cc0-1.0"))]
     CreativeCommonsZeroV1_0Universal,
-    #[strum(serialize = "cddl-1.0")]
+    #[strum(props(str = "cddl-1.0"))]
     CommonDevelopmentAndDistribution1_0,
-    #[strum(serialize = "cddl-1.1")]
+    #[strum(props(str = "cddl-1.1"))]
     CommonDevelopmentAndDistribution1_1,
-    #[strum(serialize = "cdl-1.0")]
+    #[strum(props(str = "cdl-1.0"))]
     CommonDocumentation1_0,
-    #[strum(serialize = "cdla-permissive-1.0")]
+    #[strum(props(str = "cdla-permissive-1.0"))]
     CommunityDataAgreementPermissive1_0,
-    #[strum(serialize = "cdla-permissive-2.0")]
+    #[strum(props(str = "cdla-permissive-2.0"))]
     CommunityDataAgreementPermissive2_0,
-    #[strum(serialize = "cdla-sharing-1.0")]
+    #[strum(props(str = "cdla-sharing-1.0"))]
     CommunityDataAgreementSharing1_0,
-    #[strum(serialize = "cecill-1.0")]
+    #[strum(props(str = "cecill-1.0"))]
     CeCillFreeSoftwareAgreementV1_0,
-    #[strum(serialize = "cecill-1.1")]
+    #[strum(props(str = "cecill-1.1"))]
     CeCillFreeSoftwareAgreementV1_1,
-    #[strum(serialize = "cecill-2.0")]
+    #[strum(props(str = "cecill-2.0"))]
     CeCillFreeSoftwareAgreementV2_0,
-    #[strum(serialize = "cecill-2.1")]
+    #[strum(props(str = "cecill-2.1"))]
     CeCillFreeSoftwareAgreementV2_1,
-    #[strum(serialize = "cecill-b")]
+    #[strum(props(str = "cecill-b"))]
     CeCillBFreeSoftwareAgreement,
-    #[strum(serialize = "cecill-c")]
+    #[strum(props(str = "cecill-c"))]
     CeCillCFreeSoftwareAgreement,
-    #[strum(serialize = "cern-ohl-1.1")]
+    #[strum(props(str = "cern-ohl-1.1"))]
     CernOpenHardwareLicenceV1_1,
-    #[strum(serialize = "cern-ohl-1.2")]
+    #[strum(props(str = "cern-ohl-1.2"))]
     CernOpenHardwareLicenceV1_2,
-    #[strum(serialize = "cern-ohl-p-2.0")]
+    #[strum(props(str = "cern-ohl-p-2.0"))]
     CernOpenHardwareLicenceVersion2Permissive,
-    #[strum(serialize = "cern-ohl-s-2.0")]
+    #[strum(props(str = "cern-ohl-s-2.0"))]
     CernOpenHardwareLicenceVersion2StronglyReciprocal,
-    #[strum(serialize = "cern-ohl-w-2.0")]
+    #[strum(props(str = "cern-ohl-w-2.0"))]
     CernOpenHardwareLicenceVersion2WeaklyReciprocal,
-    #[strum(serialize = "clartistic")]
+    #[strum(props(str = "clartistic"))]
     ClarifiedArtistic,
-    #[strum(serialize = "cnri-jython")]
+    #[strum(props(str = "cnri-jython"))]
     CnriJython,
-    #[strum(serialize = "cnri-python")]
+    #[strum(props(str = "cnri-python"))]
     CnriPython,
-    #[strum(serialize = "cnri-python-gpl-compatible")]
+    #[strum(props(str = "cnri-python-gpl-compatible"))]
     CnriPythonOpenSourceGplCompatibleAgreement,
-    #[strum(serialize = "coil-1.0")]
+    #[strum(props(str = "coil-1.0"))]
     CopyfreeOpenInnovation,
-    #[strum(serialize = "community-spec-1.0")]
+    #[strum(props(str = "community-spec-1.0"))]
     CommunitySpecification1_0,
-    #[strum(serialize = "condor-1.1")]
+    #[strum(props(str = "condor-1.1"))]
     CondorPublicV1_1,
-    #[strum(serialize = "copyleft-next-0.3.0")]
+    #[strum(props(str = "copyleft-next-0.3.0"))]
     Copyleftnext0_3_0,
-    #[strum(serialize = "copyleft-next-0.3.1")]
+    #[strum(props(str = "copyleft-next-0.3.1"))]
     Copyleftnext0_3_1,
-    #[strum(serialize = "cpal-1.0")]
+    #[strum(props(str = "cpal-1.0"))]
     CommonPublicAttribution1_0,
-    #[strum(serialize = "cpl-1.0")]
+    #[strum(props(str = "cpl-1.0"))]
     CommonPublic1_0,
-    #[strum(serialize = "cpol-1.02")]
+    #[strum(props(str = "cpol-1.02"))]
     CodeProjectOpen1_02,
-    #[strum(serialize = "crossword")]
+    #[strum(props(str = "crossword"))]
     Crossword,
-    #[strum(serialize = "crystalstacker")]
+    #[strum(props(str = "crystalstacker"))]
     CrystalStacker,
-    #[strum(serialize = "cua-opl-1.0")]
+    #[strum(props(str = "cua-opl-1.0"))]
     CuaOfficePublicV1_0,
-    #[strum(serialize = "cube")]
+    #[strum(props(str = "cube"))]
     Cube,
-    #[strum(serialize = "curl")]
+    #[strum(props(str = "curl"))]
     Curl,
-    #[strum(serialize = "d-fsl-1.0")]
+    #[strum(props(str = "d-fsl-1.0"))]
     DeutscheFreieSoftwareLizenz,
-    #[strum(serialize = "diffmark")]
+    #[strum(props(str = "diffmark"))]
     Diffmark,
-    #[strum(serialize = "dl-de-by-2.0")]
+    #[strum(props(str = "dl-de-by-2.0"))]
     DatalicenceGermanyAttributionVersion2_0,
-    #[strum(serialize = "doc")]
+    #[strum(props(str = "doc"))]
     Doc,
-    #[strum(serialize = "dotseqn")]
+    #[strum(props(str = "dotseqn"))]
     Dotseqn,
-    #[strum(serialize = "drl-1.0")]
+    #[strum(props(str = "drl-1.0"))]
     DetectionRule1_0,
-    #[strum(serialize = "dsdp")]
+    #[strum(props(str = "dsdp"))]
     Dsdp,
-    #[strum(serialize = "dvipdfm")]
+    #[strum(props(str = "dvipdfm"))]
     Dvipdfm,
-    #[strum(serialize = "ecl-1.0")]
+    #[strum(props(str = "ecl-1.0"))]
     EducationalCommunityV1_0,
-    #[strum(serialize = "ecl-2.0")]
+    #[strum(props(str = "ecl-2.0"))]
     EducationalCommunityV2_0,
-    #[strum(serialize = "efl-1.0")]
+    #[strum(props(str = "efl-1.0"))]
     EiffelForumV1_0,
-    #[strum(serialize = "efl-2.0")]
+    #[strum(props(str = "efl-2.0"))]
     EiffelForumV2_0,
-    #[strum(serialize = "egenix")]
+    #[strum(props(str = "egenix"))]
     EGenixComPublic1_1_0,
-    #[strum(serialize = "elastic-2.0")]
+    #[strum(props(str = "elastic-2.0"))]
     Elastic2_0,
-    #[strum(serialize = "entessa")]
+    #[strum(props(str = "entessa"))]
     EntessaPublicV1_0,
-    #[strum(serialize = "epics")]
+    #[strum(props(str = "epics"))]
     EpicsOpen,
-    #[strum(serialize = "epl-1.0")]
+    #[strum(props(str = "epl-1.0"))]
     EclipsePublic1_0,
-    #[strum(serialize = "epl-2.0")]
+    #[strum(props(str = "epl-2.0"))]
     EclipsePublic2_0,
-    #[strum(serialize = "erlpl-1.1")]
+    #[strum(props(str = "erlpl-1.1"))]
     ErlangPublicV1_1,
-    #[strum(serialize = "etalab-2.0")]
+    #[strum(props(str = "etalab-2.0"))]
     EtalabOpen2_0,
-    #[strum(serialize = "eudatagrid")]
+    #[strum(props(str = "eudatagrid"))]
     EuDataGridSoftware,
-    #[strum(serialize = "eupl-1.0")]
+    #[strum(props(str = "eupl-1.0"))]
     EuropeanUnionPublic1_0,
-    #[strum(serialize = "eupl-1.1")]
+    #[strum(props(str = "eupl-1.1"))]
     EuropeanUnionPublic1_1,
-    #[strum(serialize = "eupl-1.2")]
+    #[strum(props(str = "eupl-1.2"))]
     EuropeanUnionPublic1_2,
-    #[strum(serialize = "eurosym")]
+    #[strum(props(str = "eurosym"))]
     Eurosym,
-    #[strum(serialize = "fair")]
+    #[strum(props(str = "fair"))]
     Fair,
-    #[strum(serialize = "fdk-aac")]
+    #[strum(props(str = "fdk-aac"))]
     FraunhoferFdkAacCodecLibrary,
-    #[strum(serialize = "frameworx-1.0")]
+    #[strum(props(str = "frameworx-1.0"))]
     FrameworxOpen1_0,
-    #[strum(serialize = "freebsd-doc")]
+    #[strum(props(str = "freebsd-doc"))]
     FreeBsdDocumentation,
-    #[strum(serialize = "freeimage")]
+    #[strum(props(str = "freeimage"))]
     FreeImagePublicV1_0,
-    #[strum(serialize = "fsfap")]
+    #[strum(props(str = "fsfap"))]
     FsfAllPermissive,
-    #[strum(serialize = "fsful")]
+    #[strum(props(str = "fsful"))]
     FsfUnlimited,
-    #[strum(serialize = "fsfullr")]
+    #[strum(props(str = "fsfullr"))]
     FsfUnlimitedWithLicenseRetention,
-    #[strum(serialize = "ftl")]
+    #[strum(props(str = "ftl"))]
     FreetypeProject,
-    #[strum(serialize = "gd")]
+    #[strum(props(str = "gd"))]
     Gd,
-    #[strum(serialize = "gfdl-1.1-invariants-only")]
+    #[strum(props(str = "gfdl-1.1-invariants-only"))]
     GnuFreeDocumentationV1_1OnlyInvariants,
-    #[strum(serialize = "gfdl-1.1-invariants-or-later")]
+    #[strum(props(str = "gfdl-1.1-invariants-or-later"))]
     GnuFreeDocumentationV1_1OrLaterInvariants,
-    #[strum(serialize = "gfdl-1.1-no-invariants-only")]
+    #[strum(props(str = "gfdl-1.1-no-invariants-only"))]
     GnuFreeDocumentationV1_1OnlyNoInvariants,
-    #[strum(serialize = "gfdl-1.1-no-invariants-or-later")]
+    #[strum(props(str = "gfdl-1.1-no-invariants-or-later"))]
     GnuFreeDocumentationV1_1OrLaterNoInvariants,
-    #[strum(serialize = "gfdl-1.1-only")]
+    #[strum(props(str = "gfdl-1.1-only"))]
     GnuFreeDocumentationV1_1Only,
-    #[strum(serialize = "gfdl-1.1-or-later")]
+    #[strum(props(str = "gfdl-1.1-or-later"))]
     GnuFreeDocumentationV1_1OrLater,
-    #[strum(serialize = "gfdl-1.2-invariants-only")]
+    #[strum(props(str = "gfdl-1.2-invariants-only"))]
     GnuFreeDocumentationV1_2OnlyInvariants,
-    #[strum(serialize = "gfdl-1.2-invariants-or-later")]
+    #[strum(props(str = "gfdl-1.2-invariants-or-later"))]
     GnuFreeDocumentationV1_2OrLaterInvariants,
-    #[strum(serialize = "gfdl-1.2-no-invariants-only")]
+    #[strum(props(str = "gfdl-1.2-no-invariants-only"))]
     GnuFreeDocumentationV1_2OnlyNoInvariants,
-    #[strum(serialize = "gfdl-1.2-no-invariants-or-later")]
+    #[strum(props(str = "gfdl-1.2-no-invariants-or-later"))]
     GnuFreeDocumentationV1_2OrLaterNoInvariants,
-    #[strum(serialize = "gfdl-1.2-only")]
+    #[strum(props(str = "gfdl-1.2-only"))]
     GnuFreeDocumentationV1_2Only,
-    #[strum(serialize = "gfdl-1.2-or-later")]
+    #[strum(props(str = "gfdl-1.2-or-later"))]
     GnuFreeDocumentationV1_2OrLater,
-    #[strum(serialize = "gfdl-1.3-invariants-only")]
+    #[strum(props(str = "gfdl-1.3-invariants-only"))]
     GnuFreeDocumentationV1_3OnlyInvariants,
-    #[strum(serialize = "gfdl-1.3-invariants-or-later")]
+    #[strum(props(str = "gfdl-1.3-invariants-or-later"))]
     GnuFreeDocumentationV1_3OrLaterInvariants,
-    #[strum(serialize = "gfdl-1.3-no-invariants-only")]
+    #[strum(props(str = "gfdl-1.3-no-invariants-only"))]
     GnuFreeDocumentationV1_3OnlyNoInvariants,
-    #[strum(serialize = "gfdl-1.3-no-invariants-or-later")]
+    #[strum(props(str = "gfdl-1.3-no-invariants-or-later"))]
     GnuFreeDocumentationV1_3OrLaterNoInvariants,
-    #[strum(serialize = "gfdl-1.3-only")]
+    #[strum(props(str = "gfdl-1.3-only"))]
     GnuFreeDocumentationV1_3Only,
-    #[strum(serialize = "gfdl-1.3-or-later")]
+    #[strum(props(str = "gfdl-1.3-or-later"))]
     GnuFreeDocumentationV1_3OrLater,
-    #[strum(serialize = "giftware")]
+    #[strum(props(str = "giftware"))]
     Giftware,
-    #[strum(serialize = "gl2ps")]
+    #[strum(props(str = "gl2ps"))]
     Gl2ps,
-    #[strum(serialize = "glide")]
+    #[strum(props(str = "glide"))]
     DfxGlide,
-    #[strum(serialize = "glulxe")]
+    #[strum(props(str = "glulxe"))]
     Glulxe,
-    #[strum(serialize = "glwtpl")]
+    #[strum(props(str = "glwtpl"))]
     GoodLuckWithThatPublic,
-    #[strum(serialize = "gnuplot")]
+    #[strum(props(str = "gnuplot"))]
     GnuPlot,
-    #[strum(serialize = "gpl-1.0-only")]
+    #[strum(props(str = "gpl-1.0-only"))]
     GnuGeneralPublicV1_0only,
-    #[strum(serialize = "gpl-1.0-or-later")]
+    #[strum(props(str = "gpl-1.0-or-later"))]
     GnuGeneralPublicV1_0OrLater,
-    #[strum(serialize = "gpl-2.0-only")]
+    #[strum(props(str = "gpl-2.0-only"))]
     GnuGeneralPublicV2_0only,
-    #[strum(serialize = "gpl-2.0-or-later")]
+    #[strum(props(str = "gpl-2.0-or-later"))]
     GnuGeneralPublicV2_0OrLater,
-    #[strum(serialize = "gpl-3.0-only")]
+    #[strum(props(str = "gpl-3.0-only"))]
     GnuGeneralPublicV3_0only,
-    #[strum(serialize = "gpl-3.0-or-later")]
+    #[strum(props(str = "gpl-3.0-or-later"))]
     GnuGeneralPublicV3_0OrLater,
-    #[strum(serialize = "gsoap-1.3b")]
+    #[strum(props(str = "gsoap-1.3b"))]
     GsoapPublicV1_3b,
-    #[strum(serialize = "haskellreport")]
+    #[strum(props(str = "haskellreport"))]
     HaskellLanguageReport,
-    #[strum(serialize = "hippocratic-2.1")]
+    #[strum(props(str = "hippocratic-2.1"))]
     Hippocratic2_1,
-    #[strum(serialize = "hpnd")]
+    #[strum(props(str = "hpnd"))]
     HistoricalPermissionNoticeAndDisclaimer,
-    #[strum(serialize = "hpnd-sell-variant")]
+    #[strum(props(str = "hpnd-sell-variant"))]
     HistoricalPermissionNoticeAndDisclaimersellvariant,
-    #[strum(serialize = "htmltidy")]
+    #[strum(props(str = "htmltidy"))]
     HtmlTidy,
-    #[strum(serialize = "ibm-pibs")]
+    #[strum(props(str = "ibm-pibs"))]
     IbmPowerPcInitializationAndBootSoftware,
-    #[strum(serialize = "icu")]
+    #[strum(props(str = "icu"))]
     Icu,
-    #[strum(serialize = "ijg")]
+    #[strum(props(str = "ijg"))]
     IndependentJpegGroup,
-    #[strum(serialize = "imagemagick")]
+    #[strum(props(str = "imagemagick"))]
     ImageMagick,
-    #[strum(serialize = "imatix")]
+    #[strum(props(str = "imatix"))]
     IMatixStAndardFunctionLibraryAgreement,
-    #[strum(serialize = "imlib2")]
+    #[strum(props(str = "imlib2"))]
     Imlib2License,
-    #[strum(serialize = "info-zip")]
+    #[strum(props(str = "info-zip"))]
     InfoZip,
-    #[strum(serialize = "intel")]
+    #[strum(props(str = "intel"))]
     IntelOpenSource,
-    #[strum(serialize = "intel-acpi")]
+    #[strum(props(str = "intel-acpi"))]
     IntelAcpiSoftwareAgreement,
-    #[strum(serialize = "interbase-1.0")]
+    #[strum(props(str = "interbase-1.0"))]
     InterbasePublicV1_0,
-    #[strum(serialize = "ipa")]
+    #[strum(props(str = "ipa"))]
     IpaFont,
-    #[strum(serialize = "ipl-1.0")]
+    #[strum(props(str = "ipl-1.0"))]
     IbmPublicV1_0,
-    #[strum(serialize = "isc")]
+    #[strum(props(str = "isc"))]
     Isc,
-    #[strum(serialize = "jam")]
+    #[strum(props(str = "jam"))]
     Jam,
-    #[strum(serialize = "jasper-2.0")]
+    #[strum(props(str = "jasper-2.0"))]
     JasPer,
-    #[strum(serialize = "jpnic")]
+    #[strum(props(str = "jpnic"))]
     JapanNetworkInformationCenter,
-    #[strum(serialize = "json")]
+    #[strum(props(str = "json"))]
     Json,
-    #[strum(serialize = "lal-1.2")]
+    #[strum(props(str = "lal-1.2"))]
     LicenceArtLibre1_2,
-    #[strum(serialize = "lal-1.3")]
+    #[strum(props(str = "lal-1.3"))]
     LicenceArtLibre1_3,
-    #[strum(serialize = "latex2e")]
+    #[strum(props(str = "latex2e"))]
     Latex2e,
-    #[strum(serialize = "leptonica")]
+    #[strum(props(str = "leptonica"))]
     Leptonica,
-    #[strum(serialize = "lgpl-2.0-only")]
+    #[strum(props(str = "lgpl-2.0-only"))]
     GnuLibraryGeneralPublicV2only,
-    #[strum(serialize = "lgpl-2.0-or-later")]
+    #[strum(props(str = "lgpl-2.0-or-later"))]
     GnuLibraryGeneralPublicV2OrLater,
-    #[strum(serialize = "lgpl-2.1-only")]
+    #[strum(props(str = "lgpl-2.1-only"))]
     GnuLesserGeneralPublicV2_1only,
-    #[strum(serialize = "lgpl-2.1-or-later")]
+    #[strum(props(str = "lgpl-2.1-or-later"))]
     GnuLesserGeneralPublicV2_1OrLater,
-    #[strum(serialize = "lgpl-3.0-only")]
+    #[strum(props(str = "lgpl-3.0-only"))]
     GnuLesserGeneralPublicV3_0Only,
-    #[strum(serialize = "lgpl-3.0-or-later")]
+    #[strum(props(str = "lgpl-3.0-or-later"))]
     GnuLesserGeneralPublicV3_0OrLater,
-    #[strum(serialize = "lgpllr")]
+    #[strum(props(str = "lgpllr"))]
     LesserGeneralPublicForLinguisticResources,
-    #[strum(serialize = "libpng")]
+    #[strum(props(str = "libpng"))]
     Libpng,
-    #[strum(serialize = "libpng-2.0")]
+    #[strum(props(str = "libpng-2.0"))]
     PngReferenceLibraryversion2,
-    #[strum(serialize = "libselinux-1.0")]
+    #[strum(props(str = "libselinux-1.0"))]
     LibselinuxPublicDomaiNnotice,
-    #[strum(serialize = "libtiff")]
+    #[strum(props(str = "libtiff"))]
     Libtiff,
-    #[strum(serialize = "liliq-p-1.1")]
+    #[strum(props(str = "liliq-p-1.1"))]
     LicenceLibreduQuebecPermissiveversion1_1,
-    #[strum(serialize = "liliq-r-1.1")]
+    #[strum(props(str = "liliq-r-1.1"))]
     LicenceLibreduQuebecReciprociteversion1_1,
-    #[strum(serialize = "liliq-rplus-1.1")]
+    #[strum(props(str = "liliq-rplus-1.1"))]
     LicenceLibreduQuebecReciprociteforteversion1_1,
-    #[strum(serialize = "linux-man-pages-copyleft")]
+    #[strum(props(str = "linux-man-pages-copyleft"))]
     LinuxmanpagesCopyleft,
-    #[strum(serialize = "linux-openib")]
+    #[strum(props(str = "linux-openib"))]
     LinuxKernelVariantofOpenIbOrg,
-    #[strum(serialize = "lpl-1.0")]
+    #[strum(props(str = "lpl-1.0"))]
     LucentPublicVersion1_0,
-    #[strum(serialize = "lpl-1.02")]
+    #[strum(props(str = "lpl-1.02"))]
     LucentPublicV1_02,
-    #[strum(serialize = "lppl-1.0")]
+    #[strum(props(str = "lppl-1.0"))]
     LaTeXProjectPublicV1_0,
-    #[strum(serialize = "lppl-1.1")]
+    #[strum(props(str = "lppl-1.1"))]
     LaTeXProjectPublicV1_1,
-    #[strum(serialize = "lppl-1.2")]
+    #[strum(props(str = "lppl-1.2"))]
     LaTeXProjectPublicV1_2,
-    #[strum(serialize = "lppl-1.3a")]
+    #[strum(props(str = "lppl-1.3a"))]
     LaTeXProjectPublicV1_3a,
-    #[strum(serialize = "lppl-1.3c")]
+    #[strum(props(str = "lppl-1.3c"))]
     LaTeXProjectPublicV1_3c,
-    #[strum(serialize = "lzma-sdk-9.11-to-9.20")]
+    #[strum(props(str = "lzma-sdk-9.11-to-9.20"))]
     LzmaSdkVersions9_11To9_20,
-    #[strum(serialize = "lzma-sdk-9.22")]
+    #[strum(props(str = "lzma-sdk-9.22"))]
     LzmaSdkVersions9_22AndBeyond,
-    #[strum(serialize = "makeindex")]
+    #[strum(props(str = "makeindex"))]
     MakeIndex,
-    #[strum(serialize = "minpack")]
+    #[strum(props(str = "minpack"))]
     Minpack,
-    #[strum(serialize = "miros")]
+    #[strum(props(str = "miros"))]
     TheMirOsLicence,
-    #[strum(serialize = "mit")]
+    #[strum(props(str = "mit"))]
     Mit,
-    #[strum(serialize = "mit-0")]
+    #[strum(props(str = "mit-0"))]
     MitNoAttribution,
-    #[strum(serialize = "mit-advertising")]
+    #[strum(props(str = "mit-advertising"))]
     EnlightenmentE16,
-    #[strum(serialize = "mit-cmu")]
+    #[strum(props(str = "mit-cmu"))]
     Cmu,
-    #[strum(serialize = "mit-enna")]
+    #[strum(props(str = "mit-enna"))]
     Enna,
-    #[strum(serialize = "mit-feh")]
+    #[strum(props(str = "mit-feh"))]
     Feh,
-    #[strum(serialize = "mit-modern-variant")]
+    #[strum(props(str = "mit-modern-variant"))]
     MitModernVariant,
-    #[strum(serialize = "mit-open-group")]
+    #[strum(props(str = "mit-open-group"))]
     MitOpenGroupvariant,
-    #[strum(serialize = "mitnfa")]
+    #[strum(props(str = "mitnfa"))]
     MitNoFalseAttribs,
-    #[strum(serialize = "motosoto")]
+    #[strum(props(str = "motosoto"))]
     Motosoto,
-    #[strum(serialize = "mpi-permissive")]
+    #[strum(props(str = "mpi-permissive"))]
     MpiPermissive,
-    #[strum(serialize = "mpich2")]
+    #[strum(props(str = "mpich2"))]
     Mpich2License,
-    #[strum(serialize = "mpl-1.0")]
+    #[strum(props(str = "mpl-1.0"))]
     MozillaPublic1_0,
-    #[strum(serialize = "mpl-1.1")]
+    #[strum(props(str = "mpl-1.1"))]
     MozillaPublic1_1,
-    #[strum(serialize = "mpl-2.0")]
+    #[strum(props(str = "mpl-2.0"))]
     MozillaPublic2_0,
-    #[strum(serialize = "mpl-2.0-no-copyleft-exception")]
+    #[strum(props(str = "mpl-2.0-no-copyleft-exception"))]
     MozillaPublic2_0nocopyleftexception,
-    #[strum(serialize = "mplus")]
+    #[strum(props(str = "mplus"))]
     MplusFont,
-    #[strum(serialize = "ms-lpl")]
+    #[strum(props(str = "ms-lpl"))]
     MicrosoftLimitedPublic,
-    #[strum(serialize = "ms-pl")]
+    #[strum(props(str = "ms-pl"))]
     MicrosoftPublic,
-    #[strum(serialize = "ms-rl")]
+    #[strum(props(str = "ms-rl"))]
     MicrosoftReciprocal,
-    #[strum(serialize = "mtll")]
+    #[strum(props(str = "mtll"))]
     MatrixTemplateLibrary,
-    #[strum(serialize = "mulanpsl-1.0")]
+    #[strum(props(str = "mulanpsl-1.0"))]
     MulanPermissiveSoftwareVersion1,
-    #[strum(serialize = "mulanpsl-2.0")]
+    #[strum(props(str = "mulanpsl-2.0"))]
     MulanPermissiveSoftwareVersion2,
-    #[strum(serialize = "multics")]
+    #[strum(props(str = "multics"))]
     Multics,
-    #[strum(serialize = "mup")]
+    #[strum(props(str = "mup"))]
     Mup,
-    #[strum(serialize = "naist-2003")]
+    #[strum(props(str = "naist-2003"))]
     NaraInstituteofScienceAndTechnology2003,
-    #[strum(serialize = "nasa-1.3")]
+    #[strum(props(str = "nasa-1.3"))]
     NasaOpenSourceAgreement1_3,
-    #[strum(serialize = "naumen")]
+    #[strum(props(str = "naumen"))]
     NaumenPublic,
-    #[strum(serialize = "nbpl-1.0")]
+    #[strum(props(str = "nbpl-1.0"))]
     NetBooleanPublicV1,
-    #[strum(serialize = "ncgl-uk-2.0")]
+    #[strum(props(str = "ncgl-uk-2.0"))]
     NonCommercialGovernmentLicence,
-    #[strum(serialize = "ncsa")]
+    #[strum(props(str = "ncsa"))]
     UniversityofIllinoisNcsaOpenSource,
-    #[strum(serialize = "net-snmp")]
+    #[strum(props(str = "net-snmp"))]
     NetSnmp,
-    #[strum(serialize = "netcdf")]
+    #[strum(props(str = "netcdf"))]
     NetCdf,
-    #[strum(serialize = "newsletr")]
+    #[strum(props(str = "newsletr"))]
     Newsletr,
-    #[strum(serialize = "ngpl")]
+    #[strum(props(str = "ngpl"))]
     NethackGeneralPublic,
-    #[strum(serialize = "nicta-1.0")]
+    #[strum(props(str = "nicta-1.0"))]
     NictaPublicSoftware,
     Version1_0,
-    #[strum(serialize = "nist-pd")]
+    #[strum(props(str = "nist-pd"))]
     NistPublicDomainNotice,
-    #[strum(serialize = "nist-pd-fallback")]
+    #[strum(props(str = "nist-pd-fallback"))]
     NistPublicDomainNoticewithlicensefallback,
-    #[strum(serialize = "nlod-1.0")]
+    #[strum(props(str = "nlod-1.0"))]
     NorwegianLicenceforOpenGovernmentDataNlod1_0,
-    #[strum(serialize = "nlod-2.0")]
+    #[strum(props(str = "nlod-2.0"))]
     NorwegianLicenceforOpenGovernmentDataNlod2_0,
-    #[strum(serialize = "nlpl")]
+    #[strum(props(str = "nlpl"))]
     NoLimitPublic,
-    #[strum(serialize = "nokia")]
+    #[strum(props(str = "nokia"))]
     NokiaOpenSource,
-    #[strum(serialize = "nosl")]
+    #[strum(props(str = "nosl"))]
     NetizenOpenSource,
-    #[strum(serialize = "noweb")]
+    #[strum(props(str = "noweb"))]
     Noweb,
-    #[strum(serialize = "npl-1.0")]
+    #[strum(props(str = "npl-1.0"))]
     NetscapePublicV1_0,
-    #[strum(serialize = "npl-1.1")]
+    #[strum(props(str = "npl-1.1"))]
     NetscapePublicV1_1,
-    #[strum(serialize = "nposl-3.0")]
+    #[strum(props(str = "nposl-3.0"))]
     NonProfitOpenSoftware3_0,
-    #[strum(serialize = "nrl")]
+    #[strum(props(str = "nrl"))]
     Nrl,
-    #[strum(serialize = "ntp")]
+    #[strum(props(str = "ntp"))]
     Ntp,
-    #[strum(serialize = "ntp-0")]
+    #[strum(props(str = "ntp-0"))]
     NtpNoAttribution,
-    #[strum(serialize = "o-uda-1.0")]
+    #[strum(props(str = "o-uda-1.0"))]
     OpenUseofDataAgreementV1_0,
-    #[strum(serialize = "occt-pl")]
+    #[strum(props(str = "occt-pl"))]
     OpenCascadeTechnologyPublic,
-    #[strum(serialize = "oclc-2.0")]
+    #[strum(props(str = "oclc-2.0"))]
     OclcResearchPublic2_0,
-    #[strum(serialize = "odbl-1.0")]
+    #[strum(props(str = "odbl-1.0"))]
     OpenDataCommonsOpenDatabaseV1_0,
-    #[strum(serialize = "odc-by-1.0")]
+    #[strum(props(str = "odc-by-1.0"))]
     OpenDataCommonsAttributionV1_0,
-    #[strum(serialize = "ofl-1.0")]
+    #[strum(props(str = "ofl-1.0"))]
     SilOpenFont1_0,
-    #[strum(serialize = "ofl-1.0-no-rfn")]
+    #[strum(props(str = "ofl-1.0-no-rfn"))]
     SilOpenFont1_0withnoReservedFontName,
-    #[strum(serialize = "ofl-1.0-rfn")]
+    #[strum(props(str = "ofl-1.0-rfn"))]
     SilOpenFont1_0withReservedFontName,
-    #[strum(serialize = "ofl-1.1")]
+    #[strum(props(str = "ofl-1.1"))]
     SilOpenFont1_1,
-    #[strum(serialize = "ofl-1.1-no-rfn")]
+    #[strum(props(str = "ofl-1.1-no-rfn"))]
     SilOpenFont1_1withnoReservedFontName,
-    #[strum(serialize = "ofl-1.1-rfn")]
+    #[strum(props(str = "ofl-1.1-rfn"))]
     SilOpenFont1_1withReservedFontName,
-    #[strum(serialize = "ogc-1.0")]
+    #[strum(props(str = "ogc-1.0"))]
     OgcSoftwareVersion1_0,
-    #[strum(serialize = "ogdl-taiwan-1.0")]
+    #[strum(props(str = "ogdl-taiwan-1.0"))]
     TaiwanOpenGovernmentDataVersion1_0,
-    #[strum(serialize = "ogl-canada-2.0")]
+    #[strum(props(str = "ogl-canada-2.0"))]
     OpenGovernmentLicenceCanada,
-    #[strum(serialize = "ogl-uk-1.0")]
+    #[strum(props(str = "ogl-uk-1.0"))]
     OpenGovernmentLicenceV1_0,
-    #[strum(serialize = "ogl-uk-2.0")]
+    #[strum(props(str = "ogl-uk-2.0"))]
     OpenGovernmentLicenceV2_0,
-    #[strum(serialize = "ogl-uk-3.0")]
+    #[strum(props(str = "ogl-uk-3.0"))]
     OpenGovernmentLicenceV3_0,
-    #[strum(serialize = "ogtsl")]
+    #[strum(props(str = "ogtsl"))]
     OpenGroupTestSuite,
-    #[strum(serialize = "oldap-1.1")]
+    #[strum(props(str = "oldap-1.1"))]
     OpenLdapPublicV1_1,
-    #[strum(serialize = "oldap-1.2")]
+    #[strum(props(str = "oldap-1.2"))]
     OpenLdapPublicV1_2,
-    #[strum(serialize = "oldap-1.3")]
+    #[strum(props(str = "oldap-1.3"))]
     OpenLdapPublicV1_3,
-    #[strum(serialize = "oldap-1.4")]
+    #[strum(props(str = "oldap-1.4"))]
     OpenLdapPublicV1_4,
-    #[strum(serialize = "oldap-2.0")]
+    #[strum(props(str = "oldap-2.0"))]
     OpenLdapPublicV2_0OrPossibly2_0AAnd2_0B,
-    #[strum(serialize = "oldap-2.0.1")]
+    #[strum(props(str = "oldap-2.0.1"))]
     OpenLdapPublicV2_0_1,
-    #[strum(serialize = "oldap-2.1")]
+    #[strum(props(str = "oldap-2.1"))]
     OpenLdapPublicV2_1,
-    #[strum(serialize = "oldap-2.2")]
+    #[strum(props(str = "oldap-2.2"))]
     OpenLdapPublicV2_2,
-    #[strum(serialize = "oldap-2.2.1")]
+    #[strum(props(str = "oldap-2.2.1"))]
     OpenLdapPublicV2_2_1,
-    #[strum(serialize = "oldap-2.2.2")]
+    #[strum(props(str = "oldap-2.2.2"))]
     OpenLdapPublic2_2_2,
-    #[strum(serialize = "oldap-2.3")]
+    #[strum(props(str = "oldap-2.3"))]
     OpenLdapPublicV2_3,
-    #[strum(serialize = "oldap-2.4")]
+    #[strum(props(str = "oldap-2.4"))]
     OpenLdapPublicV2_4,
-    #[strum(serialize = "oldap-2.5")]
+    #[strum(props(str = "oldap-2.5"))]
     OpenLdapPublicV2_5,
-    #[strum(serialize = "oldap-2.6")]
+    #[strum(props(str = "oldap-2.6"))]
     OpenLdapPublicV2_6,
-    #[strum(serialize = "oldap-2.7")]
+    #[strum(props(str = "oldap-2.7"))]
     OpenLdapPublicV2_7,
-    #[strum(serialize = "oldap-2.8")]
+    #[strum(props(str = "oldap-2.8"))]
     OpenLdapPublicV2_8,
-    #[strum(serialize = "oml")]
+    #[strum(props(str = "oml"))]
     OpenMarket,
-    #[strum(serialize = "openssl")]
+    #[strum(props(str = "openssl"))]
     OpenSsl,
-    #[strum(serialize = "opl-1.0")]
+    #[strum(props(str = "opl-1.0"))]
     OpenPublicV1_0,
-    #[strum(serialize = "opubl-1.0")]
+    #[strum(props(str = "opubl-1.0"))]
     OpenPublicationV1_0,
-    #[strum(serialize = "oset-pl-2.1")]
+    #[strum(props(str = "oset-pl-2.1"))]
     OsetPublicversion2_1,
-    #[strum(serialize = "osl-1.0")]
+    #[strum(props(str = "osl-1.0"))]
     OpenSoftware1_0,
-    #[strum(serialize = "osl-1.1")]
+    #[strum(props(str = "osl-1.1"))]
     OpenSoftware1_1,
-    #[strum(serialize = "osl-2.0")]
+    #[strum(props(str = "osl-2.0"))]
     OpenSoftware2_0,
-    #[strum(serialize = "osl-2.1")]
+    #[strum(props(str = "osl-2.1"))]
     OpenSoftware2_1,
-    #[strum(serialize = "osl-3.0")]
+    #[strum(props(str = "osl-3.0"))]
     OpenSoftware3_0,
-    #[strum(serialize = "parity-6.0.0")]
+    #[strum(props(str = "parity-6.0.0"))]
     TheParityPublic6_0_0,
-    #[strum(serialize = "parity-7.0.0")]
+    #[strum(props(str = "parity-7.0.0"))]
     TheParityPublic7_0_0,
-    #[strum(serialize = "pddl-1.0")]
+    #[strum(props(str = "pddl-1.0"))]
     OpenDataCommonsPublicDomainDedication1_0,
-    #[strum(serialize = "php-3.0")]
+    #[strum(props(str = "php-3.0"))]
     PhpV3_0,
-    #[strum(serialize = "php-3.01")]
+    #[strum(props(str = "php-3.01"))]
     PhpV3_01,
-    #[strum(serialize = "plexus")]
+    #[strum(props(str = "plexus"))]
     PlexusClassworlds,
-    #[strum(serialize = "polyform-noncommercial-1.0.0")]
+    #[strum(props(str = "polyform-noncommercial-1.0.0"))]
     PolyFormNoncommercial1_0_0,
-    #[strum(serialize = "polyform-small-business-1.0.0")]
+    #[strum(props(str = "polyform-small-business-1.0.0"))]
     PolyFormSmallBusiness1_0_0,
-    #[strum(serialize = "postgresql")]
+    #[strum(props(str = "postgresql"))]
     PostgreSql,
-    #[strum(serialize = "psf-2.0")]
+    #[strum(props(str = "psf-2.0"))]
     PythonSoftwareFoundation2_0,
-    #[strum(serialize = "psfrag")]
+    #[strum(props(str = "psfrag"))]
     Psfrag,
-    #[strum(serialize = "psutils")]
+    #[strum(props(str = "psutils"))]
     Psutils,
-    #[strum(serialize = "python-2.0")]
+    #[strum(props(str = "python-2.0"))]
     Python2_0,
-    #[strum(serialize = "python-2.0.1")]
+    #[strum(props(str = "python-2.0.1"))]
     Python2_0_1,
-    #[strum(serialize = "qhull")]
+    #[strum(props(str = "qhull"))]
     Qhull,
-    #[strum(serialize = "qpl-1.0")]
+    #[strum(props(str = "qpl-1.0"))]
     QPublic1_0,
-    #[strum(serialize = "rdisc")]
+    #[strum(props(str = "rdisc"))]
     Rdisc,
-    #[strum(serialize = "rhecos-1.1")]
+    #[strum(props(str = "rhecos-1.1"))]
     RedHateCosPublicV1_1,
-    #[strum(serialize = "rpl-1.1")]
+    #[strum(props(str = "rpl-1.1"))]
     ReciprocalPublic1_1,
-    #[strum(serialize = "rpl-1.5")]
+    #[strum(props(str = "rpl-1.5"))]
     ReciprocalPublic1_5,
-    #[strum(serialize = "rpsl-1.0")]
+    #[strum(props(str = "rpsl-1.0"))]
     RealNetworksPublicSourceV1_0,
-    #[strum(serialize = "rsa-md")]
+    #[strum(props(str = "rsa-md"))]
     RsaMessageDigest,
-    #[strum(serialize = "rscpl")]
+    #[strum(props(str = "rscpl"))]
     RicohSourceCodePublic,
-    #[strum(serialize = "ruby")]
+    #[strum(props(str = "ruby"))]
     Ruby,
-    #[strum(serialize = "sax-pd")]
+    #[strum(props(str = "sax-pd"))]
     SaxPublicDomainNotice,
-    #[strum(serialize = "saxpath")]
+    #[strum(props(str = "saxpath"))]
     Saxpath,
-    #[strum(serialize = "scea")]
+    #[strum(props(str = "scea"))]
     SceaSharedSource,
-    #[strum(serialize = "schemereport")]
+    #[strum(props(str = "schemereport"))]
     SchemeLanguageReport,
-    #[strum(serialize = "sendmail")]
+    #[strum(props(str = "sendmail"))]
     Sendmail,
-    #[strum(serialize = "sendmail-8.23")]
+    #[strum(props(str = "sendmail-8.23"))]
     Sendmail8_23,
-    #[strum(serialize = "sgi-b-1.0")]
+    #[strum(props(str = "sgi-b-1.0"))]
     SgiFreeSoftwareBV1_0,
-    #[strum(serialize = "sgi-b-1.1")]
+    #[strum(props(str = "sgi-b-1.1"))]
     SgiFreeSoftwareBV1_1,
-    #[strum(serialize = "sgi-b-2.0")]
+    #[strum(props(str = "sgi-b-2.0"))]
     SgiFreeSoftwareBV2_0,
-    #[strum(serialize = "shl-0.5")]
+    #[strum(props(str = "shl-0.5"))]
     SolderpadHardwareV0_5,
-    #[strum(serialize = "shl-0.51")]
+    #[strum(props(str = "shl-0.51"))]
     SolderpadHardware,
     Version0_51,
-    #[strum(serialize = "simpl-2.0")]
+    #[strum(props(str = "simpl-2.0"))]
     SimplePublic2_0,
-    #[strum(serialize = "sissl")]
+    #[strum(props(str = "sissl"))]
     SunIndustryStandardsSourceV1_1,
-    #[strum(serialize = "sissl-1.2")]
+    #[strum(props(str = "sissl-1.2"))]
     SunIndustryStandardsSourceV1_2,
-    #[strum(serialize = "sleepycat")]
+    #[strum(props(str = "sleepycat"))]
     Sleepycat,
-    #[strum(serialize = "smlnj")]
+    #[strum(props(str = "smlnj"))]
     StandardMlOfNewJersey,
-    #[strum(serialize = "smppl")]
+    #[strum(props(str = "smppl"))]
     SecureMessagingProtocolPublic,
-    #[strum(serialize = "snia")]
+    #[strum(props(str = "snia"))]
     SniaPublic1_1,
-    #[strum(serialize = "spencer-86")]
+    #[strum(props(str = "spencer-86"))]
     Spencer86,
-    #[strum(serialize = "spencer-94")]
+    #[strum(props(str = "spencer-94"))]
     Spencer94,
-    #[strum(serialize = "spencer-99")]
+    #[strum(props(str = "spencer-99"))]
     Spencer99,
-    #[strum(serialize = "spl-1.0")]
+    #[strum(props(str = "spl-1.0"))]
     SunPublicV1_0,
-    #[strum(serialize = "ssh-openssh")]
+    #[strum(props(str = "ssh-openssh"))]
     SshOpenSshlicense,
-    #[strum(serialize = "ssh-short")]
+    #[strum(props(str = "ssh-short"))]
     SshShortNotice,
-    #[strum(serialize = "sspl-1.0")]
+    #[strum(props(str = "sspl-1.0"))]
     ServerSidePublicV1,
-    #[strum(serialize = "sugarcrm-1.1.3")]
+    #[strum(props(str = "sugarcrm-1.1.3"))]
     SugarCrmPublicV1_1_3,
-    #[strum(serialize = "swl")]
+    #[strum(props(str = "swl"))]
     SchemeWidgetLibrarySwlSoftwareAgreement,
-    #[strum(serialize = "tapr-ohl-1.0")]
+    #[strum(props(str = "tapr-ohl-1.0"))]
     TaprOpenHardwareV1_0,
-    #[strum(serialize = "tcl")]
+    #[strum(props(str = "tcl"))]
     TclTk,
-    #[strum(serialize = "tcp-wrappers")]
+    #[strum(props(str = "tcp-wrappers"))]
     TcpWrappers,
-    #[strum(serialize = "tmate")]
+    #[strum(props(str = "tmate"))]
     TMateOpenSource,
-    #[strum(serialize = "torque-1.1")]
+    #[strum(props(str = "torque-1.1"))]
     TorqueV2_5SoftwareV1_1,
-    #[strum(serialize = "tosl")]
+    #[strum(props(str = "tosl"))]
     TrussterOpenSource,
-    #[strum(serialize = "tu-berlin-1.0")]
+    #[strum(props(str = "tu-berlin-1.0"))]
     TechnischeUniversitaetBerlin1_0,
-    #[strum(serialize = "tu-berlin-2.0")]
+    #[strum(props(str = "tu-berlin-2.0"))]
     TechnischeUniversitaetBerlin2_0,
-    #[strum(serialize = "ucl-1.0")]
+    #[strum(props(str = "ucl-1.0"))]
     UpstreamCompatibilityV1_0,
-    #[strum(serialize = "unicode-dfs-2015")]
+    #[strum(props(str = "unicode-dfs-2015"))]
     UnicodeAgreementDataFilesAndSoftware2015,
-    #[strum(serialize = "unicode-dfs-2016")]
+    #[strum(props(str = "unicode-dfs-2016"))]
     UnicodeAgreementDataFilesAndSoftware2016,
-    #[strum(serialize = "unicode-tou")]
+    #[strum(props(str = "unicode-tou"))]
     UnicodeTermsofUse,
-    #[strum(serialize = "unlicense")]
+    #[strum(props(str = "unlicense"))]
     TheUnlicense,
-    #[strum(serialize = "upl-1.0")]
+    #[strum(props(str = "upl-1.0"))]
     UniversalPermissiveV1_0,
-    #[strum(serialize = "vim")]
+    #[strum(props(str = "vim"))]
     Vim,
-    #[strum(serialize = "vostrom")]
+    #[strum(props(str = "vostrom"))]
     VostromPublicforOpenSource,
-    #[strum(serialize = "vsl-1.0")]
+    #[strum(props(str = "vsl-1.0"))]
     VovidaSoftwareV1_0,
-    #[strum(serialize = "w3c")]
+    #[strum(props(str = "w3c"))]
     W3cSoftwareNoticeAnd20021231,
-    #[strum(serialize = "w3c-19980720")]
+    #[strum(props(str = "w3c-19980720"))]
     W3cSoftwareNoticeAnd19980720,
-    #[strum(serialize = "w3c-20150513")]
+    #[strum(props(str = "w3c-20150513"))]
     W3cSoftwareNoticeAndDocument20150513,
-    #[strum(serialize = "watcom-1.0")]
+    #[strum(props(str = "watcom-1.0"))]
     SybaseOpenWatcomPublic1_0,
-    #[strum(serialize = "wsuipa")]
+    #[strum(props(str = "wsuipa"))]
     Wsuipa,
-    #[strum(serialize = "wtfpl")]
+    #[strum(props(str = "wtfpl"))]
     DoWhatTheFckYouWantToPublic,
-    #[strum(serialize = "x11")]
+    #[strum(props(str = "x11"))]
     X11License,
-    #[strum(serialize = "x11-distribute-modifications-variant")]
+    #[strum(props(str = "x11-distribute-modifications-variant"))]
     X11LicenseDistributionModificationVariant,
-    #[strum(serialize = "xerox")]
+    #[strum(props(str = "xerox"))]
     Xerox,
-    #[strum(serialize = "xfree86-1.1")]
+    #[strum(props(str = "xfree86-1.1"))]
     XFree86License1_1,
-    #[strum(serialize = "xinetd")]
+    #[strum(props(str = "xinetd"))]
     Xinetd,
-    #[strum(serialize = "xnet")]
+    #[strum(props(str = "xnet"))]
     XNet,
-    #[strum(serialize = "xpp")]
+    #[strum(props(str = "xpp"))]
     Xpp,
-    #[strum(serialize = "xskat")]
+    #[strum(props(str = "xskat"))]
     XSkat,
-    #[strum(serialize = "ypl-1.0")]
+    #[strum(props(str = "ypl-1.0"))]
     YahooPublicV1_0,
-    #[strum(serialize = "ypl-1.1")]
+    #[strum(props(str = "ypl-1.1"))]
     YahooPublicV1_1,
-    #[strum(serialize = "zed")]
+    #[strum(props(str = "zed"))]
     Zed,
-    #[strum(serialize = "zend-2.0")]
+    #[strum(props(str = "zend-2.0"))]
     ZendV2_0,
-    #[strum(serialize = "zimbra-1.3")]
+    #[strum(props(str = "zimbra-1.3"))]
     ZimbraPublicV1_3,
-    #[strum(serialize = "zimbra-1.4")]
+    #[strum(props(str = "zimbra-1.4"))]
     ZimbraPublicV1_4,
-    #[strum(serialize = "zlib")]
+    #[strum(props(str = "zlib"))]
     Zlib,
-    #[strum(serialize = "zlib-acknowledgement")]
+    #[strum(props(str = "zlib-acknowledgement"))]
     ZlibLibpngwithAcknowledgement,
-    #[strum(serialize = "zpl-1.1")]
+    #[strum(props(str = "zpl-1.1"))]
     ZopePublic1_1,
-    #[strum(serialize = "zpl-2.0")]
+    #[strum(props(str = "zpl-2.0"))]
     ZopePublic2_0,
-    #[strum(serialize = "zpl-2.1")]
+    #[strum(props(str = "zpl-2.1"))]
     ZopePublic2_1,
 
-    #[strum(disabled)]
     Other(String),
+}
+
+impl fmt::Display for LicenseType {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Other(s) => write!(f, "{s}"),
+            _ => match self.get_str("str") {
+                Some(s) => write!(f, "{}", s),
+                None => write!(f, "{:?}", self),
+            },
+        }
+    }
 }
 
 impl<'de> Deserialize<'de> for LicenseType {
@@ -949,9 +961,12 @@ impl<'de> Deserialize<'de> for LicenseType {
             Err(e) => return Err(e),
         };
 
-        match LicenseType::from_str(s.as_str()) {
-            Ok(x) => Ok(x),
-            Err(_) => Ok(LicenseType::Other(s)),
+        for variant in Self::iter() {
+            if format!("{variant}") == s {
+                return Ok(variant);
+            };
         }
+
+        Ok(Self::Other(s))
     }
 }

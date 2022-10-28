@@ -1,13 +1,13 @@
 use serde::{Deserialize, Deserializer};
-use std::str::FromStr;
-use strum_macros::{Display, EnumString};
+use std::fmt;
+use strum::IntoEnumIterator;
+use strum_macros::EnumIter;
 
 /// Podcast platforms.
 ///
 /// Taken from
 /// <https://raw.githubusercontent.com/Podcastindex-org/podcast-namespace/main/serviceslugs.txt>.
-#[derive(Debug, PartialEq, Eq, EnumString, Display)]
-#[strum(serialize_all = "snake_case")]
+#[derive(Debug, PartialEq, Eq, EnumIter)]
 pub enum Service {
     Acast,
     Amazon,
@@ -26,66 +26,61 @@ pub enum Service {
     Fireside,
     Fyyd,
     Google,
-    #[strum(serialize = "gpodder")]
     GPodder,
-    #[strum(serialize = "hypercatcher")]
     HyperCatcher,
     Kasts,
     Libsyn,
     Mastodon,
     Megafono,
     Megaphone,
-    #[strum(serialize = "omnystudio")]
     OmnyStudio,
     Overcast,
-    #[strum(serialize = "paypal")]
     PayPal,
     Pinecast,
     Podbean,
-    #[strum(serialize = "podcastaddict")]
     PodcastAddict,
-    #[strum(serialize = "podcastguru")]
     PodcastGuru,
-    #[strum(serialize = "podcastindex")]
     PodcastIndex,
     Podcasts,
     Podchaser,
-    #[strum(serialize = "podcloud")]
     PodCloud,
     Podfriend,
     Podiant,
     Podigee,
     Podnews,
     Podomatic,
-    #[strum(serialize = "podserve")]
     PodServe,
     Podverse,
-    #[strum(serialize = "redcircle")]
     RedCircle,
     Relay,
-    #[strum(serialize = "resonaterecordings")]
     ResonateRecordings,
     Rss,
-    #[strum(serialize = "shoutengine")]
     ShoutEngine,
     Simplecast,
     Slack,
-    #[strum(serialize = "soundcloud")]
     SoundCloud,
     Spotify,
     Spreaker,
-    #[strum(serialize = "tiktok")]
     TikTok,
     Transistor,
     Twitter,
     Whooshkaa,
-    #[strum(serialize = "youtube")]
     YouTube,
-    #[strum(serialize = "zencast")]
     ZenCast,
 
-    #[strum(disabled)]
     Other(String),
+}
+
+impl fmt::Display for Service {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Other(s) => write!(f, "{s}"),
+            _ => {
+                let s = format!("{:?}", self);
+                write!(f, "{}", s.to_lowercase())
+            }
+        }
+    }
 }
 
 impl<'de> Deserialize<'de> for Service {
@@ -95,9 +90,28 @@ impl<'de> Deserialize<'de> for Service {
             Err(e) => return Err(e),
         };
 
-        match Self::from_str(s.as_str()) {
-            Ok(x) => Ok(x),
-            Err(_) => Ok(Self::Other(s)),
+        for variant in Self::iter() {
+            if format!("{variant}") == s {
+                return Ok(variant);
+            };
         }
+
+        Ok(Self::Other(s))
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_fmt() {
+        pretty_assertions::assert_eq!(format!("{}", Service::YouTube), "youtube");
+        pretty_assertions::assert_eq!(format!("{}", Service::Amazon), "amazon");
+        pretty_assertions::assert_eq!(format!("{}", Service::TikTok), "tiktok");
+        pretty_assertions::assert_eq!(
+            format!("{}", Service::Other("other-service".to_string())),
+            "other-service"
+        );
     }
 }

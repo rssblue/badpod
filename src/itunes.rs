@@ -1,6 +1,7 @@
 use serde::{Deserialize, Deserializer};
-use std::str::FromStr;
-use strum_macros::{Display, EnumString};
+use std::fmt;
+use strum::IntoEnumIterator;
+use strum_macros::EnumIter;
 
 mod category;
 pub use category::{CategoryName, SubcategoryName};
@@ -65,14 +66,24 @@ impl<'de> Deserialize<'de> for Yes {
 }
 
 /// Apple Podcasts podcast type.
-#[derive(Debug, PartialEq, Eq, EnumString, Display)]
-#[strum(serialize_all = "snake_case")]
+#[derive(Debug, PartialEq, Eq, EnumIter)]
 pub enum PodcastType {
     Episodic,
     Serial,
 
-    #[strum(disabled)]
     Other(String),
+}
+
+impl fmt::Display for PodcastType {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Other(s) => write!(f, "{s}"),
+            _ => {
+                let s = format!("{:?}", self);
+                write!(f, "{}", s.to_lowercase())
+            }
+        }
+    }
 }
 
 impl<'de> Deserialize<'de> for PodcastType {
@@ -82,23 +93,36 @@ impl<'de> Deserialize<'de> for PodcastType {
             Err(e) => return Err(e),
         };
 
-        match PodcastType::from_str(s.as_str()) {
-            Ok(x) => Ok(x),
-            Err(_) => Ok(PodcastType::Other(s)),
+        for variant in Self::iter() {
+            if format!("{variant}") == s {
+                return Ok(variant);
+            };
         }
+
+        Ok(Self::Other(s))
     }
 }
 
 /// Apple Podcasts episode type.
-#[derive(Debug, PartialEq, Eq, EnumString, Display)]
-#[strum(serialize_all = "snake_case")]
+#[derive(Debug, PartialEq, Eq, EnumIter)]
 pub enum EpisodeType {
     Full,
     Trailer,
     Bonus,
 
-    #[strum(disabled)]
     Other(String),
+}
+
+impl fmt::Display for EpisodeType {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Other(s) => write!(f, "{s}"),
+            _ => {
+                let s = format!("{:?}", self);
+                write!(f, "{}", s.to_lowercase())
+            }
+        }
+    }
 }
 
 impl<'de> Deserialize<'de> for EpisodeType {
@@ -108,9 +132,12 @@ impl<'de> Deserialize<'de> for EpisodeType {
             Err(e) => return Err(e),
         };
 
-        match Self::from_str(s.as_str()) {
-            Ok(x) => Ok(x),
-            Err(_) => Ok(Self::Other(s)),
+        for variant in Self::iter() {
+            if format!("{variant}") == s {
+                return Ok(variant);
+            };
         }
+
+        Ok(Self::Other(s))
     }
 }

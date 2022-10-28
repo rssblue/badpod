@@ -1,19 +1,28 @@
 use serde::{Deserialize, Deserializer};
-use std::str::FromStr;
-use strum_macros::{Display, EnumString};
+use std::fmt;
+use strum::IntoEnumIterator;
+use strum_macros::EnumIter;
 
 /// Type of [Value](crate::podcast::Value).
-#[derive(Debug, PartialEq, Eq, EnumString, Display)]
+#[derive(Debug, PartialEq, Eq, EnumIter)]
 pub enum ValueType {
-    #[strum(serialize = "bitcoin")]
     Bitcoin,
-    #[strum(serialize = "lightning")]
     Lightning,
-    #[strum(serialize = "amp")]
     Amp,
 
-    #[strum(disabled)]
     Other(String),
+}
+
+impl fmt::Display for ValueType {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Other(s) => write!(f, "{s}"),
+            _ => {
+                let s = format!("{:?}", self);
+                write!(f, "{}", s.to_lowercase())
+            }
+        }
+    }
 }
 
 impl<'de> Deserialize<'de> for ValueType {
@@ -23,23 +32,35 @@ impl<'de> Deserialize<'de> for ValueType {
             Err(e) => return Err(e),
         };
 
-        match Self::from_str(s.as_str()) {
-            Ok(x) => Ok(x),
-            Err(_) => Ok(Self::Other(s)),
+        for variant in Self::iter() {
+            if format!("{variant}") == s {
+                return Ok(variant);
+            };
         }
+
+        Ok(Self::Other(s))
     }
 }
 
 /// Method of [Value](crate::podcast::Value).
-#[derive(Debug, PartialEq, Eq, EnumString, Display)]
+#[derive(Debug, PartialEq, Eq, EnumIter)]
 pub enum ValueMethod {
-    #[strum(serialize = "default")]
     Default,
-    #[strum(serialize = "keysend")]
     Keysend,
 
-    #[strum(disabled)]
     Other(String),
+}
+
+impl fmt::Display for ValueMethod {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Other(s) => write!(f, "{s}"),
+            _ => {
+                let s = format!("{:?}", self);
+                write!(f, "{}", s.to_lowercase())
+            }
+        }
+    }
 }
 
 impl<'de> Deserialize<'de> for ValueMethod {
@@ -49,23 +70,35 @@ impl<'de> Deserialize<'de> for ValueMethod {
             Err(e) => return Err(e),
         };
 
-        match Self::from_str(s.as_str()) {
-            Ok(x) => Ok(x),
-            Err(_) => Ok(Self::Other(s)),
+        for variant in Self::iter() {
+            if format!("{variant}") == s {
+                return Ok(variant);
+            };
         }
+
+        Ok(Self::Other(s))
     }
 }
 
 /// Type of [ValueRecipient](crate::podcast::ValueRecipient).
-#[derive(Debug, PartialEq, Eq, EnumString, Display)]
+#[derive(Debug, PartialEq, Eq, EnumIter)]
 pub enum ValueRecipientType {
-    #[strum(serialize = "wallet")]
     Wallet,
-    #[strum(serialize = "node")]
     Node,
 
-    #[strum(disabled)]
     Other(String),
+}
+
+impl fmt::Display for ValueRecipientType {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Other(s) => write!(f, "{s}"),
+            _ => {
+                let s = format!("{:?}", self);
+                write!(f, "{}", s.to_lowercase())
+            }
+        }
+    }
 }
 
 impl<'de> Deserialize<'de> for ValueRecipientType {
@@ -75,9 +108,12 @@ impl<'de> Deserialize<'de> for ValueRecipientType {
             Err(e) => return Err(e),
         };
 
-        match Self::from_str(s.as_str()) {
-            Ok(x) => Ok(x),
-            Err(_) => Ok(Self::Other(s)),
+        for variant in Self::iter() {
+            if format!("{variant}") == s {
+                return Ok(variant);
+            };
         }
+
+        Ok(Self::Other(s))
     }
 }

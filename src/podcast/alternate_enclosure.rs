@@ -1,17 +1,29 @@
 use serde::{Deserialize, Deserializer};
-use std::str::FromStr;
-use strum_macros::{Display, EnumString};
+use std::fmt;
+use strum::{EnumProperty, IntoEnumIterator};
+use strum_macros::{EnumIter, EnumProperty};
 
 /// Type of [Integrity](crate::podcast::Integrity).
-#[derive(Debug, PartialEq, Eq, EnumString, Display)]
+#[derive(Debug, PartialEq, Eq, EnumProperty, EnumIter)]
 pub enum IntegrityType {
-    #[strum(serialize = "sri")]
+    #[strum(props(str = "sri"))]
     Sri,
-    #[strum(serialize = "pgp-signature")]
+    #[strum(props(str = "pgp-signature"))]
     Pgp,
 
-    #[strum(disabled)]
     Other(String),
+}
+
+impl fmt::Display for IntegrityType {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Other(s) => write!(f, "{s}"),
+            _ => match self.get_str("str") {
+                Some(s) => write!(f, "{}", s),
+                None => write!(f, "{:?}", self),
+            },
+        }
+    }
 }
 
 impl<'de> Deserialize<'de> for IntegrityType {
@@ -21,9 +33,12 @@ impl<'de> Deserialize<'de> for IntegrityType {
             Err(e) => return Err(e),
         };
 
-        match Self::from_str(s.as_str()) {
-            Ok(x) => Ok(x),
-            Err(_) => Ok(Self::Other(s)),
+        for variant in Self::iter() {
+            if format!("{variant}") == s {
+                return Ok(variant);
+            };
         }
+
+        Ok(Self::Other(s))
     }
 }
