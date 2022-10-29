@@ -104,13 +104,11 @@ pub struct Soundbite {
 pub struct Person {
     #[serde(
         rename = "$attr:group",
-        deserialize_with = "person::option_person_group",
         default
     )]
     pub group: Option<PersonGroup>,
     #[serde(
         rename = "$attr:role",
-        deserialize_with = "person::option_person_role",
         default
     )]
     pub role: Option<PersonRole>,

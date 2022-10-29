@@ -1,187 +1,226 @@
 use serde::{Deserialize, Deserializer};
+use std::fmt;
+use strum::{EnumProperty, IntoEnumIterator};
+use strum_macros::{EnumIter, EnumProperty};
 
 /// Group (as defined by [Podcast Taxonomy Project](https://podcasttaxonomy.com/)) of [Person](crate::podcast::Person).
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, EnumProperty, EnumIter)]
 pub enum PersonGroup {
+    #[strum(props(str = "creative direction"))]
     CreativeDirection,
+    #[strum(props(str = "cast"))]
     Cast,
+    #[strum(props(str = "writing"))]
     Writing,
+    #[strum(props(str = "audio production"))]
     AudioProduction,
+    #[strum(props(str = "audio post-production"))]
     AudioPostProduction,
+    #[strum(props(str = "administration"))]
     Administration,
+    #[strum(props(str = "visuals"))]
     Visuals,
+    #[strum(props(str = "community"))]
     Community,
+    #[strum(props(str = "misc"))]
     Misc,
+    #[strum(props(str = "video production"))]
     VideoProduction,
+    #[strum(props(str = "video post-production"))]
     VideoPostProduction,
+
     Other(String),
 }
 
-pub fn option_person_group<'de, D>(deserializer: D) -> Result<Option<PersonGroup>, D::Error>
-where
-    D: Deserializer<'de>,
-{
-    let s = match String::deserialize(deserializer) {
-        Ok(s) => s,
-        Err(e) => return Err(e),
-    };
+impl fmt::Display for PersonGroup {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Other(s) => write!(f, "{s}"),
+            _ => match self.get_str("str") {
+                Some(s) => write!(f, "{}", s),
+                None => write!(f, "{:?}", self),
+            },
+        }
+    }
+}
 
-    match s.to_lowercase().as_str() {
-        "creative direction" => Ok(Some(PersonGroup::CreativeDirection)),
-        "cast" => Ok(Some(PersonGroup::Cast)),
-        "writing" => Ok(Some(PersonGroup::Writing)),
-        "audio production" => Ok(Some(PersonGroup::AudioProduction)),
-        "audio post-production" => Ok(Some(PersonGroup::AudioPostProduction)),
-        "administration" => Ok(Some(PersonGroup::Administration)),
-        "visuals" => Ok(Some(PersonGroup::Visuals)),
-        "community" => Ok(Some(PersonGroup::Community)),
-        "misc" => Ok(Some(PersonGroup::Misc)),
-        "video production" => Ok(Some(PersonGroup::VideoProduction)),
-        "video post-production" => Ok(Some(PersonGroup::VideoPostProduction)),
-        _ => Ok(Some(PersonGroup::Other(s))),
+impl<'de> Deserialize<'de> for PersonGroup {
+    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+        let s = match String::deserialize(d) {
+            Ok(s) => s,
+            Err(e) => return Err(e),
+        };
+
+        let s_lowercase = s.to_lowercase();
+
+        for variant in Self::iter() {
+            if format!("{variant}") == s_lowercase {
+                return Ok(variant);
+            };
+        }
+
+        Ok(Self::Other(s))
     }
 }
 
 /// Role (as defined by [Podcast Taxonomy Project](https://podcasttaxonomy.com/)) of [Person](crate::podcast::Person).
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, EnumProperty, EnumIter)]
 pub enum PersonRole {
+    #[strum(props(str = "director"))]
     Director,
+    #[strum(props(str = "assistant director"))]
     AssistantDirector,
+    #[strum(props(str = "executive producer"))]
     ExecutiveProducer,
+    #[strum(props(str = "senior producer"))]
     SeniorProducer,
+    #[strum(props(str = "producer"))]
     Producer,
+    #[strum(props(str = "associate producer"))]
     AssociateProducer,
+    #[strum(props(str = "development producer"))]
     DevelopmentProducer,
+    #[strum(props(str = "creative director"))]
     CreativeDirector,
+    #[strum(props(str = "host"))]
     Host,
+    #[strum(props(str = "co-host"))]
     CoHost,
+    #[strum(props(str = "guest host"))]
     GuestHost,
+    #[strum(props(str = "guest"))]
     Guest,
+    #[strum(props(str = "voice actor"))]
     VoiceActor,
+    #[strum(props(str = "narrator"))]
     Narrator,
+    #[strum(props(str = "announcer"))]
     Announcer,
+    #[strum(props(str = "reporter"))]
     Reporter,
+    #[strum(props(str = "author"))]
     Author,
+    #[strum(props(str = "editorial director"))]
     EditorialDirector,
+    #[strum(props(str = "co-writer"))]
     CoWriter,
+    #[strum(props(str = "writer"))]
     Writer,
+    #[strum(props(str = "songwriter"))]
     Songwriter,
+    #[strum(props(str = "guest writer"))]
     GuestWriter,
+    #[strum(props(str = "story editor"))]
     StoryEditor,
+    #[strum(props(str = "managing editor"))]
     ManagingEditor,
+    #[strum(props(str = "script editor"))]
     ScriptEditor,
+    #[strum(props(str = "script coordinator"))]
     ScriptCoordinator,
+    #[strum(props(str = "researcher"))]
     Researcher,
+    #[strum(props(str = "editor"))]
     Editor,
+    #[strum(props(str = "fact checker"))]
     FactChecker,
+    #[strum(props(str = "translator"))]
     Translator,
+    #[strum(props(str = "transcriber"))]
     Transcriber,
+    #[strum(props(str = "logger"))]
     Logger,
+    #[strum(props(str = "studio coordinator"))]
     StudioCoordinator,
+    #[strum(props(str = "technical director"))]
     TechnicalDirector,
+    #[strum(props(str = "technical manager"))]
     TechnicalManager,
+    #[strum(props(str = "audio engineer"))]
     AudioEngineer,
+    #[strum(props(str = "remote recording engineer"))]
     RemoteRecordingEngineer,
+    #[strum(props(str = "post production engineer"))]
     PostProductionEngineer,
+    #[strum(props(str = "audio editor"))]
     AudioEditor,
+    #[strum(props(str = "sound designer"))]
     SoundDesigner,
+    #[strum(props(str = "foley artist"))]
     FoleyArtist,
+    #[strum(props(str = "composer"))]
     Composer,
+    #[strum(props(str = "theme music"))]
     ThemeMusic,
+    #[strum(props(str = "music production"))]
     MusicProduction,
+    #[strum(props(str = "music contributor"))]
     MusicContributor,
+    #[strum(props(str = "production coordinator"))]
     ProductionCoordinator,
+    #[strum(props(str = "booking coordinator"))]
     BookingCoordinator,
+    #[strum(props(str = "production assistant"))]
     ProductionAssistant,
+    #[strum(props(str = "content manager"))]
     ContentManager,
+    #[strum(props(str = "marketing manager"))]
     MarketingManager,
+    #[strum(props(str = "sales representative"))]
     SalesRepresentative,
+    #[strum(props(str = "sales manager"))]
     SalesManager,
+    #[strum(props(str = "graphic designer"))]
     GraphicDesigner,
+    #[strum(props(str = "cover art designer"))]
     CoverArtDesigner,
+    #[strum(props(str = "social media manager"))]
     SocialMediaManager,
+    #[strum(props(str = "consultant"))]
     Consultant,
+    #[strum(props(str = "intern"))]
     Intern,
+    #[strum(props(str = "camera operator"))]
     CameraOperator,
+    #[strum(props(str = "lighting designer"))]
     LightingDesigner,
+    #[strum(props(str = "camera grip"))]
     CameraGrip,
+    #[strum(props(str = "assistant camera"))]
     AssistantCamera,
+    #[strum(props(str = "assistant editor"))]
     AssistantEditor,
+
     Other(String),
 }
 
-pub fn option_person_role<'de, D>(deserializer: D) -> Result<Option<PersonRole>, D::Error>
-where
-    D: Deserializer<'de>,
-{
-    let s = match String::deserialize(deserializer) {
-        Ok(s) => s,
-        Err(e) => return Err(e),
-    };
+impl fmt::Display for PersonRole {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Other(s) => write!(f, "{s}"),
+            _ => match self.get_str("str") {
+                Some(s) => write!(f, "{}", s),
+                None => write!(f, "{:?}", self),
+            },
+        }
+    }
+}
 
-    match s.to_lowercase().as_str() {
-        "director" => Ok(Some(PersonRole::Director)),
-        "assistant director" => Ok(Some(PersonRole::AssistantDirector)),
-        "executive producer" => Ok(Some(PersonRole::ExecutiveProducer)),
-        "senior producer" => Ok(Some(PersonRole::SeniorProducer)),
-        "producer" => Ok(Some(PersonRole::Producer)),
-        "associate producer" => Ok(Some(PersonRole::AssociateProducer)),
-        "development producer" => Ok(Some(PersonRole::DevelopmentProducer)),
-        "creative director" => Ok(Some(PersonRole::CreativeDirector)),
-        "host" => Ok(Some(PersonRole::Host)),
-        "co-host" => Ok(Some(PersonRole::CoHost)),
-        "guest host" => Ok(Some(PersonRole::GuestHost)),
-        "guest" => Ok(Some(PersonRole::Guest)),
-        "voice actor" => Ok(Some(PersonRole::VoiceActor)),
-        "narrator" => Ok(Some(PersonRole::Narrator)),
-        "announcer" => Ok(Some(PersonRole::Announcer)),
-        "reporter" => Ok(Some(PersonRole::Reporter)),
-        "author" => Ok(Some(PersonRole::Author)),
-        "editorial director" => Ok(Some(PersonRole::EditorialDirector)),
-        "co-writer" => Ok(Some(PersonRole::CoWriter)),
-        "writer" => Ok(Some(PersonRole::Writer)),
-        "songwriter" => Ok(Some(PersonRole::Songwriter)),
-        "guest writer" => Ok(Some(PersonRole::GuestWriter)),
-        "story editor" => Ok(Some(PersonRole::StoryEditor)),
-        "managing editor" => Ok(Some(PersonRole::ManagingEditor)),
-        "script editor" => Ok(Some(PersonRole::ScriptEditor)),
-        "script coordinator" => Ok(Some(PersonRole::ScriptCoordinator)),
-        "researcher" => Ok(Some(PersonRole::Researcher)),
-        "editor" => Ok(Some(PersonRole::Editor)),
-        "fact checker" => Ok(Some(PersonRole::FactChecker)),
-        "translator" => Ok(Some(PersonRole::Translator)),
-        "transcriber" => Ok(Some(PersonRole::Transcriber)),
-        "logger" => Ok(Some(PersonRole::Logger)),
-        "studio coordinator" => Ok(Some(PersonRole::StudioCoordinator)),
-        "technical director" => Ok(Some(PersonRole::TechnicalDirector)),
-        "technical manager" => Ok(Some(PersonRole::TechnicalManager)),
-        "audio engineer" => Ok(Some(PersonRole::AudioEngineer)),
-        "remote recording engineer" => Ok(Some(PersonRole::RemoteRecordingEngineer)),
-        "post production engineer" => Ok(Some(PersonRole::PostProductionEngineer)),
-        "audio editor" => Ok(Some(PersonRole::AudioEditor)),
-        "sound designer" => Ok(Some(PersonRole::SoundDesigner)),
-        "foley artist" => Ok(Some(PersonRole::FoleyArtist)),
-        "composer" => Ok(Some(PersonRole::Composer)),
-        "theme music" => Ok(Some(PersonRole::ThemeMusic)),
-        "music production" => Ok(Some(PersonRole::MusicProduction)),
-        "music contributor" => Ok(Some(PersonRole::MusicContributor)),
-        "production coordinator" => Ok(Some(PersonRole::ProductionCoordinator)),
-        "booking coordinator" => Ok(Some(PersonRole::BookingCoordinator)),
-        "production assistant" => Ok(Some(PersonRole::ProductionAssistant)),
-        "content manager" => Ok(Some(PersonRole::ContentManager)),
-        "marketing manager" => Ok(Some(PersonRole::MarketingManager)),
-        "sales representative" => Ok(Some(PersonRole::SalesRepresentative)),
-        "sales manager" => Ok(Some(PersonRole::SalesManager)),
-        "graphic designer" => Ok(Some(PersonRole::GraphicDesigner)),
-        "cover art designer" => Ok(Some(PersonRole::CoverArtDesigner)),
-        "social media manager" => Ok(Some(PersonRole::SocialMediaManager)),
-        "consultant" => Ok(Some(PersonRole::Consultant)),
-        "intern" => Ok(Some(PersonRole::Intern)),
-        "camera operator" => Ok(Some(PersonRole::CameraOperator)),
-        "lighting designer" => Ok(Some(PersonRole::LightingDesigner)),
-        "camera grip" => Ok(Some(PersonRole::CameraGrip)),
-        "assistant camera" => Ok(Some(PersonRole::AssistantCamera)),
-        "assistant editor" => Ok(Some(PersonRole::AssistantEditor)),
-        _ => Ok(Some(PersonRole::Other(s))),
+impl<'de> Deserialize<'de> for PersonRole {
+    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+        let s = match String::deserialize(d) {
+            Ok(s) => s,
+            Err(e) => return Err(e),
+        };
+
+        let s_lowercase = s.to_lowercase();
+
+        for variant in Self::iter() {
+            if format!("{variant}") == s_lowercase {
+                return Ok(variant);
+            };
+        }
+
+        Ok(Self::Other(s))
     }
 }
