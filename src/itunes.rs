@@ -1,6 +1,6 @@
+use crate::utils;
 use serde::{Deserialize, Deserializer};
 use std::fmt;
-use strum::IntoEnumIterator;
 use strum_macros::EnumIter;
 
 mod category;
@@ -45,23 +45,37 @@ pub struct Owner {
 /// Used for deserializing values in some of [`itunes`](crate::itunes) tags.
 ///
 /// The only possible value in some of the tags is "Yes", which this enum is meant to reflect.
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, EnumIter)]
 pub enum Yes {
     Ok,
     Other(String),
 }
 
+impl std::str::FromStr for Yes {
+    type Err = String;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match utils::from_str_exact(s) {
+            Some(variant) => Ok(variant),
+            None => Ok(Self::Other(s.to_string())),
+        }
+    }
+}
+
+impl fmt::Display for Yes {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            Self::Other(s) => write!(f, "{s}"),
+            _ => {
+                write!(f, "Yes")
+            }
+        }
+    }
+}
+
 impl<'de> Deserialize<'de> for Yes {
     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        let s = match String::deserialize(d) {
-            Ok(s) => s,
-            Err(e) => return Err(e),
-        };
-
-        match s.as_str() {
-            "Yes" => Ok(Self::Ok),
-            _ => Ok(Self::Other(s)),
-        }
+        utils::deserialize_using_from_str(d)
     }
 }
 
@@ -72,6 +86,17 @@ pub enum PodcastType {
     Serial,
 
     Other(String),
+}
+
+impl std::str::FromStr for PodcastType {
+    type Err = String;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match utils::from_str_exact(s) {
+            Some(variant) => Ok(variant),
+            None => Ok(Self::Other(s.to_string())),
+        }
+    }
 }
 
 impl fmt::Display for PodcastType {
@@ -88,18 +113,7 @@ impl fmt::Display for PodcastType {
 
 impl<'de> Deserialize<'de> for PodcastType {
     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        let s = match String::deserialize(d) {
-            Ok(s) => s,
-            Err(e) => return Err(e),
-        };
-
-        for variant in Self::iter() {
-            if format!("{variant}") == s {
-                return Ok(variant);
-            };
-        }
-
-        Ok(Self::Other(s))
+        utils::deserialize_using_from_str(d)
     }
 }
 
@@ -111,6 +125,17 @@ pub enum EpisodeType {
     Bonus,
 
     Other(String),
+}
+
+impl std::str::FromStr for EpisodeType {
+    type Err = String;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match utils::from_str_exact(s) {
+            Some(variant) => Ok(variant),
+            None => Ok(Self::Other(s.to_string())),
+        }
+    }
 }
 
 impl fmt::Display for EpisodeType {
@@ -127,17 +152,6 @@ impl fmt::Display for EpisodeType {
 
 impl<'de> Deserialize<'de> for EpisodeType {
     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        let s = match String::deserialize(d) {
-            Ok(s) => s,
-            Err(e) => return Err(e),
-        };
-
-        for variant in Self::iter() {
-            if format!("{variant}") == s {
-                return Ok(variant);
-            };
-        }
-
-        Ok(Self::Other(s))
+        utils::deserialize_using_from_str(d)
     }
 }

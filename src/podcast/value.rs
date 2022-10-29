@@ -1,6 +1,6 @@
+use crate::utils;
 use serde::{Deserialize, Deserializer};
 use std::fmt;
-use strum::IntoEnumIterator;
 use strum_macros::EnumIter;
 
 /// Type of [Value](crate::podcast::Value).
@@ -11,6 +11,17 @@ pub enum Type {
     Amp,
 
     Other(String),
+}
+
+impl std::str::FromStr for Type {
+    type Err = String;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match utils::from_str_exact(s) {
+            Some(variant) => Ok(variant),
+            None => Ok(Self::Other(s.to_string())),
+        }
+    }
 }
 
 impl fmt::Display for Type {
@@ -27,18 +38,7 @@ impl fmt::Display for Type {
 
 impl<'de> Deserialize<'de> for Type {
     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        let s = match String::deserialize(d) {
-            Ok(s) => s,
-            Err(e) => return Err(e),
-        };
-
-        for variant in Self::iter() {
-            if format!("{variant}") == s {
-                return Ok(variant);
-            };
-        }
-
-        Ok(Self::Other(s))
+        utils::deserialize_using_from_str(d)
     }
 }
 
@@ -49,6 +49,17 @@ pub enum Method {
     Keysend,
 
     Other(String),
+}
+
+impl std::str::FromStr for Method {
+    type Err = String;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match utils::from_str_exact(s) {
+            Some(variant) => Ok(variant),
+            None => Ok(Self::Other(s.to_string())),
+        }
+    }
 }
 
 impl fmt::Display for Method {
@@ -65,18 +76,7 @@ impl fmt::Display for Method {
 
 impl<'de> Deserialize<'de> for Method {
     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        let s = match String::deserialize(d) {
-            Ok(s) => s,
-            Err(e) => return Err(e),
-        };
-
-        for variant in Self::iter() {
-            if format!("{variant}") == s {
-                return Ok(variant);
-            };
-        }
-
-        Ok(Self::Other(s))
+        utils::deserialize_using_from_str(d)
     }
 }
 
@@ -87,6 +87,17 @@ pub enum RecipientType {
     Node,
 
     Other(String),
+}
+
+impl std::str::FromStr for RecipientType {
+    type Err = String;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match utils::from_str_exact(s) {
+            Some(variant) => Ok(variant),
+            None => Ok(Self::Other(s.to_string())),
+        }
+    }
 }
 
 impl fmt::Display for RecipientType {
@@ -103,17 +114,6 @@ impl fmt::Display for RecipientType {
 
 impl<'de> Deserialize<'de> for RecipientType {
     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        let s = match String::deserialize(d) {
-            Ok(s) => s,
-            Err(e) => return Err(e),
-        };
-
-        for variant in Self::iter() {
-            if format!("{variant}") == s {
-                return Ok(variant);
-            };
-        }
-
-        Ok(Self::Other(s))
+        utils::deserialize_using_from_str(d)
     }
 }

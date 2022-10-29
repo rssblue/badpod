@@ -1,7 +1,6 @@
-use serde::de::Error;
+use crate::utils;
 use serde::{Deserialize, Deserializer};
 use std::fmt;
-use std::str::FromStr;
 use strum_macros::{Display, EnumString};
 
 /// Geographical coordinates.
@@ -125,15 +124,7 @@ impl fmt::Display for Geo {
 
 impl<'de> Deserialize<'de> for Geo {
     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        let s = match String::deserialize(d) {
-            Ok(s) => s,
-            Err(e) => return Err(e),
-        };
-
-        match Geo::from_str(s.as_str()) {
-            Ok(geo) => Ok(geo),
-            Err(e) => Err(e).map_err(D::Error::custom),
-        }
+        utils::deserialize_using_from_str(d)
     }
 }
 
@@ -229,21 +220,14 @@ impl fmt::Display for Osm {
 
 impl<'de> Deserialize<'de> for Osm {
     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        let s = match String::deserialize(d) {
-            Ok(s) => s,
-            Err(e) => return Err(e),
-        };
-
-        match Osm::from_str(s.as_str()) {
-            Ok(geo) => Ok(geo),
-            Err(e) => Err(e).map_err(D::Error::custom),
-        }
+        utils::deserialize_using_from_str(d)
     }
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::str::FromStr;
 
     #[test]
     fn test_geo() {

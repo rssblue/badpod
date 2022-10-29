@@ -5,6 +5,7 @@ mod language;
 mod mime;
 mod rss;
 mod time;
+mod utils;
 
 /// Namespace extension for Apple Podcasts.
 ///

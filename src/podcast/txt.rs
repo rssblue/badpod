@@ -1,6 +1,6 @@
 use serde::{Deserialize, Deserializer};
+use crate::utils;
 use std::fmt;
-use strum::IntoEnumIterator;
 use strum_macros::EnumIter;
 
 /// Allowed purposes for [Txt](crate::podcast::Txt).
@@ -9,6 +9,17 @@ pub enum Purpose {
     Verify,
 
     Other(String),
+}
+
+impl std::str::FromStr for Purpose {
+    type Err = String;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match utils::from_str_exact(s) {
+            Some(variant) => Ok(variant),
+            None => Ok(Self::Other(s.to_string())),
+        }
+    }
 }
 
 impl fmt::Display for Purpose {
@@ -25,17 +36,6 @@ impl fmt::Display for Purpose {
 
 impl<'de> Deserialize<'de> for Purpose {
     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        let s = match String::deserialize(d) {
-            Ok(s) => s,
-            Err(e) => return Err(e),
-        };
-
-        for variant in Self::iter() {
-            if format!("{variant}") == s {
-                return Ok(variant);
-            };
-        }
-
-        Ok(Self::Other(s))
+        utils::deserialize_using_from_str(d)
     }
 }

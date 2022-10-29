@@ -1,6 +1,6 @@
+use crate::utils;
 use serde::{Deserialize, Deserializer};
 use std::fmt;
-use std::str::FromStr;
 use strum::{EnumProperty, IntoEnumIterator};
 use strum_macros::{Display, EnumIter, EnumProperty, EnumString};
 
@@ -371,6 +371,100 @@ pub enum Language {
     Other(String),
 }
 
+impl std::str::FromStr for Language {
+    type Err = String;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        // Case insensitive.
+        let s = s.to_lowercase();
+
+        if s.starts_with("de") {
+            return match LanguageGerman::from_str(s.as_str()) {
+                Ok(region) => Ok(Language::German(region)),
+                Err(_) => Ok(Language::Other(s)),
+            };
+        }
+
+        if s.starts_with("en") {
+            return match LanguageEnglish::from_str(s.as_str()) {
+                Ok(region) => Ok(Language::English(region)),
+                Err(_) => Ok(Language::Other(s)),
+            };
+        }
+
+        if s.starts_with("es") {
+            return match LanguageSpanish::from_str(s.as_str()) {
+                Ok(region) => Ok(Language::Spanish(region)),
+                Err(_) => Ok(Language::Other(s)),
+            };
+        }
+
+        if s.starts_with("fr") {
+            return match LanguageFrench::from_str(s.as_str()) {
+                Ok(region) => Ok(Language::French(region)),
+                Err(_) => Ok(Language::Other(s)),
+            };
+        }
+
+        if s.starts_with("it") {
+            return match LanguageItalian::from_str(s.as_str()) {
+                Ok(region) => Ok(Language::Italian(region)),
+                Err(_) => Ok(Language::Other(s)),
+            };
+        }
+
+        if s.starts_with("nl") {
+            return match LanguageDutch::from_str(s.as_str()) {
+                Ok(region) => Ok(Language::Dutch(region)),
+                Err(_) => Ok(Language::Other(s)),
+            };
+        }
+
+        if s.starts_with("pt") {
+            return match LanguagePortugese::from_str(s.as_str()) {
+                Ok(region) => Ok(Language::Portuguese(region)),
+                Err(_) => Ok(Language::Other(s)),
+            };
+        }
+
+        if s.starts_with("ro") {
+            return match LanguageRomanian::from_str(s.as_str()) {
+                Ok(region) => Ok(Language::Romanian(region)),
+                Err(_) => Ok(Language::Other(s)),
+            };
+        }
+
+        if s.starts_with("ru") {
+            return match LanguageRussian::from_str(s.as_str()) {
+                Ok(region) => Ok(Language::Russian(region)),
+                Err(_) => Ok(Language::Other(s)),
+            };
+        }
+
+        if s.starts_with("sv") {
+            return match LanguageSwedish::from_str(s.as_str()) {
+                Ok(region) => Ok(Language::Swedish(region)),
+                Err(_) => Ok(Language::Other(s)),
+            };
+        }
+
+        if s.starts_with("zh") {
+            return match LanguageChinese::from_str(s.as_str()) {
+                Ok(region) => Ok(Language::Chinese(region)),
+                Err(_) => Ok(Language::Other(s)),
+            };
+        }
+
+        for variant in Self::iter() {
+            if format!("{variant}") == s {
+                return Ok(variant);
+            };
+        }
+
+        Ok(Language::Other(s))
+    }
+}
+
 impl fmt::Display for Language {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
@@ -391,6 +485,12 @@ impl fmt::Display for Language {
                 None => Err("property \"str\" not found").map_err(|_| fmt::Error),
             },
         }
+    }
+}
+
+impl<'de> Deserialize<'de> for Language {
+    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+        utils::deserialize_using_from_str(d)
     }
 }
 
@@ -592,101 +692,6 @@ pub enum LanguageChinese {
     Simplified,
     #[strum(serialize = "zh-tw")]
     Traditional,
-}
-
-impl<'de> Deserialize<'de> for Language {
-    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        let mut s = match String::deserialize(d) {
-            Ok(s) => s,
-            Err(e) => return Err(e),
-        };
-        s = s.to_lowercase();
-
-        if s.starts_with("de") {
-            return match LanguageGerman::from_str(s.as_str()) {
-                Ok(region) => Ok(Language::German(region)),
-                Err(_) => Ok(Language::Other(s)),
-            };
-        }
-
-        if s.starts_with("en") {
-            return match LanguageEnglish::from_str(s.as_str()) {
-                Ok(region) => Ok(Language::English(region)),
-                Err(_) => Ok(Language::Other(s)),
-            };
-        }
-
-        if s.starts_with("es") {
-            return match LanguageSpanish::from_str(s.as_str()) {
-                Ok(region) => Ok(Language::Spanish(region)),
-                Err(_) => Ok(Language::Other(s)),
-            };
-        }
-
-        if s.starts_with("fr") {
-            return match LanguageFrench::from_str(s.as_str()) {
-                Ok(region) => Ok(Language::French(region)),
-                Err(_) => Ok(Language::Other(s)),
-            };
-        }
-
-        if s.starts_with("it") {
-            return match LanguageItalian::from_str(s.as_str()) {
-                Ok(region) => Ok(Language::Italian(region)),
-                Err(_) => Ok(Language::Other(s)),
-            };
-        }
-
-        if s.starts_with("nl") {
-            return match LanguageDutch::from_str(s.as_str()) {
-                Ok(region) => Ok(Language::Dutch(region)),
-                Err(_) => Ok(Language::Other(s)),
-            };
-        }
-
-        if s.starts_with("pt") {
-            return match LanguagePortugese::from_str(s.as_str()) {
-                Ok(region) => Ok(Language::Portuguese(region)),
-                Err(_) => Ok(Language::Other(s)),
-            };
-        }
-
-        if s.starts_with("ro") {
-            return match LanguageRomanian::from_str(s.as_str()) {
-                Ok(region) => Ok(Language::Romanian(region)),
-                Err(_) => Ok(Language::Other(s)),
-            };
-        }
-
-        if s.starts_with("ru") {
-            return match LanguageRussian::from_str(s.as_str()) {
-                Ok(region) => Ok(Language::Russian(region)),
-                Err(_) => Ok(Language::Other(s)),
-            };
-        }
-
-        if s.starts_with("sv") {
-            return match LanguageSwedish::from_str(s.as_str()) {
-                Ok(region) => Ok(Language::Swedish(region)),
-                Err(_) => Ok(Language::Other(s)),
-            };
-        }
-
-        if s.starts_with("zh") {
-            return match LanguageChinese::from_str(s.as_str()) {
-                Ok(region) => Ok(Language::Chinese(region)),
-                Err(_) => Ok(Language::Other(s)),
-            };
-        }
-
-        for lang in Language::iter() {
-            if format!("{lang}") == s {
-                return Ok(lang);
-            };
-        }
-
-        Ok(Language::Other(s))
-    }
 }
 
 #[cfg(test)]

@@ -1,6 +1,7 @@
+use crate::utils;
 use serde::{Deserialize, Deserializer};
 use std::fmt;
-use strum::{EnumProperty, IntoEnumIterator};
+use strum::EnumProperty;
 use strum_macros::{EnumIter, EnumProperty};
 
 /// Used for deserializing mime types of enclosures.
@@ -26,6 +27,17 @@ pub enum Enclosure {
     Other(String),
 }
 
+impl std::str::FromStr for Enclosure {
+    type Err = String;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match utils::from_str_exact(s) {
+            Some(variant) => Ok(variant),
+            None => Ok(Self::Other(s.to_string())),
+        }
+    }
+}
+
 impl fmt::Display for Enclosure {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
@@ -40,18 +52,7 @@ impl fmt::Display for Enclosure {
 
 impl<'de> Deserialize<'de> for Enclosure {
     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        let s = match String::deserialize(d) {
-            Ok(s) => s,
-            Err(e) => return Err(e),
-        };
-
-        for variant in Self::iter() {
-            if format!("{variant}") == s {
-                return Ok(variant);
-            };
-        }
-
-        Ok(Self::Other(s))
+        utils::deserialize_using_from_str(d)
     }
 }
 
@@ -76,6 +77,17 @@ pub enum Transcript {
     Other(String),
 }
 
+impl std::str::FromStr for Transcript {
+    type Err = String;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match utils::from_str_exact(s) {
+            Some(variant) => Ok(variant),
+            None => Ok(Self::Other(s.to_string())),
+        }
+    }
+}
+
 impl fmt::Display for Transcript {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
@@ -90,18 +102,7 @@ impl fmt::Display for Transcript {
 
 impl<'de> Deserialize<'de> for Transcript {
     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        let s = match String::deserialize(d) {
-            Ok(s) => s,
-            Err(e) => return Err(e),
-        };
-
-        for variant in Self::iter() {
-            if format!("{variant}") == s {
-                return Ok(variant);
-            };
-        }
-
-        Ok(Self::Other(s))
+        utils::deserialize_using_from_str(d)
     }
 }
 
@@ -114,6 +115,17 @@ pub enum Chapters {
     ApplicationJson,
 
     Other(String),
+}
+
+impl std::str::FromStr for Chapters {
+    type Err = String;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match utils::from_str_exact(s) {
+            Some(variant) => Ok(variant),
+            None => Ok(Self::Other(s.to_string())),
+        }
+    }
 }
 
 impl fmt::Display for Chapters {
@@ -130,17 +142,6 @@ impl fmt::Display for Chapters {
 
 impl<'de> Deserialize<'de> for Chapters {
     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        let s = match String::deserialize(d) {
-            Ok(s) => s,
-            Err(e) => return Err(e),
-        };
-
-        for variant in Self::iter() {
-            if format!("{variant}") == s {
-                return Ok(variant);
-            };
-        }
-
-        Ok(Self::Other(s))
+        utils::deserialize_using_from_str(d)
     }
 }

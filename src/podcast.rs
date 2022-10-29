@@ -106,7 +106,7 @@ pub struct Soundbite {
 }
 
 /// A person of interest to the podcast.
-#[derive(Debug, Deserialize, PartialEq, Default)]
+#[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct Person {
     #[serde(rename = "$attr:group", default)]
     pub group: Option<PersonGroup>,

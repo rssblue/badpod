@@ -1,6 +1,7 @@
+use crate::utils;
 use serde::{Deserialize, Deserializer};
 use std::fmt;
-use strum::{EnumProperty, IntoEnumIterator};
+use strum::EnumProperty;
 use strum_macros::{EnumIter, EnumProperty};
 
 /// Type of [Integrity](crate::podcast::Integrity).
@@ -12,6 +13,17 @@ pub enum IntegrityType {
     Pgp,
 
     Other(String),
+}
+
+impl std::str::FromStr for IntegrityType {
+    type Err = String;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match utils::from_str_exact(s) {
+            Some(variant) => Ok(variant),
+            None => Ok(Self::Other(s.to_string())),
+        }
+    }
 }
 
 impl fmt::Display for IntegrityType {
@@ -28,17 +40,6 @@ impl fmt::Display for IntegrityType {
 
 impl<'de> Deserialize<'de> for IntegrityType {
     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        let s = match String::deserialize(d) {
-            Ok(s) => s,
-            Err(e) => return Err(e),
-        };
-
-        for variant in Self::iter() {
-            if format!("{variant}") == s {
-                return Ok(variant);
-            };
-        }
-
-        Ok(Self::Other(s))
+        utils::deserialize_using_from_str(d)
     }
 }

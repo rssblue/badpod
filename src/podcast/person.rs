@@ -1,6 +1,7 @@
+use crate::utils;
 use serde::{Deserialize, Deserializer};
 use std::fmt;
-use strum::{EnumProperty, IntoEnumIterator};
+use strum::EnumProperty;
 use strum_macros::{EnumIter, EnumProperty};
 
 /// Group (as defined by [Podcast Taxonomy Project](https://podcasttaxonomy.com/)) of [Person](crate::podcast::Person).
@@ -32,6 +33,17 @@ pub enum Group {
     Other(String),
 }
 
+impl std::str::FromStr for Group {
+    type Err = String;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match utils::from_str_case_insensitive(s) {
+            Some(variant) => Ok(variant),
+            None => Ok(Self::Other(s.to_string())),
+        }
+    }
+}
+
 impl fmt::Display for Group {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
@@ -46,20 +58,7 @@ impl fmt::Display for Group {
 
 impl<'de> Deserialize<'de> for Group {
     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        let s = match String::deserialize(d) {
-            Ok(s) => s,
-            Err(e) => return Err(e),
-        };
-
-        let s_lowercase = s.to_lowercase();
-
-        for variant in Self::iter() {
-            if format!("{variant}") == s_lowercase {
-                return Ok(variant);
-            };
-        }
-
-        Ok(Self::Other(s))
+        utils::deserialize_using_from_str(d)
     }
 }
 
@@ -194,6 +193,17 @@ pub enum Role {
     Other(String),
 }
 
+impl std::str::FromStr for Role {
+    type Err = String;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match utils::from_str_case_insensitive(s) {
+            Some(variant) => Ok(variant),
+            None => Ok(Self::Other(s.to_string())),
+        }
+    }
+}
+
 impl fmt::Display for Role {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
@@ -208,19 +218,6 @@ impl fmt::Display for Role {
 
 impl<'de> Deserialize<'de> for Role {
     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        let s = match String::deserialize(d) {
-            Ok(s) => s,
-            Err(e) => return Err(e),
-        };
-
-        let s_lowercase = s.to_lowercase();
-
-        for variant in Self::iter() {
-            if format!("{variant}") == s_lowercase {
-                return Ok(variant);
-            };
-        }
-
-        Ok(Self::Other(s))
+        utils::deserialize_using_from_str(d)
     }
 }

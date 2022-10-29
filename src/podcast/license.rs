@@ -1,6 +1,7 @@
+use crate::utils;
 use serde::{Deserialize, Deserializer};
 use std::fmt;
-use strum::{EnumProperty, IntoEnumIterator};
+use strum::EnumProperty;
 use strum_macros::{EnumIter, EnumProperty};
 
 /// Type of [License](crate::podcast::License).
@@ -942,6 +943,17 @@ pub enum Type {
     Other(String),
 }
 
+impl std::str::FromStr for Type {
+    type Err = String;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match utils::from_str_case_insensitive(s) {
+            Some(variant) => Ok(variant),
+            None => Ok(Self::Other(s.to_string())),
+        }
+    }
+}
+
 impl fmt::Display for Type {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
@@ -956,17 +968,6 @@ impl fmt::Display for Type {
 
 impl<'de> Deserialize<'de> for Type {
     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        let s = match String::deserialize(d) {
-            Ok(s) => s,
-            Err(e) => return Err(e),
-        };
-
-        for variant in Self::iter() {
-            if format!("{variant}") == s {
-                return Ok(variant);
-            };
-        }
-
-        Ok(Self::Other(s))
+        utils::deserialize_using_from_str(d)
     }
 }
