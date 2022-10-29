@@ -145,6 +145,11 @@ pub struct Channel {
         default
     )]
     pub podcast_blocks: Vec<podcast::Block>,
+    #[serde(
+        rename = "{https://podcastindex.org/namespace/1.0}podcast:txt",
+        default
+    )]
+    pub podcast_txts: Vec<podcast::Txt>,
 
     #[serde(rename = "item", default)]
     pub items: Vec<Item>,
@@ -253,6 +258,11 @@ pub struct Item {
         default
     )]
     pub podcast_license: Option<podcast::License>,
+    #[serde(
+        rename = "{https://podcastindex.org/namespace/1.0}podcast:txt",
+        default
+    )]
+    pub podcast_txts: Vec<podcast::Txt>,
 }
 
 /// Episode's media content.

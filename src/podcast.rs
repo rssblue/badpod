@@ -42,6 +42,9 @@ pub use social_interact::SocialProtocol;
 mod block;
 pub use block::Service;
 
+mod txt;
+pub use txt::Purpose as TxtPurpose;
+
 /// A transcript or closed captions file.
 #[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct Transcript {
@@ -102,15 +105,9 @@ pub struct Soundbite {
 /// A person of interest to the podcast.
 #[derive(Debug, Deserialize, PartialEq, Default)]
 pub struct Person {
-    #[serde(
-        rename = "$attr:group",
-        default
-    )]
+    #[serde(rename = "$attr:group", default)]
     pub group: Option<PersonGroup>,
-    #[serde(
-        rename = "$attr:role",
-        default
-    )]
+    #[serde(rename = "$attr:role", default)]
     pub role: Option<PersonRole>,
     #[serde(rename = "$attr:img")]
     pub img: Option<String>,
@@ -417,6 +414,11 @@ pub struct LiveItem {
         default
     )]
     pub podcast_social_interacts: Vec<SocialInteract>,
+    #[serde(
+        rename = "{https://podcastindex.org/namespace/1.0}podcast:txt",
+        default
+    )]
+    pub podcast_txts: Vec<Txt>,
 }
 
 /// Used to indicate that the content being delivered by [LiveItem](LiveItem) can be found at an external location.
@@ -450,4 +452,13 @@ pub struct Block {
     pub id: Option<Service>,
     #[serde(rename = "$value", deserialize_with = "basic::option_bool_yn")]
     pub value: Option<basic::Bool>,
+}
+
+/// Free-form text to allow for uses that might be niche or otherwise not rise to the level of needing a dedicated tag.
+#[derive(Debug, Deserialize, PartialEq, Eq, Default)]
+pub struct Txt {
+    #[serde(rename = "$attr:purpose", default)]
+    pub purpose: Option<TxtPurpose>,
+    #[serde(rename = "$value")]
+    pub value: Option<String>,
 }

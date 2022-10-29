@@ -268,6 +268,20 @@ fn deserialize() {
                             ..Default::default()
                         },
                     },
+                    podcast_txts: vec![
+                        podcast::Txt{
+                            purpose: None,
+                            value: Some("naj3eEZaWVVY9a38uhX8FekACyhtqP4JN".to_string()),
+                        },
+                        podcast::Txt{
+                            purpose: Some(podcast::TxtPurpose::Verify),
+                            value: Some("S6lpp-7ZCn8-dZfGc-OoyaG".to_string()),
+                        },
+                        podcast::Txt{
+                            purpose: Some(podcast::TxtPurpose::Other("release".to_string())),
+                            value: Some("2022-10-26T04:45:30.742Z".to_string()),
+                        },
+                    ],
                     ..Default::default()
                 }},
                 podcast_live_items: vec! {
