@@ -5,13 +5,13 @@ use strum_macros::EnumIter;
 
 /// Used for deserializing `rel` attribute of [Transcript](crate::podcast::Transcript).
 #[derive(Debug, PartialEq, Eq, EnumIter)]
-pub enum TranscriptRel {
+pub enum Rel {
     Captions,
 
     Other(String),
 }
 
-impl fmt::Display for TranscriptRel {
+impl fmt::Display for Rel {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Self::Other(s) => write!(f, "{s}"),
@@ -23,7 +23,7 @@ impl fmt::Display for TranscriptRel {
     }
 }
 
-impl<'de> Deserialize<'de> for TranscriptRel {
+impl<'de> Deserialize<'de> for Rel {
     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
         let s = match String::deserialize(d) {
             Ok(s) => s,

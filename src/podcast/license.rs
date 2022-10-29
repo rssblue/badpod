@@ -5,7 +5,7 @@ use strum_macros::{EnumIter, EnumProperty};
 
 /// Type of [License](crate::podcast::License).
 #[derive(Debug, PartialEq, Eq, EnumProperty, EnumIter)]
-pub enum LicenseType {
+pub enum Type {
     #[strum(props(str = "0bsd"))]
     BsdZeroClause,
     #[strum(props(str = "aal"))]
@@ -942,7 +942,7 @@ pub enum LicenseType {
     Other(String),
 }
 
-impl fmt::Display for LicenseType {
+impl fmt::Display for Type {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Self::Other(s) => write!(f, "{s}"),
@@ -954,7 +954,7 @@ impl fmt::Display for LicenseType {
     }
 }
 
-impl<'de> Deserialize<'de> for LicenseType {
+impl<'de> Deserialize<'de> for Type {
     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
         let s = match String::deserialize(d) {
             Ok(s) => s,

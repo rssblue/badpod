@@ -5,7 +5,7 @@ use strum_macros::{EnumIter, EnumProperty};
 
 /// Group (as defined by [Podcast Taxonomy Project](https://podcasttaxonomy.com/)) of [Person](crate::podcast::Person).
 #[derive(Debug, PartialEq, Eq, EnumProperty, EnumIter)]
-pub enum PersonGroup {
+pub enum Group {
     #[strum(props(str = "creative direction"))]
     CreativeDirection,
     #[strum(props(str = "cast"))]
@@ -32,7 +32,7 @@ pub enum PersonGroup {
     Other(String),
 }
 
-impl fmt::Display for PersonGroup {
+impl fmt::Display for Group {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Self::Other(s) => write!(f, "{s}"),
@@ -44,7 +44,7 @@ impl fmt::Display for PersonGroup {
     }
 }
 
-impl<'de> Deserialize<'de> for PersonGroup {
+impl<'de> Deserialize<'de> for Group {
     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
         let s = match String::deserialize(d) {
             Ok(s) => s,
@@ -65,7 +65,7 @@ impl<'de> Deserialize<'de> for PersonGroup {
 
 /// Role (as defined by [Podcast Taxonomy Project](https://podcasttaxonomy.com/)) of [Person](crate::podcast::Person).
 #[derive(Debug, PartialEq, Eq, EnumProperty, EnumIter)]
-pub enum PersonRole {
+pub enum Role {
     #[strum(props(str = "director"))]
     Director,
     #[strum(props(str = "assistant director"))]
@@ -194,7 +194,7 @@ pub enum PersonRole {
     Other(String),
 }
 
-impl fmt::Display for PersonRole {
+impl fmt::Display for Role {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Self::Other(s) => write!(f, "{s}"),
@@ -206,7 +206,7 @@ impl fmt::Display for PersonRole {
     }
 }
 
-impl<'de> Deserialize<'de> for PersonRole {
+impl<'de> Deserialize<'de> for Role {
     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
         let s = match String::deserialize(d) {
             Ok(s) => s,

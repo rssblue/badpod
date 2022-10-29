@@ -5,7 +5,7 @@ use strum_macros::EnumIter;
 
 /// Type of [Value](crate::podcast::Value).
 #[derive(Debug, PartialEq, Eq, EnumIter)]
-pub enum ValueType {
+pub enum Type {
     Bitcoin,
     Lightning,
     Amp,
@@ -13,7 +13,7 @@ pub enum ValueType {
     Other(String),
 }
 
-impl fmt::Display for ValueType {
+impl fmt::Display for Type {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Self::Other(s) => write!(f, "{s}"),
@@ -25,7 +25,7 @@ impl fmt::Display for ValueType {
     }
 }
 
-impl<'de> Deserialize<'de> for ValueType {
+impl<'de> Deserialize<'de> for Type {
     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
         let s = match String::deserialize(d) {
             Ok(s) => s,
@@ -44,14 +44,14 @@ impl<'de> Deserialize<'de> for ValueType {
 
 /// Method of [Value](crate::podcast::Value).
 #[derive(Debug, PartialEq, Eq, EnumIter)]
-pub enum ValueMethod {
+pub enum Method {
     Default,
     Keysend,
 
     Other(String),
 }
 
-impl fmt::Display for ValueMethod {
+impl fmt::Display for Method {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Self::Other(s) => write!(f, "{s}"),
@@ -63,7 +63,7 @@ impl fmt::Display for ValueMethod {
     }
 }
 
-impl<'de> Deserialize<'de> for ValueMethod {
+impl<'de> Deserialize<'de> for Method {
     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
         let s = match String::deserialize(d) {
             Ok(s) => s,
@@ -82,14 +82,14 @@ impl<'de> Deserialize<'de> for ValueMethod {
 
 /// Type of [ValueRecipient](crate::podcast::ValueRecipient).
 #[derive(Debug, PartialEq, Eq, EnumIter)]
-pub enum ValueRecipientType {
+pub enum RecipientType {
     Wallet,
     Node,
 
     Other(String),
 }
 
-impl fmt::Display for ValueRecipientType {
+impl fmt::Display for RecipientType {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Self::Other(s) => write!(f, "{s}"),
@@ -101,7 +101,7 @@ impl fmt::Display for ValueRecipientType {
     }
 }
 
-impl<'de> Deserialize<'de> for ValueRecipientType {
+impl<'de> Deserialize<'de> for RecipientType {
     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
         let s = match String::deserialize(d) {
             Ok(s) => s,

@@ -5,7 +5,7 @@ use strum_macros::EnumIter;
 
 /// Status of [LiveItem](crate::podcast::LiveItem).
 #[derive(Debug, PartialEq, Eq, EnumIter)]
-pub enum LiveItemStatus {
+pub enum Status {
     Pending,
     Live,
     Ended,
@@ -13,7 +13,7 @@ pub enum LiveItemStatus {
     Other(String),
 }
 
-impl fmt::Display for LiveItemStatus {
+impl fmt::Display for Status {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Self::Other(s) => write!(f, "{s}"),
@@ -25,7 +25,7 @@ impl fmt::Display for LiveItemStatus {
     }
 }
 
-impl<'de> Deserialize<'de> for LiveItemStatus {
+impl<'de> Deserialize<'de> for Status {
     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
         let s = match String::deserialize(d) {
             Ok(s) => s,

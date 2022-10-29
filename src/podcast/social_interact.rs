@@ -5,7 +5,7 @@ use strum_macros::EnumIter;
 
 /// Social protocols that can be used in [SocialInteract](crate::podcast::SocialInteract).
 #[derive(Debug, PartialEq, Eq, EnumIter)]
-pub enum SocialProtocol {
+pub enum Protocol {
     Disabled,
     ActivityPub,
     Twitter,
@@ -14,7 +14,7 @@ pub enum SocialProtocol {
     Other(String),
 }
 
-impl fmt::Display for SocialProtocol {
+impl fmt::Display for Protocol {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Self::Other(s) => write!(f, "{s}"),
@@ -26,7 +26,7 @@ impl fmt::Display for SocialProtocol {
     }
 }
 
-impl<'de> Deserialize<'de> for SocialProtocol {
+impl<'de> Deserialize<'de> for Protocol {
     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
         let s = match String::deserialize(d) {
             Ok(s) => s,

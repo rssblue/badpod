@@ -7,16 +7,17 @@ use crate::mime;
 use crate::time::DateTime;
 
 mod transcript;
-pub use transcript::TranscriptRel;
+pub use transcript::Rel as TranscriptRel;
 
 mod person;
-pub use person::{PersonGroup, PersonRole};
+pub use person::Group as PersonGroup;
+pub use person::Role as PersonRole;
 
 mod location;
 pub use location::{Geo, Osm, OsmType};
 
 mod license;
-pub use license::LicenseType;
+pub use license::Type as LicenseType;
 
 mod alternate_enclosure;
 pub use alternate_enclosure::IntegrityType;
@@ -28,16 +29,18 @@ mod medium;
 pub use medium::Medium;
 
 mod value;
-pub use value::{ValueMethod, ValueRecipientType, ValueType};
+pub use value::Method as ValueMethod;
+pub use value::RecipientType as ValueRecipientType;
+pub use value::Type as ValueType;
 
 mod image;
 pub use image::{Image, Images};
 
 mod live_item;
-pub use live_item::LiveItemStatus;
+pub use live_item::Status as LiveItemStatus;
 
 mod social_interact;
-pub use social_interact::SocialProtocol;
+pub use social_interact::Protocol as SocialProtocol;
 
 mod block;
 pub use block::Service;
