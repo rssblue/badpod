@@ -28,6 +28,15 @@ impl std::str::FromStr for Guid {
     }
 }
 
+impl std::fmt::Display for Guid {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Ok(t) => write!(f, "{t}"),
+            Self::Other(s) => write!(f, "{s}"),
+        }
+    }
+}
+
 impl<'de> Deserialize<'de> for Guid {
     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
         utils::deserialize_using_from_str(d)

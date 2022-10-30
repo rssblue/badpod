@@ -8,8 +8,15 @@ pub struct Images {
     pub srcset: Vec<Image>,
 }
 
+impl std::fmt::Display for Images {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let str_list: Vec<String> = self.srcset.iter().map(|x| format!("{x}")).collect();
+        write!(f, "{}", str_list.join(",\n            "))
+    }
+}
+
 /// Individual image in [Images](Images) object.
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub enum Image {
     Ok(String, i64),
     Other(String),
@@ -20,16 +27,17 @@ impl std::str::FromStr for Image {
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let img_str = s.trim();
+
         let parts: Vec<&str> = img_str.split(' ').collect();
 
         if parts.len() != 2 {
-            return Err("expected two parts".to_string());
+            return Ok(Self::Other(img_str.to_string()));
         }
 
         let (url, mut width_str) = (parts[0], parts[1]);
 
         if !width_str.ends_with('w') {
-            return Err("width string should end with a \"w\"".to_string());
+            return Ok(Self::Other(img_str.to_string()));
         }
 
         // Remove last character.
@@ -37,14 +45,25 @@ impl std::str::FromStr for Image {
         chars.next_back();
         width_str = chars.as_str();
 
-        match width_str.parse::<i64>() {
-            Ok(width) => {
-                if width <= 0 {
-                    return Err("width should be positive".to_string());
-                }
-                Ok(Image::Ok(url.to_string(), width))
+        if let Ok(width) = width_str.parse::<i64>() {
+            if width <= 0 {
+                return Ok(Self::Other(img_str.to_string()));
             }
-            Err(_) => Err("width should be an integer".to_string()),
+            return Ok(Image::Ok(url.to_string(), width));
+        }
+
+        Ok(Self::Other(img_str.to_string()))
+    }
+}
+
+impl std::fmt::Display for Image {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Ok(url, width) => {
+                let s = format!("{url} {width}w");
+                write!(f, "{s}")
+            }
+            Self::Other(s) => write!(f, "{s}"),
         }
     }
 }
@@ -68,4 +87,64 @@ where
     }
 
     Ok(images)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::str::FromStr;
+
+    #[test]
+    fn test_image() {
+        let strings = vec![
+            "https://example.com/images/ep1/pci_avatar-massive.jpg 1500w",
+            "https://example.com/images/ep1/pci_avatar-middle.jpg 6o0w",
+        ];
+        let images = vec![
+            Image::Ok(
+                "https://example.com/images/ep1/pci_avatar-massive.jpg".to_string(),
+                1500,
+            ),
+            Image::Other("https://example.com/images/ep1/pci_avatar-middle.jpg 6o0w".to_string()),
+        ];
+
+        for (s, image) in strings.iter().zip(images.iter()) {
+            pretty_assertions::assert_eq!(Image::from_str(s), Ok(image.clone()));
+            pretty_assertions::assert_eq!(format!("{}", image), *s);
+        }
+    }
+
+    #[test]
+    fn test_images() {
+        let strings = vec![
+            "https://example.com/images/ep1/pci_avatar-massive.jpg 1500w,
+            https://example.com/images/ep1/pci_avatar-middle.jpg 600w,
+            https://example.com/images/ep1/pci_avatar-small.jpg 300w,
+            https://example.com/images/ep1/pci_avatar-tiny.jpg 150w",
+        ];
+        let images_lst = vec![Images {
+            srcset: vec![
+                Image::Ok(
+                    "https://example.com/images/ep1/pci_avatar-massive.jpg".to_string(),
+                    1500,
+                ),
+                Image::Ok(
+                    "https://example.com/images/ep1/pci_avatar-middle.jpg".to_string(),
+                    600,
+                ),
+                Image::Ok(
+                    "https://example.com/images/ep1/pci_avatar-small.jpg".to_string(),
+                    300,
+                ),
+                Image::Ok(
+                    "https://example.com/images/ep1/pci_avatar-tiny.jpg".to_string(),
+                    150,
+                ),
+            ],
+        }];
+
+        for (s, images) in strings.iter().zip(images_lst.iter()) {
+            pretty_assertions::assert_eq!(format!("{}", images), *s);
+        }
+    }
 }
