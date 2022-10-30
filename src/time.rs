@@ -1,3 +1,4 @@
+use crate::utils;
 use serde::{Deserialize, Deserializer};
 
 /// Used for deserializing combined dates and times.
@@ -7,17 +8,29 @@ pub enum DateTime {
     Other(String),
 }
 
-impl<'de> Deserialize<'de> for DateTime {
-    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        let s = match String::deserialize(d) {
-            Ok(s) => s,
-            Err(e) => return Err(e),
-        };
+impl std::str::FromStr for DateTime {
+    type Err = String;
 
-        match chrono::DateTime::parse_from_rfc2822(&s) {
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match chrono::DateTime::parse_from_rfc2822(s) {
             Ok(t) => Ok(Self::Ok(t)),
             Err(_) => Ok(DateTime::Other(s.to_string())),
         }
+    }
+}
+
+impl std::fmt::Display for DateTime {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Self::Ok(t) => write!(f, "{t}"),
+            Self::Other(s) => write!(f, "{s}"),
+        }
+    }
+}
+
+impl<'de> Deserialize<'de> for DateTime {
+    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+        utils::deserialize_using_from_str(d)
     }
 }
 

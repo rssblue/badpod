@@ -119,7 +119,7 @@ match channel.itunes_explicit {
 ### Printing enums
 
 Although this crate is mainly for deserialization, there are cases when enums need to be converted to strings.
-In `badpod`, all enums, except those that concern boolean values or numbers, have [Display](std::fmt::Display) trait implemented:
+In `badpod`, all enums have [Display](std::fmt::Display) trait implemented:
 ```rust
 println!("{}", Language::English(LanguageEnglish::UnitedKingdom));
 ```
