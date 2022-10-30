@@ -1,6 +1,5 @@
 use crate::utils;
 use serde::{Deserialize, Deserializer};
-use std::fmt;
 use strum_macros::EnumIter;
 
 mod category;
@@ -62,8 +61,8 @@ impl std::str::FromStr for Yes {
     }
 }
 
-impl fmt::Display for Yes {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+impl std::fmt::Display for Yes {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             Self::Other(s) => write!(f, "{s}"),
             _ => {
@@ -99,8 +98,8 @@ impl std::str::FromStr for PodcastType {
     }
 }
 
-impl fmt::Display for PodcastType {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+impl std::fmt::Display for PodcastType {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             Self::Other(s) => write!(f, "{s}"),
             _ => {
@@ -138,8 +137,8 @@ impl std::str::FromStr for EpisodeType {
     }
 }
 
-impl fmt::Display for EpisodeType {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+impl std::fmt::Display for EpisodeType {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             Self::Other(s) => write!(f, "{s}"),
             _ => {

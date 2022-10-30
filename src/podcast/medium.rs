@@ -1,6 +1,5 @@
 use crate::utils;
 use serde::{Deserialize, Deserializer};
-use std::fmt;
 use strum_macros::EnumIter;
 
 /// Medium of the feed.
@@ -28,8 +27,8 @@ impl std::str::FromStr for Medium {
     }
 }
 
-impl fmt::Display for Medium {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+impl std::fmt::Display for Medium {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             Self::Other(s) => write!(f, "{s}"),
             _ => {

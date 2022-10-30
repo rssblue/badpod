@@ -1,6 +1,5 @@
 use crate::utils;
 use serde::{Deserialize, Deserializer};
-use std::fmt;
 use strum_macros::{Display, EnumString};
 
 /// Geographical coordinates.
@@ -99,8 +98,8 @@ impl std::str::FromStr for Geo {
     }
 }
 
-impl fmt::Display for Geo {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+impl std::fmt::Display for Geo {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             Self::Ok {
                 latitude,
@@ -199,8 +198,8 @@ impl std::str::FromStr for Osm {
     }
 }
 
-impl fmt::Display for Osm {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+impl std::fmt::Display for Osm {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             Self::Ok {
                 type_,

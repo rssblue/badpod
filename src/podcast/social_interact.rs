@@ -1,6 +1,5 @@
 use crate::utils;
 use serde::{Deserialize, Deserializer};
-use std::fmt;
 use strum_macros::EnumIter;
 
 /// Social protocols that can be used in [SocialInteract](crate::podcast::SocialInteract).
@@ -25,8 +24,8 @@ impl std::str::FromStr for Protocol {
     }
 }
 
-impl fmt::Display for Protocol {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+impl std::fmt::Display for Protocol {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             Self::Other(s) => write!(f, "{s}"),
             _ => {

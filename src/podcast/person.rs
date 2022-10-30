@@ -1,6 +1,5 @@
 use crate::utils;
 use serde::{Deserialize, Deserializer};
-use std::fmt;
 use strum::EnumProperty;
 use strum_macros::{EnumIter, EnumProperty};
 
@@ -44,8 +43,8 @@ impl std::str::FromStr for Group {
     }
 }
 
-impl fmt::Display for Group {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+impl std::fmt::Display for Group {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             Self::Other(s) => write!(f, "{s}"),
             _ => match self.get_str("str") {
@@ -204,8 +203,8 @@ impl std::str::FromStr for Role {
     }
 }
 
-impl fmt::Display for Role {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+impl std::fmt::Display for Role {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             Self::Other(s) => write!(f, "{s}"),
             _ => match self.get_str("str") {

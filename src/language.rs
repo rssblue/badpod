@@ -1,6 +1,5 @@
 use crate::utils;
 use serde::{Deserialize, Deserializer};
-use std::fmt;
 use strum::{EnumProperty, IntoEnumIterator};
 use strum_macros::{Display, EnumIter, EnumProperty, EnumString};
 
@@ -465,8 +464,8 @@ impl std::str::FromStr for Language {
     }
 }
 
-impl fmt::Display for Language {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+impl std::fmt::Display for Language {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             Language::Other(s) => write!(f, "{s}"),
             Language::Chinese(region) => write!(f, "{region}"),
@@ -482,7 +481,7 @@ impl fmt::Display for Language {
             Language::Swedish(region) => write!(f, "{region}"),
             _ => match self.get_str("str") {
                 Some(s) => write!(f, "{}", s),
-                None => Err("property \"str\" not found").map_err(|_| fmt::Error),
+                None => Err("property \"str\" not found").map_err(|_| std::fmt::Error),
             },
         }
     }

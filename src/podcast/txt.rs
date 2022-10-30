@@ -1,6 +1,5 @@
 use serde::{Deserialize, Deserializer};
 use crate::utils;
-use std::fmt;
 use strum_macros::EnumIter;
 
 /// Allowed purposes for [Txt](crate::podcast::Txt).
@@ -22,8 +21,8 @@ impl std::str::FromStr for Purpose {
     }
 }
 
-impl fmt::Display for Purpose {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+impl std::fmt::Display for Purpose {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             Self::Other(s) => write!(f, "{s}"),
             _ => {
