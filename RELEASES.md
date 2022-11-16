@@ -1,5 +1,9 @@
 # Releases
 
+## Version 0.2.3 (2022-11-16)
+
+- Remove `Eq` from floats.
+
 ## Version 0.2.2 (2022-10-30)
 
 - Add support for `<podcast:txt>`.
