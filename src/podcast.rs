@@ -190,7 +190,7 @@ pub struct License {
 }
 
 /// Different version of or a companion media to the file in [Enclosure](crate::Enclosure).
-#[derive(Debug, Deserialize, PartialEq, Eq, Default)]
+#[derive(Debug, Deserialize, PartialEq, Default)]
 pub struct AlternateEnclosure {
     #[serde(rename = "$attr:type", default)]
     pub type_: Option<mime::Enclosure>,
@@ -256,7 +256,7 @@ pub struct Integrity {
 }
 
 /// Describes cryptocurrency or payment layer used for transactions.
-#[derive(Debug, Deserialize, PartialEq, Eq, Default)]
+#[derive(Debug, Deserialize, PartialEq, Default)]
 pub struct Value {
     #[serde(rename = "$attr:type", default)]
     pub type_: Option<ValueType>,
