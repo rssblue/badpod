@@ -1038,3 +1038,31 @@ fn deserialize() {
         pretty_assertions::assert_eq!(output, *expected);
     }
 }
+
+// Ensures that example feeds from a number of different hosting companies can be parsed.
+#[test]
+fn no_error() {
+    struct Test {
+        url: &'static str,
+        title: &'static str,
+    }
+
+    let tests = vec![
+        // Simplecast
+        Test{url: "https://feeds.simplecast.com/54nAGcIl", title: "The Daily"},
+        // Megaphone
+        Test{url: "https://feeds.megaphone.fm/hubermanlab", title: "Huberman Lab"},
+        // NPR
+        Test{url: "https://feeds.npr.org/500005/podcast.xml", title: "NPR News Now"},
+        // Buzzsprout
+        Test{url: "https://feeds.buzzsprout.com/424075.rss", title: "Bret Weinstein | DarkHorse Podcast"},
+        // Blubrry/PowerPress - Not working
+        // Test{url: "https://newmediashow.com/feed/audio/", title: "New Media Show"},
+    ];
+
+    for test in tests {
+        let feed_str = reqwest::blocking::get(test.url).unwrap().text();
+        let feed = badpod::from_str(&feed_str.unwrap());
+        pretty_assertions::assert_eq!(test.title, feed.unwrap().channel.unwrap().title.unwrap());
+    }
+}
