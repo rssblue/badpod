@@ -3,7 +3,7 @@ use badpod::*;
 
 #[test]
 fn deserialize() {
-    let conditions : &[(&str, Result<Rss,String>)] = &[
+    let conditions : &[(&str, Result<Rss, String>)] = &[
         (
             include_str!("data/test_feed.xml"),
         Ok(Rss {
@@ -1035,7 +1035,20 @@ fn deserialize() {
 
     for (input, expected) in conditions {
         let output = badpod::from_str(input);
-        pretty_assertions::assert_eq!(output, *expected);
+        match (output, expected) {
+            (Ok(output), Ok(expected)) => {
+                pretty_assertions::assert_eq!(output, *expected);
+            }
+            (Err(output), Err(expected)) => {
+                pretty_assertions::assert_eq!(output, *expected);
+            }
+            (Err(output), Ok(_)) => {
+                panic!("Unexpected error: {}", output);
+            }
+            (Ok(output), Err(_)) => {
+                panic!("Unexpected success: {:?}", output);
+            }
+        }
     }
 }
 
@@ -1057,7 +1070,7 @@ fn no_error() {
         // Buzzsprout
         Test{url: "https://feeds.buzzsprout.com/424075.rss", title: "Bret Weinstein | DarkHorse Podcast"},
         // Blubrry/PowerPress - Not working
-        // Test{url: "https://newmediashow.com/feed/audio/", title: "New Media Show"},
+        Test{url: "https://lexfridman.com/feed/podcast/", title: "Lex Fridman Podcast"},
     ];
 
     for test in tests {

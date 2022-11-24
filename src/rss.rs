@@ -7,6 +7,7 @@ use crate::basic;
 use crate::language;
 use crate::mime;
 use crate::time;
+use crate::xml;
 
 /// Converts contents of an XML file of podcast's RSS feed to [Rss](Rss) struct.
 pub fn from_str(feed_str: &str) -> Result<Rss, String> {
@@ -16,9 +17,24 @@ pub fn from_str(feed_str: &str) -> Result<Rss, String> {
         "https://podcastindex.org/namespace/1.0",
     );
 
-    match xml_serde::from_str::<Xml>(feed_str) {
-        Ok(feed) => Ok(feed.rss),
-        Err(e) => Err(e.to_string()),
+    let feed = xml_serde::from_str::<Xml>(feed_str);
+
+    let err = match feed {
+        Ok(feed) => return Ok(feed.rss),
+        Err(err) => err,
+    };
+
+    if err.to_string().starts_with("duplicate field") {
+        let feed_str = xml::sort_tags(feed_str);
+        // try to parse again
+        let feed = xml_serde::from_str::<Xml>(feed_str.as_str());
+
+        match feed {
+            Ok(feed) => Ok(feed.rss),
+            Err(err) => Err(err.to_string()),
+        }
+    } else {
+        Err(err.to_string())
     }
 }
 
