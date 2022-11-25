@@ -19,22 +19,22 @@ pub fn from_str(feed_str: &str) -> Result<Rss, String> {
 
     let feed = xml_serde::from_str::<Xml>(feed_str);
 
-    let err = match feed {
+    let original_err = match feed {
         Ok(feed) => return Ok(feed.rss),
         Err(err) => err,
     };
 
-    if err.to_string().starts_with("duplicate field") {
+    if original_err.to_string().starts_with("duplicate field") {
         let feed_str = xml::sort_tags(feed_str);
         // try to parse again
         let feed = xml_serde::from_str::<Xml>(feed_str.as_str());
 
         match feed {
             Ok(feed) => Ok(feed.rss),
-            Err(err) => Err(err.to_string()),
+            Err(_) => Err(original_err.to_string()),
         }
     } else {
-        Err(err.to_string())
+        Err(original_err.to_string())
     }
 }
 
