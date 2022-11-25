@@ -97,8 +97,8 @@
       </podcast:alternateEnclosure>
       <podcast:value type="lightning" method="keysend" suggested="0.00000015000">
       </podcast:value>
-      <podcast:socialInteract uri="https://podcastindex.social/web/@dave/108013847520053258" protocol="activitypub" accountId="@dave" />
       <podcast:txt>naj3eEZaWVVY9a38uhX8FekACyhtqP4JN</podcast:txt>
+      <podcast:socialInteract uri="https://podcastindex.social/web/@dave/108013847520053258" protocol="activitypub" accountId="@dave" />
       <podcast:txt purpose="verify">S6lpp-7ZCn8-dZfGc-OoyaG</podcast:txt>
       <podcast:txt purpose="release">2022-10-26T04:45:30.742Z</podcast:txt>
     </item>
