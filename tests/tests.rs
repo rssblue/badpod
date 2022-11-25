@@ -20,12 +20,18 @@ fn deserialize() {
                 itunes_author: Some("Jane Doe".to_string()),
                 itunes_block: Some(itunes::Yes::Ok),
                 itunes_complete: Some(itunes::Yes::Other("No".to_string())),
-                itunes_categories: vec! {itunes::Category{
-                    text: Some(itunes::CategoryName::SocietyAndCulture),
-                    subcategory: Some(itunes::Subcategory{
-                        text: Some(itunes::SubcategoryName::Documentary),
-                    }),
-                }},
+                itunes_categories: vec! {
+                    itunes::Category{
+                        text: Some(itunes::CategoryName::SocietyAndCulture),
+                        subcategory: Some(itunes::Subcategory{
+                            text: Some(itunes::SubcategoryName::Documentary),
+                        }),
+                    },
+                    itunes::Category{
+                        text: Some(itunes::CategoryName::Technology),
+                        subcategory: None,
+                    },
+                },
                 itunes_explicit: Some(Bool::Ok(false)),
                 itunes_owner: Some(itunes::Owner {
                     email: Some("jane@example.com".to_string()),
@@ -283,7 +289,16 @@ fn deserialize() {
                         },
                     ],
                     ..Default::default()
-                }},
+                },
+                Item{
+                    title: Some("Episode minus 1".to_string()),
+                    ..Default::default()
+                },
+                Item{
+                    title: Some("Episode minus 2".to_string()),
+                    ..Default::default()
+                },
+                },
                 podcast_live_items: vec! {
                     podcast::LiveItem{
                         status: Some(podcast::LiveItemStatus::Live),

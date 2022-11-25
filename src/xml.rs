@@ -1,5 +1,7 @@
 use xmltree::{Element, XMLNode};
 
+/// Sorts XML tags so that the file could be correctly processed by serde, see
+/// <https://github.com/RReverser/serde-xml-rs/issues/55>.
 pub fn sort_tags(feed_str: &str) -> String {
     let mut feed = Element::parse(feed_str.as_bytes()).unwrap();
 
@@ -18,20 +20,8 @@ fn sort_children(element: &mut Element) {
     let mut children = element.children.clone();
     children.sort_by(|a, b| match (a, b) {
         (XMLNode::Element(a), XMLNode::Element(b)) => {
-            let a_name = {
-                if let Some(prefix) = &a.prefix {
-                    format!("{:?}:{}", a.name, prefix)
-                } else {
-                    a.name.clone()
-                }
-            };
-            let b_name = {
-                if let Some(prefix) = &b.prefix {
-                    format!("{:?}:{}", b.name, prefix)
-                } else {
-                    b.name.clone()
-                }
-            };
+            let a_name = tag_name(&a.prefix, &a.name);
+            let b_name = tag_name(&b.prefix, &b.name);
 
             a_name.cmp(&b_name)
         }
@@ -44,6 +34,14 @@ fn sort_children(element: &mut Element) {
         if let XMLNode::Element(element) = child {
             sort_children(element);
         }
+    }
+}
+
+fn tag_name(prefix: &Option<String>, name: &str) -> String {
+    if let Some(prefix) = prefix {
+        format!("{:?}:{}", prefix, name)
+    } else {
+        name.to_string()
     }
 }
 

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:podcast="https://podcastindex.org/namespace/1.0" xmlns:unknownNS="https://example.com">
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:podcast="https://podcastindex.org/namespace/1.0" xmlns:unknownNS="https://example.com" xmlns:googleplay="http://www.google.com/schemas/play-podcasts/1.0">
   <channel>
     <copyright>© Example Company</copyright>
     <description><![CDATA[<p><strong>Example HTML description</strong></p>]]></description>
@@ -18,6 +18,8 @@
       <itunes:name>Jane Doe</itunes:name>
       <itunes:email>jane@example.com</itunes:email>
     </itunes:owner>
+    <itunes:category text="Technology" />
+    <googleplay:category text="Technology"/>
     <itunes:type>serial</itunes:type>
     <podcast:locked>no</podcast:locked>
     <podcast:funding url="https://www.example.com/donations">Support the show!</podcast:funding>
@@ -101,6 +103,12 @@
       <podcast:socialInteract uri="https://podcastindex.social/web/@dave/108013847520053258" protocol="activitypub" accountId="@dave" />
       <podcast:txt purpose="verify">S6lpp-7ZCn8-dZfGc-OoyaG</podcast:txt>
       <podcast:txt purpose="release">2022-10-26T04:45:30.742Z</podcast:txt>
+    </item>
+    <item>
+      <title>Episode minus 1</title>
+    </item>
+    <item>
+      <title>Episode minus 2</title>
     </item>
   </channel>
 </rss>
