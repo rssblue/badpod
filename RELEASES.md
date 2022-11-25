@@ -1,5 +1,10 @@
 # Releases
 
+## Version 0.2.4 (2022-11-25)
+
+- Improve tests.
+- Handle multiple non-neighboring tags with the same name.
+
 ## Version 0.2.3 (2022-11-16)
 
 - Remove `Eq` from floats.
