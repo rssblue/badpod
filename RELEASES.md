@@ -1,5 +1,9 @@
 # Releases
 
+## Version 0.3.0 (2022-11-27)
+
+- Allow multiple tags for everything.
+
 ## Version 0.2.4 (2022-11-25)
 
 - Improve tests.
