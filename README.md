@@ -52,10 +52,12 @@ We don't enforce almost any requirements on what tags *must* be included in the 
 Almost every field of structs provided by `badpod` is either an [Option](std::option::Option) or a [Vec](std::vec::Vec)tor.
 This allows to detect whether an XML tag or attribute is included in the feed that was processed.
 ```rust
-match channel.podcast_value {
-    Some(_) => println!("You support Value4Value! Awesome!"),
-    None => println!("Have you considered receiving payment from listeners?"),
-};
+if channel.podcast_value.is_empty() {
+    println!("Have you considered receiving payment from listeners?")
+} else {
+    println!("You support Value4Value! Awesome!")
+}
+
 ```
 
 ### Deserializing complicated tags
@@ -103,7 +105,7 @@ Many tags use the same data types but encode them differently.
 For example, both `<podcast:locked>` and `<itunes:explicit>` are essentially boolean values, but the former serializes to `"yes"`/`"no"` and the latter to `"true"`/`"false"`.
 In `badpod`, both are deserialized to [Bool](crate::Bool).
 ```rust
-match channel.itunes_explicit {
+match channel.itunes_explicit.get(0) {
     Some(is_explicit) => {
         match is_explicit {
             Bool::Ok(b) => {
