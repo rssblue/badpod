@@ -33,8 +33,8 @@ pub fn from_str(feed_str: &str) -> Result<Rss, String> {
         match feed {
             Ok(feed) => Ok(feed.rss),
             Err(e) => {
-                println!("Error: {}", e);
-                Err(original_err.to_string())
+                let errs = vec![original_err.to_string(), e.to_string()];
+                Err(format!("[{}]", errs.join(", ")))
             }
         }
     } else {
