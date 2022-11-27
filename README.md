@@ -56,7 +56,7 @@ We don't enforce any requirements on what or how many tags should be in the feed
 Leaving it more flexible (instead of throwing an instant error) also allows providing users with better feedback.
 ```rust
 match my_channel.podcast_value.len() {
-    0 => println!("Have you considered receiving payment from listeners?"),
+    0 => println!("Have you considered receiving payments from listeners?"),
     1 => println!("You support Value4Value! Awesome!"),
     _ => println!("Only one <podcast:value> tag is allowed per channel."),
 }
