@@ -11,8 +11,11 @@ pub struct Category {
     #[serde(rename = "$attr:text")]
     pub text: Option<CategoryName>,
 
-    #[serde(rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:category")]
-    pub subcategory: Option<Subcategory>,
+    #[serde(
+        default,
+        rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:category"
+    )]
+    pub subcategory: Vec<Subcategory>,
 }
 
 /// Apple Podcasts podcast subcategory.

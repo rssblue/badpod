@@ -1,4 +1,5 @@
 use serde::Deserialize;
+use serde_with::serde_as;
 
 use crate::basic;
 use crate::itunes;
@@ -62,11 +63,13 @@ pub struct Transcript {
 }
 
 /// Indicates whether podcast hosting platforms are allowed to import the feed.
+#[serde_as]
 #[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct Locked {
     #[serde(rename = "$attr:owner")]
     pub owner: Option<String>,
-    #[serde(rename = "$value", deserialize_with = "basic::option_bool_yn")]
+    #[serde(rename = "$value")]
+    #[serde_as(as = "Option<basic::BoolYN>")]
     pub value: Option<basic::Bool>,
 }
 
@@ -89,17 +92,14 @@ pub struct Chapters {
 }
 
 /// Soundbite of an episode.
+#[serde_as]
 #[derive(Debug, Deserialize, PartialEq, Default)]
 pub struct Soundbite {
-    #[serde(
-        rename = "$attr:startTime",
-        deserialize_with = "basic::option_float_nonnegative"
-    )]
+    #[serde(rename = "$attr:startTime")]
+    #[serde_as(as = "Option<basic::FloatNonNegative>")]
     pub start_time: Option<basic::Float>,
-    #[serde(
-        rename = "$attr:duration",
-        deserialize_with = "basic::option_float_nonnegative"
-    )]
+    #[serde(rename = "$attr:duration")]
+    #[serde_as(as = "Option<basic::FloatNonNegative>")]
     pub duration: Option<basic::Float>,
     #[serde(rename = "$value")]
     pub value: Option<String>,
@@ -132,49 +132,42 @@ pub struct Location {
 }
 
 /// Indicates the season that a particular episode belongs to.
+#[serde_as]
 #[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct Season {
     #[serde(rename = "$attr:name")]
     pub name: Option<String>,
-    #[serde(
-        rename = "$value",
-        deserialize_with = "basic::option_integer_nonnegative"
-    )]
+    #[serde(rename = "$value")]
+    #[serde_as(as = "Option<basic::IntegerNonNegative>")]
     pub value: Option<basic::Integer>,
 }
 
 /// Allows to specify episode number and how it should be displayed.
+#[serde_as]
 #[derive(Debug, Deserialize, PartialEq, Default)]
 pub struct Episode {
     #[serde(rename = "$attr:display")]
     pub display: Option<String>,
-    #[serde(
-        rename = "$value",
-        deserialize_with = "basic::option_number_nonnegative"
-    )]
+    #[serde(rename = "$value")]
+    #[serde_as(as = "Option<basic::NumberNonNegative>")]
     pub value: Option<basic::Number>,
 }
 
 /// A trailer for the entire podcast or a specific season.
+#[serde_as]
 #[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct Trailer {
     #[serde(rename = "$attr:url")]
     pub url: Option<String>,
     #[serde(rename = "$attr:pubdate", default)]
     pub pub_date: Option<DateTime>,
-    #[serde(
-        rename = "$attr:length",
-        deserialize_with = "basic::option_integer_nonnegative",
-        default
-    )]
+    #[serde(rename = "$attr:length", default)]
+    #[serde_as(as = "Option<basic::IntegerNonNegative>")]
     pub length: Option<basic::Integer>,
     #[serde(rename = "$attr:type")]
     pub type_: Option<mime::Enclosure>,
-    #[serde(
-        rename = "$attr:season",
-        deserialize_with = "basic::option_integer_nonnegative",
-        default
-    )]
+    #[serde(rename = "$attr:season", default)]
+    #[serde_as(as = "Option<basic::IntegerNonNegative>")]
     pub season: Option<basic::Integer>,
     #[serde(rename = "$value")]
     pub value: Option<String>,
@@ -190,27 +183,19 @@ pub struct License {
 }
 
 /// Different version of or a companion media to the file in [Enclosure](crate::Enclosure).
+#[serde_as]
 #[derive(Debug, Deserialize, PartialEq, Default)]
 pub struct AlternateEnclosure {
     #[serde(rename = "$attr:type", default)]
     pub type_: Option<mime::Enclosure>,
-    #[serde(
-        rename = "$attr:length",
-        deserialize_with = "basic::option_integer_nonnegative",
-        default
-    )]
+    #[serde(rename = "$attr:length", default)]
+    #[serde_as(as = "Option<basic::IntegerNonNegative>")]
     pub length: Option<basic::Integer>,
-    #[serde(
-        rename = "$attr:bitrate",
-        deserialize_with = "basic::option_float_nonnegative",
-        default
-    )]
+    #[serde(rename = "$attr:bitrate", default)]
+    #[serde_as(as = "Option<basic::FloatNonNegative>")]
     pub bit_rate: Option<basic::Float>,
-    #[serde(
-        rename = "$attr:height",
-        deserialize_with = "basic::option_integer_nonnegative",
-        default
-    )]
+    #[serde(rename = "$attr:height", default)]
+    #[serde_as(as = "Option<basic::IntegerNonNegative>")]
     pub height: Option<basic::Integer>,
     #[serde(rename = "$attr:lang", default)]
     pub language: Option<Language>,
@@ -225,15 +210,15 @@ pub struct AlternateEnclosure {
     pub default: Option<basic::Bool>,
 
     #[serde(
-        rename = "{https://podcastindex.org/namespace/1.0}podcast:source",
-        default
+        default,
+        rename = "{https://podcastindex.org/namespace/1.0}podcast:source"
     )]
-    pub podcast_sources: Vec<Source>,
+    pub podcast_source: Vec<Source>,
     #[serde(
-        rename = "{https://podcastindex.org/namespace/1.0}podcast:integrity",
-        default
+        default,
+        rename = "{https://podcastindex.org/namespace/1.0}podcast:integrity"
     )]
-    pub podcast_integrity: Option<Integrity>,
+    pub podcast_integrity: Vec<Integrity>,
 }
 
 /// Location of a media file in [AlternateEnclosure](AlternateEnclosure).
@@ -256,26 +241,25 @@ pub struct Integrity {
 }
 
 /// Describes cryptocurrency or payment layer used for transactions.
+#[serde_as]
 #[derive(Debug, Deserialize, PartialEq, Default)]
 pub struct Value {
     #[serde(rename = "$attr:type", default)]
     pub type_: Option<ValueType>,
     #[serde(rename = "$attr:method", default)]
     pub method: Option<ValueMethod>,
-    #[serde(
-        rename = "$attr:suggested",
-        deserialize_with = "basic::option_float_positive",
-        default
-    )]
+    #[serde(rename = "$attr:suggested", default)]
+    #[serde_as(as = "Option<basic::FloatPositive>")]
     pub suggested: Option<basic::Float>,
     #[serde(
-        rename = "{https://podcastindex.org/namespace/1.0}podcast:valueRecipient",
-        default
+        default,
+        rename = "{https://podcastindex.org/namespace/1.0}podcast:valueRecipient"
     )]
-    pub value_recipients: Vec<ValueRecipient>,
+    pub value_recipient: Vec<ValueRecipient>,
 }
 
 /// Destination for payments to be sent to during consumption of enclosed media.
+#[serde_as]
 #[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct ValueRecipient {
     #[serde(rename = "$attr:name")]
@@ -288,89 +272,104 @@ pub struct ValueRecipient {
     pub type_: Option<ValueRecipientType>,
     #[serde(rename = "$attr:address")]
     pub address: Option<String>,
-    #[serde(
-        rename = "$attr:split",
-        deserialize_with = "basic::option_integer_positive",
-        default
-    )]
+    #[serde(rename = "$attr:split", default)]
+    #[serde_as(as = "Option<basic::IntegerPositive>")]
     pub split: Option<basic::Integer>,
     #[serde(rename = "$attr:fee", default)]
     pub fee: Option<basic::Bool>,
 }
 
 /// Used to deliver a live audio or video stream.
+#[serde_as]
 #[derive(Debug, Deserialize, PartialEq, Default)]
 pub struct LiveItem {
-    pub description: Option<String>,
-    pub link: Option<String>,
-    pub title: Option<String>,
-    pub enclosure: Option<crate::Enclosure>,
-    pub guid: Option<crate::Guid>,
+    #[serde(default)]
+    pub description: Vec<String>,
+    #[serde(default)]
+    pub link: Vec<String>,
+    #[serde(default)]
+    pub title: Vec<String>,
+    #[serde(default)]
+    pub enclosure: Vec<crate::Enclosure>,
+    #[serde(default)]
+    pub guid: Vec<crate::Guid>,
     #[serde(default, rename = "pubDate")]
-    pub pub_date: Option<DateTime>,
+    pub pub_date: Vec<DateTime>,
 
     #[serde(rename = "$attr:status", default)]
     pub status: Option<LiveItemStatus>,
-    #[serde(
-        rename = "$attr:start",
-        deserialize_with = "crate::time::option_datetime_iso8601",
-        default
-    )]
+    #[serde(rename = "$attr:start", default)]
+    #[serde_as(as = "Option<crate::time::DatetimeISO8601>")]
     pub start: Option<DateTime>,
-    #[serde(
-        rename = "$attr:end",
-        deserialize_with = "crate::time::option_datetime_iso8601",
-        default
-    )]
+    #[serde(rename = "$attr:end", default)]
+    #[serde_as(as = "Option<crate::time::DatetimeISO8601>")]
     pub end: Option<DateTime>,
 
-    #[serde(rename = "{http://purl.org/rss/1.0/modules/content/}content:encoded")]
-    pub content_encoded: Option<String>,
+    #[serde(
+        default,
+        rename = "{http://purl.org/rss/1.0/modules/content/}content:encoded"
+    )]
+    pub content_encoded: Vec<String>,
 
-    #[serde(rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:block")]
-    pub itunes_block: Option<itunes::Yes>,
+    #[serde(
+        default,
+        rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:block"
+    )]
+    pub itunes_block: Vec<itunes::Yes>,
     #[serde(
         rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:duration",
-        deserialize_with = "basic::option_number_nonnegative",
         default
     )]
-    pub itunes_duration: Option<basic::Number>,
+    #[serde_as(as = "Vec<basic::NumberNonNegative>")]
+    pub itunes_duration: Vec<basic::Number>,
     #[serde(
         rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:season",
-        deserialize_with = "basic::option_integer_positive",
         default
     )]
-    pub itunes_season: Option<basic::Integer>,
+    #[serde_as(as = "Vec<basic::IntegerPositive>")]
+    pub itunes_season: Vec<basic::Integer>,
     #[serde(
         rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:episode",
-        deserialize_with = "basic::option_integer_positive",
         default
     )]
-    pub itunes_episode: Option<basic::Integer>,
+    #[serde_as(as = "Vec<basic::IntegerPositive>")]
+    pub itunes_episode: Vec<basic::Integer>,
     #[serde(
         default,
         rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:explicit"
     )]
-    pub itunes_explicit: Option<basic::Bool>,
-    #[serde(rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:image")]
-    pub itunes_image: Option<itunes::Image>,
-    #[serde(rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:title")]
-    pub itunes_title: Option<String>,
-    #[serde(rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:episodeType")]
-    pub itunes_type: Option<itunes::EpisodeType>,
+    pub itunes_explicit: Vec<basic::Bool>,
+    #[serde(
+        default,
+        rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:image"
+    )]
+    pub itunes_image: Vec<itunes::Image>,
+    #[serde(
+        default,
+        rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:title"
+    )]
+    pub itunes_title: Vec<String>,
+    #[serde(
+        default,
+        rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:episodeType"
+    )]
+    pub itunes_type: Vec<itunes::EpisodeType>,
 
     #[serde(
         rename = "{https://podcastindex.org/namespace/1.0}podcast:transcript",
         default
     )]
-    pub podcast_transcripts: Vec<Transcript>,
-    #[serde(rename = "{https://podcastindex.org/namespace/1.0}podcast:chapters")]
-    pub podcast_chapters: Option<Chapters>,
+    pub podcast_transcript: Vec<Transcript>,
+    #[serde(
+        default,
+        rename = "{https://podcastindex.org/namespace/1.0}podcast:chapters"
+    )]
+    pub podcast_chapters: Vec<Chapters>,
     #[serde(
         rename = "{https://podcastindex.org/namespace/1.0}podcast:soundbite",
         default
     )]
-    pub podcast_soundbites: Vec<Soundbite>,
+    pub podcast_soundbite: Vec<Soundbite>,
     #[serde(
         rename = "{https://podcastindex.org/namespace/1.0}podcast:person",
         default
@@ -380,48 +379,48 @@ pub struct LiveItem {
         rename = "{https://podcastindex.org/namespace/1.0}podcast:location",
         default
     )]
-    pub podcast_location: Option<Location>,
+    pub podcast_location: Vec<Location>,
     #[serde(
         rename = "{https://podcastindex.org/namespace/1.0}podcast:season",
         default
     )]
-    pub podcast_season: Option<Season>,
+    pub podcast_season: Vec<Season>,
     #[serde(
         rename = "{https://podcastindex.org/namespace/1.0}podcast:episode",
         default
     )]
-    pub podcast_episode: Option<Episode>,
+    pub podcast_episode: Vec<Episode>,
     #[serde(
         rename = "{https://podcastindex.org/namespace/1.0}podcast:alternateEnclosure",
         default
     )]
-    pub podcast_alternate_enclosures: Vec<AlternateEnclosure>,
+    pub podcast_alternate_enclosure: Vec<AlternateEnclosure>,
     #[serde(
         rename = "{https://podcastindex.org/namespace/1.0}podcast:value",
         default
     )]
-    pub podcast_value: Option<Value>,
+    pub podcast_value: Vec<Value>,
     #[serde(
         rename = "{https://podcastindex.org/namespace/1.0}podcast:images",
         default
     )]
-    pub podcast_images: Option<Images>,
+    pub podcast_images: Vec<Images>,
 
     #[serde(
         rename = "{https://podcastindex.org/namespace/1.0}podcast:contentLink",
         default
     )]
-    pub content_links: Vec<ContentLink>,
+    pub content_link: Vec<ContentLink>,
     #[serde(
         rename = "{https://podcastindex.org/namespace/1.0}podcast:socialInteract",
         default
     )]
-    pub podcast_social_interacts: Vec<SocialInteract>,
+    pub podcast_social_interact: Vec<SocialInteract>,
     #[serde(
         rename = "{https://podcastindex.org/namespace/1.0}podcast:txt",
         default
     )]
-    pub podcast_txts: Vec<Txt>,
+    pub podcast_txt: Vec<Txt>,
 }
 
 /// Used to indicate that the content being delivered by [LiveItem](LiveItem) can be found at an external location.
@@ -449,11 +448,13 @@ pub struct SocialInteract {
 }
 
 /// Allows a podcaster to express which platforms are allowed to publicly display this feed and its contents.
+#[serde_as]
 #[derive(Debug, Deserialize, PartialEq, Eq, Default)]
 pub struct Block {
     #[serde(rename = "$attr:id", default)]
     pub id: Option<Service>,
-    #[serde(rename = "$value", deserialize_with = "basic::option_bool_yn")]
+    #[serde(rename = "$value")]
+    #[serde_as(as = "Option<basic::BoolYN>")]
     pub value: Option<basic::Bool>,
 }
 

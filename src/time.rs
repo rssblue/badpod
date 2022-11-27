@@ -34,17 +34,18 @@ impl<'de> Deserialize<'de> for DateTime {
     }
 }
 
-pub fn option_datetime_iso8601<'de, D>(d: D) -> Result<Option<DateTime>, D::Error>
-where
-    D: Deserializer<'de>,
-{
-    let s = match String::deserialize(d) {
-        Ok(s) => s,
-        Err(e) => return Err(e),
-    };
+pub enum DatetimeISO8601 {}
 
-    match chrono::DateTime::parse_from_str(&s, "%Y-%m-%dT%H:%M:%S%.f%:z") {
-        Ok(t) => Ok(Some(DateTime::Ok(t))),
-        Err(_) => Ok(Some(DateTime::Other(s.to_string()))),
+impl<'de> serde_with::DeserializeAs<'de, DateTime> for DatetimeISO8601 {
+    fn deserialize_as<D: Deserializer<'de>>(d: D) -> Result<DateTime, D::Error> {
+        let s = match String::deserialize(d) {
+            Ok(s) => s,
+            Err(e) => return Err(e),
+        };
+
+        match chrono::DateTime::parse_from_str(&s, "%Y-%m-%dT%H:%M:%S%.f%:z") {
+            Ok(t) => Ok(DateTime::Ok(t)),
+            Err(_) => Ok(DateTime::Other(s.to_string())),
+        }
     }
 }

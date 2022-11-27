@@ -8,6 +8,12 @@ pub enum Bool {
     Other(String),
 }
 
+impl Default for Bool {
+    fn default() -> Self {
+        Bool::Ok(false)
+    }
+}
+
 impl std::str::FromStr for Bool {
     type Err = String;
 
@@ -34,19 +40,20 @@ impl<'de> Deserialize<'de> for Bool {
     }
 }
 
-pub fn option_bool_yn<'de, D>(deserializer: D) -> Result<Option<Bool>, D::Error>
-where
-    D: Deserializer<'de>,
-{
-    let s = match String::deserialize(deserializer) {
-        Ok(s) => s,
-        Err(e) => return Err(e),
-    };
+pub enum BoolYN {}
 
-    match s.as_str() {
-        "no" => Ok(Some(Bool::Ok(false))),
-        "yes" => Ok(Some(Bool::Ok(true))),
-        _ => Ok(Some(Bool::Other(s))),
+impl<'de> serde_with::DeserializeAs<'de, Bool> for BoolYN {
+    fn deserialize_as<D: Deserializer<'de>>(d: D) -> Result<Bool, D::Error> {
+        let s = String::deserialize(d);
+
+        match s {
+            Ok(s) => match s.as_str() {
+                "yes" => Ok(Bool::Ok(true)),
+                "no" => Ok(Bool::Ok(false)),
+                _ => Ok(Bool::Other(s)),
+            },
+            Err(e) => Err(e),
+        }
     }
 }
 
@@ -83,43 +90,37 @@ impl<'de> Deserialize<'de> for Integer {
     }
 }
 
-pub fn option_integer_nonnegative<'de, D>(d: D) -> Result<Option<Integer>, D::Error>
-where
-    D: Deserializer<'de>,
-{
-    let s = match String::deserialize(d) {
-        Ok(s) => s,
-        Err(e) => return Err(e),
-    };
+pub enum IntegerPositive {}
 
-    match s.parse::<i64>() {
-        Ok(x) => {
-            if x < 0 {
-                return Ok(Some(Integer::Other(s)));
+impl<'de> serde_with::DeserializeAs<'de, Integer> for IntegerPositive {
+    fn deserialize_as<D: Deserializer<'de>>(d: D) -> Result<Integer, D::Error> {
+        match Integer::deserialize(d) {
+            Ok(Integer::Ok(x)) => {
+                if x <= 0 {
+                    return Ok(Integer::Other(x.to_string()));
+                }
+                Ok(Integer::Ok(x))
             }
-            Ok(Some(Integer::Ok(x)))
+            Ok(Integer::Other(s)) => Ok(Integer::Other(s)),
+            Err(e) => Err(e),
         }
-        Err(_) => Ok(Some(Integer::Other(s))),
     }
 }
 
-pub fn option_integer_positive<'de, D>(d: D) -> Result<Option<Integer>, D::Error>
-where
-    D: Deserializer<'de>,
-{
-    let s = match String::deserialize(d) {
-        Ok(s) => s,
-        Err(e) => return Err(e),
-    };
+pub enum IntegerNonNegative {}
 
-    match s.parse::<i64>() {
-        Ok(x) => {
-            if x <= 0 {
-                return Ok(Some(Integer::Other(s)));
+impl<'de> serde_with::DeserializeAs<'de, Integer> for IntegerNonNegative {
+    fn deserialize_as<D: Deserializer<'de>>(d: D) -> Result<Integer, D::Error> {
+        match Integer::deserialize(d) {
+            Ok(Integer::Ok(x)) => {
+                if x < 0 {
+                    return Ok(Integer::Other(x.to_string()));
+                }
+                Ok(Integer::Ok(x))
             }
-            Ok(Some(Integer::Ok(x)))
+            Ok(Integer::Other(s)) => Ok(Integer::Other(s)),
+            Err(e) => Err(e),
         }
-        Err(_) => Ok(Some(Integer::Other(s))),
     }
 }
 
@@ -156,43 +157,37 @@ impl<'de> Deserialize<'de> for Float {
     }
 }
 
-pub fn option_float_nonnegative<'de, D>(d: D) -> Result<Option<Float>, D::Error>
-where
-    D: Deserializer<'de>,
-{
-    let s = match String::deserialize(d) {
-        Ok(s) => s,
-        Err(e) => return Err(e),
-    };
+pub enum FloatPositive {}
 
-    match s.parse::<f64>() {
-        Ok(x) => {
-            if x < 0.0 {
-                return Ok(Some(Float::Other(s)));
+impl<'de> serde_with::DeserializeAs<'de, Float> for FloatPositive {
+    fn deserialize_as<D: Deserializer<'de>>(d: D) -> Result<Float, D::Error> {
+        match Float::deserialize(d) {
+            Ok(Float::Ok(x)) => {
+                if x <= 0.0 {
+                    return Ok(Float::Other(x.to_string()));
+                }
+                Ok(Float::Ok(x))
             }
-            Ok(Some(Float::Ok(x)))
+            Ok(Float::Other(s)) => Ok(Float::Other(s)),
+            Err(e) => Err(e),
         }
-        Err(_) => Ok(Some(Float::Other(s))),
     }
 }
 
-pub fn option_float_positive<'de, D>(d: D) -> Result<Option<Float>, D::Error>
-where
-    D: Deserializer<'de>,
-{
-    let s = match String::deserialize(d) {
-        Ok(s) => s,
-        Err(e) => return Err(e),
-    };
+pub enum FloatNonNegative {}
 
-    match s.parse::<f64>() {
-        Ok(x) => {
-            if x <= 0.0 {
-                return Ok(Some(Float::Other(s)));
+impl<'de> serde_with::DeserializeAs<'de, Float> for FloatNonNegative {
+    fn deserialize_as<D: Deserializer<'de>>(d: D) -> Result<Float, D::Error> {
+        match Float::deserialize(d) {
+            Ok(Float::Ok(x)) => {
+                if x < 0.0 {
+                    return Ok(Float::Other(x.to_string()));
+                }
+                Ok(Float::Ok(x))
             }
-            Ok(Some(Float::Ok(x)))
+            Ok(Float::Other(s)) => Ok(Float::Other(s)),
+            Err(e) => Err(e),
         }
-        Err(_) => Ok(Some(Float::Other(s))),
     }
 }
 
@@ -238,32 +233,25 @@ impl<'de> Deserialize<'de> for Number {
     }
 }
 
-pub fn option_number_nonnegative<'de, D>(d: D) -> Result<Option<Number>, D::Error>
-where
-    D: Deserializer<'de>,
-{
-    let mut s = match String::deserialize(d) {
-        Ok(s) => s,
-        Err(e) => return Err(e),
-    };
+pub enum NumberNonNegative {}
 
-    s = match s.parse::<i64>() {
-        Ok(x) => {
-            if x < 0 {
-                return Ok(Some(Number::Other(s)));
+impl<'de> serde_with::DeserializeAs<'de, Number> for NumberNonNegative {
+    fn deserialize_as<D: Deserializer<'de>>(d: D) -> Result<Number, D::Error> {
+        match Number::deserialize(d) {
+            Ok(Number::Integer(x)) => {
+                if x < 0 {
+                    return Ok(Number::Other(x.to_string()));
+                }
+                Ok(Number::Integer(x))
             }
-            return Ok(Some(Number::Integer(x)));
-        }
-        Err(_) => s,
-    };
-
-    match s.parse::<f64>() {
-        Ok(x) => {
-            if x < 0.0 {
-                return Ok(Some(Number::Other(s)));
+            Ok(Number::Float(x)) => {
+                if x < 0.0 {
+                    return Ok(Number::Other(x.to_string()));
+                }
+                Ok(Number::Float(x))
             }
-            Ok(Some(Number::Float(x)))
+            Ok(Number::Other(s)) => Ok(Number::Other(s)),
+            Err(e) => Err(e),
         }
-        Err(_) => Ok(Some(Number::Other(s))),
     }
 }
