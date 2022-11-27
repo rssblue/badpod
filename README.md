@@ -38,27 +38,31 @@ badpod = "0.2.4"
 ```rust
 let rss = match badpod::from_str(feed_str) {
     Ok(rss) => rss,
-    // Usually, this shouldn't happen, even if the feed doesn't conform
-    // to the traditional schema.
     Err(_) => panic!("Something went terribly wrong."),
 };
 ```
 
+In theory, `badpod::from_str` should only return an error in two cases:  
+- the feed is not valid XML
+- the root element of the feed is not `<rss>`
+
 ## Features
 
-### Find whether tags or attributes are missing
+### Check for presence of tags and attributes
 
-We don't enforce almost any requirements on what tags *must* be included in the feed---that's a decision for you to make!
-Almost every field of structs provided by `badpod` is either an [Option](std::option::Option) or a [Vec](std::vec::Vec)tor.
-This allows to detect whether an XML tag or attribute is included in the feed that was processed.
+In `badpod`, every field representing an XML tag is a [Vec](std::vec::Vec)tor, and every field representing an XML attribute is an [Option](std::option::Option).
+This is to reflect that in XML, tags *can* be repeated, while attributes---*cannot*.
+We don't enforce any requirements on what or how many tags should be in the feed---that's a decision for you to make!
+Leaving it more flexible (instead of throwing an instant error) also allows providing users with better feedback.
 ```rust
-if channel.podcast_value.is_empty() {
-    println!("Have you considered receiving payment from listeners?")
-} else {
-    println!("You support Value4Value! Awesome!")
+match my_channel.podcast_value.len() {
+    0 => println!("Have you considered receiving payment from listeners?"),
+    1 => println!("You support Value4Value! Awesome!"),
+    _ => println!("Only one <podcast:value> tag is allowed per channel."),
 }
-
 ```
+
+*Note*: all fields representing tags are named in the singular form, even though they are vectors.
 
 ### Deserializing complicated tags
 
