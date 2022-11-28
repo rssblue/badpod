@@ -1,5 +1,9 @@
 # Releases
 
+## Version 0.3.2 (2022-11-28)
+
+- Improve parsing of ISO 8601 dates.
+
 ## Version 0.3.1 (2022-11-28)
 
 - Make fields between `<item>` and `<podcast:liveItem>` consistent.

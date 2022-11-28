@@ -30,7 +30,7 @@ In that case, we may want a more flexible, intermediate schema: a schema that do
 Inside `Cargo.toml`:  
 ```toml
 [dependencies]
-badpod = "0.3.1"
+badpod = "0.3.2"
 ```
 
 ### Deserializing
