@@ -1,5 +1,9 @@
 # Releases
 
+## Version 0.3.1 (2022-11-28)
+
+- Make fields between `<item>` and `<podcast:liveItem>` consistent.
+
 ## Version 0.3.0 (2022-11-27)
 
 - Allow multiple tags for everything.
