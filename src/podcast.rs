@@ -374,7 +374,7 @@ pub struct LiveItem {
         rename = "{https://podcastindex.org/namespace/1.0}podcast:person",
         default
     )]
-    pub podcast_persons: Vec<Person>,
+    pub podcast_person: Vec<Person>,
     #[serde(
         rename = "{https://podcastindex.org/namespace/1.0}podcast:location",
         default
