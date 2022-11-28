@@ -3,22 +3,35 @@ use serde_with::serde_as;
 
 use crate::itunes;
 use crate::podcast;
+use std::time as time_utils;
 
 use crate::basic;
 use crate::language;
 use crate::mime;
 use crate::time;
+use crate::utils;
 use crate::xml;
 
 /// Converts contents of an XML file of podcast's RSS feed to [Rss](Rss) struct.
 pub fn from_str(feed_str: &str) -> Result<Rss, String> {
+    const TIMEOUT_LIMIT: u64 = 10;
+    let timeout_limit = time_utils::Duration::from_secs(TIMEOUT_LIMIT);
+
     // TODO: Both namespaces should be supported, but this ugly fix should be improved.
-    let feed_str = &feed_str.replace(
+    let feed_str = feed_str.replace(
         "https://github.com/Podcastindex-org/podcast-namespace/blob/main/docs/1.0.md",
         "https://podcastindex.org/namespace/1.0",
     );
 
-    let feed = xml_serde::from_str::<Xml>(feed_str);
+    let feed_str_clone = feed_str.clone();
+    let result = utils::run_with_timeout(
+        move || xml_serde::from_str::<Xml>(&feed_str_clone),
+        timeout_limit,
+    );
+    let feed = match result {
+        Ok(feed) => feed,
+        Err(_) => return Err("Timed out".to_string()),
+    };
 
     let original_err = match feed {
         Ok(feed) => return Ok(feed.rss),
@@ -26,9 +39,15 @@ pub fn from_str(feed_str: &str) -> Result<Rss, String> {
     };
 
     if original_err.to_string().starts_with("duplicate field") {
-        let feed_str = xml::sort_tags(feed_str);
+        let feed_str = xml::sort_tags(&feed_str);
+
         // try to parse again
-        let feed = xml_serde::from_str::<Xml>(feed_str.as_str());
+        let result =
+            utils::run_with_timeout(move || xml_serde::from_str::<Xml>(&feed_str), timeout_limit);
+        let feed = match result {
+            Ok(feed) => feed,
+            Err(_) => return Err("Timed out".to_string()),
+        };
 
         match feed {
             Ok(feed) => Ok(feed.rss),
