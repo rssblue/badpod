@@ -417,6 +417,11 @@ pub struct LiveItem {
     )]
     pub podcast_social_interact: Vec<SocialInteract>,
     #[serde(
+        default,
+        rename = "{https://podcastindex.org/namespace/1.0}podcast:license"
+    )]
+    pub podcast_license: Vec<License>,
+    #[serde(
         rename = "{https://podcastindex.org/namespace/1.0}podcast:txt",
         default
     )]
