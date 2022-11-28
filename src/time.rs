@@ -43,9 +43,14 @@ impl<'de> serde_with::DeserializeAs<'de, DateTime> for DatetimeISO8601 {
             Err(e) => return Err(e),
         };
 
-        match chrono::DateTime::parse_from_str(&s, "%Y-%m-%dT%H:%M:%S%.f%:z") {
-            Ok(t) => Ok(DateTime::Ok(t)),
-            Err(_) => Ok(DateTime::Other(s.to_string())),
+        if let Ok(t) = chrono::DateTime::parse_from_rfc3339(&s) {
+            return Ok(DateTime::Ok(t));
         }
+
+        if let Ok(t) = chrono::DateTime::parse_from_str(&s, "%Y-%m-%dT%H:%M:%S%.f%:z") {
+            return Ok(DateTime::Ok(t));
+        }
+
+        Ok(DateTime::Other(s))
     }
 }
