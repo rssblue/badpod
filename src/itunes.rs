@@ -1,5 +1,4 @@
 use crate::utils;
-use std::str::FromStr;
 use strum_macros::EnumIter;
 
 mod category;
@@ -116,7 +115,7 @@ impl std::fmt::Display for PodcastType {
 
 impl PodcastType {
     pub fn parse(s: &str) -> Self {
-        match Self::from_str(s) {
+        match s.parse() {
             Ok(variant) => variant,
             Err(_) => Self::Other(s.to_string()),
         }
@@ -156,8 +155,11 @@ impl std::fmt::Display for EpisodeType {
     }
 }
 
-// impl<'de> Deserialize<'de> for EpisodeType {
-//     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-//         utils::deserialize_using_from_str(d)
-//     }
-// }
+impl EpisodeType {
+    pub fn parse(s: &str) -> Self {
+        match s.parse() {
+            Ok(variant) => variant,
+            Err(_) => Self::Other(s.to_string()),
+        }
+    }
+}

@@ -32,8 +32,11 @@ impl std::fmt::Display for Rel {
     }
 }
 
-// impl<'de> Deserialize<'de> for Rel {
-//     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-//         utils::deserialize_using_from_str(d)
-//     }
-// }
+impl Rel {
+    pub fn parse(s: &str) -> Self {
+        match s.parse() {
+            Ok(variant) => variant,
+            Err(_) => Self::Other(s.to_string()),
+        }
+    }
+}

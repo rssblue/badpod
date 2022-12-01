@@ -49,13 +49,9 @@ pub use txt::Purpose as TxtPurpose;
 /// A transcript or closed captions file.
 #[derive(Debug, PartialEq, Eq, Default)]
 pub struct Transcript {
-    // #[serde(rename = "$attr:url")]
     pub url: Option<String>,
-    // #[serde(rename = "$attr:type")]
     pub type_: Option<mime::Transcript>,
-    // #[serde(rename = "$attr:language")]
     pub language: Option<Language>,
-    // #[serde(rename = "$attr:rel")]
     pub rel: Option<TranscriptRel>,
 }
 
@@ -76,22 +72,15 @@ pub struct Funding {
 /// Chapter data for an episode.
 #[derive(Debug, PartialEq, Eq, Default)]
 pub struct Chapters {
-    // #[serde(rename = "$attr:url")]
     pub url: Option<String>,
-    // #[serde(rename = "$attr:type")]
     pub type_: Option<mime::Chapters>,
 }
 
 /// Soundbite of an episode.
 #[derive(Debug, PartialEq, Default)]
 pub struct Soundbite {
-    // #[serde(rename = "$attr:startTime")]
-    // #[serde_as(as = "Option<basic::FloatNonNegative>")]
     pub start_time: Option<basic::Float>,
-    // #[serde(rename = "$attr:duration")]
-    // #[serde_as(as = "Option<basic::FloatNonNegative>")]
     pub duration: Option<basic::Float>,
-    // #[serde(rename = "$value")]
     pub value: Option<String>,
 }
 
@@ -124,20 +113,14 @@ pub struct Location {
 /// Indicates the season that a particular episode belongs to.
 #[derive(Debug, PartialEq, Eq, Default)]
 pub struct Season {
-    // #[serde(rename = "$attr:name")]
     pub name: Option<String>,
-    // #[serde(rename = "$value")]
-    // #[serde_as(as = "Option<basic::IntegerNonNegative>")]
     pub value: Option<basic::Integer>,
 }
 
 /// Allows to specify episode number and how it should be displayed.
 #[derive(Debug, PartialEq, Default)]
 pub struct Episode {
-    // #[serde(rename = "$attr:display")]
     pub display: Option<String>,
-    // #[serde(rename = "$value")]
-    // #[serde_as(as = "Option<basic::NumberNonNegative>")]
     pub value: Option<basic::Number>,
 }
 
@@ -172,47 +155,26 @@ pub struct License {
 /// Different version of or a companion media to the file in [Enclosure](crate::Enclosure).
 #[derive(Debug, PartialEq, Default)]
 pub struct AlternateEnclosure {
-    // #[serde(rename = "$attr:type", default)]
     pub type_: Option<mime::Enclosure>,
-    // #[serde(rename = "$attr:length", default)]
-    // #[serde_as(as = "Option<basic::IntegerNonNegative>")]
     pub length: Option<basic::Integer>,
-    // #[serde(rename = "$attr:bitrate", default)]
-    // #[serde_as(as = "Option<basic::FloatNonNegative>")]
     pub bit_rate: Option<basic::Float>,
-    // #[serde(rename = "$attr:height", default)]
-    // #[serde_as(as = "Option<basic::IntegerNonNegative>")]
     pub height: Option<basic::Integer>,
-    // #[serde(rename = "$attr:lang", default)]
     pub language: Option<Language>,
-    // #[serde(rename = "$attr:title", default)]
     pub title: Option<String>,
-    // #[serde(rename = "$attr:rel", default)]
     pub rel: Option<String>,
     // TODO: this is quite complicated; will try to do later.
     // #[serde(rename = "$attr:codecs", default)]
     // pub codecs: Vec<String>,
-    // #[serde(rename = "$attr:default", default)]
     pub default: Option<basic::Bool>,
 
-    // #[serde(
-    //     default,
-    //     rename = "{https://podcastindex.org/namespace/1.0}podcast:source"
-    // )]
     pub podcast_source: Vec<Source>,
-    // #[serde(
-    //     default,
-    //     rename = "{https://podcastindex.org/namespace/1.0}podcast:integrity"
-    // )]
     pub podcast_integrity: Vec<Integrity>,
 }
 
 /// Location of a media file in [AlternateEnclosure](AlternateEnclosure).
 #[derive(Debug, PartialEq, Eq, Default)]
 pub struct Source {
-    // #[serde(rename = "$attr:contentType")]
     pub type_: Option<mime::Enclosure>,
-    // #[serde(rename = "$attr:uri")]
     pub uri: Option<String>,
 }
 
@@ -220,9 +182,7 @@ pub struct Source {
 /// [AlternateEnclosure](AlternateEnclosure).
 #[derive(Debug, PartialEq, Eq, Default)]
 pub struct Integrity {
-    // #[serde(rename = "$attr:type")]
     pub type_: Option<IntegrityType>,
-    // #[serde(rename = "$attr:value")]
     pub value: Option<String>,
 }
 
@@ -407,15 +367,10 @@ pub struct ContentLink {
 /// Allows a podcaster to attach the URL of a "root post" of a comment thread to an episode.
 #[derive(Debug, PartialEq, Eq, Default)]
 pub struct SocialInteract {
-    // #[serde(rename = "$attr:uri", default)]
     pub uri: Option<String>,
-    // #[serde(rename = "$attr:protocol", default)]
     pub protocol: Option<SocialProtocol>,
-    // #[serde(rename = "$attr:accountId", default)]
     pub account_id: Option<String>,
-    // #[serde(rename = "$attr:accountUrl", default)]
     pub account_url: Option<String>,
-    // #[serde(rename = "$attr:priority", default)]
     pub priority: Option<basic::Integer>,
 }
 

@@ -35,8 +35,11 @@ impl std::fmt::Display for Protocol {
     }
 }
 
-// impl<'de> Deserialize<'de> for Protocol {
-//     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-//         utils::deserialize_using_from_str(d)
-//     }
-// }
+impl Protocol {
+    pub fn parse(s: &str) -> Self {
+        match s.parse() {
+            Ok(protocol) => protocol,
+            Err(_) => Self::Other(s.to_string()),
+        }
+    }
+}
