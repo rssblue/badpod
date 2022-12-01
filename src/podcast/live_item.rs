@@ -34,8 +34,11 @@ impl std::fmt::Display for Status {
     }
 }
 
-// impl<'de> Deserialize<'de> for Status {
-//     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-//         utils::deserialize_using_from_str(d)
-//     }
-// }
+impl Status {
+    pub fn parse(s: &str) -> Self {
+        match s.parse() {
+            Ok(status) => status,
+            Err(_) => Self::Other(s.to_string()),
+        }
+    }
+}

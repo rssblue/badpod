@@ -207,6 +207,11 @@ fn parse_channel(channel: roxmltree::Node) -> rss::Channel {
                     .podcast_license
                     .push(parse_podcast_license(child));
             }
+            (Some(NS_PODCAST_1 | NS_PODCAST_2), "liveItem") => {
+                new_channel
+                    .podcast_live_item
+                    .push(parse_podcast_live_item(child));
+            }
             (Some(NS_PODCAST_1 | NS_PODCAST_2), "guid") => {
                 if let Some(text) = parse_text_node(child) {
                     new_channel.podcast_guid.push(podcast::Guid::parse(&text));
@@ -934,13 +939,11 @@ pub fn parse_podcast_integrity(integrity: roxmltree::Node) -> podcast::Integrity
     };
 
     for attribute in integrity.attributes() {
-        if attribute.name() == "type" {
-            new_integrity.type_ = Some(podcast::IntegrityType::parse(attribute.value()));
+        match attribute.name() {
+            "type" => new_integrity.type_ = Some(podcast::IntegrityType::parse(attribute.value())),
+            "value" => new_integrity.value = Some(attribute.value().to_string()),
+            _ => {}
         }
-    }
-
-    if let Some(text) = parse_text_node(integrity) {
-        new_integrity.value = Some(text);
     }
 
     new_integrity
@@ -969,4 +972,200 @@ pub fn parse_podcast_social_interact(social_interact: roxmltree::Node) -> podcas
     }
 
     new_social_interact
+}
+
+fn parse_podcast_live_item(live_item: roxmltree::Node) -> podcast::LiveItem {
+    let mut new_live_item = podcast::LiveItem::default();
+
+    for attribute in live_item.attributes() {
+        match attribute.name() {
+            "status" => {
+                new_live_item.status = Some(podcast::LiveItemStatus::parse(attribute.value()))
+            }
+            "start" => {
+                new_live_item.start = Some(DateTime::parse(attribute.value(), TimeFormat::Iso8601))
+            }
+            "end" => {
+                new_live_item.end = Some(DateTime::parse(attribute.value(), TimeFormat::Iso8601))
+            }
+            _ => {}
+        }
+    }
+
+    for child in live_item.children() {
+        let namespace = child.tag_name().namespace();
+        let name = child.tag_name().name();
+        match (namespace, name) {
+            (None, "description") => {
+                if let Some(text) = parse_text_node(child) {
+                    new_live_item.description.push(text);
+                }
+            }
+            (None, "link") => {
+                if let Some(text) = parse_text_node(child) {
+                    new_live_item.link.push(text);
+                }
+            }
+            (None, "title") => {
+                if let Some(text) = parse_text_node(child) {
+                    new_live_item.title.push(text);
+                }
+            }
+            (None, "enclosure") => {
+                new_live_item.enclosure.push(parse_enclosure(child));
+            }
+            (None, "guid") => {
+                new_live_item.guid.push(parse_guid(child));
+            }
+            (None, "pubDate") => {
+                if let Some(text) = parse_text_node(child) {
+                    new_live_item
+                        .pub_date
+                        .push(DateTime::parse(&text, TimeFormat::Rfc2822));
+                }
+            }
+
+            (Some(NS_CONTENT), "encoded") => {
+                if let Some(text) = parse_text_node(child) {
+                    new_live_item.content_encoded.push(text);
+                }
+            }
+
+            (Some(NS_ITUNES), "block") => {
+                if let Some(text) = parse_text_node(child) {
+                    new_live_item.itunes_block.push(itunes::Yes::parse(&text));
+                }
+            }
+            (Some(NS_ITUNES), "duration") => {
+                if let Some(text) = parse_text_node(child) {
+                    new_live_item
+                        .itunes_duration
+                        .push(Number::parse(&text, NumberConstraint::NonNegative));
+                }
+            }
+            (Some(NS_ITUNES), "season") => {
+                if let Some(text) = parse_text_node(child) {
+                    new_live_item
+                        .itunes_season
+                        .push(Integer::parse(&text, NumberConstraint::Positive));
+                }
+            }
+            (Some(NS_ITUNES), "episode") => {
+                if let Some(text) = parse_text_node(child) {
+                    new_live_item
+                        .itunes_episode
+                        .push(Integer::parse(&text, NumberConstraint::Positive));
+                }
+            }
+            (Some(NS_ITUNES), "explicit") => {
+                if let Some(text) = parse_text_node(child) {
+                    new_live_item
+                        .itunes_explicit
+                        .push(Bool::parse(&text, BoolType::TrueFalse));
+                }
+            }
+            (Some(NS_ITUNES), "image") => {
+                new_live_item.itunes_image.push(parse_itunes_image(child));
+            }
+            (Some(NS_ITUNES), "title") => {
+                if let Some(text) = parse_text_node(child) {
+                    new_live_item.itunes_title.push(text);
+                }
+            }
+            (Some(NS_ITUNES), "episodeType") => {
+                if let Some(text) = parse_text_node(child) {
+                    new_live_item
+                        .itunes_type
+                        .push(itunes::EpisodeType::parse(&text));
+                }
+            }
+
+            (Some(NS_PODCAST_1 | NS_PODCAST_2), "transcript") => {
+                new_live_item
+                    .podcast_transcript
+                    .push(parse_podcast_transcript(child));
+            }
+            (Some(NS_PODCAST_1 | NS_PODCAST_2), "chapters") => {
+                new_live_item
+                    .podcast_chapters
+                    .push(parse_podcast_chapters(child));
+            }
+            (Some(NS_PODCAST_1 | NS_PODCAST_2), "soundbite") => {
+                new_live_item
+                    .podcast_soundbite
+                    .push(parse_podcast_soundbite(child));
+            }
+            (Some(NS_PODCAST_1 | NS_PODCAST_2), "person") => {
+                new_live_item
+                    .podcast_person
+                    .push(parse_podcast_person(child));
+            }
+            (Some(NS_PODCAST_1 | NS_PODCAST_2), "location") => {
+                new_live_item
+                    .podcast_location
+                    .push(parse_podcast_location(child));
+            }
+            (Some(NS_PODCAST_1 | NS_PODCAST_2), "season") => {
+                new_live_item
+                    .podcast_season
+                    .push(parse_podcast_season(child));
+            }
+            (Some(NS_PODCAST_1 | NS_PODCAST_2), "episode") => {
+                new_live_item
+                    .podcast_episode
+                    .push(parse_podcast_episode(child));
+            }
+            (Some(NS_PODCAST_1 | NS_PODCAST_2), "alternateEnclosure") => {
+                new_live_item
+                    .podcast_alternate_enclosure
+                    .push(parse_podcast_alternate_enclosure(child));
+            }
+            (Some(NS_PODCAST_1 | NS_PODCAST_2), "value") => {
+                new_live_item.podcast_value.push(parse_podcast_value(child));
+            }
+            (Some(NS_PODCAST_1 | NS_PODCAST_2), "images") => {
+                new_live_item
+                    .podcast_images
+                    .push(parse_podcast_images(child));
+            }
+            (Some(NS_PODCAST_1 | NS_PODCAST_2), "socialInteract") => {
+                new_live_item
+                    .podcast_social_interact
+                    .push(parse_podcast_social_interact(child));
+            }
+            (Some(NS_PODCAST_1 | NS_PODCAST_2), "license") => {
+                new_live_item
+                    .podcast_license
+                    .push(parse_podcast_license(child));
+            }
+            (Some(NS_PODCAST_1 | NS_PODCAST_2), "txt") => {
+                new_live_item.podcast_txt.push(parse_podcast_txt(child));
+            }
+            (Some(NS_PODCAST_1 | NS_PODCAST_2), "contentLink") => {
+                new_live_item
+                    .podcast_content_link
+                    .push(parse_podcast_content_link(child));
+            }
+
+            _ => {}
+        }
+    }
+
+    new_live_item
+}
+
+pub fn parse_podcast_content_link(content_link: roxmltree::Node) -> podcast::ContentLink {
+    let mut new_podcast_content_link = podcast::ContentLink::default();
+
+    for attribute in content_link.attributes() {
+        if attribute.name() == "href" {
+            new_podcast_content_link.href = Some(attribute.value().to_string());
+        }
+    }
+
+    if let Some(text) = parse_text_node(content_link) {
+        new_podcast_content_link.value = Some(text);
+    }
+
+    new_podcast_content_link
 }

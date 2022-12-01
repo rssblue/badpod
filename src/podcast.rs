@@ -337,7 +337,7 @@ pub struct LiveItem {
     //     rename = "{https://podcastindex.org/namespace/1.0}podcast:contentLink",
     //     default
     // )]
-    pub content_link: Vec<ContentLink>,
+    pub podcast_content_link: Vec<ContentLink>,
     // #[serde(
     //     rename = "{https://podcastindex.org/namespace/1.0}podcast:socialInteract",
     //     default
