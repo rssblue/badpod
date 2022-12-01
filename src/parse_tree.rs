@@ -26,8 +26,6 @@ pub fn parse(feed_str: &str) -> Result<rss::Rss, Error> {
         Err(e) => return Err(Error::Custom(e.to_string())),
     };
 
-    println!("{:?}", tree);
-
     let root = tree.root_element();
     if root.tag_name().name() != "rss" {
         return Err(Error::RootNotRss);
