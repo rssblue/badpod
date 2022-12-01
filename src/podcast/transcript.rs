@@ -1,5 +1,4 @@
 use crate::utils;
-use serde::{Deserialize, Deserializer};
 use strum_macros::EnumIter;
 
 /// Used for deserializing `rel` attribute of [Transcript](crate::podcast::Transcript).
@@ -33,8 +32,8 @@ impl std::fmt::Display for Rel {
     }
 }
 
-impl<'de> Deserialize<'de> for Rel {
-    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        utils::deserialize_using_from_str(d)
-    }
-}
+// impl<'de> Deserialize<'de> for Rel {
+//     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+//         utils::deserialize_using_from_str(d)
+//     }
+// }

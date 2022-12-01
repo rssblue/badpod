@@ -1,4 +1,3 @@
-use serde::{Deserialize, Deserializer};
 use crate::utils;
 use strum_macros::EnumIter;
 
@@ -33,8 +32,8 @@ impl std::fmt::Display for Purpose {
     }
 }
 
-impl<'de> Deserialize<'de> for Purpose {
-    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        utils::deserialize_using_from_str(d)
-    }
-}
+// impl<'de> Deserialize<'de> for Purpose {
+//     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+//         utils::deserialize_using_from_str(d)
+//     }
+// }

@@ -1,5 +1,4 @@
 use crate::utils;
-use serde::{Deserialize, Deserializer};
 
 /// Used for deserializing boolean values.
 #[derive(Debug, PartialEq, Eq)]
@@ -34,28 +33,28 @@ impl std::fmt::Display for Bool {
     }
 }
 
-impl<'de> Deserialize<'de> for Bool {
-    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        utils::deserialize_using_from_str(d)
-    }
-}
+// impl<'de> Deserialize<'de> for Bool {
+//     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+//         utils::deserialize_using_from_str(d)
+//     }
+// }
 
-pub enum BoolYN {}
-
-impl<'de> serde_with::DeserializeAs<'de, Bool> for BoolYN {
-    fn deserialize_as<D: Deserializer<'de>>(d: D) -> Result<Bool, D::Error> {
-        let s = String::deserialize(d);
-
-        match s {
-            Ok(s) => match s.as_str() {
-                "yes" => Ok(Bool::Ok(true)),
-                "no" => Ok(Bool::Ok(false)),
-                _ => Ok(Bool::Other(s)),
-            },
-            Err(e) => Err(e),
-        }
-    }
-}
+// pub enum BoolYN {}
+//
+// impl<'de> serde_with::DeserializeAs<'de, Bool> for BoolYN {
+//     fn deserialize_as<D: Deserializer<'de>>(d: D) -> Result<Bool, D::Error> {
+//         let s = String::deserialize(d);
+//
+//         match s {
+//             Ok(s) => match s.as_str() {
+//                 "yes" => Ok(Bool::Ok(true)),
+//                 "no" => Ok(Bool::Ok(false)),
+//                 _ => Ok(Bool::Other(s)),
+//             },
+//             Err(e) => Err(e),
+//         }
+//     }
+// }
 
 /// Used for deserializing integer values.
 #[derive(Debug, PartialEq, Eq)]
@@ -84,45 +83,45 @@ impl std::fmt::Display for Integer {
     }
 }
 
-impl<'de> Deserialize<'de> for Integer {
-    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        utils::deserialize_using_from_str(d)
-    }
-}
+// impl<'de> Deserialize<'de> for Integer {
+//     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+//         utils::deserialize_using_from_str(d)
+//     }
+// }
+//
+// pub enum IntegerPositive {}
+//
+// impl<'de> serde_with::DeserializeAs<'de, Integer> for IntegerPositive {
+//     fn deserialize_as<D: Deserializer<'de>>(d: D) -> Result<Integer, D::Error> {
+//         match Integer::deserialize(d) {
+//             Ok(Integer::Ok(x)) => {
+//                 if x <= 0 {
+//                     return Ok(Integer::Other(x.to_string()));
+//                 }
+//                 Ok(Integer::Ok(x))
+//             }
+//             Ok(Integer::Other(s)) => Ok(Integer::Other(s)),
+//             Err(e) => Err(e),
+//         }
+//     }
+// }
 
-pub enum IntegerPositive {}
-
-impl<'de> serde_with::DeserializeAs<'de, Integer> for IntegerPositive {
-    fn deserialize_as<D: Deserializer<'de>>(d: D) -> Result<Integer, D::Error> {
-        match Integer::deserialize(d) {
-            Ok(Integer::Ok(x)) => {
-                if x <= 0 {
-                    return Ok(Integer::Other(x.to_string()));
-                }
-                Ok(Integer::Ok(x))
-            }
-            Ok(Integer::Other(s)) => Ok(Integer::Other(s)),
-            Err(e) => Err(e),
-        }
-    }
-}
-
-pub enum IntegerNonNegative {}
-
-impl<'de> serde_with::DeserializeAs<'de, Integer> for IntegerNonNegative {
-    fn deserialize_as<D: Deserializer<'de>>(d: D) -> Result<Integer, D::Error> {
-        match Integer::deserialize(d) {
-            Ok(Integer::Ok(x)) => {
-                if x < 0 {
-                    return Ok(Integer::Other(x.to_string()));
-                }
-                Ok(Integer::Ok(x))
-            }
-            Ok(Integer::Other(s)) => Ok(Integer::Other(s)),
-            Err(e) => Err(e),
-        }
-    }
-}
+// pub enum IntegerNonNegative {}
+//
+// impl<'de> serde_with::DeserializeAs<'de, Integer> for IntegerNonNegative {
+//     fn deserialize_as<D: Deserializer<'de>>(d: D) -> Result<Integer, D::Error> {
+//         match Integer::deserialize(d) {
+//             Ok(Integer::Ok(x)) => {
+//                 if x < 0 {
+//                     return Ok(Integer::Other(x.to_string()));
+//                 }
+//                 Ok(Integer::Ok(x))
+//             }
+//             Ok(Integer::Other(s)) => Ok(Integer::Other(s)),
+//             Err(e) => Err(e),
+//         }
+//     }
+// }
 
 /// Used for deserializing floating-point values.
 #[derive(Debug, PartialEq)]
@@ -151,45 +150,45 @@ impl std::fmt::Display for Float {
     }
 }
 
-impl<'de> Deserialize<'de> for Float {
-    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        utils::deserialize_using_from_str(d)
-    }
-}
-
-pub enum FloatPositive {}
-
-impl<'de> serde_with::DeserializeAs<'de, Float> for FloatPositive {
-    fn deserialize_as<D: Deserializer<'de>>(d: D) -> Result<Float, D::Error> {
-        match Float::deserialize(d) {
-            Ok(Float::Ok(x)) => {
-                if x <= 0.0 {
-                    return Ok(Float::Other(x.to_string()));
-                }
-                Ok(Float::Ok(x))
-            }
-            Ok(Float::Other(s)) => Ok(Float::Other(s)),
-            Err(e) => Err(e),
-        }
-    }
-}
-
-pub enum FloatNonNegative {}
-
-impl<'de> serde_with::DeserializeAs<'de, Float> for FloatNonNegative {
-    fn deserialize_as<D: Deserializer<'de>>(d: D) -> Result<Float, D::Error> {
-        match Float::deserialize(d) {
-            Ok(Float::Ok(x)) => {
-                if x < 0.0 {
-                    return Ok(Float::Other(x.to_string()));
-                }
-                Ok(Float::Ok(x))
-            }
-            Ok(Float::Other(s)) => Ok(Float::Other(s)),
-            Err(e) => Err(e),
-        }
-    }
-}
+// impl<'de> Deserialize<'de> for Float {
+//     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+//         utils::deserialize_using_from_str(d)
+//     }
+// }
+//
+// pub enum FloatPositive {}
+//
+// impl<'de> serde_with::DeserializeAs<'de, Float> for FloatPositive {
+//     fn deserialize_as<D: Deserializer<'de>>(d: D) -> Result<Float, D::Error> {
+//         match Float::deserialize(d) {
+//             Ok(Float::Ok(x)) => {
+//                 if x <= 0.0 {
+//                     return Ok(Float::Other(x.to_string()));
+//                 }
+//                 Ok(Float::Ok(x))
+//             }
+//             Ok(Float::Other(s)) => Ok(Float::Other(s)),
+//             Err(e) => Err(e),
+//         }
+//     }
+// }
+//
+// pub enum FloatNonNegative {}
+//
+// impl<'de> serde_with::DeserializeAs<'de, Float> for FloatNonNegative {
+//     fn deserialize_as<D: Deserializer<'de>>(d: D) -> Result<Float, D::Error> {
+//         match Float::deserialize(d) {
+//             Ok(Float::Ok(x)) => {
+//                 if x < 0.0 {
+//                     return Ok(Float::Other(x.to_string()));
+//                 }
+//                 Ok(Float::Ok(x))
+//             }
+//             Ok(Float::Other(s)) => Ok(Float::Other(s)),
+//             Err(e) => Err(e),
+//         }
+//     }
+// }
 
 /// Used for deserializing values that could be either integers or floats.
 ///
@@ -227,31 +226,31 @@ impl std::fmt::Display for Number {
     }
 }
 
-impl<'de> Deserialize<'de> for Number {
-    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        utils::deserialize_using_from_str(d)
-    }
-}
-
-pub enum NumberNonNegative {}
-
-impl<'de> serde_with::DeserializeAs<'de, Number> for NumberNonNegative {
-    fn deserialize_as<D: Deserializer<'de>>(d: D) -> Result<Number, D::Error> {
-        match Number::deserialize(d) {
-            Ok(Number::Integer(x)) => {
-                if x < 0 {
-                    return Ok(Number::Other(x.to_string()));
-                }
-                Ok(Number::Integer(x))
-            }
-            Ok(Number::Float(x)) => {
-                if x < 0.0 {
-                    return Ok(Number::Other(x.to_string()));
-                }
-                Ok(Number::Float(x))
-            }
-            Ok(Number::Other(s)) => Ok(Number::Other(s)),
-            Err(e) => Err(e),
-        }
-    }
-}
+// impl<'de> Deserialize<'de> for Number {
+//     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+//         utils::deserialize_using_from_str(d)
+//     }
+// }
+//
+// pub enum NumberNonNegative {}
+//
+// impl<'de> serde_with::DeserializeAs<'de, Number> for NumberNonNegative {
+//     fn deserialize_as<D: Deserializer<'de>>(d: D) -> Result<Number, D::Error> {
+//         match Number::deserialize(d) {
+//             Ok(Number::Integer(x)) => {
+//                 if x < 0 {
+//                     return Ok(Number::Other(x.to_string()));
+//                 }
+//                 Ok(Number::Integer(x))
+//             }
+//             Ok(Number::Float(x)) => {
+//                 if x < 0.0 {
+//                     return Ok(Number::Other(x.to_string()));
+//                 }
+//                 Ok(Number::Float(x))
+//             }
+//             Ok(Number::Other(s)) => Ok(Number::Other(s)),
+//             Err(e) => Err(e),
+//         }
+//     }
+// }

@@ -1,26 +1,24 @@
-use serde::de::Error;
-use serde::{Deserialize, Deserializer};
 use std::{
     sync::mpsc::{self, RecvTimeoutError},
     thread,
     time::Duration,
 };
 
-pub fn deserialize_using_from_str<'de, D, T: std::str::FromStr>(d: D) -> Result<T, D::Error>
-where
-    D: Deserializer<'de>,
-    <T as std::str::FromStr>::Err: std::fmt::Display,
-{
-    let s = match String::deserialize(d) {
-        Ok(s) => s,
-        Err(e) => return Err(e),
-    };
-
-    match T::from_str(s.as_str()) {
-        Ok(t) => Ok(t),
-        Err(e) => Err(e).map_err(D::Error::custom),
-    }
-}
+// pub fn deserialize_using_from_str<'de, D, T: std::str::FromStr>(d: D) -> Result<T, D::Error>
+// where
+//     D: Deserializer<'de>,
+//     <T as std::str::FromStr>::Err: std::fmt::Display,
+// {
+//     let s = match String::deserialize(d) {
+//         Ok(s) => s,
+//         Err(e) => return Err(e),
+//     };
+//
+//     match T::from_str(s.as_str()) {
+//         Ok(t) => Ok(t),
+//         Err(e) => Err(e).map_err(D::Error::custom),
+//     }
+// }
 
 pub fn from_str_exact<T: strum::IntoEnumIterator + std::fmt::Display>(s: &str) -> Option<T>
 where

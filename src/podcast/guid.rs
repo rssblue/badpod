@@ -1,6 +1,5 @@
 use crate::utils;
 use regex::Regex;
-use serde::{Deserialize, Deserializer};
 
 /// Global unique identifier for a podcast.
 #[derive(Debug, PartialEq, Eq)]
@@ -37,8 +36,8 @@ impl std::fmt::Display for Guid {
     }
 }
 
-impl<'de> Deserialize<'de> for Guid {
-    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        utils::deserialize_using_from_str(d)
-    }
-}
+// impl<'de> Deserialize<'de> for Guid {
+//     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+//         utils::deserialize_using_from_str(d)
+//     }
+// }

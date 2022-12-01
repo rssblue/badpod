@@ -1,5 +1,4 @@
 use crate::utils;
-use serde::{Deserialize, Deserializer};
 use strum::{EnumProperty, IntoEnumIterator};
 use strum_macros::{Display, EnumIter, EnumProperty, EnumString};
 
@@ -487,11 +486,11 @@ impl std::fmt::Display for Language {
     }
 }
 
-impl<'de> Deserialize<'de> for Language {
-    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        utils::deserialize_using_from_str(d)
-    }
-}
+// impl<'de> Deserialize<'de> for Language {
+//     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+//         utils::deserialize_using_from_str(d)
+//     }
+// }
 
 /// German language regions.
 #[derive(Debug, PartialEq, Eq, EnumString, Display, Default)]

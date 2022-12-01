@@ -1,5 +1,4 @@
 use crate::utils;
-use serde::{Deserialize, Deserializer};
 use strum_macros::EnumIter;
 
 /// Status of [LiveItem](crate::podcast::LiveItem).
@@ -35,8 +34,8 @@ impl std::fmt::Display for Status {
     }
 }
 
-impl<'de> Deserialize<'de> for Status {
-    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        utils::deserialize_using_from_str(d)
-    }
-}
+// impl<'de> Deserialize<'de> for Status {
+//     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+//         utils::deserialize_using_from_str(d)
+//     }
+// }

@@ -1,5 +1,4 @@
 use crate::utils;
-use serde::{Deserialize, Deserializer};
 use strum::EnumProperty;
 use strum_macros::{EnumIter, EnumProperty};
 
@@ -965,8 +964,8 @@ impl std::fmt::Display for Type {
     }
 }
 
-impl<'de> Deserialize<'de> for Type {
-    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        utils::deserialize_using_from_str(d)
-    }
-}
+// impl<'de> Deserialize<'de> for Type {
+//     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+//         utils::deserialize_using_from_str(d)
+//     }
+// }

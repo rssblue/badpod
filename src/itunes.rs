@@ -1,20 +1,19 @@
 use crate::utils;
-use serde::{Deserialize, Deserializer};
 use strum_macros::EnumIter;
 
 mod category;
 pub use category::{CategoryName, SubcategoryName};
 
 /// Apple Podcasts podcast category.
-#[derive(Debug, Deserialize, PartialEq, Eq, Default)]
+#[derive(Debug, PartialEq, Eq, Default)]
 pub struct Category {
-    #[serde(rename = "$attr:text")]
+    // #[serde(rename = "$attr:text")]
     pub text: Option<CategoryName>,
 
-    #[serde(
-        default,
-        rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:category"
-    )]
+    // #[serde(
+    //     default,
+    //     rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:category"
+    // )]
     pub subcategory: Vec<Subcategory>,
 }
 
@@ -22,25 +21,25 @@ pub struct Category {
 ///
 /// Just because a subcategory is deserialized does not mean that it is compatible with the
 /// category in the parent tag.
-#[derive(Debug, Deserialize, PartialEq, Eq, Default)]
+#[derive(Debug, PartialEq, Eq, Default)]
 pub struct Subcategory {
-    #[serde(rename = "$attr:text")]
+    // #[serde(rename = "$attr:text")]
     pub text: Option<SubcategoryName>,
 }
 
 /// Artwork associated with a podcast or episode.
-#[derive(Debug, Deserialize, PartialEq, Eq, Default)]
+#[derive(Debug, PartialEq, Eq, Default)]
 pub struct Image {
-    #[serde(rename = "$attr:href")]
+    // #[serde(rename = "$attr:href")]
     pub href: Option<String>,
 }
 
 /// Podcast owner's contact information.
-#[derive(Debug, Deserialize, PartialEq, Eq, Default)]
+#[derive(Debug, PartialEq, Eq, Default)]
 pub struct Owner {
-    #[serde(rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:email")]
+    // #[serde(rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:email")]
     pub email: Option<String>,
-    #[serde(rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:name")]
+    // #[serde(rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:name")]
     pub name: Option<String>,
 }
 
@@ -75,11 +74,11 @@ impl std::fmt::Display for Yes {
     }
 }
 
-impl<'de> Deserialize<'de> for Yes {
-    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        utils::deserialize_using_from_str(d)
-    }
-}
+// impl<'de> Deserialize<'de> for Yes {
+//     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+//         utils::deserialize_using_from_str(d)
+//     }
+// }
 
 /// Apple Podcasts podcast type.
 #[derive(Debug, PartialEq, Eq, EnumIter)]
@@ -113,11 +112,11 @@ impl std::fmt::Display for PodcastType {
     }
 }
 
-impl<'de> Deserialize<'de> for PodcastType {
-    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        utils::deserialize_using_from_str(d)
-    }
-}
+// impl<'de> Deserialize<'de> for PodcastType {
+//     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+//         utils::deserialize_using_from_str(d)
+//     }
+// }
 
 /// Apple Podcasts episode type.
 #[derive(Debug, PartialEq, Eq, EnumIter)]
@@ -152,8 +151,8 @@ impl std::fmt::Display for EpisodeType {
     }
 }
 
-impl<'de> Deserialize<'de> for EpisodeType {
-    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        utils::deserialize_using_from_str(d)
-    }
-}
+// impl<'de> Deserialize<'de> for EpisodeType {
+//     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+//         utils::deserialize_using_from_str(d)
+//     }
+// }

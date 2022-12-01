@@ -1,5 +1,4 @@
 use crate::utils;
-use serde::{Deserialize, Deserializer};
 use strum_macros::EnumIter;
 
 /// Podcast platforms.
@@ -93,11 +92,11 @@ impl std::fmt::Display for Service {
     }
 }
 
-impl<'de> Deserialize<'de> for Service {
-    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        utils::deserialize_using_from_str(d)
-    }
-}
+// impl<'de> Deserialize<'de> for Service {
+//     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+//         utils::deserialize_using_from_str(d)
+//     }
+// }
 
 #[cfg(test)]
 mod tests {

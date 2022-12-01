@@ -3,7 +3,42 @@ use badpod::*;
 
 #[test]
 fn deserialize() {
-    let conditions : &[(&str, Result<Rss, String>)] = &[
+    let conditions : &[(&str, Result<Rss, badpod::Error>)] = &[
+        (
+            include_str!("data/empty_rss.xml"),
+            Ok(Rss{
+                ..Default::default()
+            })
+        ),
+        (
+            include_str!("data/empty_xml.xml"),
+            Err(Error::NoRoot),
+        ),
+        (
+            include_str!("data/empty_file.xml"),
+            Err(Error::NoRoot),
+        ),
+        (
+            include_str!("data/root_not_rss.xml"),
+            Err(Error::RootNotRss),
+        ),
+        (
+            include_str!("data/strange_feed.xml"),
+            Ok(Rss{
+                ..Default::default()
+            })
+        ),
+        (
+            include_str!("data/simple_feed.xml"),
+            Ok(Rss{
+                version: Some("2.0".to_string()),
+                channel: vec![Channel{
+                    description: vec!["My description".to_string()],
+                    title: vec!["My title".to_string()],
+                    ..Default::default()
+                }],
+            })
+        ),
         (
             include_str!("data/test_feed.xml"),
             Ok(Rss {
@@ -329,77 +364,344 @@ fn deserialize() {
                     },
                     ..Default::default()
                 }],
-            }),
-            ),
-            (
-                include_str!("data/podcast_namespace_example.xml"),
-                Ok(Rss{
-                    version: Some("2.0".to_string()),
-                    channel: vec![Channel{
-                        title: vec!["Podcasting 2.0 Namespace Example".to_string()],
-                        description: vec!["This is a fake show that exists only as an example of the \"podcast\" namespace tag usage.".to_string()],
-                        link: vec!["http://example.com/podcast".to_string()],
-                        language: vec![Language::English(LanguageEnglish::UnitedStates)],
-                        generator: vec!["Freedom Controller".to_string()],
-                        managing_editor: vec!["john@example.com (John Doe)".to_string()],
-                        web_master: vec!["support@example.com (Tech Support)".to_string()],
-                        pub_date: vec![badpod::DateTime::Ok(chrono::FixedOffset::west(0).ymd(2020, 10, 9).and_hms(4, 30, 38))],
-                        last_build_date: vec![badpod::DateTime::Ok(chrono::FixedOffset::west(0).ymd(2020, 10, 9).and_hms(4, 30, 38))],
+            })
+    ),
+    (
+        include_str!("data/podcast_namespace_example.xml"),
+        Ok(Rss{
+            version: Some("2.0".to_string()),
+            channel: vec![Channel{
+                title: vec!["Podcasting 2.0 Namespace Example".to_string()],
+                description: vec!["This is a fake show that exists only as an example of the \"podcast\" namespace tag usage.".to_string()],
+                link: vec!["http://example.com/podcast".to_string()],
+                language: vec![Language::English(LanguageEnglish::UnitedStates)],
+                generator: vec!["Freedom Controller".to_string()],
+                managing_editor: vec!["john@example.com (John Doe)".to_string()],
+                web_master: vec!["support@example.com (Tech Support)".to_string()],
+                pub_date: vec![badpod::DateTime::Ok(chrono::FixedOffset::west(0).ymd(2020, 10, 9).and_hms(4, 30, 38))],
+                last_build_date: vec![badpod::DateTime::Ok(chrono::FixedOffset::west(0).ymd(2020, 10, 9).and_hms(4, 30, 38))],
 
-                        podcast_guid: vec![podcast::Guid::Other("y0ur-gu1d-g035-h3r3".to_string())],
-                        podcast_license: vec![podcast::License{
-                            url: Some("https://example.org/mypodcastlicense/full.pdf".to_string()),
-                            value: Some(podcast::LicenseType::Other("my-podcast-license-v1".to_string())),
+                podcast_guid: vec![podcast::Guid::Other("y0ur-gu1d-g035-h3r3".to_string())],
+                podcast_license: vec![podcast::License{
+                    url: Some("https://example.org/mypodcastlicense/full.pdf".to_string()),
+                    value: Some(podcast::LicenseType::Other("my-podcast-license-v1".to_string())),
+                }],
+                podcast_locked: vec![podcast::Locked{
+                    owner: Some("podcastowner@example.com".to_string()),
+                    value: Some(Bool::Ok(true)),
+                }],
+                podcast_block: vec! {
+                    podcast::Block{
+                        id: None,
+                        value: Some(Bool::Ok(true)),
+                    },
+                    podcast::Block{
+                        id: Some(podcast::Service::Google),
+                        value: Some(Bool::Ok(false)),
+                    },
+                    podcast::Block{
+                        id: Some(podcast::Service::Amazon),
+                        value: Some(Bool::Ok(false)),
+                    },
+                },
+                podcast_funding: vec! {
+                    podcast::Funding{
+                        url: Some("https://example.com/donate".to_string()),
+                        value: Some("Support the show!".to_string()),
+                    },
+                },
+                podcast_location: vec![podcast::Location{
+                    geo: Some(podcast::Geo::Ok{
+                        latitude: 30.2672,
+                        longitude: 97.7431,
+                        altitude: None,
+                        uncertainty: None,
+                    }),
+                    osm: Some(podcast::Osm::Ok{
+                        type_: podcast::OsmType::Relation,
+                        id: 113314,
+                        revision: None,
+                    }),
+                    value: Some("Austin, TX".to_string()),
+                }],
+                podcast_medium: vec![podcast::Medium::Podcast],
+                podcast_value: vec![podcast::Value { 
+                    type_: Some(podcast::ValueType::Lightning),
+                    method: Some(podcast::ValueMethod::Keysend),
+                    suggested: Some(Float::Ok(0.00000005)),
+                    value_recipient: vec!{
+                        podcast::ValueRecipient{
+                            name: Some("podcaster".to_string()),
+                            type_: Some(podcast::ValueRecipientType::Node),
+                            address: Some("036557ea56b3b86f08be31bcd2557cae8021b0e3a9413f0c0e52625c6696972e57".to_string()),
+                            split: Some(Integer::Ok(99)),
+                            ..Default::default()
+                        },
+                        podcast::ValueRecipient{
+                            name: Some("hosting company".to_string()),
+                            type_: Some(podcast::ValueRecipientType::Node),
+                            address: Some("036557ea56b3b86f08be31bcd2557cae8021b0e3a9413f0c0e52625c6696972e57".to_string()),
+                            split: Some(Integer::Ok(1)),
+                            ..Default::default()
+                        },
+                    },
+                }],
+                podcast_trailer: vec!{
+                    podcast::Trailer{
+                        url: Some("https://example.org/trailers/teaser".to_string()),
+                        pub_date: Some(badpod::DateTime::Ok(chrono::FixedOffset::west(5*60*60).ymd(2021, 4, 1).and_hms(8, 0, 0))),
+                        length: Some(Integer::Ok(12345678)),
+                        type_: Some(MimeEnclosure::Other("audio/mp3".to_string())),
+                        value: Some("Coming April 1st, 2021".to_string()),
+                        season: None,
+                    },
+                },
+                podcast_live_item: vec!{
+                    podcast::LiveItem{
+                        status: Some(podcast::LiveItemStatus::Live),
+                        start: Some(badpod::DateTime::Ok(chrono::FixedOffset::west(6*60*60).ymd(2021, 9, 26).and_hms(7, 30, 0))),
+                        end: Some(badpod::DateTime::Ok(chrono::FixedOffset::west(6*60*60).ymd(2021, 9, 26).and_hms(9, 30, 0))),
+                        title: vec!["Podcasting 2.0 Live Show".to_string()],
+                        description: vec!["A look into the future of podcasting and how we get to Podcasting 2.0!".to_string()],
+                        link: vec!["https://example.com/podcast/live".to_string()],
+                        guid: vec![Guid{
+                            is_permalink: Some(Bool::Ok(true)),
+                            value: Some("https://example.com/live".to_string()),
                         }],
-                        podcast_locked: vec![podcast::Locked{
-                            owner: Some("podcastowner@example.com".to_string()),
-                            value: Some(Bool::Ok(true)),
-                        }],
-                        podcast_block: vec! {
-                            podcast::Block{
-                                id: None,
-                                value: Some(Bool::Ok(true)),
-                            },
-                            podcast::Block{
-                                id: Some(podcast::Service::Google),
-                                value: Some(Bool::Ok(false)),
-                            },
-                            podcast::Block{
-                                id: Some(podcast::Service::Amazon),
-                                value: Some(Bool::Ok(false)),
+                        podcast_alternate_enclosure: vec!{
+                            podcast::AlternateEnclosure{
+                                type_: Some(MimeEnclosure::AudioMp3),
+                                length: Some(Integer::Ok(312)),
+                                default: Some(Bool::Ok(true)),
+                                podcast_source: vec!{
+                                    podcast::Source{
+                                        uri: Some("https://example.com/pc20/livestream".to_string()),
+                                        type_: None,
+                                    },
+                                },
+                                ..Default::default()
                             },
                         },
-                        podcast_funding: vec! {
-                            podcast::Funding{
-                                url: Some("https://example.com/donate".to_string()),
-                                value: Some("Support the show!".to_string()),
+                        enclosure: vec![Enclosure {
+                            url: Some("https://example.com/pc20/livestream?format=.mp3".to_string()),
+                            type_: Some(MimeEnclosure::AudioMp3),
+                            length: Some(Integer::Ok(312)),
+                        }],
+                        content_link: vec!{
+                            podcast::ContentLink{
+                                href: Some("https://youtube.com/pc20/livestream".to_string()),
+                                value: Some("YouTube!".to_string()),
+                            },
+                            podcast::ContentLink{
+                                href: Some("https://twitch.com/pc20/livestream".to_string()),
+                                value: Some("Twitch!".to_string()),
                             },
                         },
-                        podcast_location: vec![podcast::Location{
-                            geo: Some(podcast::Geo::Ok{
-                                latitude: 30.2672,
-                                longitude: 97.7431,
-                                altitude: None,
-                                uncertainty: None,
-                            }),
-                            osm: Some(podcast::Osm::Ok{
-                                type_: podcast::OsmType::Relation,
-                                id: 113314,
-                                revision: None,
-                            }),
-                            value: Some("Austin, TX".to_string()),
+                        ..Default::default()
+                    },
+                },
+
+                itunes_author: vec!["John Doe".to_string()],
+                itunes_explicit: vec![Bool::Other("no".to_string())],
+                itunes_type: vec![itunes::PodcastType::Episodic],
+                itunes_category: vec!{
+                    itunes::Category{
+                        text: Some(itunes::CategoryName::News),
+                        subcategory: vec![],
+                    },
+                    itunes::Category{
+                        text: Some(itunes::CategoryName::Technology),
+                        subcategory: vec![],
+                    },
+                },
+                itunes_owner: vec![itunes::Owner{
+                    email: Some("johndoe@example.com".to_string()),
+                    name: Some("John Doe".to_string()),
+                }],
+                itunes_image: vec![itunes::Image{
+                    href: None,
+                }],
+
+                item: vec!{
+                    Item{
+                        title: vec!["Episode 3 - The Future".to_string()],
+                        description: vec!["<p>A look into the future of podcasting and how we get to Podcasting 2.0!</p>".to_string()],
+                        link: vec!["https://example.com/podcast/ep0003".to_string()],
+                        guid: vec![Guid{
+                            is_permalink: Some(Bool::Ok(true)),
+                            value: Some("https://example.com/ep0003".to_string()),
                         }],
-                        podcast_medium: vec![podcast::Medium::Podcast],
-                        podcast_value: vec![podcast::Value { 
+                        pub_date: vec![badpod::DateTime::Ok(chrono::FixedOffset::west(0).ymd(2020, 10, 9).and_hms(4, 30, 38))],
+                        enclosure: vec![Enclosure{
+                            url: Some("https://example.com/file-03.mp3".to_string()),
+                            length: Some(Integer::Ok(43200000)),
+                            type_: Some(MimeEnclosure::AudioMp3),
+                        }],
+
+                        itunes_image: vec![itunes::Image{
+                            href: None,
+                        }],
+                        itunes_explicit: vec![Bool::Other("no".to_string())],
+
+                        podcast_images: vec![podcast::Images {
+                            srcset: vec! {
+                                podcast::Image::Ok("https://example.com/images/ep3/pci_avatar-massive.jpg".to_string(), 1500),
+                                podcast::Image::Ok("https://example.com/images/ep3/pci_avatar-middle.jpg".to_string(), 600),
+                                podcast::Image::Ok("https://example.com/images/ep3/pci_avatar-small.jpg".to_string(), 300),
+                                podcast::Image::Ok("https://example.com/images/ep3/pci_avatar-tiny.jpg".to_string(), 150),
+                            },
+                        }],
+                        podcast_season: vec![podcast::Season{
+                            name: Some("Podcasting 2.0".to_string()),
+                            value: Some(Integer::Ok(1)),
+                        }],
+                        podcast_episode: vec![podcast::Episode{
+                            display: None,
+                            value: Some(Number::Integer(3)),
+                        }],
+                        podcast_chapters: vec![podcast::Chapters{
+                            url: Some("https://example.com/ep3_chapters.json".to_string()),
+                            type_: Some(MimeChapters::ApplicationJson),
+                        }],
+                        podcast_soundbite: vec!{
+                            podcast::Soundbite{
+                                start_time: Some(Float::Ok(33.833)),
+                                duration: Some(Float::Ok(60.0)),
+                                value: None,
+                            },
+                        },
+                        podcast_transcript: vec!{
+                            podcast::Transcript{
+                                url: Some("https://example.com/ep3/transcript.txt".to_string()),
+                                type_: Some(MimeTranscript::TextPlain),
+                                ..Default::default()
+                            },
+                        },
+                        podcast_person: vec!{
+                            podcast::Person{
+                                href: Some("https://www.podchaser.com/creators/adam-curry-107ZzmWE5f".to_string()),
+                                img: Some("https://example.com/images/adamcurry.jpg".to_string()),
+                                value: Some("Adam Curry".to_string()),
+                                ..Default::default()
+                            },
+                            podcast::Person{
+                                role: Some(podcast::PersonRole::Guest),
+                                href: Some("https://github.com/daveajones/".to_string()),
+                                img: Some("https://example.com/images/davejones.jpg".to_string()),
+                                value: Some("Dave Jones".to_string()),
+                                ..Default::default()
+                            },
+                            podcast::Person{
+                                group: Some(podcast::PersonGroup::Visuals),
+                                role: Some(podcast::PersonRole::CoverArtDesigner),
+                                href: Some("https://example.com/artist/beckysmith".to_string()),
+                                value: Some("Becky Smith".to_string()),
+                                ..Default::default()
+                            },
+                        },
+                        podcast_alternate_enclosure: vec!{
+                            podcast::AlternateEnclosure{
+                                type_: Some(MimeEnclosure::AudioMp3),
+                                length: Some(Integer::Ok(43200000)),
+                                bit_rate: Some(Float::Ok(128000.0)),
+                                default: Some(Bool::Ok(true)),
+                                title: Some("Standard".to_string()),
+                                podcast_source: vec!{
+                                    podcast::Source{
+                                        uri: Some("https://example.com/file-03.mp3".to_string()),
+                                        type_: None,
+                                    },
+                                    podcast::Source{
+                                        uri: Some("ipfs://someRandomMpegFile03".to_string()),
+                                        type_: None,
+                                    }
+                                },
+                                ..Default::default()
+                            },
+                            podcast::AlternateEnclosure{
+                                type_: Some(MimeEnclosure::AudioOpus),
+                                length: Some(Integer::Ok(32400000)),
+                                bit_rate: Some(Float::Ok(96000.0)),
+                                title: Some("High quality".to_string()),
+                                podcast_source: vec!{
+                                    podcast::Source{
+                                        uri: Some("https://example.com/file-high-03.opus".to_string()),
+                                        type_: None,
+                                    },
+                                    podcast::Source{
+                                        uri: Some("ipfs://someRandomHighBitrateOpusFile03".to_string()),
+                                        type_: None,
+                                    }
+                                },
+                                ..Default::default()
+                            },
+                            podcast::AlternateEnclosure{
+                                type_: Some(MimeEnclosure::AudioAac),
+                                length: Some(Integer::Ok(54000000)),
+                                bit_rate: Some(Float::Ok(160000.0)),
+                                title: Some("High quality AAC".to_string()),
+                                podcast_source: vec!{
+                                    podcast::Source{
+                                        uri: Some("https://example.com/file-proprietary-03.aac".to_string()),
+                                        type_: None,
+                                    },
+                                    podcast::Source{
+                                        uri: Some("ipfs://someRandomProprietaryAACFile03".to_string()),
+                                        type_: None,
+                                    }
+                                },
+                                ..Default::default()
+                            },
+                            podcast::AlternateEnclosure{
+                                type_: Some(MimeEnclosure::AudioOpus),
+                                length: Some(Integer::Ok(5400000)),
+                                bit_rate: Some(Float::Ok(16000.0)),
+                                title: Some("Low bandwidth".to_string()),
+                                podcast_source: vec!{
+                                    podcast::Source{
+                                        uri: Some("https://example.com/file-low-03.opus".to_string()),
+                                        type_: None,
+                                    },
+                                    podcast::Source{
+                                        uri: Some("ipfs://someRandomLowBitrateOpusFile03".to_string()),
+                                        type_: None,
+                                    }
+                                },
+                                ..Default::default()
+                            },
+                            podcast::AlternateEnclosure{
+                                type_: Some(MimeEnclosure::VideoMp4),
+                                length: Some(Integer::Ok(7924786)),
+                                bit_rate: Some(Float::Ok(511276.52)),
+                                height: Some(Integer::Ok(720)),
+                                title: Some("Video version".to_string()),
+                                podcast_source: vec!{
+                                    podcast::Source{
+                                        uri: Some("https://example.com/file-720.mp4".to_string()),
+                                        type_: None,
+                                    },
+                                    podcast::Source{
+                                        uri: Some("ipfs://QmX33FYehk6ckGQ6g1D9D3FqZPix5JpKstKQKbaS8quUFb".to_string()),
+                                        type_: None,
+                                    }
+                                },
+                                podcast_integrity: vec![podcast::Integrity{
+                                    type_: Some(podcast::IntegrityType::Sri),
+                                    value: Some("sha384-ExVqijgYHm15PqQqdXfW95x+Rs6C+d6E/ICxyQOeFevnxNLR/wtJNrNYTjIysUBo".to_string()),
+                                }],
+                                ..Default::default()
+                            },
+                        },
+                        podcast_value: vec![podcast::Value {
                             type_: Some(podcast::ValueType::Lightning),
                             method: Some(podcast::ValueMethod::Keysend),
                             suggested: Some(Float::Ok(0.00000005)),
-                            value_recipient: vec!{
+                            value_recipient: vec! {
                                 podcast::ValueRecipient{
                                     name: Some("podcaster".to_string()),
                                     type_: Some(podcast::ValueRecipientType::Node),
                                     address: Some("036557ea56b3b86f08be31bcd2557cae8021b0e3a9413f0c0e52625c6696972e57".to_string()),
-                                    split: Some(Integer::Ok(99)),
+                                    split: Some(Integer::Ok(49)),
                                     ..Default::default()
                                 },
                                 podcast::ValueRecipient{
@@ -409,648 +711,367 @@ fn deserialize() {
                                     split: Some(Integer::Ok(1)),
                                     ..Default::default()
                                 },
+                                podcast::ValueRecipient{
+                                    name: Some("Gigi (Guest)".to_string()),
+                                    type_: Some(podcast::ValueRecipientType::Node),
+                                    address: Some("02e12fea95f576a680ec1938b7ed98ef0855eadeced493566877d404e404bfbf52".to_string()),
+                                    split: Some(Integer::Ok(50)),
+                                    ..Default::default()
+                                },
                             },
                         }],
-                        podcast_trailer: vec!{
-                            podcast::Trailer{
-                                url: Some("https://example.org/trailers/teaser".to_string()),
-                                pub_date: Some(badpod::DateTime::Ok(chrono::FixedOffset::west(5*60*60).ymd(2021, 4, 1).and_hms(8, 0, 0))),
-                                length: Some(Integer::Ok(12345678)),
-                                type_: Some(MimeEnclosure::Other("audio/mp3".to_string())),
-                                value: Some("Coming April 1st, 2021".to_string()),
-                                season: None,
+                        podcast_social_interact: vec!{
+                            podcast::SocialInteract{
+                                priority: Some(Integer::Ok(1)),
+                                uri: Some("https://podcastindex.social/web/@dave/108013847520053258".to_string()),
+                                protocol: Some(podcast::SocialProtocol::ActivityPub),
+                                account_id: Some("@dave".to_string()),
+                                account_url: Some("https://podcastindex.social/web/@dave".to_string()),
                             },
-                        },
-                        podcast_live_item: vec!{
-                            podcast::LiveItem{
-                                status: Some(podcast::LiveItemStatus::Live),
-                                start: Some(badpod::DateTime::Ok(chrono::FixedOffset::west(6*60*60).ymd(2021, 9, 26).and_hms(7, 30, 0))),
-                                end: Some(badpod::DateTime::Ok(chrono::FixedOffset::west(6*60*60).ymd(2021, 9, 26).and_hms(9, 30, 0))),
-                                title: vec!["Podcasting 2.0 Live Show".to_string()],
-                                description: vec!["A look into the future of podcasting and how we get to Podcasting 2.0!".to_string()],
-                                link: vec!["https://example.com/podcast/live".to_string()],
-                                guid: vec![Guid{
-                                    is_permalink: Some(Bool::Ok(true)),
-                                    value: Some("https://example.com/live".to_string()),
-                                }],
-                                podcast_alternate_enclosure: vec!{
-                                    podcast::AlternateEnclosure{
-                                        type_: Some(MimeEnclosure::AudioMp3),
-                                        length: Some(Integer::Ok(312)),
-                                        default: Some(Bool::Ok(true)),
-                                        podcast_source: vec!{
-                                            podcast::Source{
-                                                uri: Some("https://example.com/pc20/livestream".to_string()),
-                                                type_: None,
-                                            },
-                                        },
-                                        ..Default::default()
-                                    },
-                                },
-                                enclosure: vec![Enclosure {
-                                    url: Some("https://example.com/pc20/livestream?format=.mp3".to_string()),
-                                    type_: Some(MimeEnclosure::AudioMp3),
-                                    length: Some(Integer::Ok(312)),
-                                }],
-                                content_link: vec!{
-                                    podcast::ContentLink{
-                                        href: Some("https://youtube.com/pc20/livestream".to_string()),
-                                        value: Some("YouTube!".to_string()),
-                                    },
-                                    podcast::ContentLink{
-                                        href: Some("https://twitch.com/pc20/livestream".to_string()),
-                                        value: Some("Twitch!".to_string()),
-                                    },
-                                },
-                                ..Default::default()
+                            podcast::SocialInteract{
+                                priority: Some(Integer::Ok(2)),
+                                uri: Some("https://twitter.com/PodcastindexOrg/status/1507120226361647115".to_string()),
+                                protocol: Some(podcast::SocialProtocol::Twitter),
+                                account_id: Some("@podcastindexorg".to_string()),
+                                account_url: Some("https://twitter.com/PodcastindexOrg".to_string()),
                             },
                         },
 
-                        itunes_author: vec!["John Doe".to_string()],
-                        itunes_explicit: vec![Bool::Other("no".to_string())],
-                        itunes_type: vec![itunes::PodcastType::Episodic],
-                        itunes_category: vec!{
-                            itunes::Category{
-                                text: Some(itunes::CategoryName::News),
-                                subcategory: vec![],
-                            },
-                            itunes::Category{
-                                text: Some(itunes::CategoryName::Technology),
-                                subcategory: vec![],
-                            },
-                        },
-                        itunes_owner: vec![itunes::Owner{
-                            email: Some("johndoe@example.com".to_string()),
-                            name: Some("John Doe".to_string()),
+                        ..Default::default()
+                    },
+                    Item{
+                        title: vec!["Episode 2 - The Present".to_string()],
+                        description: vec!["<p>Where are we at now in the podcasting era. What are the current challenges?</p>".to_string()],
+                        link: vec!["https://example.com/podcast/ep0002".to_string()],
+                        guid: vec![Guid{
+                            is_permalink: Some(Bool::Ok(true)),
+                            value: Some("https://example.com/ep0002".to_string()),
                         }],
+                        pub_date: vec![badpod::DateTime::Ok(chrono::FixedOffset::west(0).ymd(2020, 10, 8).and_hms(4, 30, 38))],
+                        enclosure: vec![Enclosure{
+                            url: Some("https://example.com/file-02.mp3".to_string()),
+                            length: Some(Integer::Ok(43113000)),
+                            type_: Some(MimeEnclosure::AudioMp3),
+                        }],
+
                         itunes_image: vec![itunes::Image{
                             href: None,
                         }],
+                        itunes_explicit: vec![Bool::Other("no".to_string())],
 
-                        item: vec!{
-                            Item{
-                                title: vec!["Episode 3 - The Future".to_string()],
-                                description: vec!["<p>A look into the future of podcasting and how we get to Podcasting 2.0!</p>".to_string()],
-                                link: vec!["https://example.com/podcast/ep0003".to_string()],
-                                guid: vec![Guid{
-                                    is_permalink: Some(Bool::Ok(true)),
-                                    value: Some("https://example.com/ep0003".to_string()),
-                                }],
-                                pub_date: vec![badpod::DateTime::Ok(chrono::FixedOffset::west(0).ymd(2020, 10, 9).and_hms(4, 30, 38))],
-                                enclosure: vec![Enclosure{
-                                    url: Some("https://example.com/file-03.mp3".to_string()),
-                                    length: Some(Integer::Ok(43200000)),
-                                    type_: Some(MimeEnclosure::AudioMp3),
-                                }],
-
-                                itunes_image: vec![itunes::Image{
-                                    href: None,
-                                }],
-                                itunes_explicit: vec![Bool::Other("no".to_string())],
-
-                                podcast_images: vec![podcast::Images {
-                                    srcset: vec! {
-                                        podcast::Image::Ok("https://example.com/images/ep3/pci_avatar-massive.jpg".to_string(), 1500),
-                                        podcast::Image::Ok("https://example.com/images/ep3/pci_avatar-middle.jpg".to_string(), 600),
-                                        podcast::Image::Ok("https://example.com/images/ep3/pci_avatar-small.jpg".to_string(), 300),
-                                        podcast::Image::Ok("https://example.com/images/ep3/pci_avatar-tiny.jpg".to_string(), 150),
-                                    },
-                                }],
-                                podcast_season: vec![podcast::Season{
-                                    name: Some("Podcasting 2.0".to_string()),
-                                    value: Some(Integer::Ok(1)),
-                                }],
-                                podcast_episode: vec![podcast::Episode{
-                                    display: None,
-                                    value: Some(Number::Integer(3)),
-                                }],
-                                podcast_chapters: vec![podcast::Chapters{
-                                    url: Some("https://example.com/ep3_chapters.json".to_string()),
-                                    type_: Some(MimeChapters::ApplicationJson),
-                                }],
-                                podcast_soundbite: vec!{
-                                    podcast::Soundbite{
-                                        start_time: Some(Float::Ok(33.833)),
-                                        duration: Some(Float::Ok(60.0)),
-                                        value: None,
-                                    },
-                                },
-                                podcast_transcript: vec!{
-                                    podcast::Transcript{
-                                        url: Some("https://example.com/ep3/transcript.txt".to_string()),
-                                        type_: Some(MimeTranscript::TextPlain),
-                                        ..Default::default()
-                                    },
-                                },
-                                podcast_person: vec!{
-                                    podcast::Person{
-                                        href: Some("https://www.podchaser.com/creators/adam-curry-107ZzmWE5f".to_string()),
-                                        img: Some("https://example.com/images/adamcurry.jpg".to_string()),
-                                        value: Some("Adam Curry".to_string()),
-                                        ..Default::default()
-                                    },
-                                    podcast::Person{
-                                        role: Some(podcast::PersonRole::Guest),
-                                        href: Some("https://github.com/daveajones/".to_string()),
-                                        img: Some("https://example.com/images/davejones.jpg".to_string()),
-                                        value: Some("Dave Jones".to_string()),
-                                        ..Default::default()
-                                    },
-                                    podcast::Person{
-                                        group: Some(podcast::PersonGroup::Visuals),
-                                        role: Some(podcast::PersonRole::CoverArtDesigner),
-                                        href: Some("https://example.com/artist/beckysmith".to_string()),
-                                        value: Some("Becky Smith".to_string()),
-                                        ..Default::default()
-                                    },
-                                },
-                                podcast_alternate_enclosure: vec!{
-                                    podcast::AlternateEnclosure{
-                                        type_: Some(MimeEnclosure::AudioMp3),
-                                        length: Some(Integer::Ok(43200000)),
-                                        bit_rate: Some(Float::Ok(128000.0)),
-                                        default: Some(Bool::Ok(true)),
-                                        title: Some("Standard".to_string()),
-                                        podcast_source: vec!{
-                                            podcast::Source{
-                                                uri: Some("https://example.com/file-03.mp3".to_string()),
-                                                type_: None,
-                                            },
-                                            podcast::Source{
-                                                uri: Some("ipfs://someRandomMpegFile03".to_string()),
-                                                type_: None,
-                                            }
-                                        },
-                                        ..Default::default()
-                                    },
-                                    podcast::AlternateEnclosure{
-                                        type_: Some(MimeEnclosure::AudioOpus),
-                                        length: Some(Integer::Ok(32400000)),
-                                        bit_rate: Some(Float::Ok(96000.0)),
-                                        title: Some("High quality".to_string()),
-                                        podcast_source: vec!{
-                                            podcast::Source{
-                                                uri: Some("https://example.com/file-high-03.opus".to_string()),
-                                                type_: None,
-                                            },
-                                            podcast::Source{
-                                                uri: Some("ipfs://someRandomHighBitrateOpusFile03".to_string()),
-                                                type_: None,
-                                            }
-                                        },
-                                        ..Default::default()
-                                    },
-                                    podcast::AlternateEnclosure{
-                                        type_: Some(MimeEnclosure::AudioAac),
-                                        length: Some(Integer::Ok(54000000)),
-                                        bit_rate: Some(Float::Ok(160000.0)),
-                                        title: Some("High quality AAC".to_string()),
-                                        podcast_source: vec!{
-                                            podcast::Source{
-                                                uri: Some("https://example.com/file-proprietary-03.aac".to_string()),
-                                                type_: None,
-                                            },
-                                            podcast::Source{
-                                                uri: Some("ipfs://someRandomProprietaryAACFile03".to_string()),
-                                                type_: None,
-                                            }
-                                        },
-                                        ..Default::default()
-                                    },
-                                    podcast::AlternateEnclosure{
-                                        type_: Some(MimeEnclosure::AudioOpus),
-                                        length: Some(Integer::Ok(5400000)),
-                                        bit_rate: Some(Float::Ok(16000.0)),
-                                        title: Some("Low bandwidth".to_string()),
-                                        podcast_source: vec!{
-                                            podcast::Source{
-                                                uri: Some("https://example.com/file-low-03.opus".to_string()),
-                                                type_: None,
-                                            },
-                                            podcast::Source{
-                                                uri: Some("ipfs://someRandomLowBitrateOpusFile03".to_string()),
-                                                type_: None,
-                                            }
-                                        },
-                                        ..Default::default()
-                                    },
-                                    podcast::AlternateEnclosure{
-                                        type_: Some(MimeEnclosure::VideoMp4),
-                                        length: Some(Integer::Ok(7924786)),
-                                        bit_rate: Some(Float::Ok(511276.52)),
-                                        height: Some(Integer::Ok(720)),
-                                        title: Some("Video version".to_string()),
-                                        podcast_source: vec!{
-                                            podcast::Source{
-                                                uri: Some("https://example.com/file-720.mp4".to_string()),
-                                                type_: None,
-                                            },
-                                            podcast::Source{
-                                                uri: Some("ipfs://QmX33FYehk6ckGQ6g1D9D3FqZPix5JpKstKQKbaS8quUFb".to_string()),
-                                                type_: None,
-                                            }
-                                        },
-                                        podcast_integrity: vec![podcast::Integrity{
-                                            type_: Some(podcast::IntegrityType::Sri),
-                                            value: Some("sha384-ExVqijgYHm15PqQqdXfW95x+Rs6C+d6E/ICxyQOeFevnxNLR/wtJNrNYTjIysUBo".to_string()),
-                                        }],
-                                        ..Default::default()
-                                    },
-                                },
-                                podcast_value: vec![podcast::Value {
-                                    type_: Some(podcast::ValueType::Lightning),
-                                    method: Some(podcast::ValueMethod::Keysend),
-                                    suggested: Some(Float::Ok(0.00000005)),
-                                    value_recipient: vec! {
-                                        podcast::ValueRecipient{
-                                            name: Some("podcaster".to_string()),
-                                            type_: Some(podcast::ValueRecipientType::Node),
-                                            address: Some("036557ea56b3b86f08be31bcd2557cae8021b0e3a9413f0c0e52625c6696972e57".to_string()),
-                                            split: Some(Integer::Ok(49)),
-                                            ..Default::default()
-                                        },
-                                        podcast::ValueRecipient{
-                                            name: Some("hosting company".to_string()),
-                                            type_: Some(podcast::ValueRecipientType::Node),
-                                            address: Some("036557ea56b3b86f08be31bcd2557cae8021b0e3a9413f0c0e52625c6696972e57".to_string()),
-                                            split: Some(Integer::Ok(1)),
-                                            ..Default::default()
-                                        },
-                                        podcast::ValueRecipient{
-                                            name: Some("Gigi (Guest)".to_string()),
-                                            type_: Some(podcast::ValueRecipientType::Node),
-                                            address: Some("02e12fea95f576a680ec1938b7ed98ef0855eadeced493566877d404e404bfbf52".to_string()),
-                                            split: Some(Integer::Ok(50)),
-                                            ..Default::default()
-                                        },
-                                    },
-                                }],
-                                podcast_social_interact: vec!{
-                                    podcast::SocialInteract{
-                                        priority: Some(Integer::Ok(1)),
-                                        uri: Some("https://podcastindex.social/web/@dave/108013847520053258".to_string()),
-                                        protocol: Some(podcast::SocialProtocol::ActivityPub),
-                                        account_id: Some("@dave".to_string()),
-                                        account_url: Some("https://podcastindex.social/web/@dave".to_string()),
-                                    },
-                                    podcast::SocialInteract{
-                                        priority: Some(Integer::Ok(2)),
-                                        uri: Some("https://twitter.com/PodcastindexOrg/status/1507120226361647115".to_string()),
-                                        protocol: Some(podcast::SocialProtocol::Twitter),
-                                        account_id: Some("@podcastindexorg".to_string()),
-                                        account_url: Some("https://twitter.com/PodcastindexOrg".to_string()),
-                                    },
-                                },
-
+                        podcast_images: vec![podcast::Images {
+                            srcset: vec! {
+                                podcast::Image::Ok("https://example.com/images/ep2/pci_avatar-massive.jpg".to_string(), 1500),
+                                podcast::Image::Ok("https://example.com/images/ep2/pci_avatar-middle.jpg".to_string(), 600),
+                                podcast::Image::Ok("https://example.com/images/ep2/pci_avatar-small.jpg".to_string(), 300),
+                                podcast::Image::Ok("https://example.com/images/ep2/pci_avatar-tiny.jpg".to_string(), 150),
+                            },
+                        }],
+                        podcast_season: vec![podcast::Season{
+                            name: Some("Podcasting 2.0".to_string()),
+                            value: Some(Integer::Ok(1)),
+                        }],
+                        podcast_episode: vec![podcast::Episode{
+                            display: None,
+                            value: Some(Number::Integer(2)),
+                        }],
+                        podcast_chapters: vec![podcast::Chapters{
+                            url: Some("https://example.com/ep2_chapters.json".to_string()),
+                            type_: Some(MimeChapters::ApplicationJson),
+                        }],
+                        podcast_soundbite: vec!{
+                            podcast::Soundbite{
+                                start_time: Some(Float::Ok(45.4)),
+                                duration: Some(Float::Ok(56.0)),
+                                value: None,
+                            },
+                        },
+                        podcast_transcript: vec!{
+                            podcast::Transcript{
+                                url: Some("https://example.com/ep2/transcript.txt".to_string()),
+                                type_: Some(MimeTranscript::TextPlain),
                                 ..Default::default()
                             },
-                            Item{
-                                title: vec!["Episode 2 - The Present".to_string()],
-                                description: vec!["<p>Where are we at now in the podcasting era. What are the current challenges?</p>".to_string()],
-                                link: vec!["https://example.com/podcast/ep0002".to_string()],
-                                guid: vec![Guid{
-                                    is_permalink: Some(Bool::Ok(true)),
-                                    value: Some("https://example.com/ep0002".to_string()),
-                                }],
-                                pub_date: vec![badpod::DateTime::Ok(chrono::FixedOffset::west(0).ymd(2020, 10, 8).and_hms(4, 30, 38))],
-                                enclosure: vec![Enclosure{
-                                    url: Some("https://example.com/file-02.mp3".to_string()),
-                                    length: Some(Integer::Ok(43113000)),
-                                    type_: Some(MimeEnclosure::AudioMp3),
-                                }],
-
-                                itunes_image: vec![itunes::Image{
-                                    href: None,
-                                }],
-                                itunes_explicit: vec![Bool::Other("no".to_string())],
-
-                                podcast_images: vec![podcast::Images {
-                                    srcset: vec! {
-                                        podcast::Image::Ok("https://example.com/images/ep2/pci_avatar-massive.jpg".to_string(), 1500),
-                                        podcast::Image::Ok("https://example.com/images/ep2/pci_avatar-middle.jpg".to_string(), 600),
-                                        podcast::Image::Ok("https://example.com/images/ep2/pci_avatar-small.jpg".to_string(), 300),
-                                        podcast::Image::Ok("https://example.com/images/ep2/pci_avatar-tiny.jpg".to_string(), 150),
-                                    },
-                                }],
-                                podcast_season: vec![podcast::Season{
-                                    name: Some("Podcasting 2.0".to_string()),
-                                    value: Some(Integer::Ok(1)),
-                                }],
-                                podcast_episode: vec![podcast::Episode{
-                                    display: None,
-                                    value: Some(Number::Integer(2)),
-                                }],
-                                podcast_chapters: vec![podcast::Chapters{
-                                    url: Some("https://example.com/ep2_chapters.json".to_string()),
-                                    type_: Some(MimeChapters::ApplicationJson),
-                                }],
-                                podcast_soundbite: vec!{
-                                    podcast::Soundbite{
-                                        start_time: Some(Float::Ok(45.4)),
-                                        duration: Some(Float::Ok(56.0)),
-                                        value: None,
-                                    },
-                                },
-                                podcast_transcript: vec!{
-                                    podcast::Transcript{
-                                        url: Some("https://example.com/ep2/transcript.txt".to_string()),
-                                        type_: Some(MimeTranscript::TextPlain),
-                                        ..Default::default()
-                                    },
-                                },
-                                podcast_person: vec!{
-                                    podcast::Person{
-                                        href: Some("https://en.wikipedia.org/wiki/Adam_Curry".to_string()),
-                                        img: Some("http://example.com/images/adamcurry.jpg".to_string()),
-                                        value: Some("Adam Curry".to_string()),
-                                        ..Default::default()
-                                    },
-                                    podcast::Person{
-                                        role: Some(podcast::PersonRole::Guest),
-                                        href: Some("https://example.com/blog/daveajones/".to_string()),
-                                        img: Some("http://example.com/images/davejones.jpg".to_string()),
-                                        value: Some("Dave Jones".to_string()),
-                                        ..Default::default()
-                                    },
-                                    podcast::Person{
-                                        group: Some(podcast::PersonGroup::Visuals),
-                                        role: Some(podcast::PersonRole::CoverArtDesigner),
-                                        href: Some("https://example.com/artist/marcusbrown".to_string()),
-                                        value: Some("Marcus Brown".to_string()),
-                                        ..Default::default()
-                                    },
-                                },
-                                podcast_alternate_enclosure: vec!{
-                                    podcast::AlternateEnclosure{
-                                        type_: Some(MimeEnclosure::AudioMp3),
-                                        length: Some(Integer::Ok(43200000)),
-                                        bit_rate: Some(Float::Ok(128000.0)),
-                                        default: Some(Bool::Ok(true)),
-                                        title: Some("Standard".to_string()),
-                                        podcast_source: vec!{
-                                            podcast::Source{
-                                                uri: Some("https://example.com/file-02.mp3".to_string()),
-                                                type_: None,
-                                            },
-                                            podcast::Source{
-                                                uri: Some("ipfs://someRandomMpegFile02".to_string()),
-                                                type_: None,
-                                            }
-                                        },
-                                        ..Default::default()
-                                    },
-                                    podcast::AlternateEnclosure{
-                                        type_: Some(MimeEnclosure::AudioOpus),
-                                        length: Some(Integer::Ok(32400000)),
-                                        bit_rate: Some(Float::Ok(96000.0)),
-                                        title: Some("High quality".to_string()),
-                                        podcast_source: vec!{
-                                            podcast::Source{
-                                                uri: Some("https://example.com/file-high-02.opus".to_string()),
-                                                type_: None,
-                                            },
-                                            podcast::Source{
-                                                uri: Some("ipfs://someRandomHighBitrateOpusFile02".to_string()),
-                                                type_: None,
-                                            }
-                                        },
-                                        ..Default::default()
-                                    },
-                                    podcast::AlternateEnclosure{
-                                        type_: Some(MimeEnclosure::AudioAac),
-                                        length: Some(Integer::Ok(54000000)),
-                                        bit_rate: Some(Float::Ok(160000.0)),
-                                        title: Some("High quality AAC".to_string()),
-                                        podcast_source: vec!{
-                                            podcast::Source{
-                                                uri: Some("https://example.com/file-proprietary-02.aac".to_string()),
-                                                type_: None,
-                                            },
-                                            podcast::Source{
-                                                uri: Some("ipfs://someRandomProprietaryAACFile02".to_string()),
-                                                type_: None,
-                                            }
-                                        },
-                                        ..Default::default()
-                                    },
-                                    podcast::AlternateEnclosure{
-                                        type_: Some(MimeEnclosure::AudioOpus),
-                                        length: Some(Integer::Ok(5400000)),
-                                        bit_rate: Some(Float::Ok(16000.0)),
-                                        title: Some("Low bandwidth".to_string()),
-                                        podcast_source: vec!{
-                                            podcast::Source{
-                                                uri: Some("https://example.com/file-low-02.opus".to_string()),
-                                                type_: None,
-                                            },
-                                            podcast::Source{
-                                                uri: Some("ipfs://someRandomLowBitrateOpusFile02".to_string()),
-                                                type_: None,
-                                            }
-                                        },
-                                        ..Default::default()
-                                    },
-                                },
-                                podcast_value: vec![podcast::Value {
-                                    type_: Some(podcast::ValueType::Lightning),
-                                    method: Some(podcast::ValueMethod::Keysend),
-                                    suggested: Some(Float::Ok(0.00000005)),
-                                    value_recipient: vec! {
-                                        podcast::ValueRecipient{
-                                            name: Some("podcaster".to_string()),
-                                            type_: Some(podcast::ValueRecipientType::Node),
-                                            address: Some("036557ea56b3b86f08be31bcd2557cae8021b0e3a9413f0c0e52625c6696972e57".to_string()),
-                                            split: Some(Integer::Ok(49)),
-                                            ..Default::default()
-                                        },
-                                        podcast::ValueRecipient{
-                                            name: Some("hosting company".to_string()),
-                                            type_: Some(podcast::ValueRecipientType::Node),
-                                            address: Some("036557ea56b3b86f08be31bcd2557cae8021b0e3a9413f0c0e52625c6696972e57".to_string()),
-                                            split: Some(Integer::Ok(1)),
-                                            ..Default::default()
-                                        },
-                                        podcast::ValueRecipient{
-                                            name: Some("Paul Itoi (Guest)".to_string()),
-                                            type_: Some(podcast::ValueRecipientType::Node),
-                                            address: Some("03a9a8d953fe747d0dd94dd3c567ddc58451101e987e2d2bf7a4d1e10a2c89ff38".to_string()),
-                                            split: Some(Integer::Ok(50)),
-                                            ..Default::default()
-                                        },
-                                    },
-                                }],
+                        },
+                        podcast_person: vec!{
+                            podcast::Person{
+                                href: Some("https://en.wikipedia.org/wiki/Adam_Curry".to_string()),
+                                img: Some("http://example.com/images/adamcurry.jpg".to_string()),
+                                value: Some("Adam Curry".to_string()),
                                 ..Default::default()
                             },
-                            Item{
-                                title: vec!["Episode 1 - The Past".to_string()],
-                                description: vec!["<p>How did podcasting get started? What was it like in the beginning?</p>".to_string()],
-                                link: vec!["https://example.com/podcast/ep0001".to_string()],
-                                guid: vec![Guid{
-                                    is_permalink: Some(Bool::Ok(true)),
-                                    value: Some("https://example.com/ep0001".to_string()),
-                                }],
-                                pub_date: vec![badpod::DateTime::Ok(chrono::FixedOffset::west(0).ymd(2020, 10, 7).and_hms(4, 30, 38))],
-                                enclosure: vec![Enclosure{
-                                    url: Some("https://example.com/file-01.mp3".to_string()),
-                                    length: Some(Integer::Ok(43111403)),
-                                    type_: Some(MimeEnclosure::AudioMp3),
-                                }],
-
-                                itunes_image: vec![itunes::Image{
-                                    href: None,
-                                }],
-                                itunes_explicit: vec![Bool::Other("no".to_string())],
-
-                                podcast_images: vec![podcast::Images {
-                                    srcset: vec! {
-                                        podcast::Image::Ok("https://example.com/images/ep1/pci_avatar-massive.jpg".to_string(), 1500),
-                                        podcast::Image::Ok("https://example.com/images/ep1/pci_avatar-middle.jpg".to_string(), 600),
-                                        podcast::Image::Ok("https://example.com/images/ep1/pci_avatar-small.jpg".to_string(), 300),
-                                        podcast::Image::Ok("https://example.com/images/ep1/pci_avatar-tiny.jpg".to_string(), 150),
+                            podcast::Person{
+                                role: Some(podcast::PersonRole::Guest),
+                                href: Some("https://example.com/blog/daveajones/".to_string()),
+                                img: Some("http://example.com/images/davejones.jpg".to_string()),
+                                value: Some("Dave Jones".to_string()),
+                                ..Default::default()
+                            },
+                            podcast::Person{
+                                group: Some(podcast::PersonGroup::Visuals),
+                                role: Some(podcast::PersonRole::CoverArtDesigner),
+                                href: Some("https://example.com/artist/marcusbrown".to_string()),
+                                value: Some("Marcus Brown".to_string()),
+                                ..Default::default()
+                            },
+                        },
+                        podcast_alternate_enclosure: vec!{
+                            podcast::AlternateEnclosure{
+                                type_: Some(MimeEnclosure::AudioMp3),
+                                length: Some(Integer::Ok(43200000)),
+                                bit_rate: Some(Float::Ok(128000.0)),
+                                default: Some(Bool::Ok(true)),
+                                title: Some("Standard".to_string()),
+                                podcast_source: vec!{
+                                    podcast::Source{
+                                        uri: Some("https://example.com/file-02.mp3".to_string()),
+                                        type_: None,
                                     },
-                                }],
-                                podcast_season: vec![podcast::Season{
-                                    name: Some("Podcasting 2.0".to_string()),
-                                    value: Some(Integer::Ok(1)),
-                                }],
-                                podcast_episode: vec![podcast::Episode{
-                                    display: None,
-                                    value: Some(Number::Integer(1)),
-                                }],
-                                podcast_chapters: vec![podcast::Chapters{
-                                    url: Some("https://example.com/ep1_chapters.json".to_string()),
-                                    type_: Some(MimeChapters::ApplicationJson),
-                                }],
-                                podcast_soundbite: vec!{
-                                    podcast::Soundbite{
-                                        start_time: Some(Float::Ok(29.32)),
-                                        duration: Some(Float::Ok(34.0)),
-                                        value: None,
-                                    },
+                                    podcast::Source{
+                                        uri: Some("ipfs://someRandomMpegFile02".to_string()),
+                                        type_: None,
+                                    }
                                 },
-                                podcast_transcript: vec!{
-                                    podcast::Transcript{
-                                        url: Some("https://example.com/ep1/transcript.txt".to_string()),
-                                        type_: Some(MimeTranscript::TextPlain),
-                                        ..Default::default()
+                                ..Default::default()
+                            },
+                            podcast::AlternateEnclosure{
+                                type_: Some(MimeEnclosure::AudioOpus),
+                                length: Some(Integer::Ok(32400000)),
+                                bit_rate: Some(Float::Ok(96000.0)),
+                                title: Some("High quality".to_string()),
+                                podcast_source: vec!{
+                                    podcast::Source{
+                                        uri: Some("https://example.com/file-high-02.opus".to_string()),
+                                        type_: None,
                                     },
+                                    podcast::Source{
+                                        uri: Some("ipfs://someRandomHighBitrateOpusFile02".to_string()),
+                                        type_: None,
+                                    }
                                 },
-                                podcast_person: vec!{
-                                    podcast::Person{
-                                        href: Some("https://curry.com".to_string()),
-                                        img: Some("http://example.com/images/adamcurry.jpg".to_string()),
-                                        value: Some("Adam Curry".to_string()),
-                                        ..Default::default()
+                                ..Default::default()
+                            },
+                            podcast::AlternateEnclosure{
+                                type_: Some(MimeEnclosure::AudioAac),
+                                length: Some(Integer::Ok(54000000)),
+                                bit_rate: Some(Float::Ok(160000.0)),
+                                title: Some("High quality AAC".to_string()),
+                                podcast_source: vec!{
+                                    podcast::Source{
+                                        uri: Some("https://example.com/file-proprietary-02.aac".to_string()),
+                                        type_: None,
                                     },
-                                    podcast::Person{
-                                        role: Some(podcast::PersonRole::Guest),
-                                        href: Some("https://www.imdb.com/name/nm0427852888/".to_string()),
-                                        img: Some("http://example.com/images/davejones.jpg".to_string()),
-                                        value: Some("Dave Jones".to_string()),
-                                        ..Default::default()
-                                    },
-                                    podcast::Person{
-                                        group: Some(podcast::PersonGroup::Visuals),
-                                        role: Some(podcast::PersonRole::CoverArtDesigner),
-                                        href: Some("https://example.com/artist/jebickmorton".to_string()),
-                                        value: Some("Jebick Morton".to_string()),
-                                        ..Default::default()
-                                    },
+                                    podcast::Source{
+                                        uri: Some("ipfs://someRandomProprietaryAACFile02".to_string()),
+                                        type_: None,
+                                    }
                                 },
-                                podcast_alternate_enclosure: vec!{
-                                    podcast::AlternateEnclosure{
-                                        type_: Some(MimeEnclosure::AudioMp3),
-                                        length: Some(Integer::Ok(43203200)),
-                                        bit_rate: Some(Float::Ok(128000.0)),
-                                        default: Some(Bool::Ok(true)),
-                                        title: Some("Standard".to_string()),
-                                        podcast_source: vec!{
-                                            podcast::Source{
-                                                uri: Some("https://example.com/file-01.mp3".to_string()),
-                                                type_: None,
-                                            },
-                                            podcast::Source{
-                                                uri: Some("ipfs://someRandomMpegFile01".to_string()),
-                                                type_: None,
-                                            }
-                                        },
-                                        ..Default::default()
+                                ..Default::default()
+                            },
+                            podcast::AlternateEnclosure{
+                                type_: Some(MimeEnclosure::AudioOpus),
+                                length: Some(Integer::Ok(5400000)),
+                                bit_rate: Some(Float::Ok(16000.0)),
+                                title: Some("Low bandwidth".to_string()),
+                                podcast_source: vec!{
+                                    podcast::Source{
+                                        uri: Some("https://example.com/file-low-02.opus".to_string()),
+                                        type_: None,
                                     },
-                                    podcast::AlternateEnclosure{
-                                        type_: Some(MimeEnclosure::AudioOpus),
-                                        length: Some(Integer::Ok(32406000)),
-                                        bit_rate: Some(Float::Ok(96000.0)),
-                                        title: Some("High quality".to_string()),
-                                        podcast_source: vec!{
-                                            podcast::Source{
-                                                uri: Some("https://example.com/file-high-01.opus".to_string()),
-                                                type_: None,
-                                            },
-                                            podcast::Source{
-                                                uri: Some("ipfs://someRandomHighBitrateOpusFile01".to_string()),
-                                                type_: None,
-                                            }
-                                        },
-                                        ..Default::default()
-                                    },
-                                    podcast::AlternateEnclosure{
-                                        type_: Some(MimeEnclosure::AudioAac),
-                                        length: Some(Integer::Ok(5400300)),
-                                        bit_rate: Some(Float::Ok(160000.0)),
-                                        title: Some("High quality AAC".to_string()),
-                                        podcast_source: vec!{
-                                            podcast::Source{
-                                                uri: Some("https://example.com/file-proprietary-01.aac".to_string()),
-                                                type_: None,
-                                            },
-                                            podcast::Source{
-                                                uri: Some("ipfs://someRandomProprietaryAACFile01".to_string()),
-                                                type_: None,
-                                            }
-                                        },
-                                        ..Default::default()
-                                    },
-                                    podcast::AlternateEnclosure{
-                                        type_: Some(MimeEnclosure::AudioOpus),
-                                        length: Some(Integer::Ok(5042000)),
-                                        bit_rate: Some(Float::Ok(16000.0)),
-                                        title: Some("Low bandwidth".to_string()),
-                                        podcast_source: vec!{
-                                            podcast::Source{
-                                                uri: Some("https://example.com/file-low-01.opus".to_string()),
-                                                type_: None,
-                                            },
-                                            podcast::Source{
-                                                uri: Some("ipfs://someRandomLowBitrateOpusFile01".to_string()),
-                                                type_: None,
-                                            }
-                                        },
-                                        ..Default::default()
-                                    },
+                                    podcast::Source{
+                                        uri: Some("ipfs://someRandomLowBitrateOpusFile02".to_string()),
+                                        type_: None,
+                                    }
                                 },
                                 ..Default::default()
                             },
                         },
+                        podcast_value: vec![podcast::Value {
+                            type_: Some(podcast::ValueType::Lightning),
+                            method: Some(podcast::ValueMethod::Keysend),
+                            suggested: Some(Float::Ok(0.00000005)),
+                            value_recipient: vec! {
+                                podcast::ValueRecipient{
+                                    name: Some("podcaster".to_string()),
+                                    type_: Some(podcast::ValueRecipientType::Node),
+                                    address: Some("036557ea56b3b86f08be31bcd2557cae8021b0e3a9413f0c0e52625c6696972e57".to_string()),
+                                    split: Some(Integer::Ok(49)),
+                                    ..Default::default()
+                                },
+                                podcast::ValueRecipient{
+                                    name: Some("hosting company".to_string()),
+                                    type_: Some(podcast::ValueRecipientType::Node),
+                                    address: Some("036557ea56b3b86f08be31bcd2557cae8021b0e3a9413f0c0e52625c6696972e57".to_string()),
+                                    split: Some(Integer::Ok(1)),
+                                    ..Default::default()
+                                },
+                                podcast::ValueRecipient{
+                                    name: Some("Paul Itoi (Guest)".to_string()),
+                                    type_: Some(podcast::ValueRecipientType::Node),
+                                    address: Some("03a9a8d953fe747d0dd94dd3c567ddc58451101e987e2d2bf7a4d1e10a2c89ff38".to_string()),
+                                    split: Some(Integer::Ok(50)),
+                                    ..Default::default()
+                                },
+                            },
+                        }],
+                        ..Default::default()
+                    },
+                    Item{
+                        title: vec!["Episode 1 - The Past".to_string()],
+                        description: vec!["<p>How did podcasting get started? What was it like in the beginning?</p>".to_string()],
+                        link: vec!["https://example.com/podcast/ep0001".to_string()],
+                        guid: vec![Guid{
+                            is_permalink: Some(Bool::Ok(true)),
+                            value: Some("https://example.com/ep0001".to_string()),
+                        }],
+                        pub_date: vec![badpod::DateTime::Ok(chrono::FixedOffset::west(0).ymd(2020, 10, 7).and_hms(4, 30, 38))],
+                        enclosure: vec![Enclosure{
+                            url: Some("https://example.com/file-01.mp3".to_string()),
+                            length: Some(Integer::Ok(43111403)),
+                            type_: Some(MimeEnclosure::AudioMp3),
+                        }],
 
+                        itunes_image: vec![itunes::Image{
+                            href: None,
+                        }],
+                        itunes_explicit: vec![Bool::Other("no".to_string())],
+
+                        podcast_images: vec![podcast::Images {
+                            srcset: vec! {
+                                podcast::Image::Ok("https://example.com/images/ep1/pci_avatar-massive.jpg".to_string(), 1500),
+                                podcast::Image::Ok("https://example.com/images/ep1/pci_avatar-middle.jpg".to_string(), 600),
+                                podcast::Image::Ok("https://example.com/images/ep1/pci_avatar-small.jpg".to_string(), 300),
+                                podcast::Image::Ok("https://example.com/images/ep1/pci_avatar-tiny.jpg".to_string(), 150),
+                            },
+                        }],
+                        podcast_season: vec![podcast::Season{
+                            name: Some("Podcasting 2.0".to_string()),
+                            value: Some(Integer::Ok(1)),
+                        }],
+                        podcast_episode: vec![podcast::Episode{
+                            display: None,
+                            value: Some(Number::Integer(1)),
+                        }],
+                        podcast_chapters: vec![podcast::Chapters{
+                            url: Some("https://example.com/ep1_chapters.json".to_string()),
+                            type_: Some(MimeChapters::ApplicationJson),
+                        }],
+                        podcast_soundbite: vec!{
+                            podcast::Soundbite{
+                                start_time: Some(Float::Ok(29.32)),
+                                duration: Some(Float::Ok(34.0)),
+                                value: None,
+                            },
+                        },
+                        podcast_transcript: vec!{
+                            podcast::Transcript{
+                                url: Some("https://example.com/ep1/transcript.txt".to_string()),
+                                type_: Some(MimeTranscript::TextPlain),
+                                ..Default::default()
+                            },
+                        },
+                        podcast_person: vec!{
+                            podcast::Person{
+                                href: Some("https://curry.com".to_string()),
+                                img: Some("http://example.com/images/adamcurry.jpg".to_string()),
+                                value: Some("Adam Curry".to_string()),
+                                ..Default::default()
+                            },
+                            podcast::Person{
+                                role: Some(podcast::PersonRole::Guest),
+                                href: Some("https://www.imdb.com/name/nm0427852888/".to_string()),
+                                img: Some("http://example.com/images/davejones.jpg".to_string()),
+                                value: Some("Dave Jones".to_string()),
+                                ..Default::default()
+                            },
+                            podcast::Person{
+                                group: Some(podcast::PersonGroup::Visuals),
+                                role: Some(podcast::PersonRole::CoverArtDesigner),
+                                href: Some("https://example.com/artist/jebickmorton".to_string()),
+                                value: Some("Jebick Morton".to_string()),
+                                ..Default::default()
+                            },
+                        },
+                        podcast_alternate_enclosure: vec!{
+                            podcast::AlternateEnclosure{
+                                type_: Some(MimeEnclosure::AudioMp3),
+                                length: Some(Integer::Ok(43203200)),
+                                bit_rate: Some(Float::Ok(128000.0)),
+                                default: Some(Bool::Ok(true)),
+                                title: Some("Standard".to_string()),
+                                podcast_source: vec!{
+                                    podcast::Source{
+                                        uri: Some("https://example.com/file-01.mp3".to_string()),
+                                        type_: None,
+                                    },
+                                    podcast::Source{
+                                        uri: Some("ipfs://someRandomMpegFile01".to_string()),
+                                        type_: None,
+                                    }
+                                },
+                                ..Default::default()
+                            },
+                            podcast::AlternateEnclosure{
+                                type_: Some(MimeEnclosure::AudioOpus),
+                                length: Some(Integer::Ok(32406000)),
+                                bit_rate: Some(Float::Ok(96000.0)),
+                                title: Some("High quality".to_string()),
+                                podcast_source: vec!{
+                                    podcast::Source{
+                                        uri: Some("https://example.com/file-high-01.opus".to_string()),
+                                        type_: None,
+                                    },
+                                    podcast::Source{
+                                        uri: Some("ipfs://someRandomHighBitrateOpusFile01".to_string()),
+                                        type_: None,
+                                    }
+                                },
+                                ..Default::default()
+                            },
+                            podcast::AlternateEnclosure{
+                                type_: Some(MimeEnclosure::AudioAac),
+                                length: Some(Integer::Ok(5400300)),
+                                bit_rate: Some(Float::Ok(160000.0)),
+                                title: Some("High quality AAC".to_string()),
+                                podcast_source: vec!{
+                                    podcast::Source{
+                                        uri: Some("https://example.com/file-proprietary-01.aac".to_string()),
+                                        type_: None,
+                                    },
+                                    podcast::Source{
+                                        uri: Some("ipfs://someRandomProprietaryAACFile01".to_string()),
+                                        type_: None,
+                                    }
+                                },
+                                ..Default::default()
+                            },
+                            podcast::AlternateEnclosure{
+                                type_: Some(MimeEnclosure::AudioOpus),
+                                length: Some(Integer::Ok(5042000)),
+                                bit_rate: Some(Float::Ok(16000.0)),
+                                title: Some("Low bandwidth".to_string()),
+                                podcast_source: vec!{
+                                    podcast::Source{
+                                        uri: Some("https://example.com/file-low-01.opus".to_string()),
+                                        type_: None,
+                                    },
+                                    podcast::Source{
+                                        uri: Some("ipfs://someRandomLowBitrateOpusFile01".to_string()),
+                                        type_: None,
+                                    }
+                                },
+                                ..Default::default()
+                            },
+                        },
                         ..Default::default()
-                    }],
-                }),
-                ),
-                (
-                    include_str!("data/empty_rss.xml"),
-                    Ok(Rss{
-                        ..Default::default()
-                    }),
-                    ),
-                    (
-                        include_str!("data/empty_xml.xml"),
-                        Err("2:1 Unexpected end of stream: no root element found".to_string()),
-                        ),
-                        (
-                            include_str!("data/empty_file.xml"),
-                            Err("1:1 Unexpected end of stream: no root element found".to_string()),
-                            ),
-                        ];
+                    },
+                },
+
+                ..Default::default()
+            }],
+        })
+    ),
+    ];
 
     for (input, expected) in conditions {
         let output = badpod::from_str(input);
@@ -1062,7 +1083,7 @@ fn deserialize() {
                 pretty_assertions::assert_eq!(output, *expected);
             }
             (Err(output), Ok(_)) => {
-                panic!("Unexpected error: {}", output);
+                panic!("Unexpected error: {:?}", output);
             }
             (Ok(output), Err(_)) => {
                 panic!("Unexpected success: {:?}", output);

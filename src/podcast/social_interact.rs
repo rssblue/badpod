@@ -1,5 +1,4 @@
 use crate::utils;
-use serde::{Deserialize, Deserializer};
 use strum_macros::EnumIter;
 
 /// Social protocols that can be used in [SocialInteract](crate::podcast::SocialInteract).
@@ -36,8 +35,8 @@ impl std::fmt::Display for Protocol {
     }
 }
 
-impl<'de> Deserialize<'de> for Protocol {
-    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        utils::deserialize_using_from_str(d)
-    }
-}
+// impl<'de> Deserialize<'de> for Protocol {
+//     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+//         utils::deserialize_using_from_str(d)
+//     }
+// }

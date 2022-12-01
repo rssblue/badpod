@@ -1,5 +1,4 @@
 use crate::utils;
-use serde::{Deserialize, Deserializer};
 use strum_macros::{Display, EnumString};
 
 /// Geographical coordinates.
@@ -121,11 +120,11 @@ impl std::fmt::Display for Geo {
     }
 }
 
-impl<'de> Deserialize<'de> for Geo {
-    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        utils::deserialize_using_from_str(d)
-    }
-}
+// impl<'de> Deserialize<'de> for Geo {
+//     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+//         utils::deserialize_using_from_str(d)
+//     }
+// }
 
 /// Type of [Osm](Osm) object.
 #[derive(Debug, PartialEq, Eq, EnumString, Display, Clone)]
@@ -217,11 +216,11 @@ impl std::fmt::Display for Osm {
     }
 }
 
-impl<'de> Deserialize<'de> for Osm {
-    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        utils::deserialize_using_from_str(d)
-    }
-}
+// impl<'de> Deserialize<'de> for Osm {
+//     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+//         utils::deserialize_using_from_str(d)
+//     }
+// }
 
 #[cfg(test)]
 mod tests {

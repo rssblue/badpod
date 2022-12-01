@@ -1,11 +1,35 @@
-use crate::utils;
-use serde::{Deserialize, Deserializer};
+pub enum TimeFormat {
+    Rfc2822,
+    Iso8601,
+}
 
 /// Used for deserializing combined dates and times.
 #[derive(Debug, PartialEq, Eq)]
 pub enum DateTime {
     Ok(chrono::DateTime<chrono::FixedOffset>),
     Other(String),
+}
+
+impl TimeFormat {
+    pub fn parse(&self, s: &str) -> DateTime {
+        match *self {
+            TimeFormat::Rfc2822 => match chrono::DateTime::parse_from_rfc2822(s) {
+                Ok(dt) => DateTime::Ok(dt),
+                Err(_) => DateTime::Other(s.to_string()),
+            },
+            TimeFormat::Iso8601 => {
+                if let Ok(t) = chrono::DateTime::parse_from_rfc3339(&s) {
+                    return DateTime::Ok(t);
+                }
+
+                if let Ok(t) = chrono::DateTime::parse_from_str(&s, "%Y-%m-%dT%H:%M:%S%.f%:z") {
+                    return DateTime::Ok(t);
+                }
+
+                DateTime::Other(s.to_string())
+            }
+        }
+    }
 }
 
 impl std::str::FromStr for DateTime {
@@ -25,32 +49,5 @@ impl std::fmt::Display for DateTime {
             Self::Ok(t) => write!(f, "{t}"),
             Self::Other(s) => write!(f, "{s}"),
         }
-    }
-}
-
-impl<'de> Deserialize<'de> for DateTime {
-    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        utils::deserialize_using_from_str(d)
-    }
-}
-
-pub enum DatetimeISO8601 {}
-
-impl<'de> serde_with::DeserializeAs<'de, DateTime> for DatetimeISO8601 {
-    fn deserialize_as<D: Deserializer<'de>>(d: D) -> Result<DateTime, D::Error> {
-        let s = match String::deserialize(d) {
-            Ok(s) => s,
-            Err(e) => return Err(e),
-        };
-
-        if let Ok(t) = chrono::DateTime::parse_from_rfc3339(&s) {
-            return Ok(DateTime::Ok(t));
-        }
-
-        if let Ok(t) = chrono::DateTime::parse_from_str(&s, "%Y-%m-%dT%H:%M:%S%.f%:z") {
-            return Ok(DateTime::Ok(t));
-        }
-
-        Ok(DateTime::Other(s))
     }
 }

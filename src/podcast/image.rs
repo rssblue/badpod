@@ -1,10 +1,9 @@
-use serde::{Deserialize, Deserializer};
 use std::str::FromStr;
 
 /// Allows specifying different image sizes at either the episode or channel level.
-#[derive(Debug, Deserialize, PartialEq, Eq, Default)]
+#[derive(Debug, PartialEq, Eq, Default)]
 pub struct Images {
-    #[serde(rename = "$attr:srcset", deserialize_with = "vec_image", default)]
+    // #[serde(rename = "$attr:srcset", deserialize_with = "vec_image", default)]
     pub srcset: Vec<Image>,
 }
 
@@ -68,26 +67,26 @@ impl std::fmt::Display for Image {
     }
 }
 
-fn vec_image<'de, D>(deserializer: D) -> Result<Vec<Image>, D::Error>
-where
-    D: Deserializer<'de>,
-{
-    let s = match String::deserialize(deserializer) {
-        Ok(s) => s,
-        Err(e) => return Err(e),
-    };
-
-    let image_strs = s.split(',');
-    let mut images = vec![];
-    for image_str in image_strs {
-        match Image::from_str(image_str) {
-            Ok(image) => images.push(image),
-            Err(_) => images.push(Image::Other(image_str.trim().to_string())),
-        };
-    }
-
-    Ok(images)
-}
+// fn vec_image<'de, D>(deserializer: D) -> Result<Vec<Image>, D::Error>
+// where
+//     D: Deserializer<'de>,
+// {
+//     let s = match String::deserialize(deserializer) {
+//         Ok(s) => s,
+//         Err(e) => return Err(e),
+//     };
+//
+//     let image_strs = s.split(',');
+//     let mut images = vec![];
+//     for image_str in image_strs {
+//         match Image::from_str(image_str) {
+//             Ok(image) => images.push(image),
+//             Err(_) => images.push(Image::Other(image_str.trim().to_string())),
+//         };
+//     }
+//
+//     Ok(images)
+// }
 
 #[cfg(test)]
 mod tests {

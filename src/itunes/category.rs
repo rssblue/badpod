@@ -1,5 +1,4 @@
 use crate::utils;
-use serde::{Deserialize, Deserializer};
 use std::fmt;
 use strum::EnumProperty;
 use strum_macros::{EnumIter, EnumProperty};
@@ -59,11 +58,11 @@ impl fmt::Display for CategoryName {
     }
 }
 
-impl<'de> Deserialize<'de> for CategoryName {
-    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        utils::deserialize_using_from_str(d)
-    }
-}
+// impl<'de> Deserialize<'de> for CategoryName {
+//     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+//         utils::deserialize_using_from_str(d)
+//     }
+// }
 
 /// Apple Podcasts podcast subcategory names.
 #[derive(Debug, PartialEq, Eq, EnumProperty, EnumIter)]
@@ -226,11 +225,11 @@ impl fmt::Display for SubcategoryName {
     }
 }
 
-impl<'de> Deserialize<'de> for SubcategoryName {
-    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        utils::deserialize_using_from_str(d)
-    }
-}
+// impl<'de> Deserialize<'de> for SubcategoryName {
+//     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+//         utils::deserialize_using_from_str(d)
+//     }
+// }
 
 #[cfg(test)]
 mod tests {

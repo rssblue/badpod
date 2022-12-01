@@ -1,5 +1,4 @@
 use crate::utils;
-use serde::{Deserialize, Deserializer};
 use strum::EnumProperty;
 use strum_macros::{EnumIter, EnumProperty};
 
@@ -55,11 +54,11 @@ impl std::fmt::Display for Group {
     }
 }
 
-impl<'de> Deserialize<'de> for Group {
-    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        utils::deserialize_using_from_str(d)
-    }
-}
+// impl<'de> Deserialize<'de> for Group {
+//     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+//         utils::deserialize_using_from_str(d)
+//     }
+// }
 
 /// Role (as defined by [Podcast Taxonomy Project](https://podcasttaxonomy.com/)) of [Person](crate::podcast::Person).
 #[derive(Debug, PartialEq, Eq, EnumProperty, EnumIter)]
@@ -215,8 +214,8 @@ impl std::fmt::Display for Role {
     }
 }
 
-impl<'de> Deserialize<'de> for Role {
-    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        utils::deserialize_using_from_str(d)
-    }
-}
+// impl<'de> Deserialize<'de> for Role {
+//     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+//         utils::deserialize_using_from_str(d)
+//     }
+// }

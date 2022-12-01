@@ -1,5 +1,4 @@
 use crate::utils;
-use serde::{Deserialize, Deserializer};
 use strum_macros::EnumIter;
 
 /// Type of [Value](crate::podcast::Value).
@@ -35,11 +34,11 @@ impl std::fmt::Display for Type {
     }
 }
 
-impl<'de> Deserialize<'de> for Type {
-    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        utils::deserialize_using_from_str(d)
-    }
-}
+// impl<'de> Deserialize<'de> for Type {
+//     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+//         utils::deserialize_using_from_str(d)
+//     }
+// }
 
 /// Method of [Value](crate::podcast::Value).
 #[derive(Debug, PartialEq, Eq, EnumIter)]
@@ -73,11 +72,11 @@ impl std::fmt::Display for Method {
     }
 }
 
-impl<'de> Deserialize<'de> for Method {
-    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        utils::deserialize_using_from_str(d)
-    }
-}
+// impl<'de> Deserialize<'de> for Method {
+//     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+//         utils::deserialize_using_from_str(d)
+//     }
+// }
 
 /// Type of [ValueRecipient](crate::podcast::ValueRecipient).
 #[derive(Debug, PartialEq, Eq, EnumIter)]
@@ -111,8 +110,8 @@ impl std::fmt::Display for RecipientType {
     }
 }
 
-impl<'de> Deserialize<'de> for RecipientType {
-    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        utils::deserialize_using_from_str(d)
-    }
-}
+// impl<'de> Deserialize<'de> for RecipientType {
+//     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+//         utils::deserialize_using_from_str(d)
+//     }
+// }

@@ -1,5 +1,4 @@
 use crate::utils;
-use serde::{Deserialize, Deserializer};
 use strum::EnumProperty;
 use strum_macros::{EnumIter, EnumProperty};
 
@@ -49,11 +48,11 @@ impl std::fmt::Display for Enclosure {
     }
 }
 
-impl<'de> Deserialize<'de> for Enclosure {
-    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        utils::deserialize_using_from_str(d)
-    }
-}
+// impl<'de> Deserialize<'de> for Enclosure {
+//     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+//         utils::deserialize_using_from_str(d)
+//     }
+// }
 
 /// Used for deserializing mime types of transcripts.
 #[derive(Debug, PartialEq, Eq, EnumProperty, EnumIter)]
@@ -99,11 +98,11 @@ impl std::fmt::Display for Transcript {
     }
 }
 
-impl<'de> Deserialize<'de> for Transcript {
-    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        utils::deserialize_using_from_str(d)
-    }
-}
+// impl<'de> Deserialize<'de> for Transcript {
+//     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+//         utils::deserialize_using_from_str(d)
+//     }
+// }
 
 /// Used for deserializing mime types of chapters.
 #[derive(Debug, PartialEq, Eq, EnumProperty, EnumIter)]
@@ -139,8 +138,8 @@ impl std::fmt::Display for Chapters {
     }
 }
 
-impl<'de> Deserialize<'de> for Chapters {
-    fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-        utils::deserialize_using_from_str(d)
-    }
-}
+// impl<'de> Deserialize<'de> for Chapters {
+//     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
+//         utils::deserialize_using_from_str(d)
+//     }
+// }
