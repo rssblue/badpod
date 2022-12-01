@@ -12,19 +12,25 @@ fn deserialize() {
         ),
         (
             include_str!("data/empty_xml.xml"),
-            Err(Error::NoRoot),
+            Err(Error::NoRoot)
         ),
         (
             include_str!("data/empty_file.xml"),
-            Err(Error::NoRoot),
+            Err(Error::NoRoot)
         ),
         (
             include_str!("data/root_not_rss.xml"),
-            Err(Error::RootNotRss),
+            Err(Error::RootNotRss)
         ),
         (
             include_str!("data/strange_feed.xml"),
             Ok(Rss{
+                channel: vec![Channel{
+                    itunes_category: vec![itunes::Category{
+                        ..Default::default()
+                    }],
+                    ..Default::default()
+                }],
                 ..Default::default()
             })
         ),

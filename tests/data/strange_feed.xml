@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss>
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd">
   Something Before
   <title>Strange Feed</title>
   Something After
+  <channel>
+    <itunes:category>History</itunes:category>
+  </channel>
 </rss>
