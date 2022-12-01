@@ -19,7 +19,8 @@ pub enum Error {
     Custom(String),
 }
 
-pub fn parse(feed_str: &str) -> Result<rss::Rss, Error> {
+/// Converts contents of an XML file of podcast's RSS feed to [Rss](Rss) struct.
+pub fn from_str(feed_str: &str) -> Result<rss::Rss, Error> {
     let tree = match roxmltree::Document::parse(feed_str) {
         Ok(tree) => tree,
         Err(roxmltree::Error::NoRootNode) => return Err(Error::NoRoot),

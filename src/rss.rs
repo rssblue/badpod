@@ -4,13 +4,7 @@ use crate::podcast;
 use crate::basic;
 use crate::language;
 use crate::mime;
-use crate::parse_tree;
 use crate::time;
-
-/// Converts contents of an XML file of podcast's RSS feed to [Rss](Rss) struct.
-pub fn from_str(feed_str: &str) -> Result<Rss, parse_tree::Error> {
-    parse_tree::parse(feed_str)
-}
 
 #[derive(Debug, PartialEq, Default)]
 pub struct Xml {

@@ -3,7 +3,7 @@
 mod basic;
 mod language;
 mod mime;
-mod parse_tree;
+mod parse;
 mod rss;
 mod time;
 mod utils;
@@ -29,6 +29,5 @@ pub use crate::mime::{
     Chapters as MimeChapters, Enclosure as MimeEnclosure, Transcript as MimeTranscript,
 };
 pub use crate::time::DateTime;
-pub use parse_tree::Error;
-pub use rss::from_str;
+pub use parse::{from_str, Error};
 pub use rss::{Channel, Enclosure, Guid, Item, Rss};
