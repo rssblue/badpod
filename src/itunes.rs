@@ -7,13 +7,7 @@ pub use category::{CategoryName, SubcategoryName};
 /// Apple Podcasts podcast category.
 #[derive(Debug, PartialEq, Eq, Default)]
 pub struct Category {
-    // #[serde(rename = "$attr:text")]
     pub text: Option<CategoryName>,
-
-    // #[serde(
-    //     default,
-    //     rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:category"
-    // )]
     pub subcategory: Vec<Subcategory>,
 }
 
@@ -23,14 +17,12 @@ pub struct Category {
 /// category in the parent tag.
 #[derive(Debug, PartialEq, Eq, Default)]
 pub struct Subcategory {
-    // #[serde(rename = "$attr:text")]
     pub text: Option<SubcategoryName>,
 }
 
 /// Artwork associated with a podcast or episode.
 #[derive(Debug, PartialEq, Eq, Default)]
 pub struct Image {
-    // #[serde(rename = "$attr:href")]
     pub href: Option<String>,
 }
 

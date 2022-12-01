@@ -87,26 +87,18 @@ pub struct Soundbite {
 /// A person of interest to the podcast.
 #[derive(Debug, PartialEq, Eq, Default)]
 pub struct Person {
-    // #[serde(rename = "$attr:group", default)]
     pub group: Option<PersonGroup>,
-    // #[serde(rename = "$attr:role", default)]
     pub role: Option<PersonRole>,
-    // #[serde(rename = "$attr:img")]
     pub img: Option<String>,
-    // #[serde(rename = "$attr:href")]
     pub href: Option<String>,
-    // #[serde(rename = "$value")]
     pub value: Option<String>,
 }
 
 /// Location of editorial focus for a podcast's content.
 #[derive(Debug, PartialEq, Default)]
 pub struct Location {
-    // #[serde(rename = "$attr:geo")]
     pub geo: Option<Geo>,
-    // #[serde(rename = "$attr:osm")]
     pub osm: Option<Osm>,
-    // #[serde(rename = "$value")]
     pub value: Option<String>,
 }
 
@@ -127,28 +119,18 @@ pub struct Episode {
 /// A trailer for the entire podcast or a specific season.
 #[derive(Debug, PartialEq, Eq, Default)]
 pub struct Trailer {
-    // #[serde(rename = "$attr:url")]
     pub url: Option<String>,
-    // #[serde(rename = "$attr:pubdate", default)]
     pub pub_date: Option<DateTime>,
-    // #[serde(rename = "$attr:length", default)]
-    // #[serde_as(as = "Option<basic::IntegerNonNegative>")]
     pub length: Option<basic::Integer>,
-    // #[serde(rename = "$attr:type")]
     pub type_: Option<mime::Enclosure>,
-    // #[serde(rename = "$attr:season", default)]
-    // #[serde_as(as = "Option<basic::IntegerNonNegative>")]
     pub season: Option<basic::Integer>,
-    // #[serde(rename = "$value")]
     pub value: Option<String>,
 }
 
 /// License for a podcast or episode.
 #[derive(Debug, PartialEq, Eq, Default)]
 pub struct License {
-    // #[serde(rename = "$attr:url")]
     pub url: Option<String>,
-    // #[serde(rename = "$value")]
     pub value: Option<LicenseType>,
 }
 
@@ -162,9 +144,6 @@ pub struct AlternateEnclosure {
     pub language: Option<Language>,
     pub title: Option<String>,
     pub rel: Option<String>,
-    // TODO: this is quite complicated; will try to do later.
-    // #[serde(rename = "$attr:codecs", default)]
-    // pub codecs: Vec<String>,
     pub default: Option<basic::Bool>,
 
     pub podcast_source: Vec<Source>,
@@ -210,157 +189,49 @@ pub struct ValueRecipient {
 /// Used to deliver a live audio or video stream.
 #[derive(Debug, PartialEq, Default)]
 pub struct LiveItem {
-    // #[serde(default)]
-    pub description: Vec<String>,
-    // #[serde(default)]
-    pub link: Vec<String>,
-    // #[serde(default)]
-    pub title: Vec<String>,
-    // #[serde(default)]
-    pub enclosure: Vec<crate::Enclosure>,
-    // #[serde(default)]
-    pub guid: Vec<crate::Guid>,
-    // #[serde(default, rename = "pubDate")]
-    pub pub_date: Vec<DateTime>,
-
-    // #[serde(rename = "$attr:status", default)]
     pub status: Option<LiveItemStatus>,
-    // #[serde(rename = "$attr:start", default)]
-    // #[serde_as(as = "Option<crate::time::DatetimeISO8601>")]
     pub start: Option<DateTime>,
-    // #[serde(rename = "$attr:end", default)]
-    // #[serde_as(as = "Option<crate::time::DatetimeISO8601>")]
     pub end: Option<DateTime>,
 
-    // #[serde(
-    //     default,
-    //     rename = "{http://purl.org/rss/1.0/modules/content/}content:encoded"
-    // )]
+    pub description: Vec<String>,
+    pub link: Vec<String>,
+    pub title: Vec<String>,
+    pub enclosure: Vec<crate::Enclosure>,
+    pub guid: Vec<crate::Guid>,
+    pub pub_date: Vec<DateTime>,
+
     pub content_encoded: Vec<String>,
 
-    // #[serde(
-    //     default,
-    //     rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:block"
-    // )]
     pub itunes_block: Vec<itunes::Yes>,
-    // #[serde(
-    //     rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:duration",
-    //     default
-    // )]
-    // #[serde_as(as = "Vec<basic::NumberNonNegative>")]
     pub itunes_duration: Vec<basic::Number>,
-    // #[serde(
-    //     rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:season",
-    //     default
-    // )]
-    // #[serde_as(as = "Vec<basic::IntegerPositive>")]
     pub itunes_season: Vec<basic::Integer>,
-    // #[serde(
-    //     rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:episode",
-    //     default
-    // )]
-    // #[serde_as(as = "Vec<basic::IntegerPositive>")]
     pub itunes_episode: Vec<basic::Integer>,
-    // #[serde(
-    //     default,
-    //     rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:explicit"
-    // )]
     pub itunes_explicit: Vec<basic::Bool>,
-    // #[serde(
-    //     default,
-    //     rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:image"
-    // )]
     pub itunes_image: Vec<itunes::Image>,
-    // #[serde(
-    //     default,
-    //     rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:title"
-    // )]
     pub itunes_title: Vec<String>,
-    // #[serde(
-    //     default,
-    //     rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:episodeType"
-    // )]
     pub itunes_type: Vec<itunes::EpisodeType>,
 
-    // #[serde(
-    //     rename = "{https://podcastindex.org/namespace/1.0}podcast:transcript",
-    //     default
-    // )]
     pub podcast_transcript: Vec<Transcript>,
-    // #[serde(
-    //     default,
-    //     rename = "{https://podcastindex.org/namespace/1.0}podcast:chapters"
-    // )]
     pub podcast_chapters: Vec<Chapters>,
-    // #[serde(
-    //     rename = "{https://podcastindex.org/namespace/1.0}podcast:soundbite",
-    //     default
-    // )]
     pub podcast_soundbite: Vec<Soundbite>,
-    // #[serde(
-    //     rename = "{https://podcastindex.org/namespace/1.0}podcast:person",
-    //     default
-    // )]
     pub podcast_person: Vec<Person>,
-    // #[serde(
-    //     rename = "{https://podcastindex.org/namespace/1.0}podcast:location",
-    //     default
-    // )]
     pub podcast_location: Vec<Location>,
-    // #[serde(
-    //     rename = "{https://podcastindex.org/namespace/1.0}podcast:season",
-    //     default
-    // )]
     pub podcast_season: Vec<Season>,
-    // #[serde(
-    //     rename = "{https://podcastindex.org/namespace/1.0}podcast:episode",
-    //     default
-    // )]
     pub podcast_episode: Vec<Episode>,
-    // #[serde(
-    //     rename = "{https://podcastindex.org/namespace/1.0}podcast:alternateEnclosure",
-    //     default
-    // )]
     pub podcast_alternate_enclosure: Vec<AlternateEnclosure>,
-    // #[serde(
-    //     rename = "{https://podcastindex.org/namespace/1.0}podcast:value",
-    //     default
-    // )]
     pub podcast_value: Vec<Value>,
-    // #[serde(
-    //     rename = "{https://podcastindex.org/namespace/1.0}podcast:images",
-    //     default
-    // )]
     pub podcast_images: Vec<Images>,
-
-    // #[serde(
-    //     rename = "{https://podcastindex.org/namespace/1.0}podcast:contentLink",
-    //     default
-    // )]
-    pub podcast_content_link: Vec<ContentLink>,
-    // #[serde(
-    //     rename = "{https://podcastindex.org/namespace/1.0}podcast:socialInteract",
-    //     default
-    // )]
     pub podcast_social_interact: Vec<SocialInteract>,
-    // #[serde(
-    //     default,
-    //     rename = "{https://podcastindex.org/namespace/1.0}podcast:license"
-    // )]
     pub podcast_license: Vec<License>,
-    // #[serde(
-    //     rename = "{https://podcastindex.org/namespace/1.0}podcast:txt",
-    //     default
-    // )]
     pub podcast_txt: Vec<Txt>,
+
+    pub podcast_content_link: Vec<ContentLink>,
 }
 
 /// Used to indicate that the content being delivered by [LiveItem](LiveItem) can be found at an external location.
 #[derive(Debug, PartialEq, Eq, Default)]
 pub struct ContentLink {
-    // #[serde(rename = "$attr:href", default)]
     pub href: Option<String>,
-    // #[serde(rename = "$value")]
     pub value: Option<String>,
 }
 
@@ -377,18 +248,13 @@ pub struct SocialInteract {
 /// Allows a podcaster to express which platforms are allowed to publicly display this feed and its contents.
 #[derive(Debug, PartialEq, Eq, Default)]
 pub struct Block {
-    // #[serde(rename = "$attr:id", default)]
     pub id: Option<Service>,
-    // #[serde(rename = "$value")]
-    // #[serde_as(as = "Option<basic::BoolYN>")]
     pub value: Option<basic::Bool>,
 }
 
 /// Free-form text to allow for uses that might be niche or otherwise not rise to the level of needing a dedicated tag.
 #[derive(Debug, PartialEq, Eq, Default)]
 pub struct Txt {
-    // #[serde(rename = "$attr:purpose", default)]
     pub purpose: Option<TxtPurpose>,
-    // #[serde(rename = "$value")]
     pub value: Option<String>,
 }

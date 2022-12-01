@@ -1,4 +1,3 @@
-use crate::utils;
 use strum_macros::{Display, EnumString};
 
 /// Geographical coordinates.

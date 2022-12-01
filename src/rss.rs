@@ -31,6 +31,7 @@ pub struct Channel {
     pub copyright: Vec<String>,
     pub description: Vec<String>,
     pub generator: Vec<String>,
+    pub item: Vec<Item>,
     pub language: Vec<language::Language>,
     pub last_build_date: Vec<time::DateTime>,
     pub link: Vec<String>,
@@ -62,16 +63,9 @@ pub struct Channel {
     pub podcast_value: Vec<podcast::Value>,
     pub podcast_medium: Vec<podcast::Medium>,
     pub podcast_images: Vec<podcast::Images>,
-    // #[serde(
-    //     default,
-    //     rename = "{https://podcastindex.org/namespace/1.0}podcast:liveItem"
-    // )]
     pub podcast_live_item: Vec<podcast::LiveItem>,
     pub podcast_block: Vec<podcast::Block>,
     pub podcast_txt: Vec<podcast::Txt>,
-
-    // #[serde(default)]
-    pub item: Vec<Item>,
 }
 
 /// Podcast episode.

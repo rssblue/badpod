@@ -1,5 +1,3 @@
-use crate::utils;
-
 pub enum NumberConstraint {
     None,
     Positive,
@@ -60,29 +58,6 @@ impl std::fmt::Display for Bool {
         }
     }
 }
-
-// impl<'de> Deserialize<'de> for Bool {
-//     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-//         utils::deserialize_using_from_str(d)
-//     }
-// }
-
-// pub enum BoolYN {}
-//
-// impl<'de> serde_with::DeserializeAs<'de, Bool> for BoolYN {
-//     fn deserialize_as<D: Deserializer<'de>>(d: D) -> Result<Bool, D::Error> {
-//         let s = String::deserialize(d);
-//
-//         match s {
-//             Ok(s) => match s.as_str() {
-//                 "yes" => Ok(Bool::Ok(true)),
-//                 "no" => Ok(Bool::Ok(false)),
-//                 _ => Ok(Bool::Other(s)),
-//             },
-//             Err(e) => Err(e),
-//         }
-//     }
-// }
 
 /// Used for deserializing integer values.
 #[derive(Debug, PartialEq, Eq)]

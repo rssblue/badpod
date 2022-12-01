@@ -1,4 +1,3 @@
-use crate::utils;
 use regex::Regex;
 
 /// Global unique identifier for a podcast.
@@ -40,7 +39,7 @@ impl Guid {
     pub fn parse(s: &str) -> Self {
         match s.parse::<Self>() {
             Ok(guid) => guid,
-            Err(e) => Self::Other(s.to_string()),
+            Err(_) => Self::Other(s.to_string()),
         }
     }
 }
