@@ -964,8 +964,11 @@ impl std::fmt::Display for Type {
     }
 }
 
-// impl<'de> Deserialize<'de> for Type {
-//     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-//         utils::deserialize_using_from_str(d)
-//     }
-// }
+impl Type {
+    pub fn parse(s: &str) -> Self {
+        match s.parse::<Self>() {
+            Ok(variant) => variant,
+            Err(_) => Self::Other(s.to_string()),
+        }
+    }
+}

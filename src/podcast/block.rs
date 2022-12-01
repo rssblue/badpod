@@ -92,11 +92,14 @@ impl std::fmt::Display for Service {
     }
 }
 
-// impl<'de> Deserialize<'de> for Service {
-//     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-//         utils::deserialize_using_from_str(d)
-//     }
-// }
+impl Service {
+    pub fn parse(s: &str) -> Self {
+        match s.parse() {
+            Ok(service) => service,
+            Err(_) => Self::Other(s.to_string()),
+        }
+    }
+}
 
 #[cfg(test)]
 mod tests {

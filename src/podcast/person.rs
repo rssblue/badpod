@@ -54,11 +54,14 @@ impl std::fmt::Display for Group {
     }
 }
 
-// impl<'de> Deserialize<'de> for Group {
-//     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-//         utils::deserialize_using_from_str(d)
-//     }
-// }
+impl Group {
+    pub fn parse(s: &str) -> Self {
+        match s.parse::<Self>() {
+            Ok(group) => group,
+            Err(_) => Self::Other(s.to_string()),
+        }
+    }
+}
 
 /// Role (as defined by [Podcast Taxonomy Project](https://podcasttaxonomy.com/)) of [Person](crate::podcast::Person).
 #[derive(Debug, PartialEq, Eq, EnumProperty, EnumIter)]
@@ -214,8 +217,11 @@ impl std::fmt::Display for Role {
     }
 }
 
-// impl<'de> Deserialize<'de> for Role {
-//     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-//         utils::deserialize_using_from_str(d)
-//     }
-// }
+impl Role {
+    pub fn parse(s: &str) -> Self {
+        match s.parse::<Self>() {
+            Ok(role) => role,
+            Err(_) => Self::Other(s.to_string()),
+        }
+    }
+}

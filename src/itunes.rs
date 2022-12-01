@@ -1,4 +1,5 @@
 use crate::utils;
+use std::str::FromStr;
 use strum_macros::EnumIter;
 
 mod category;
@@ -37,10 +38,8 @@ pub struct Image {
 /// Podcast owner's contact information.
 #[derive(Debug, PartialEq, Eq, Default)]
 pub struct Owner {
-    // #[serde(rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:email")]
-    pub email: Option<String>,
-    // #[serde(rename = "{http://www.itunes.com/dtds/podcast-1.0.dtd}itunes:name")]
-    pub name: Option<String>,
+    pub email: Vec<String>,
+    pub name: Vec<String>,
 }
 
 /// Used for deserializing values in some of [`itunes`](crate::itunes) tags.
@@ -50,6 +49,15 @@ pub struct Owner {
 pub enum Yes {
     Ok,
     Other(String),
+}
+
+impl Yes {
+    pub fn parse(s: &str) -> Self {
+        match s {
+            "Yes" => Yes::Ok,
+            _ => Yes::Other(s.to_string()),
+        }
+    }
 }
 
 impl std::str::FromStr for Yes {
@@ -73,12 +81,6 @@ impl std::fmt::Display for Yes {
         }
     }
 }
-
-// impl<'de> Deserialize<'de> for Yes {
-//     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-//         utils::deserialize_using_from_str(d)
-//     }
-// }
 
 /// Apple Podcasts podcast type.
 #[derive(Debug, PartialEq, Eq, EnumIter)]
@@ -112,11 +114,14 @@ impl std::fmt::Display for PodcastType {
     }
 }
 
-// impl<'de> Deserialize<'de> for PodcastType {
-//     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-//         utils::deserialize_using_from_str(d)
-//     }
-// }
+impl PodcastType {
+    pub fn parse(s: &str) -> Self {
+        match Self::from_str(s) {
+            Ok(variant) => variant,
+            Err(_) => Self::Other(s.to_string()),
+        }
+    }
+}
 
 /// Apple Podcasts episode type.
 #[derive(Debug, PartialEq, Eq, EnumIter)]

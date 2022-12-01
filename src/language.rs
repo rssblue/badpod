@@ -1,4 +1,4 @@
-use crate::utils;
+use std::str::FromStr;
 use strum::{EnumProperty, IntoEnumIterator};
 use strum_macros::{Display, EnumIter, EnumProperty, EnumString};
 
@@ -690,6 +690,15 @@ pub enum LanguageChinese {
     Simplified,
     #[strum(serialize = "zh-tw")]
     Traditional,
+}
+
+impl Language {
+    pub fn parse(language: &str) -> Self {
+        match Self::from_str(language) {
+            Ok(language) => language,
+            Err(_) => Language::Other(language.to_string()),
+        }
+    }
 }
 
 #[cfg(test)]

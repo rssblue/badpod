@@ -68,8 +68,8 @@ fn deserialize() {
                     },
                     itunes_explicit: vec![Bool::Ok(false)],
                     itunes_owner: vec![itunes::Owner {
-                        email: Some("jane@example.com".to_string()),
-                        name: Some("Jane Doe".to_string()),
+                        email: vec!["jane@example.com".to_string()],
+                        name: vec!["Jane Doe".to_string()],
                     }],
                     itunes_type: vec![itunes::PodcastType::Serial],
                     podcast_locked: vec![podcast::Locked {
@@ -515,8 +515,8 @@ fn deserialize() {
                     },
                 },
                 itunes_owner: vec![itunes::Owner{
-                    email: Some("johndoe@example.com".to_string()),
-                    name: Some("John Doe".to_string()),
+                    email: vec!["johndoe@example.com".to_string()],
+                    name: vec!["John Doe".to_string()],
                 }],
                 itunes_image: vec![itunes::Image{
                     href: None,

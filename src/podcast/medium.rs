@@ -38,8 +38,11 @@ impl std::fmt::Display for Medium {
     }
 }
 
-// impl<'de> Deserialize<'de> for Medium {
-//     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-//         utils::deserialize_using_from_str(d)
-//     }
-// }
+impl Medium {
+    pub fn parse(s: &str) -> Self {
+        match s.parse() {
+            Ok(medium) => medium,
+            Err(_) => Self::Other(s.to_string()),
+        }
+    }
+}

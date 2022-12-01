@@ -32,8 +32,11 @@ impl std::fmt::Display for Purpose {
     }
 }
 
-// impl<'de> Deserialize<'de> for Purpose {
-//     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-//         utils::deserialize_using_from_str(d)
-//     }
-// }
+impl Purpose {
+    pub fn parse(s: &str) -> Self {
+        match s.parse() {
+            Ok(purpose) => purpose,
+            Err(_) => Self::Other(s.to_string()),
+        }
+    }
+}

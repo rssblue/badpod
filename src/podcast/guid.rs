@@ -36,8 +36,11 @@ impl std::fmt::Display for Guid {
     }
 }
 
-// impl<'de> Deserialize<'de> for Guid {
-//     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-//         utils::deserialize_using_from_str(d)
-//     }
-// }
+impl Guid {
+    pub fn parse(s: &str) -> Self {
+        match s.parse::<Self>() {
+            Ok(guid) => guid,
+            Err(e) => Self::Other(s.to_string()),
+        }
+    }
+}

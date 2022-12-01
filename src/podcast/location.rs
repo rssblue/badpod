@@ -120,11 +120,14 @@ impl std::fmt::Display for Geo {
     }
 }
 
-// impl<'de> Deserialize<'de> for Geo {
-//     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-//         utils::deserialize_using_from_str(d)
-//     }
-// }
+impl Geo {
+    pub fn parse(s: &str) -> Self {
+        match s.parse::<Geo>() {
+            Ok(geo) => geo,
+            Err(_) => Geo::Other(s.to_string()),
+        }
+    }
+}
 
 /// Type of [Osm](Osm) object.
 #[derive(Debug, PartialEq, Eq, EnumString, Display, Clone)]
@@ -216,11 +219,14 @@ impl std::fmt::Display for Osm {
     }
 }
 
-// impl<'de> Deserialize<'de> for Osm {
-//     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-//         utils::deserialize_using_from_str(d)
-//     }
-// }
+impl Osm {
+    pub fn parse(s: &str) -> Self {
+        match s.parse::<Osm>() {
+            Ok(osm) => osm,
+            Err(_) => Osm::Other(s.to_string()),
+        }
+    }
+}
 
 #[cfg(test)]
 mod tests {

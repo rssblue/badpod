@@ -48,11 +48,14 @@ impl std::fmt::Display for Enclosure {
     }
 }
 
-// impl<'de> Deserialize<'de> for Enclosure {
-//     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-//         utils::deserialize_using_from_str(d)
-//     }
-// }
+impl Enclosure {
+    pub fn parse(s: &str) -> Self {
+        match s.parse::<Self>() {
+            Ok(variant) => variant,
+            Err(_) => Self::Other(s.to_string()),
+        }
+    }
+}
 
 /// Used for deserializing mime types of transcripts.
 #[derive(Debug, PartialEq, Eq, EnumProperty, EnumIter)]
@@ -98,11 +101,14 @@ impl std::fmt::Display for Transcript {
     }
 }
 
-// impl<'de> Deserialize<'de> for Transcript {
-//     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-//         utils::deserialize_using_from_str(d)
-//     }
-// }
+impl Transcript {
+    pub fn parse(s: &str) -> Self {
+        match s.parse::<Self>() {
+            Ok(variant) => variant,
+            Err(_) => Self::Other(s.to_string()),
+        }
+    }
+}
 
 /// Used for deserializing mime types of chapters.
 #[derive(Debug, PartialEq, Eq, EnumProperty, EnumIter)]
@@ -138,8 +144,11 @@ impl std::fmt::Display for Chapters {
     }
 }
 
-// impl<'de> Deserialize<'de> for Chapters {
-//     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-//         utils::deserialize_using_from_str(d)
-//     }
-// }
+impl Chapters {
+    pub fn parse(s: &str) -> Self {
+        match s.parse::<Self>() {
+            Ok(variant) => variant,
+            Err(_) => Self::Other(s.to_string()),
+        }
+    }
+}

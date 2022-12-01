@@ -10,9 +10,9 @@ pub enum DateTime {
     Other(String),
 }
 
-impl TimeFormat {
-    pub fn parse(&self, s: &str) -> DateTime {
-        match *self {
+impl DateTime {
+    pub fn parse(s: &str, format: TimeFormat) -> Self {
+        match format {
             TimeFormat::Rfc2822 => match chrono::DateTime::parse_from_rfc2822(s) {
                 Ok(dt) => DateTime::Ok(dt),
                 Err(_) => DateTime::Other(s.to_string()),

@@ -1,5 +1,16 @@
 use crate::utils;
 
+pub enum NumberConstraint {
+    None,
+    Positive,
+    NonNegative,
+}
+
+pub enum BoolType {
+    TrueFalse,
+    YesNo,
+}
+
 /// Used for deserializing boolean values.
 #[derive(Debug, PartialEq, Eq)]
 pub enum Bool {
@@ -10,6 +21,23 @@ pub enum Bool {
 impl Default for Bool {
     fn default() -> Self {
         Bool::Ok(false)
+    }
+}
+
+impl Bool {
+    pub fn parse(s: &str, bool_type: BoolType) -> Self {
+        match bool_type {
+            BoolType::TrueFalse => match s {
+                "true" => Bool::Ok(true),
+                "false" => Bool::Ok(false),
+                _ => Bool::Other(s.to_string()),
+            },
+            BoolType::YesNo => match s {
+                "yes" => Bool::Ok(true),
+                "no" => Bool::Ok(false),
+                _ => Bool::Other(s.to_string()),
+            },
+        }
     }
 }
 
@@ -63,13 +91,27 @@ pub enum Integer {
     Other(String),
 }
 
-impl std::str::FromStr for Integer {
-    type Err = String;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+impl Integer {
+    pub fn parse(s: &str, constraint: NumberConstraint) -> Self {
         match s.parse::<i64>() {
-            Ok(x) => Ok(Self::Ok(x)),
-            Err(_) => Ok(Self::Other(s.to_string())),
+            Ok(x) => match constraint {
+                NumberConstraint::None => Self::Ok(x),
+                NumberConstraint::Positive => {
+                    if x > 0 {
+                        Self::Ok(x)
+                    } else {
+                        Self::Other(s.to_string())
+                    }
+                }
+                NumberConstraint::NonNegative => {
+                    if x >= 0 {
+                        Self::Ok(x)
+                    } else {
+                        Self::Other(s.to_string())
+                    }
+                }
+            },
+            Err(_) => Self::Other(s.to_string()),
         }
     }
 }
@@ -83,46 +125,6 @@ impl std::fmt::Display for Integer {
     }
 }
 
-// impl<'de> Deserialize<'de> for Integer {
-//     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-//         utils::deserialize_using_from_str(d)
-//     }
-// }
-//
-// pub enum IntegerPositive {}
-//
-// impl<'de> serde_with::DeserializeAs<'de, Integer> for IntegerPositive {
-//     fn deserialize_as<D: Deserializer<'de>>(d: D) -> Result<Integer, D::Error> {
-//         match Integer::deserialize(d) {
-//             Ok(Integer::Ok(x)) => {
-//                 if x <= 0 {
-//                     return Ok(Integer::Other(x.to_string()));
-//                 }
-//                 Ok(Integer::Ok(x))
-//             }
-//             Ok(Integer::Other(s)) => Ok(Integer::Other(s)),
-//             Err(e) => Err(e),
-//         }
-//     }
-// }
-
-// pub enum IntegerNonNegative {}
-//
-// impl<'de> serde_with::DeserializeAs<'de, Integer> for IntegerNonNegative {
-//     fn deserialize_as<D: Deserializer<'de>>(d: D) -> Result<Integer, D::Error> {
-//         match Integer::deserialize(d) {
-//             Ok(Integer::Ok(x)) => {
-//                 if x < 0 {
-//                     return Ok(Integer::Other(x.to_string()));
-//                 }
-//                 Ok(Integer::Ok(x))
-//             }
-//             Ok(Integer::Other(s)) => Ok(Integer::Other(s)),
-//             Err(e) => Err(e),
-//         }
-//     }
-// }
-
 /// Used for deserializing floating-point values.
 #[derive(Debug, PartialEq)]
 pub enum Float {
@@ -130,13 +132,27 @@ pub enum Float {
     Other(String),
 }
 
-impl std::str::FromStr for Float {
-    type Err = String;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
+impl Float {
+    pub fn parse(s: &str, constraint: NumberConstraint) -> Self {
         match s.parse::<f64>() {
-            Ok(x) => Ok(Self::Ok(x)),
-            Err(_) => Ok(Self::Other(s.to_string())),
+            Ok(x) => match constraint {
+                NumberConstraint::None => Self::Ok(x),
+                NumberConstraint::Positive => {
+                    if x > 0.0 {
+                        Self::Ok(x)
+                    } else {
+                        Self::Other(s.to_string())
+                    }
+                }
+                NumberConstraint::NonNegative => {
+                    if x >= 0.0 {
+                        Self::Ok(x)
+                    } else {
+                        Self::Other(s.to_string())
+                    }
+                }
+            },
+            Err(_) => Self::Other(s.to_string()),
         }
     }
 }
@@ -150,46 +166,6 @@ impl std::fmt::Display for Float {
     }
 }
 
-// impl<'de> Deserialize<'de> for Float {
-//     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-//         utils::deserialize_using_from_str(d)
-//     }
-// }
-//
-// pub enum FloatPositive {}
-//
-// impl<'de> serde_with::DeserializeAs<'de, Float> for FloatPositive {
-//     fn deserialize_as<D: Deserializer<'de>>(d: D) -> Result<Float, D::Error> {
-//         match Float::deserialize(d) {
-//             Ok(Float::Ok(x)) => {
-//                 if x <= 0.0 {
-//                     return Ok(Float::Other(x.to_string()));
-//                 }
-//                 Ok(Float::Ok(x))
-//             }
-//             Ok(Float::Other(s)) => Ok(Float::Other(s)),
-//             Err(e) => Err(e),
-//         }
-//     }
-// }
-//
-// pub enum FloatNonNegative {}
-//
-// impl<'de> serde_with::DeserializeAs<'de, Float> for FloatNonNegative {
-//     fn deserialize_as<D: Deserializer<'de>>(d: D) -> Result<Float, D::Error> {
-//         match Float::deserialize(d) {
-//             Ok(Float::Ok(x)) => {
-//                 if x < 0.0 {
-//                     return Ok(Float::Other(x.to_string()));
-//                 }
-//                 Ok(Float::Ok(x))
-//             }
-//             Ok(Float::Other(s)) => Ok(Float::Other(s)),
-//             Err(e) => Err(e),
-//         }
-//     }
-// }
-
 /// Used for deserializing values that could be either integers or floats.
 ///
 /// Preference is given to the *former*.
@@ -200,19 +176,47 @@ pub enum Number {
     Other(String),
 }
 
-impl std::str::FromStr for Number {
-    type Err = String;
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        if let Ok(x) = s.parse::<i64>() {
-            return Ok(Number::Integer(x));
-        };
-
-        if let Ok(x) = s.parse::<f64>() {
-            return Ok(Number::Float(x));
-        };
-
-        Ok(Number::Other(s.to_string()))
+impl Number {
+    pub fn parse(s: &str, constraint: NumberConstraint) -> Self {
+        match s.parse::<i64>() {
+            Ok(x) => match constraint {
+                NumberConstraint::None => Self::Integer(x),
+                NumberConstraint::Positive => {
+                    if x > 0 {
+                        Self::Integer(x)
+                    } else {
+                        Self::Other(s.to_string())
+                    }
+                }
+                NumberConstraint::NonNegative => {
+                    if x >= 0 {
+                        Self::Integer(x)
+                    } else {
+                        Self::Other(s.to_string())
+                    }
+                }
+            },
+            Err(_) => match s.parse::<f64>() {
+                Ok(x) => match constraint {
+                    NumberConstraint::None => Self::Float(x),
+                    NumberConstraint::Positive => {
+                        if x > 0.0 {
+                            Self::Float(x)
+                        } else {
+                            Self::Other(s.to_string())
+                        }
+                    }
+                    NumberConstraint::NonNegative => {
+                        if x >= 0.0 {
+                            Self::Float(x)
+                        } else {
+                            Self::Other(s.to_string())
+                        }
+                    }
+                },
+                Err(_) => Self::Other(s.to_string()),
+            },
+        }
     }
 }
 
@@ -225,32 +229,3 @@ impl std::fmt::Display for Number {
         }
     }
 }
-
-// impl<'de> Deserialize<'de> for Number {
-//     fn deserialize<D: Deserializer<'de>>(d: D) -> Result<Self, D::Error> {
-//         utils::deserialize_using_from_str(d)
-//     }
-// }
-//
-// pub enum NumberNonNegative {}
-//
-// impl<'de> serde_with::DeserializeAs<'de, Number> for NumberNonNegative {
-//     fn deserialize_as<D: Deserializer<'de>>(d: D) -> Result<Number, D::Error> {
-//         match Number::deserialize(d) {
-//             Ok(Number::Integer(x)) => {
-//                 if x < 0 {
-//                     return Ok(Number::Other(x.to_string()));
-//                 }
-//                 Ok(Number::Integer(x))
-//             }
-//             Ok(Number::Float(x)) => {
-//                 if x < 0.0 {
-//                     return Ok(Number::Other(x.to_string()));
-//                 }
-//                 Ok(Number::Float(x))
-//             }
-//             Ok(Number::Other(s)) => Ok(Number::Other(s)),
-//             Err(e) => Err(e),
-//         }
-//     }
-// }

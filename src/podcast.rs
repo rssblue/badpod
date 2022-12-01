@@ -62,19 +62,14 @@ pub struct Transcript {
 /// Indicates whether podcast hosting platforms are allowed to import the feed.
 #[derive(Debug, PartialEq, Eq, Default)]
 pub struct Locked {
-    // #[serde(rename = "$attr:owner")]
     pub owner: Option<String>,
-    // #[serde(rename = "$value")]
-    // #[serde_as(as = "Option<basic::BoolYN>")]
     pub value: Option<basic::Bool>,
 }
 
 /// Donation/funding link.
 #[derive(Debug, PartialEq, Eq, Default)]
 pub struct Funding {
-    // #[serde(rename = "$attr:url")]
     pub url: Option<String>,
-    // #[serde(rename = "$value")]
     pub value: Option<String>,
 }
 
@@ -234,37 +229,21 @@ pub struct Integrity {
 /// Describes cryptocurrency or payment layer used for transactions.
 #[derive(Debug, PartialEq, Default)]
 pub struct Value {
-    // #[serde(rename = "$attr:type", default)]
     pub type_: Option<ValueType>,
-    // #[serde(rename = "$attr:method", default)]
     pub method: Option<ValueMethod>,
-    // #[serde(rename = "$attr:suggested", default)]
-    // #[serde_as(as = "Option<basic::FloatPositive>")]
     pub suggested: Option<basic::Float>,
-    // #[serde(
-    //     default,
-    //     rename = "{https://podcastindex.org/namespace/1.0}podcast:valueRecipient"
-    // )]
     pub value_recipient: Vec<ValueRecipient>,
 }
 
 /// Destination for payments to be sent to during consumption of enclosed media.
 #[derive(Debug, PartialEq, Eq, Default)]
 pub struct ValueRecipient {
-    // #[serde(rename = "$attr:name")]
     pub name: Option<String>,
-    // #[serde(rename = "$attr:customKey")]
     pub custom_key: Option<String>,
-    // #[serde(rename = "$attr:customValue")]
     pub custom_value: Option<String>,
-    // #[serde(rename = "$attr:type", default)]
     pub type_: Option<ValueRecipientType>,
-    // #[serde(rename = "$attr:address")]
     pub address: Option<String>,
-    // #[serde(rename = "$attr:split", default)]
-    // #[serde_as(as = "Option<basic::IntegerPositive>")]
     pub split: Option<basic::Integer>,
-    // #[serde(rename = "$attr:fee", default)]
     pub fee: Option<basic::Bool>,
 }
 
