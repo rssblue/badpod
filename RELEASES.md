@@ -1,5 +1,10 @@
 # Releases
 
+## Version 0.4.0 (2022-12-01)
+
+- Use `roxmltree` instead of `serde` for parsing; this improves performance by around 2X and also avoids some deserialization errors.
+- Other minor fixes and improvements.
+
 ## Version 0.3.2 (2022-11-28)
 
 - Improve parsing of ISO 8601 dates.
