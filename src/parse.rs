@@ -23,7 +23,7 @@ pub enum Error {
     Custom(String),
 }
 
-/// Converts contents of an XML file of podcast's RSS feed to [Rss](Rss) struct.
+/// Converts contents of an XML file of podcast's RSS feed to [Rss](crate::Rss) struct.
 pub fn from_str(feed_str: &str) -> Result<rss::Rss, Error> {
     let tree = match roxmltree::Document::parse(feed_str) {
         Ok(tree) => tree,
