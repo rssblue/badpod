@@ -1,3 +1,4 @@
+use crate::strings::Url;
 use crate::utils;
 use crate::Other;
 use strum_macros::EnumIter;
@@ -24,7 +25,7 @@ pub struct Subcategory {
 /// Artwork associated with a podcast or episode.
 #[derive(Debug, PartialEq, Eq, Default)]
 pub struct Image {
-    pub href: Option<String>,
+    pub href: Option<Url>,
 }
 
 /// Podcast owner's contact information.

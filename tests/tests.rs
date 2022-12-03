@@ -53,7 +53,7 @@ fn deserialize() {
                     copyright: vec!["© Example Company".to_string()],
                     description: vec!["<p><strong>Example HTML description</strong></p>".to_string()],
                     language: vec![Language::Lithuanian],
-                    link: vec!["https://example.com".to_string()],
+                    link: vec![Url::Ok(url::Url::parse("https://example.com").unwrap())],
                     title: vec!["Example Podcast".to_string()],
                     content_encoded: vec!["<p><strong>Example HTML description</strong></p>".to_string()
                     ],
@@ -84,25 +84,25 @@ fn deserialize() {
                     }],
                     podcast_funding: vec![
                         podcast::Funding{
-                            url: Some("https://www.example.com/donations".to_string()),
+                            url: Some(Url::Ok(url::Url::parse("https://www.example.com/donations").unwrap())),
                             value: Some("Support the show!".to_string()),
                         },
                         podcast::Funding{
-                            url: Some("https://www.example.com/members".to_string()),
+                            url: Some(Url::Ok(url::Url::parse("https://www.example.com/members").unwrap())),
                             value: Some("Become a member!".to_string()),
                         },
                     ],
                     podcast_person: vec! {
                         podcast::Person{
-                            href: Some("https://example.com/johnsmith/blog".to_string()),
-                            img: Some("http://example.com/images/johnsmith.jpg".to_string()),
+                            href: Some(Url::Ok(url::Url::parse("https://example.com/johnsmith/blog").unwrap())),
+                            img: Some(Url::Other(("http://example.com/images/johnsmith.jpg".to_string(), "protocol must be https".to_string()))),
                             value: Some("John Smith".to_string()),
                             ..Default::default()
                         },
                         podcast::Person{
                             role: Some(podcast::PersonRole::Guest),
-                            href: Some("https://www.imdb.com/name/nm0427852888/".to_string()),
-                            img: Some("http://example.com/images/janedoe.jpg".to_string()),
+                            href: Some(Url::Ok(url::Url::parse("https://www.imdb.com/name/nm0427852888/").unwrap())),
+                            img: Some(Url::Other(("http://example.com/images/janedoe.jpg".to_string(), "protocol must be https".to_string()))),
                             value: Some("Jane Doe".to_string()),
                             ..Default::default()
                         },
@@ -138,7 +138,7 @@ fn deserialize() {
                     podcast_trailer: vec! {
                         podcast::Trailer{
                             pub_date: Some(badpod::DateTime::Ok(chrono::FixedOffset::west(5*60*60).ymd(2021, 4, 1).and_hms(8, 0, 0))),
-                            url: Some("https://example.org/trailers/teaser".to_string()),
+                            url: Some(Url::Ok(url::Url::parse("https://example.org/trailers/teaser").unwrap())),
                             length: Some(Integer::Ok(12345678)),
                             type_: Some(MimeEnclosure::AudioMp3),
                             season: None,
@@ -177,16 +177,16 @@ fn deserialize() {
                     podcast_medium: vec![podcast::Medium::Music],
                     podcast_images: vec![podcast::Images {
                         srcset: vec! {
-                            podcast::Image::Ok("https://example.com/images/ep1/pci_avatar-massive.jpg".to_string(), 1500),
+                            podcast::Image::Ok(url::Url::parse("https://example.com/images/ep1/pci_avatar-massive.jpg").unwrap(), 1500),
                             podcast::Image::Other(("https://example.com/images/ep1/pci_avatar-middle.jpg 6o0w".to_string(), "image width should be an integer".to_string())),
-                            podcast::Image::Ok("https://example.com/images/ep1/pci_avatar-small.jpg".to_string(), 300),
+                            podcast::Image::Ok(url::Url::parse("https://example.com/images/ep1/pci_avatar-small.jpg").unwrap(), 300),
                         },
                     }],
                     item: vec! {
                         Item{
                             title: vec!["Example Episode".to_string()],
                             enclosure: vec![Enclosure{
-                                url: Some("http://example.com/episode-1.mp3".to_string()),
+                                url: Some(Url::Ok(url::Url::parse("http://example.com/episode-1.mp3").unwrap())),
                                 length: Some(Integer::Ok(100200)),
                                 type_: Some(MimeEnclosure::AudioMp3),
                             }],
@@ -197,7 +197,7 @@ fn deserialize() {
                             pub_date: vec![badpod::DateTime::Ok(chrono::FixedOffset::west(0).ymd(2022, 10, 10).and_hms(6, 10, 5))],
 
                             podcast_chapters: vec![podcast::Chapters{
-                                url: Some("https://example.com/episode-1/chapters.json".to_string()),
+                                url: Some(Url::Ok(url::Url::parse("https://example.com/episode-1/chapters.json").unwrap())),
                                 type_: Some(MimeChapters::ApplicationJsonChapters),
                             }],
                             podcast_soundbite: vec! {
@@ -216,22 +216,22 @@ fn deserialize() {
                             podcast_person: vec! {
                                 podcast::Person{
                                     role: Some(podcast::PersonRole::Guest),
-                                    href: Some("https://www.wikipedia/alicebrown".to_string()),
-                                    img: Some("http://example.com/images/alicebrown.jpg".to_string()),
+                                    href: Some(Url::Ok(url::Url::parse("https://www.wikipedia/alicebrown").unwrap())),
+                                    img: Some(Url::Other(("http://example.com/images/alicebrown.jpg".to_string(), "protocol must be https".to_string()))),
                                     value: Some("Alice Brown".to_string()),
                                     ..Default::default()
                                 },
                                 podcast::Person{
                                     group: Some(podcast::PersonGroup::Writing),
                                     role: Some(podcast::PersonRole::Guest),
-                                    href: Some("https://www.wikipedia/alicebrown".to_string()),
-                                    img: Some("http://example.com/images/alicebrown.jpg".to_string()),
+                                    href: Some(Url::Ok(url::Url::parse("https://www.wikipedia/alicebrown").unwrap())),
+                                    img: Some(Url::Other(("http://example.com/images/alicebrown.jpg".to_string(), "protocol must be https".to_string()))),
                                     value: Some("Alice Brown".to_string()),
                                 },
                                 podcast::Person{
                                     group: Some(podcast::PersonGroup::Other(("non-existent group".to_string(), "should be one of the groups defined at <https://podcasttaxonomy.com>".to_string()))),
                                     role: Some(podcast::PersonRole::Other(("Non-existent role".to_string(), "should be one of the roles defined at <https://podcasttaxonomy.com>".to_string()))),
-                                    href: Some("https://example.com/artist/beckysmith".to_string()),
+                                    href: Some(Url::Ok(url::Url::parse("https://example.com/artist/beckysmith").unwrap())),
                                     value: Some("Becky Smith".to_string()),
                                     ..Default::default()
                                 },
@@ -259,7 +259,7 @@ fn deserialize() {
                             ],
                             podcast_transcript: vec! {
                                 podcast::Transcript{
-                                    url: Some("https://example.com/episode1/transcript.json".to_string()),
+                                    url: Some(Url::Ok(url::Url::parse("https://example.com/episode1/transcript.json").unwrap())),
                                     type_: Some(MimeTranscript::ApplicationJson),
                                     language: Some(Language::Spanish(LanguageSpanish::Default)),
                                     rel: Some(podcast::TranscriptRel::Captions),
@@ -273,19 +273,19 @@ fn deserialize() {
                                     bit_rate: Some(Float::Ok(160707.74)),
                                     podcast_source: vec!{
                                         podcast::Source{
-                                            uri: Some("https://example.com/file-0.mp3".to_string()),
+                                            uri: Some(Url::Ok(url::Url::parse("https://example.com/file-0.mp3").unwrap())),
                                             type_: None,
                                         },
                                         podcast::Source{
-                                            uri: Some("ipfs://QmdwGqd3d2gFPGeJNLLCshdiPert45fMu84552Y4XHTy4y".to_string()),
+                                            uri: Some(Url::Ok(url::Url::parse("ipfs://QmdwGqd3d2gFPGeJNLLCshdiPert45fMu84552Y4XHTy4y").unwrap())),
                                             type_: None,
                                         },
                                         podcast::Source{
-                                            uri: Some("https://example.com/file-0.torrent".to_string()),
+                                            uri: Some(Url::Ok(url::Url::parse("https://example.com/file-0.torrent").unwrap())),
                                             type_: Some(MimeEnclosure::Other(("application/x-bittorrent".to_string(), "unrecognized mime type".to_string()))),
                                         },
                                         podcast::Source{
-                                            uri: Some("http://example.onion/file-0.mp3".to_string()),
+                                            uri: Some(Url::Other(("http://example.onion/file-0.mp3".to_string(), "protocol must not be http".to_string()))),
                                             type_: None,
                                         },
                                     },
@@ -298,7 +298,7 @@ fn deserialize() {
                                     height: Some(Integer::Ok(1080)),
                                     podcast_source: vec!{
                                         podcast::Source{
-                                            uri: Some("https://example.com/file-1080.mp4".to_string()),
+                                            uri: Some(Url::Ok(url::Url::parse("https://example.com/file-1080.mp4").unwrap())),
                                             type_: None,
                                         },
                                     },
@@ -313,7 +313,7 @@ fn deserialize() {
                             }],
                             podcast_social_interact: vec! {
                                 podcast::SocialInteract{
-                                    uri: Some("https://podcastindex.social/web/@dave/108013847520053258".to_string()),
+                                    uri: Some(Url::Ok(url::Url::parse("https://podcastindex.social/web/@dave/108013847520053258").unwrap())),
                                     protocol: Some(podcast::SocialProtocol::ActivityPub),
                                     account_id: Some("@dave".to_string()),
                                     ..Default::default()
@@ -352,16 +352,16 @@ fn deserialize() {
                             title: vec!["Podcasting 2.0 Live Stream".to_string()],
                             guid: vec![Guid{
                                 is_permalink: None,
-                                value: Some("e32b4890-983b-4ce5-8b46-f2d6bc1d8819".to_string()),
+                                value: Some(GuidValue::Other(("e32b4890-983b-4ce5-8b46-f2d6bc1d8819".to_string(), "should be a URL when isPermalink is not set".to_string()))),
                             }],
                             enclosure: vec![Enclosure{
-                                url: Some("https://example.com/pc20/livestream?format=.mp3".to_string()),
+                                url: Some(Url::Ok(url::Url::parse("https://example.com/pc20/livestream?format=.mp3").unwrap())),
                                 length: Some(Integer::Ok(312)),
                                 type_: Some(MimeEnclosure::AudioMp3),
                             }],
                             podcast_content_link: vec!{
                                 podcast::ContentLink{
-                                    href: Some("https://example.com/html/livestream".to_string()),
+                                    href: Some(Url::Ok(url::Url::parse("https://example.com/html/livestream").unwrap())),
                                     value: Some("Listen Live!".to_string()),
                                 },
                             },
@@ -379,7 +379,7 @@ fn deserialize() {
             channel: vec![Channel{
                 title: vec!["Podcasting 2.0 Namespace Example".to_string()],
                 description: vec!["This is a fake show that exists only as an example of the \"podcast\" namespace tag usage.".to_string()],
-                link: vec!["http://example.com/podcast".to_string()],
+                link: vec![Url::Ok(url::Url::parse("http://example.com/podcast").unwrap())],
                 language: vec![Language::English(LanguageEnglish::UnitedStates)],
                 generator: vec!["Freedom Controller".to_string()],
                 managing_editor: vec!["john@example.com (John Doe)".to_string()],
@@ -389,7 +389,7 @@ fn deserialize() {
 
                 podcast_guid: vec![podcast::Guid::Other(("y0ur-gu1d-g035-h3r3".to_string(), r#"should be a UUIDv5 matching regular expression "^[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}$""#.to_string()))],
                 podcast_license: vec![podcast::License{
-                    url: Some("https://example.org/mypodcastlicense/full.pdf".to_string()),
+                    url: Some(Url::Ok(url::Url::parse("https://example.org/mypodcastlicense/full.pdf").unwrap())),
                     value: Some(podcast::LicenseType::Other(("my-podcast-license-v1".to_string(), "unrecognized license type".to_string()))),
                 }],
                 podcast_locked: vec![podcast::Locked{
@@ -412,7 +412,7 @@ fn deserialize() {
                 },
                 podcast_funding: vec! {
                     podcast::Funding{
-                        url: Some("https://example.com/donate".to_string()),
+                        url: Some(Url::Ok(url::Url::parse("https://example.com/donate").unwrap())),
                         value: Some("Support the show!".to_string()),
                     },
                 },
@@ -454,7 +454,7 @@ fn deserialize() {
                 }],
                 podcast_trailer: vec!{
                     podcast::Trailer{
-                        url: Some("https://example.org/trailers/teaser".to_string()),
+                        url: Some(Url::Ok(url::Url::parse("https://example.org/trailers/teaser").unwrap())),
                         pub_date: Some(badpod::DateTime::Ok(chrono::FixedOffset::west(5*60*60).ymd(2021, 4, 1).and_hms(8, 0, 0))),
                         length: Some(Integer::Ok(12345678)),
                         type_: Some(MimeEnclosure::Other(("audio/mp3".to_string(), "unrecognized mime type".to_string()))),
@@ -469,10 +469,10 @@ fn deserialize() {
                         end: Some(badpod::DateTime::Ok(chrono::FixedOffset::west(6*60*60).ymd(2021, 9, 26).and_hms(9, 30, 0))),
                         title: vec!["Podcasting 2.0 Live Show".to_string()],
                         description: vec!["A look into the future of podcasting and how we get to Podcasting 2.0!".to_string()],
-                        link: vec!["https://example.com/podcast/live".to_string()],
+                        link: vec![Url::Ok(url::Url::parse("https://example.com/podcast/live").unwrap())],
                         guid: vec![Guid{
                             is_permalink: Some(Bool::Ok(true)),
-                            value: Some("https://example.com/live".to_string()),
+                            value: Some(GuidValue::Url(url::Url::parse("https://example.com/live").unwrap())),
                         }],
                         podcast_alternate_enclosure: vec!{
                             podcast::AlternateEnclosure{
@@ -481,7 +481,7 @@ fn deserialize() {
                                 default: Some(Bool::Ok(true)),
                                 podcast_source: vec!{
                                     podcast::Source{
-                                        uri: Some("https://example.com/pc20/livestream".to_string()),
+                                        uri: Some(Url::Ok(url::Url::parse("https://example.com/pc20/livestream").unwrap())),
                                         type_: None,
                                     },
                                 },
@@ -489,17 +489,17 @@ fn deserialize() {
                             },
                         },
                         enclosure: vec![Enclosure {
-                            url: Some("https://example.com/pc20/livestream?format=.mp3".to_string()),
+                            url: Some(Url::Ok(url::Url::parse("https://example.com/pc20/livestream?format=.mp3").unwrap())),
                             type_: Some(MimeEnclosure::AudioMp3),
                             length: Some(Integer::Ok(312)),
                         }],
                         podcast_content_link: vec!{
                             podcast::ContentLink{
-                                href: Some("https://youtube.com/pc20/livestream".to_string()),
+                                href: Some(Url::Ok(url::Url::parse("https://youtube.com/pc20/livestream").unwrap())),
                                 value: Some("YouTube!".to_string()),
                             },
                             podcast::ContentLink{
-                                href: Some("https://twitch.com/pc20/livestream".to_string()),
+                                href: Some(Url::Ok(url::Url::parse("https://twitch.com/pc20/livestream").unwrap())),
                                 value: Some("Twitch!".to_string()),
                             },
                         },
@@ -532,14 +532,14 @@ fn deserialize() {
                     Item{
                         title: vec!["Episode 3 - The Future".to_string()],
                         description: vec!["<p>A look into the future of podcasting and how we get to Podcasting 2.0!</p>".to_string()],
-                        link: vec!["https://example.com/podcast/ep0003".to_string()],
+                        link: vec![Url::Ok(url::Url::parse("https://example.com/podcast/ep0003").unwrap())],
                         guid: vec![Guid{
                             is_permalink: Some(Bool::Ok(true)),
-                            value: Some("https://example.com/ep0003".to_string()),
+                            value: Some(GuidValue::Url(url::Url::parse("https://example.com/ep0003").unwrap())),
                         }],
                         pub_date: vec![badpod::DateTime::Ok(chrono::FixedOffset::west(0).ymd(2020, 10, 9).and_hms(4, 30, 38))],
                         enclosure: vec![Enclosure{
-                            url: Some("https://example.com/file-03.mp3".to_string()),
+                            url: Some(Url::Ok(url::Url::parse("https://example.com/file-03.mp3").unwrap())),
                             length: Some(Integer::Ok(43200000)),
                             type_: Some(MimeEnclosure::AudioMp3),
                         }],
@@ -551,10 +551,10 @@ fn deserialize() {
 
                         podcast_images: vec![podcast::Images {
                             srcset: vec! {
-                                podcast::Image::Ok("https://example.com/images/ep3/pci_avatar-massive.jpg".to_string(), 1500),
-                                podcast::Image::Ok("https://example.com/images/ep3/pci_avatar-middle.jpg".to_string(), 600),
-                                podcast::Image::Ok("https://example.com/images/ep3/pci_avatar-small.jpg".to_string(), 300),
-                                podcast::Image::Ok("https://example.com/images/ep3/pci_avatar-tiny.jpg".to_string(), 150),
+                                podcast::Image::Ok(url::Url::parse("https://example.com/images/ep3/pci_avatar-massive.jpg").unwrap(), 1500),
+                                podcast::Image::Ok(url::Url::parse("https://example.com/images/ep3/pci_avatar-middle.jpg").unwrap(), 600),
+                                podcast::Image::Ok(url::Url::parse("https://example.com/images/ep3/pci_avatar-small.jpg").unwrap(), 300),
+                                podcast::Image::Ok(url::Url::parse("https://example.com/images/ep3/pci_avatar-tiny.jpg").unwrap(), 150),
                             },
                         }],
                         podcast_season: vec![podcast::Season{
@@ -566,7 +566,7 @@ fn deserialize() {
                             value: Some(Number::Integer(3)),
                         }],
                         podcast_chapters: vec![podcast::Chapters{
-                            url: Some("https://example.com/ep3_chapters.json".to_string()),
+                            url: Some(Url::Ok(url::Url::parse("https://example.com/ep3_chapters.json").unwrap())),
                             type_: Some(MimeChapters::ApplicationJson),
                         }],
                         podcast_soundbite: vec!{
@@ -578,29 +578,29 @@ fn deserialize() {
                         },
                         podcast_transcript: vec!{
                             podcast::Transcript{
-                                url: Some("https://example.com/ep3/transcript.txt".to_string()),
+                                url: Some(Url::Ok(url::Url::parse("https://example.com/ep3/transcript.txt").unwrap())),
                                 type_: Some(MimeTranscript::TextPlain),
                                 ..Default::default()
                             },
                         },
                         podcast_person: vec!{
                             podcast::Person{
-                                href: Some("https://www.podchaser.com/creators/adam-curry-107ZzmWE5f".to_string()),
-                                img: Some("https://example.com/images/adamcurry.jpg".to_string()),
+                                href: Some(Url::Ok(url::Url::parse("https://www.podchaser.com/creators/adam-curry-107ZzmWE5f").unwrap())),
+                                img: Some(Url::Ok(url::Url::parse("https://example.com/images/adamcurry.jpg").unwrap())),
                                 value: Some("Adam Curry".to_string()),
                                 ..Default::default()
                             },
                             podcast::Person{
                                 role: Some(podcast::PersonRole::Guest),
-                                href: Some("https://github.com/daveajones/".to_string()),
-                                img: Some("https://example.com/images/davejones.jpg".to_string()),
+                                href: Some(Url::Ok(url::Url::parse("https://github.com/daveajones/").unwrap())),
+                                img: Some(Url::Ok(url::Url::parse("https://example.com/images/davejones.jpg").unwrap())),
                                 value: Some("Dave Jones".to_string()),
                                 ..Default::default()
                             },
                             podcast::Person{
                                 group: Some(podcast::PersonGroup::Visuals),
                                 role: Some(podcast::PersonRole::CoverArtDesigner),
-                                href: Some("https://example.com/artist/beckysmith".to_string()),
+                                href: Some(Url::Ok(url::Url::parse("https://example.com/artist/beckysmith").unwrap())),
                                 value: Some("Becky Smith".to_string()),
                                 ..Default::default()
                             },
@@ -614,11 +614,11 @@ fn deserialize() {
                                 title: Some("Standard".to_string()),
                                 podcast_source: vec!{
                                     podcast::Source{
-                                        uri: Some("https://example.com/file-03.mp3".to_string()),
+                                        uri: Some(Url::Ok(url::Url::parse("https://example.com/file-03.mp3").unwrap())),
                                         type_: None,
                                     },
                                     podcast::Source{
-                                        uri: Some("ipfs://someRandomMpegFile03".to_string()),
+                                        uri: Some(Url::Ok(url::Url::parse("ipfs://someRandomMpegFile03").unwrap())),
                                         type_: None,
                                     }
                                 },
@@ -631,11 +631,11 @@ fn deserialize() {
                                 title: Some("High quality".to_string()),
                                 podcast_source: vec!{
                                     podcast::Source{
-                                        uri: Some("https://example.com/file-high-03.opus".to_string()),
+                                        uri: Some(Url::Ok(url::Url::parse("https://example.com/file-high-03.opus").unwrap())),
                                         type_: None,
                                     },
                                     podcast::Source{
-                                        uri: Some("ipfs://someRandomHighBitrateOpusFile03".to_string()),
+                                        uri: Some(Url::Ok(url::Url::parse("ipfs://someRandomHighBitrateOpusFile03").unwrap())),
                                         type_: None,
                                     }
                                 },
@@ -648,11 +648,11 @@ fn deserialize() {
                                 title: Some("High quality AAC".to_string()),
                                 podcast_source: vec!{
                                     podcast::Source{
-                                        uri: Some("https://example.com/file-proprietary-03.aac".to_string()),
+                                        uri: Some(Url::Ok(url::Url::parse("https://example.com/file-proprietary-03.aac").unwrap())),
                                         type_: None,
                                     },
                                     podcast::Source{
-                                        uri: Some("ipfs://someRandomProprietaryAACFile03".to_string()),
+                                        uri: Some(Url::Ok(url::Url::parse("ipfs://someRandomProprietaryAACFile03").unwrap())),
                                         type_: None,
                                     }
                                 },
@@ -665,11 +665,11 @@ fn deserialize() {
                                 title: Some("Low bandwidth".to_string()),
                                 podcast_source: vec!{
                                     podcast::Source{
-                                        uri: Some("https://example.com/file-low-03.opus".to_string()),
+                                        uri: Some(Url::Ok(url::Url::parse("https://example.com/file-low-03.opus").unwrap())),
                                         type_: None,
                                     },
                                     podcast::Source{
-                                        uri: Some("ipfs://someRandomLowBitrateOpusFile03".to_string()),
+                                        uri: Some(Url::Ok(url::Url::parse("ipfs://someRandomLowBitrateOpusFile03").unwrap())),
                                         type_: None,
                                     }
                                 },
@@ -683,11 +683,11 @@ fn deserialize() {
                                 title: Some("Video version".to_string()),
                                 podcast_source: vec!{
                                     podcast::Source{
-                                        uri: Some("https://example.com/file-720.mp4".to_string()),
+                                        uri: Some(Url::Ok(url::Url::parse("https://example.com/file-720.mp4").unwrap())),
                                         type_: None,
                                     },
                                     podcast::Source{
-                                        uri: Some("ipfs://QmX33FYehk6ckGQ6g1D9D3FqZPix5JpKstKQKbaS8quUFb".to_string()),
+                                        uri: Some(Url::Ok(url::Url::parse("ipfs://QmX33FYehk6ckGQ6g1D9D3FqZPix5JpKstKQKbaS8quUFb").unwrap())),
                                         type_: None,
                                     }
                                 },
@@ -729,17 +729,17 @@ fn deserialize() {
                         podcast_social_interact: vec!{
                             podcast::SocialInteract{
                                 priority: Some(Integer::Ok(1)),
-                                uri: Some("https://podcastindex.social/web/@dave/108013847520053258".to_string()),
+                                uri: Some(Url::Ok(url::Url::parse("https://podcastindex.social/web/@dave/108013847520053258").unwrap())),
                                 protocol: Some(podcast::SocialProtocol::ActivityPub),
                                 account_id: Some("@dave".to_string()),
-                                account_url: Some("https://podcastindex.social/web/@dave".to_string()),
+                                account_url: Some(Url::Ok(url::Url::parse("https://podcastindex.social/web/@dave").unwrap())),
                             },
                             podcast::SocialInteract{
                                 priority: Some(Integer::Ok(2)),
-                                uri: Some("https://twitter.com/PodcastindexOrg/status/1507120226361647115".to_string()),
+                                uri: Some(Url::Ok(url::Url::parse("https://twitter.com/PodcastindexOrg/status/1507120226361647115").unwrap())),
                                 protocol: Some(podcast::SocialProtocol::Twitter),
                                 account_id: Some("@podcastindexorg".to_string()),
-                                account_url: Some("https://twitter.com/PodcastindexOrg".to_string()),
+                                account_url: Some(Url::Ok(url::Url::parse("https://twitter.com/PodcastindexOrg").unwrap())),
                             },
                         },
 
@@ -748,14 +748,14 @@ fn deserialize() {
                     Item{
                         title: vec!["Episode 2 - The Present".to_string()],
                         description: vec!["<p>Where are we at now in the podcasting era. What are the current challenges?</p>".to_string()],
-                        link: vec!["https://example.com/podcast/ep0002".to_string()],
+                        link: vec![Url::Ok(url::Url::parse("https://example.com/podcast/ep0002").unwrap())],
                         guid: vec![Guid{
                             is_permalink: Some(Bool::Ok(true)),
-                            value: Some("https://example.com/ep0002".to_string()),
+                            value: Some(GuidValue::Url(url::Url::parse("https://example.com/ep0002").unwrap())),
                         }],
                         pub_date: vec![badpod::DateTime::Ok(chrono::FixedOffset::west(0).ymd(2020, 10, 8).and_hms(4, 30, 38))],
                         enclosure: vec![Enclosure{
-                            url: Some("https://example.com/file-02.mp3".to_string()),
+                            url: Some(Url::Ok(url::Url::parse("https://example.com/file-02.mp3").unwrap())),
                             length: Some(Integer::Ok(43113000)),
                             type_: Some(MimeEnclosure::AudioMp3),
                         }],
@@ -767,10 +767,10 @@ fn deserialize() {
 
                         podcast_images: vec![podcast::Images {
                             srcset: vec! {
-                                podcast::Image::Ok("https://example.com/images/ep2/pci_avatar-massive.jpg".to_string(), 1500),
-                                podcast::Image::Ok("https://example.com/images/ep2/pci_avatar-middle.jpg".to_string(), 600),
-                                podcast::Image::Ok("https://example.com/images/ep2/pci_avatar-small.jpg".to_string(), 300),
-                                podcast::Image::Ok("https://example.com/images/ep2/pci_avatar-tiny.jpg".to_string(), 150),
+                                podcast::Image::Ok(url::Url::parse("https://example.com/images/ep2/pci_avatar-massive.jpg").unwrap(), 1500),
+                                podcast::Image::Ok(url::Url::parse("https://example.com/images/ep2/pci_avatar-middle.jpg").unwrap(), 600),
+                                podcast::Image::Ok(url::Url::parse("https://example.com/images/ep2/pci_avatar-small.jpg").unwrap(), 300),
+                                podcast::Image::Ok(url::Url::parse("https://example.com/images/ep2/pci_avatar-tiny.jpg").unwrap(), 150),
                             },
                         }],
                         podcast_season: vec![podcast::Season{
@@ -782,7 +782,7 @@ fn deserialize() {
                             value: Some(Number::Integer(2)),
                         }],
                         podcast_chapters: vec![podcast::Chapters{
-                            url: Some("https://example.com/ep2_chapters.json".to_string()),
+                            url: Some(Url::Ok(url::Url::parse("https://example.com/ep2_chapters.json").unwrap())),
                             type_: Some(MimeChapters::ApplicationJson),
                         }],
                         podcast_soundbite: vec!{
@@ -794,29 +794,29 @@ fn deserialize() {
                         },
                         podcast_transcript: vec!{
                             podcast::Transcript{
-                                url: Some("https://example.com/ep2/transcript.txt".to_string()),
+                                url: Some(Url::Ok(url::Url::parse("https://example.com/ep2/transcript.txt").unwrap())),
                                 type_: Some(MimeTranscript::TextPlain),
                                 ..Default::default()
                             },
                         },
                         podcast_person: vec!{
                             podcast::Person{
-                                href: Some("https://en.wikipedia.org/wiki/Adam_Curry".to_string()),
-                                img: Some("http://example.com/images/adamcurry.jpg".to_string()),
+                                href: Some(Url::Ok(url::Url::parse("https://en.wikipedia.org/wiki/Adam_Curry").unwrap())),
+                                img: Some(Url::Other(("http://example.com/images/adamcurry.jpg".to_string(), "protocol must be https".to_string()))),
                                 value: Some("Adam Curry".to_string()),
                                 ..Default::default()
                             },
                             podcast::Person{
                                 role: Some(podcast::PersonRole::Guest),
-                                href: Some("https://example.com/blog/daveajones/".to_string()),
-                                img: Some("http://example.com/images/davejones.jpg".to_string()),
+                                href: Some(Url::Ok(url::Url::parse("https://example.com/blog/daveajones/").unwrap())),
+                                img: Some(Url::Other(("http://example.com/images/davejones.jpg".to_string(), "protocol must be https".to_string()))),
                                 value: Some("Dave Jones".to_string()),
                                 ..Default::default()
                             },
                             podcast::Person{
                                 group: Some(podcast::PersonGroup::Visuals),
                                 role: Some(podcast::PersonRole::CoverArtDesigner),
-                                href: Some("https://example.com/artist/marcusbrown".to_string()),
+                                href: Some(Url::Ok(url::Url::parse("https://example.com/artist/marcusbrown").unwrap())),
                                 value: Some("Marcus Brown".to_string()),
                                 ..Default::default()
                             },
@@ -830,11 +830,11 @@ fn deserialize() {
                                 title: Some("Standard".to_string()),
                                 podcast_source: vec!{
                                     podcast::Source{
-                                        uri: Some("https://example.com/file-02.mp3".to_string()),
+                                        uri: Some(Url::Ok(url::Url::parse("https://example.com/file-02.mp3").unwrap())),
                                         type_: None,
                                     },
                                     podcast::Source{
-                                        uri: Some("ipfs://someRandomMpegFile02".to_string()),
+                                        uri: Some(Url::Ok(url::Url::parse("ipfs://someRandomMpegFile02").unwrap())),
                                         type_: None,
                                     }
                                 },
@@ -847,11 +847,11 @@ fn deserialize() {
                                 title: Some("High quality".to_string()),
                                 podcast_source: vec!{
                                     podcast::Source{
-                                        uri: Some("https://example.com/file-high-02.opus".to_string()),
+                                        uri: Some(Url::Ok(url::Url::parse("https://example.com/file-high-02.opus").unwrap())),
                                         type_: None,
                                     },
                                     podcast::Source{
-                                        uri: Some("ipfs://someRandomHighBitrateOpusFile02".to_string()),
+                                        uri: Some(Url::Ok(url::Url::parse("ipfs://someRandomHighBitrateOpusFile02").unwrap())),
                                         type_: None,
                                     }
                                 },
@@ -864,11 +864,11 @@ fn deserialize() {
                                 title: Some("High quality AAC".to_string()),
                                 podcast_source: vec!{
                                     podcast::Source{
-                                        uri: Some("https://example.com/file-proprietary-02.aac".to_string()),
+                                        uri: Some(Url::Ok(url::Url::parse("https://example.com/file-proprietary-02.aac").unwrap())),
                                         type_: None,
                                     },
                                     podcast::Source{
-                                        uri: Some("ipfs://someRandomProprietaryAACFile02".to_string()),
+                                        uri: Some(Url::Ok(url::Url::parse("ipfs://someRandomProprietaryAACFile02").unwrap())),
                                         type_: None,
                                     }
                                 },
@@ -881,11 +881,11 @@ fn deserialize() {
                                 title: Some("Low bandwidth".to_string()),
                                 podcast_source: vec!{
                                     podcast::Source{
-                                        uri: Some("https://example.com/file-low-02.opus".to_string()),
+                                        uri: Some(Url::Ok(url::Url::parse("https://example.com/file-low-02.opus").unwrap())),
                                         type_: None,
                                     },
                                     podcast::Source{
-                                        uri: Some("ipfs://someRandomLowBitrateOpusFile02".to_string()),
+                                        uri: Some(Url::Ok(url::Url::parse("ipfs://someRandomLowBitrateOpusFile02").unwrap())),
                                         type_: None,
                                     }
                                 },
@@ -925,14 +925,14 @@ fn deserialize() {
                     Item{
                         title: vec!["Episode 1 - The Past".to_string()],
                         description: vec!["<p>How did podcasting get started? What was it like in the beginning?</p>".to_string()],
-                        link: vec!["https://example.com/podcast/ep0001".to_string()],
+                        link: vec![Url::Ok(url::Url::parse("https://example.com/podcast/ep0001").unwrap())],
                         guid: vec![Guid{
                             is_permalink: Some(Bool::Ok(true)),
-                            value: Some("https://example.com/ep0001".to_string()),
+                            value: Some(GuidValue::Url(url::Url::parse("https://example.com/ep0001").unwrap())),
                         }],
                         pub_date: vec![badpod::DateTime::Ok(chrono::FixedOffset::west(0).ymd(2020, 10, 7).and_hms(4, 30, 38))],
                         enclosure: vec![Enclosure{
-                            url: Some("https://example.com/file-01.mp3".to_string()),
+                            url: Some(Url::Ok(url::Url::parse("https://example.com/file-01.mp3").unwrap())),
                             length: Some(Integer::Ok(43111403)),
                             type_: Some(MimeEnclosure::AudioMp3),
                         }],
@@ -944,10 +944,10 @@ fn deserialize() {
 
                         podcast_images: vec![podcast::Images {
                             srcset: vec! {
-                                podcast::Image::Ok("https://example.com/images/ep1/pci_avatar-massive.jpg".to_string(), 1500),
-                                podcast::Image::Ok("https://example.com/images/ep1/pci_avatar-middle.jpg".to_string(), 600),
-                                podcast::Image::Ok("https://example.com/images/ep1/pci_avatar-small.jpg".to_string(), 300),
-                                podcast::Image::Ok("https://example.com/images/ep1/pci_avatar-tiny.jpg".to_string(), 150),
+                                podcast::Image::Ok(url::Url::parse("https://example.com/images/ep1/pci_avatar-massive.jpg").unwrap(), 1500),
+                                podcast::Image::Ok(url::Url::parse("https://example.com/images/ep1/pci_avatar-middle.jpg").unwrap(), 600),
+                                podcast::Image::Ok(url::Url::parse("https://example.com/images/ep1/pci_avatar-small.jpg").unwrap(), 300),
+                                podcast::Image::Ok(url::Url::parse("https://example.com/images/ep1/pci_avatar-tiny.jpg").unwrap(), 150),
                             },
                         }],
                         podcast_season: vec![podcast::Season{
@@ -959,7 +959,7 @@ fn deserialize() {
                             value: Some(Number::Integer(1)),
                         }],
                         podcast_chapters: vec![podcast::Chapters{
-                            url: Some("https://example.com/ep1_chapters.json".to_string()),
+                            url: Some(Url::Ok(url::Url::parse("https://example.com/ep1_chapters.json").unwrap())),
                             type_: Some(MimeChapters::ApplicationJson),
                         }],
                         podcast_soundbite: vec!{
@@ -971,29 +971,29 @@ fn deserialize() {
                         },
                         podcast_transcript: vec!{
                             podcast::Transcript{
-                                url: Some("https://example.com/ep1/transcript.txt".to_string()),
+                                url: Some(Url::Ok(url::Url::parse("https://example.com/ep1/transcript.txt").unwrap())),
                                 type_: Some(MimeTranscript::TextPlain),
                                 ..Default::default()
                             },
                         },
                         podcast_person: vec!{
                             podcast::Person{
-                                href: Some("https://curry.com".to_string()),
-                                img: Some("http://example.com/images/adamcurry.jpg".to_string()),
+                                href: Some(Url::Ok(url::Url::parse("https://curry.com").unwrap())),
+                                img: Some(Url::Other(("http://example.com/images/adamcurry.jpg".to_string(), "protocol must be https".to_string()))),
                                 value: Some("Adam Curry".to_string()),
                                 ..Default::default()
                             },
                             podcast::Person{
                                 role: Some(podcast::PersonRole::Guest),
-                                href: Some("https://www.imdb.com/name/nm0427852888/".to_string()),
-                                img: Some("http://example.com/images/davejones.jpg".to_string()),
+                                href: Some(Url::Ok(url::Url::parse("https://www.imdb.com/name/nm0427852888/").unwrap())),
+                                img: Some(Url::Other(("http://example.com/images/davejones.jpg".to_string(), "protocol must be https".to_string()))),
                                 value: Some("Dave Jones".to_string()),
                                 ..Default::default()
                             },
                             podcast::Person{
                                 group: Some(podcast::PersonGroup::Visuals),
                                 role: Some(podcast::PersonRole::CoverArtDesigner),
-                                href: Some("https://example.com/artist/jebickmorton".to_string()),
+                                href: Some(Url::Ok(url::Url::parse("https://example.com/artist/jebickmorton").unwrap())),
                                 value: Some("Jebick Morton".to_string()),
                                 ..Default::default()
                             },
@@ -1007,11 +1007,11 @@ fn deserialize() {
                                 title: Some("Standard".to_string()),
                                 podcast_source: vec!{
                                     podcast::Source{
-                                        uri: Some("https://example.com/file-01.mp3".to_string()),
+                                        uri: Some(Url::Ok(url::Url::parse("https://example.com/file-01.mp3").unwrap())),
                                         type_: None,
                                     },
                                     podcast::Source{
-                                        uri: Some("ipfs://someRandomMpegFile01".to_string()),
+                                        uri: Some(Url::Ok(url::Url::parse("ipfs://someRandomMpegFile01").unwrap())),
                                         type_: None,
                                     }
                                 },
@@ -1024,11 +1024,11 @@ fn deserialize() {
                                 title: Some("High quality".to_string()),
                                 podcast_source: vec!{
                                     podcast::Source{
-                                        uri: Some("https://example.com/file-high-01.opus".to_string()),
+                                        uri: Some(Url::Ok(url::Url::parse("https://example.com/file-high-01.opus").unwrap())),
                                         type_: None,
                                     },
                                     podcast::Source{
-                                        uri: Some("ipfs://someRandomHighBitrateOpusFile01".to_string()),
+                                        uri: Some(Url::Ok(url::Url::parse("ipfs://someRandomHighBitrateOpusFile01").unwrap())),
                                         type_: None,
                                     }
                                 },
@@ -1041,11 +1041,11 @@ fn deserialize() {
                                 title: Some("High quality AAC".to_string()),
                                 podcast_source: vec!{
                                     podcast::Source{
-                                        uri: Some("https://example.com/file-proprietary-01.aac".to_string()),
+                                        uri: Some(Url::Ok(url::Url::parse("https://example.com/file-proprietary-01.aac").unwrap())),
                                         type_: None,
                                     },
                                     podcast::Source{
-                                        uri: Some("ipfs://someRandomProprietaryAACFile01".to_string()),
+                                        uri: Some(Url::Ok(url::Url::parse("ipfs://someRandomProprietaryAACFile01").unwrap())),
                                         type_: None,
                                     }
                                 },
@@ -1058,11 +1058,11 @@ fn deserialize() {
                                 title: Some("Low bandwidth".to_string()),
                                 podcast_source: vec!{
                                     podcast::Source{
-                                        uri: Some("https://example.com/file-low-01.opus".to_string()),
+                                        uri: Some(Url::Ok(url::Url::parse("https://example.com/file-low-01.opus").unwrap())),
                                         type_: None,
                                     },
                                     podcast::Source{
-                                        uri: Some("ipfs://someRandomLowBitrateOpusFile01".to_string()),
+                                        uri: Some(Url::Ok(url::Url::parse("ipfs://someRandomLowBitrateOpusFile01").unwrap())),
                                         type_: None,
                                     }
                                 },

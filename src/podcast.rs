@@ -2,6 +2,7 @@ use crate::basic;
 use crate::itunes;
 use crate::language::Language;
 use crate::mime;
+use crate::strings::Url;
 use crate::time::DateTime;
 
 mod transcript;
@@ -49,7 +50,7 @@ pub use txt::Purpose as TxtPurpose;
 /// A transcript or closed captions file.
 #[derive(Debug, PartialEq, Eq, Default)]
 pub struct Transcript {
-    pub url: Option<String>,
+    pub url: Option<Url>,
     pub type_: Option<mime::Transcript>,
     pub language: Option<Language>,
     pub rel: Option<TranscriptRel>,
@@ -65,14 +66,14 @@ pub struct Locked {
 /// Donation/funding link.
 #[derive(Debug, PartialEq, Eq, Default)]
 pub struct Funding {
-    pub url: Option<String>,
+    pub url: Option<Url>,
     pub value: Option<String>,
 }
 
 /// Chapter data for an episode.
 #[derive(Debug, PartialEq, Eq, Default)]
 pub struct Chapters {
-    pub url: Option<String>,
+    pub url: Option<Url>,
     pub type_: Option<mime::Chapters>,
 }
 
@@ -89,8 +90,8 @@ pub struct Soundbite {
 pub struct Person {
     pub group: Option<PersonGroup>,
     pub role: Option<PersonRole>,
-    pub img: Option<String>,
-    pub href: Option<String>,
+    pub img: Option<Url>,
+    pub href: Option<Url>,
     pub value: Option<String>,
 }
 
@@ -119,7 +120,7 @@ pub struct Episode {
 /// A trailer for the entire podcast or a specific season.
 #[derive(Debug, PartialEq, Eq, Default)]
 pub struct Trailer {
-    pub url: Option<String>,
+    pub url: Option<Url>,
     pub pub_date: Option<DateTime>,
     pub length: Option<basic::Integer>,
     pub type_: Option<mime::Enclosure>,
@@ -130,7 +131,7 @@ pub struct Trailer {
 /// License for a podcast or episode.
 #[derive(Debug, PartialEq, Eq, Default)]
 pub struct License {
-    pub url: Option<String>,
+    pub url: Option<Url>,
     pub value: Option<LicenseType>,
 }
 
@@ -154,7 +155,7 @@ pub struct AlternateEnclosure {
 #[derive(Debug, PartialEq, Eq, Default)]
 pub struct Source {
     pub type_: Option<mime::Enclosure>,
-    pub uri: Option<String>,
+    pub uri: Option<Url>,
 }
 
 /// Method of verifying the integrity of the media in
@@ -194,7 +195,7 @@ pub struct LiveItem {
     pub end: Option<DateTime>,
 
     pub description: Vec<String>,
-    pub link: Vec<String>,
+    pub link: Vec<Url>,
     pub title: Vec<String>,
     pub enclosure: Vec<crate::Enclosure>,
     pub guid: Vec<crate::Guid>,
@@ -231,17 +232,17 @@ pub struct LiveItem {
 /// Used to indicate that the content being delivered by [LiveItem](LiveItem) can be found at an external location.
 #[derive(Debug, PartialEq, Eq, Default)]
 pub struct ContentLink {
-    pub href: Option<String>,
+    pub href: Option<Url>,
     pub value: Option<String>,
 }
 
 /// Allows a podcaster to attach the URL of a "root post" of a comment thread to an episode.
 #[derive(Debug, PartialEq, Eq, Default)]
 pub struct SocialInteract {
-    pub uri: Option<String>,
+    pub uri: Option<Url>,
     pub protocol: Option<SocialProtocol>,
     pub account_id: Option<String>,
-    pub account_url: Option<String>,
+    pub account_url: Option<Url>,
     pub priority: Option<basic::Integer>,
 }
 

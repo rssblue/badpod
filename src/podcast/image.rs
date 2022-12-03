@@ -1,3 +1,4 @@
+use crate::strings::{Url, UrlConstraint};
 use crate::Other;
 use std::str::FromStr;
 
@@ -15,9 +16,9 @@ impl std::fmt::Display for Images {
 }
 
 /// Individual image in [Images](Images) object.
-#[derive(Debug, PartialEq, Eq, Clone)]
+#[derive(Debug, PartialEq, Eq)]
 pub enum Image {
-    Ok(String, i64),
+    Ok(url::Url, i64),
     Other(Other),
 }
 
@@ -39,6 +40,11 @@ impl std::str::FromStr for Image {
 
         let (url, mut width_str) = (parts[0], parts[1]);
 
+        let url = match Url::parse(url, UrlConstraint::HttpOrHttps) {
+            Url::Ok(url) => url,
+            Url::Other(other) => return Ok(Self::Other(other)),
+        };
+
         if !width_str.ends_with('w') {
             return Ok(Self::Other((
                 img_str.to_string(),
@@ -58,7 +64,7 @@ impl std::str::FromStr for Image {
                     "image width should be positive".to_string(),
                 )));
             }
-            return Ok(Image::Ok(url.to_string(), width));
+            return Ok(Image::Ok(url, width));
         }
 
         Ok(Self::Other((
@@ -108,7 +114,7 @@ mod tests {
         ];
         let images = vec![
             Image::Ok(
-                "https://example.com/images/ep1/pci_avatar-massive.jpg".to_string(),
+                url::Url::parse("https://example.com/images/ep1/pci_avatar-massive.jpg").unwrap(),
                 1500,
             ),
             Image::Other((
@@ -118,8 +124,8 @@ mod tests {
         ];
 
         for (s, image) in strings.iter().zip(images.iter()) {
-            pretty_assertions::assert_eq!(Image::from_str(s), Ok(image.clone()));
-            pretty_assertions::assert_eq!(format!("{}", image), *s);
+            pretty_assertions::assert_eq!(Image::from_str(s).unwrap(), *image);
+            pretty_assertions::assert_eq!(format!("{}", &image), *s);
         }
     }
 
@@ -134,19 +140,21 @@ mod tests {
         let images_lst = vec![Images {
             srcset: vec![
                 Image::Ok(
-                    "https://example.com/images/ep1/pci_avatar-massive.jpg".to_string(),
+                    url::Url::parse("https://example.com/images/ep1/pci_avatar-massive.jpg")
+                        .unwrap(),
                     1500,
                 ),
                 Image::Ok(
-                    "https://example.com/images/ep1/pci_avatar-middle.jpg".to_string(),
+                    url::Url::parse("https://example.com/images/ep1/pci_avatar-middle.jpg")
+                        .unwrap(),
                     600,
                 ),
                 Image::Ok(
-                    "https://example.com/images/ep1/pci_avatar-small.jpg".to_string(),
+                    url::Url::parse("https://example.com/images/ep1/pci_avatar-small.jpg").unwrap(),
                     300,
                 ),
                 Image::Ok(
-                    "https://example.com/images/ep1/pci_avatar-tiny.jpg".to_string(),
+                    url::Url::parse("https://example.com/images/ep1/pci_avatar-tiny.jpg").unwrap(),
                     150,
                 ),
             ],

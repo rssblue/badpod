@@ -17,6 +17,7 @@ roxmltree = "0.16.0"
 strum = "0.24.1"
 strum_macros = "0.24.3"
 time = { version = "0.3.15" }
+url = "2.3.1"
 
 [dev-dependencies]
 log = "0.4.17"

@@ -5,6 +5,7 @@ mod language;
 mod mime;
 mod parse;
 mod rss;
+mod strings;
 mod time;
 mod utils;
 
@@ -28,6 +29,7 @@ pub use crate::language::{
 pub use crate::mime::{
     Chapters as MimeChapters, Enclosure as MimeEnclosure, Transcript as MimeTranscript,
 };
+pub use crate::strings::Url;
 pub use crate::time::DateTime;
 pub use parse::{from_str, Error, Other};
-pub use rss::{Channel, Enclosure, Guid, Item, Rss};
+pub use rss::{Channel, Enclosure, Guid, GuidValue, Item, Rss};

@@ -4,7 +4,9 @@ use crate::podcast;
 use crate::basic;
 use crate::language;
 use crate::mime;
+use crate::strings::{Url, UrlConstraint};
 use crate::time;
+use crate::Other;
 
 #[derive(Debug, PartialEq, Default)]
 pub struct Xml {
@@ -28,7 +30,7 @@ pub struct Channel {
     pub item: Vec<Item>,
     pub language: Vec<language::Language>,
     pub last_build_date: Vec<time::DateTime>,
-    pub link: Vec<String>,
+    pub link: Vec<Url>,
     pub managing_editor: Vec<String>,
     pub pub_date: Vec<time::DateTime>,
     pub title: Vec<String>,
@@ -43,7 +45,7 @@ pub struct Channel {
     pub itunes_complete: Vec<itunes::Yes>,
     pub itunes_explicit: Vec<basic::Bool>,
     pub itunes_image: Vec<itunes::Image>,
-    pub itunes_new_feed_url: Vec<String>,
+    pub itunes_new_feed_url: Vec<Url>,
     pub itunes_owner: Vec<itunes::Owner>,
     pub itunes_type: Vec<itunes::PodcastType>,
 
@@ -66,7 +68,7 @@ pub struct Channel {
 #[derive(Debug, PartialEq, Default)]
 pub struct Item {
     pub description: Vec<String>,
-    pub link: Vec<String>,
+    pub link: Vec<Url>,
     pub title: Vec<String>,
     pub enclosure: Vec<Enclosure>,
     pub guid: Vec<Guid>,
@@ -101,7 +103,7 @@ pub struct Item {
 /// Episode's media content.
 #[derive(Debug, PartialEq, Eq, Default)]
 pub struct Enclosure {
-    pub url: Option<String>,
+    pub url: Option<Url>,
     pub length: Option<basic::Integer>,
     pub type_: Option<mime::Enclosure>,
 }
@@ -110,5 +112,32 @@ pub struct Enclosure {
 #[derive(Debug, PartialEq, Eq, Default)]
 pub struct Guid {
     pub is_permalink: Option<basic::Bool>,
-    pub value: Option<String>,
+    pub value: Option<GuidValue>,
+}
+
+/// GUID's value.
+#[derive(Debug, PartialEq, Eq)]
+pub enum GuidValue {
+    Url(url::Url),
+    Text(String),
+    Other(Other),
+}
+
+impl GuidValue {
+    pub fn parse(value: &str, is_permalink: &Option<basic::Bool>) -> Self {
+        match Url::parse(value, UrlConstraint::HttpOrHttps) {
+            Url::Ok(url) => GuidValue::Url(url),
+            Url::Other(_) => match is_permalink {
+                Some(basic::Bool::Ok(true)) => GuidValue::Other((
+                    value.to_string(),
+                    "should be a URL when isPermalink is true".to_string(),
+                )),
+                None => GuidValue::Other((
+                    value.to_string(),
+                    "should be a URL when isPermalink is not set".to_string(),
+                )),
+                _ => GuidValue::Text(value.to_string()),
+            },
+        }
+    }
 }

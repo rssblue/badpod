@@ -4,6 +4,7 @@ use crate::language::Language;
 use crate::mime;
 use crate::podcast;
 use crate::rss;
+use crate::strings::{Url, UrlConstraint};
 use crate::time::{DateTime, TimeFormat};
 
 /// Denotes values that cannot be deserialized and the reason for deserialization failure.
@@ -98,7 +99,9 @@ fn parse_channel(channel: roxmltree::Node) -> rss::Channel {
             }
             (None, "link") => {
                 if let Some(text) = parse_text_node(child) {
-                    new_channel.link.push(text);
+                    new_channel
+                        .link
+                        .push(Url::parse(&text, UrlConstraint::HttpOrHttps));
                 }
             }
             (None, "managingEditor") => {
@@ -169,7 +172,9 @@ fn parse_channel(channel: roxmltree::Node) -> rss::Channel {
             }
             (Some(NS_ITUNES), "new-feed-url") => {
                 if let Some(text) = parse_text_node(child) {
-                    new_channel.itunes_new_feed_url.push(text);
+                    new_channel
+                        .itunes_new_feed_url
+                        .push(Url::parse(&text, UrlConstraint::HttpOrHttps));
                 }
             }
             (Some(NS_ITUNES), "owner") => {
@@ -260,7 +265,9 @@ fn parse_item(item: roxmltree::Node) -> rss::Item {
             }
             (None, "link") => {
                 if let Some(text) = parse_text_node(child) {
-                    new_item.link.push(text);
+                    new_item
+                        .link
+                        .push(Url::parse(&text, UrlConstraint::HttpOrHttps));
                 }
             }
             (None, "title") => {
@@ -411,7 +418,7 @@ fn parse_enclosure(enclosure: roxmltree::Node) -> rss::Enclosure {
     for attribute in enclosure.attributes() {
         match attribute.name() {
             "url" => {
-                new_enclosure.url = Some(attribute.value().to_string());
+                new_enclosure.url = Some(Url::parse(attribute.value(), UrlConstraint::HttpOrHttps));
             }
             "length" => {
                 new_enclosure.length = Some(Integer::parse(
@@ -440,7 +447,7 @@ fn parse_guid(guid: roxmltree::Node) -> rss::Guid {
     }
 
     if let Some(text) = parse_text_node(guid) {
-        new_guid.value = Some(text);
+        new_guid.value = Some(rss::GuidValue::parse(&text, &new_guid.is_permalink));
     }
 
     new_guid
@@ -489,7 +496,7 @@ pub fn parse_itunes_image(image: roxmltree::Node) -> itunes::Image {
 
     for attribute in image.attributes() {
         if attribute.name() == "href" {
-            new_image.href = Some(attribute.value().to_string());
+            new_image.href = Some(Url::parse(attribute.value(), UrlConstraint::HttpOrHttps));
         }
     }
 
@@ -545,7 +552,7 @@ pub fn parse_podcast_funding(funding: roxmltree::Node) -> podcast::Funding {
 
     for attribute in funding.attributes() {
         if attribute.name() == "url" {
-            new_funding.url = Some(attribute.value().to_string());
+            new_funding.url = Some(Url::parse(attribute.value(), UrlConstraint::HttpsOnly));
         }
     }
 
@@ -565,8 +572,10 @@ pub fn parse_podcast_person(person: roxmltree::Node) -> podcast::Person {
         match attribute.name() {
             "role" => new_person.role = Some(podcast::PersonRole::parse(attribute.value())),
             "group" => new_person.group = Some(podcast::PersonGroup::parse(attribute.value())),
-            "img" => new_person.img = Some(attribute.value().to_string()),
-            "href" => new_person.href = Some(attribute.value().to_string()),
+            "img" => new_person.img = Some(Url::parse(attribute.value(), UrlConstraint::HttpsOnly)),
+            "href" => {
+                new_person.href = Some(Url::parse(attribute.value(), UrlConstraint::HttpsOnly))
+            }
             _ => {}
         }
     }
@@ -605,7 +614,9 @@ pub fn parse_podcast_trailer(trailer: roxmltree::Node) -> podcast::Trailer {
 
     for attribute in trailer.attributes() {
         match attribute.name() {
-            "url" => new_trailer.url = Some(attribute.value().to_string()),
+            "url" => {
+                new_trailer.url = Some(Url::parse(attribute.value(), UrlConstraint::HttpsOnly))
+            }
             "pubdate" => {
                 new_trailer.pub_date = Some(DateTime::parse(attribute.value(), TimeFormat::Rfc2822))
             }
@@ -640,7 +651,7 @@ fn parse_podcast_license(license: roxmltree::Node) -> podcast::License {
 
     for attribute in license.attributes() {
         if attribute.name() == "url" {
-            new_license.url = Some(attribute.value().to_string());
+            new_license.url = Some(Url::parse(attribute.value(), UrlConstraint::HttpsOnly));
         }
     }
 
@@ -770,7 +781,9 @@ pub fn parse_podcast_transcript(transcript: roxmltree::Node) -> podcast::Transcr
 
     for attribute in transcript.attributes() {
         match attribute.name() {
-            "url" => new_transcript.url = Some(attribute.value().to_string()),
+            "url" => {
+                new_transcript.url = Some(Url::parse(attribute.value(), UrlConstraint::HttpsOnly))
+            }
             "type" => new_transcript.type_ = Some(mime::Transcript::parse(attribute.value())),
             "language" => new_transcript.language = Some(Language::parse(attribute.value())),
             "rel" => new_transcript.rel = Some(podcast::TranscriptRel::parse(attribute.value())),
@@ -788,7 +801,9 @@ pub fn parse_podcast_chapters(chapter: roxmltree::Node) -> podcast::Chapters {
 
     for attribute in chapter.attributes() {
         match attribute.name() {
-            "url" => new_chapter.url = Some(attribute.value().to_string()),
+            "url" => {
+                new_chapter.url = Some(Url::parse(attribute.value(), UrlConstraint::HttpsOnly))
+            }
             "type" => new_chapter.type_ = Some(mime::Chapters::parse(attribute.value())),
             _ => {}
         }
@@ -927,7 +942,9 @@ pub fn parse_podcast_source(source: roxmltree::Node) -> podcast::Source {
     for attribute in source.attributes() {
         match attribute.name() {
             "contentType" => new_source.type_ = Some(mime::Enclosure::parse(attribute.value())),
-            "uri" => new_source.uri = Some(attribute.value().to_string()),
+            "uri" => {
+                new_source.uri = Some(Url::parse(attribute.value(), UrlConstraint::AnyButHttp))
+            }
             _ => {}
         }
     }
@@ -958,13 +975,19 @@ pub fn parse_podcast_social_interact(social_interact: roxmltree::Node) -> podcas
 
     for attribute in social_interact.attributes() {
         match attribute.name() {
-            "uri" => new_social_interact.uri = Some(attribute.value().to_string()),
+            "uri" => {
+                new_social_interact.uri =
+                    Some(Url::parse(attribute.value(), UrlConstraint::HttpsOnly))
+            }
             "protocol" => {
                 new_social_interact.protocol =
                     Some(podcast::SocialProtocol::parse(attribute.value()))
             }
             "accountId" => new_social_interact.account_id = Some(attribute.value().to_string()),
-            "accountUrl" => new_social_interact.account_url = Some(attribute.value().to_string()),
+            "accountUrl" => {
+                new_social_interact.account_url =
+                    Some(Url::parse(attribute.value(), UrlConstraint::HttpsOnly))
+            }
             "priority" => {
                 new_social_interact.priority =
                     Some(Integer::parse(attribute.value(), NumberConstraint::None))
@@ -1005,7 +1028,9 @@ fn parse_podcast_live_item(live_item: roxmltree::Node) -> podcast::LiveItem {
             }
             (None, "link") => {
                 if let Some(text) = parse_text_node(child) {
-                    new_live_item.link.push(text);
+                    new_live_item
+                        .link
+                        .push(Url::parse(&text, UrlConstraint::HttpsOnly));
                 }
             }
             (None, "title") => {
@@ -1161,7 +1186,8 @@ pub fn parse_podcast_content_link(content_link: roxmltree::Node) -> podcast::Con
 
     for attribute in content_link.attributes() {
         if attribute.name() == "href" {
-            new_podcast_content_link.href = Some(attribute.value().to_string());
+            new_podcast_content_link.href =
+                Some(Url::parse(attribute.value(), UrlConstraint::HttpsOnly));
         }
     }
 
