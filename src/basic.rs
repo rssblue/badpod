@@ -4,6 +4,7 @@ pub enum NumberConstraint {
     None,
     Positive,
     NonNegative,
+    Range(f64, f64),
 }
 
 pub enum BoolType {
@@ -87,6 +88,13 @@ impl Integer {
                         Self::Other((s.to_string(), "should be non-negative".to_string()))
                     }
                 }
+                NumberConstraint::Range(min, max) => {
+                    if x as f64 >= min && x as f64 <= max {
+                        Self::Ok(x)
+                    } else {
+                        Self::Other((s.to_string(), format!("should be in range [{min}, {max}]")))
+                    }
+                }
             },
             Err(_) => Self::Other((s.to_string(), "should be an integer".to_string())),
         }
@@ -126,6 +134,13 @@ impl Float {
                         Self::Ok(x)
                     } else {
                         Self::Other((s.to_string(), "should be non-negative".to_string()))
+                    }
+                }
+                NumberConstraint::Range(min, max) => {
+                    if x >= min && x <= max {
+                        Self::Ok(x)
+                    } else {
+                        Self::Other((s.to_string(), format!("should be in range [{min}, {max}]")))
                     }
                 }
             },
@@ -175,6 +190,13 @@ impl Number {
                         Self::Other((s.to_string(), "should be non-negative".to_string()))
                     }
                 }
+                NumberConstraint::Range(min, max) => {
+                    if x as f64 >= min && x as f64 <= max {
+                        Self::Integer(x)
+                    } else {
+                        Self::Other((s.to_string(), format!("should be in range [{min}, {max}]")))
+                    }
+                }
             },
             Err(_) => match s.parse::<f64>() {
                 Ok(x) => match constraint {
@@ -191,6 +213,16 @@ impl Number {
                             Self::Float(x)
                         } else {
                             Self::Other((s.to_string(), "should be non-negative".to_string()))
+                        }
+                    }
+                    NumberConstraint::Range(min, max) => {
+                        if x >= min && x <= max {
+                            Self::Float(x)
+                        } else {
+                            Self::Other((
+                                s.to_string(),
+                                format!("should be in range [{min}, {max}]"),
+                            ))
                         }
                     }
                 },

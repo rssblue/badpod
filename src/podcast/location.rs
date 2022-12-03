@@ -1,3 +1,4 @@
+use crate::basic::{Float, NumberConstraint};
 use crate::Other;
 use strum_macros::{Display, EnumString};
 
@@ -81,35 +82,36 @@ impl std::str::FromStr for Geo {
         };
 
         let latitude = &caps["latitude"];
-        let latitude = match latitude.parse::<f64>() {
-            Ok(latitude) => latitude,
-            Err(_) => {
+        let latitude = match Float::parse(latitude, NumberConstraint::Range(-90.0, 90.0)) {
+            Float::Ok(latitude) => latitude,
+            Float::Other((_, reason)) => {
                 return Ok(Geo::Other((
                     s.to_string(),
-                    "latitude should be a number".to_string(),
+                    format!("could not process latitude: {reason}"),
                 )))
             }
         };
 
         let longitude = &caps["longitude"];
-        let longitude = match longitude.parse::<f64>() {
-            Ok(longitude) => longitude,
-            Err(_) => {
+        let longitude = match Float::parse(longitude, NumberConstraint::Range(-180.0, 180.0)) {
+            Float::Ok(longitude) => longitude,
+            Float::Other((_, reason)) => {
                 return Ok(Geo::Other((
                     s.to_string(),
-                    "longitude should be a number".to_string(),
+                    format!("could not process longitude: {reason}"),
                 )))
             }
         };
 
         let mut altitude: Option<f64> = None;
         if has_altitude {
-            altitude = match &caps["altitude"].parse::<f64>() {
-                Ok(altitude) => Some(*altitude),
-                Err(_) => {
+            let altitude_str = &caps["altitude"];
+            altitude = match Float::parse(altitude_str, NumberConstraint::None) {
+                Float::Ok(altitude) => Some(altitude),
+                Float::Other((_, reason)) => {
                     return Ok(Geo::Other((
                         s.to_string(),
-                        "altitude should be a number".to_string(),
+                        format!("could not process altitude: {reason}"),
                     )))
                 }
             };
@@ -117,12 +119,13 @@ impl std::str::FromStr for Geo {
 
         let mut uncertainty: Option<f64> = None;
         if has_uncertainty {
-            uncertainty = match &caps["uncertainty"].parse::<f64>() {
-                Ok(uncertainty) => Some(*uncertainty),
-                Err(_) => {
+            let uncertainty_str = &caps["uncertainty"];
+            uncertainty = match Float::parse(uncertainty_str, NumberConstraint::NonNegative) {
+                Float::Ok(uncertainty) => Some(uncertainty),
+                Float::Other((_, reason)) => {
                     return Ok(Geo::Other((
                         s.to_string(),
-                        "uncertainty should be a number".to_string(),
+                        format!("could not process uncertainty: {reason}"),
                     )))
                 }
             };
@@ -296,6 +299,7 @@ mod tests {
             "geo:37.786971,-122.399677;u=350",
             "geo:37.786971,-122.399677,250;u=350",
             "geo:37.786971,-122.399677,250,u=350",
+            "geo:137.786971,-122.399677,250;u=350",
         ];
         let geos = vec![
             Geo::Ok {
@@ -325,6 +329,10 @@ mod tests {
             Geo::Other((
                 "geo:37.786971,-122.399677,250,u=350".to_string(),
                 "should have at most 2 commas".to_string(),
+            )),
+            Geo::Other((
+                "geo:137.786971,-122.399677,250;u=350".to_string(),
+                "could not process latitude: should be in range [-90, 90]".to_string(),
             )),
         ];
 
