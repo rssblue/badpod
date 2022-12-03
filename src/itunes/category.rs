@@ -1,4 +1,5 @@
 use crate::utils;
+use crate::Other;
 use std::fmt;
 use std::str::FromStr;
 use strum::EnumProperty;
@@ -33,7 +34,7 @@ pub enum CategoryName {
     #[strum(props(str = "TV & Film"))]
     TvAndFilm,
 
-    Other(String),
+    Other(Other),
 }
 
 impl std::str::FromStr for CategoryName {
@@ -42,7 +43,10 @@ impl std::str::FromStr for CategoryName {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match utils::from_str_exact(s) {
             Some(variant) => Ok(variant),
-            None => Ok(Self::Other(s.to_string())),
+            None => Ok(Self::Other((
+                s.to_string(),
+                "unrecognized category name".to_string(),
+            ))),
         }
     }
 }
@@ -50,7 +54,7 @@ impl std::str::FromStr for CategoryName {
 impl fmt::Display for CategoryName {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            Self::Other(s) => write!(f, "{s}"),
+            Self::Other((s, _)) => write!(f, "{s}"),
             _ => match self.get_str("str") {
                 Some(s) => write!(f, "{}", s),
                 None => write!(f, "{:?}", self),
@@ -63,7 +67,7 @@ impl CategoryName {
     pub fn parse(s: &str) -> Self {
         match Self::from_str(s) {
             Ok(variant) => variant,
-            Err(_) => Self::Other(s.to_string()),
+            Err(e) => Self::Other((s.to_string(), e)),
         }
     }
 }
@@ -203,7 +207,7 @@ pub enum SubcategoryName {
     #[strum(props(str = "TV Reviews"))]
     TvReviews,
 
-    Other(String),
+    Other(Other),
 }
 
 impl std::str::FromStr for SubcategoryName {
@@ -212,7 +216,10 @@ impl std::str::FromStr for SubcategoryName {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match utils::from_str_exact(s) {
             Some(variant) => Ok(variant),
-            None => Ok(Self::Other(s.to_string())),
+            None => Ok(Self::Other((
+                s.to_string(),
+                "unrecognized subcategory name".to_string(),
+            ))),
         }
     }
 }
@@ -220,7 +227,7 @@ impl std::str::FromStr for SubcategoryName {
 impl fmt::Display for SubcategoryName {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
-            Self::Other(s) => write!(f, "{s}"),
+            Self::Other((s, _)) => write!(f, "{s}"),
             _ => match self.get_str("str") {
                 Some(s) => write!(f, "{}", s),
                 None => write!(f, "{:?}", self),
@@ -233,7 +240,7 @@ impl SubcategoryName {
     pub fn parse(s: &str) -> Self {
         match Self::from_str(s) {
             Ok(variant) => variant,
-            Err(_) => Self::Other(s.to_string()),
+            Err(e) => Self::Other((s.to_string(), e)),
         }
     }
 }
@@ -251,7 +258,13 @@ mod tests {
             "Health & Fitness"
         );
         pretty_assertions::assert_eq!(
-            format!("{}", CategoryName::Other("other-category".to_string())),
+            format!(
+                "{}",
+                CategoryName::Other((
+                    "other-category".to_string(),
+                    "unrecognized category name".to_string()
+                ))
+            ),
             "other-category"
         );
     }

@@ -1,4 +1,5 @@
 use crate::utils;
+use crate::Other;
 use strum_macros::EnumIter;
 
 /// Podcast platforms.
@@ -66,7 +67,7 @@ pub enum Service {
     YouTube,
     ZenCast,
 
-    Other(String),
+    Other(Other),
 }
 
 impl std::str::FromStr for Service {
@@ -75,7 +76,7 @@ impl std::str::FromStr for Service {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match utils::from_str_exact(s) {
             Some(variant) => Ok(variant),
-            None => Ok(Self::Other(s.to_string())),
+            None => Ok(Self::Other((s.to_string(), "should be a service slug from <https://raw.githubusercontent.com/Podcastindex-org/podcast-namespace/main/serviceslugs.txt>".to_string()))),
         }
     }
 }
@@ -83,7 +84,7 @@ impl std::str::FromStr for Service {
 impl std::fmt::Display for Service {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            Self::Other(s) => write!(f, "{s}"),
+            Self::Other((s, _)) => write!(f, "{s}"),
             _ => {
                 let s = format!("{:?}", self);
                 write!(f, "{}", s.to_lowercase())
@@ -96,7 +97,7 @@ impl Service {
     pub fn parse(s: &str) -> Self {
         match s.parse() {
             Ok(service) => service,
-            Err(_) => Self::Other(s.to_string()),
+            Err(e) => Self::Other((s.to_string(), e)),
         }
     }
 }
@@ -111,7 +112,7 @@ mod tests {
         pretty_assertions::assert_eq!(format!("{}", Service::Amazon), "amazon");
         pretty_assertions::assert_eq!(format!("{}", Service::TikTok), "tiktok");
         pretty_assertions::assert_eq!(
-            format!("{}", Service::Other("other-service".to_string())),
+            format!("{}", Service::Other(("other-service".to_string(), "should be a service slug from <https://raw.githubusercontent.com/Podcastindex-org/podcast-namespace/main/serviceslugs.txt>".to_string()))),
             "other-service"
         );
     }

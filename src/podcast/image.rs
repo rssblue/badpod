@@ -1,3 +1,4 @@
+use crate::Other;
 use std::str::FromStr;
 
 /// Allows specifying different image sizes at either the episode or channel level.
@@ -17,7 +18,7 @@ impl std::fmt::Display for Images {
 #[derive(Debug, PartialEq, Eq, Clone)]
 pub enum Image {
     Ok(String, i64),
-    Other(String),
+    Other(Other),
 }
 
 impl std::str::FromStr for Image {
@@ -29,13 +30,20 @@ impl std::str::FromStr for Image {
         let parts: Vec<&str> = img_str.split(' ').collect();
 
         if parts.len() != 2 {
-            return Ok(Self::Other(img_str.to_string()));
+            return Ok(Self::Other((
+                img_str.to_string(),
+                "each image should consist of a URL followed by a space and the image width"
+                    .to_string(),
+            )));
         }
 
         let (url, mut width_str) = (parts[0], parts[1]);
 
         if !width_str.ends_with('w') {
-            return Ok(Self::Other(img_str.to_string()));
+            return Ok(Self::Other((
+                img_str.to_string(),
+                "string denoting image width should end with 'w'".to_string(),
+            )));
         }
 
         // Remove last character.
@@ -45,12 +53,18 @@ impl std::str::FromStr for Image {
 
         if let Ok(width) = width_str.parse::<i64>() {
             if width <= 0 {
-                return Ok(Self::Other(img_str.to_string()));
+                return Ok(Self::Other((
+                    img_str.to_string(),
+                    "image width should be positive".to_string(),
+                )));
             }
             return Ok(Image::Ok(url.to_string(), width));
         }
 
-        Ok(Self::Other(img_str.to_string()))
+        Ok(Self::Other((
+            img_str.to_string(),
+            "image width should be an integer".to_string(),
+        )))
     }
 }
 
@@ -61,7 +75,7 @@ impl std::fmt::Display for Image {
                 let s = format!("{url} {width}w");
                 write!(f, "{s}")
             }
-            Self::Other(s) => write!(f, "{s}"),
+            Self::Other((s, _)) => write!(f, "{s}"),
         }
     }
 }
@@ -73,7 +87,7 @@ impl Images {
         for image_str in image_strs {
             match Image::from_str(image_str) {
                 Ok(image) => images.push(image),
-                Err(_) => images.push(Image::Other(image_str.trim().to_string())),
+                Err(e) => images.push(Image::Other((image_str.trim().to_string(), e))),
             };
         }
 
@@ -97,7 +111,10 @@ mod tests {
                 "https://example.com/images/ep1/pci_avatar-massive.jpg".to_string(),
                 1500,
             ),
-            Image::Other("https://example.com/images/ep1/pci_avatar-middle.jpg 6o0w".to_string()),
+            Image::Other((
+                "https://example.com/images/ep1/pci_avatar-middle.jpg 6o0w".to_string(),
+                "image width should be an integer".to_string(),
+            )),
         ];
 
         for (s, image) in strings.iter().zip(images.iter()) {

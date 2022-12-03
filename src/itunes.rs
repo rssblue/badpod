@@ -1,4 +1,5 @@
 use crate::utils;
+use crate::Other;
 use strum_macros::EnumIter;
 
 mod category;
@@ -39,14 +40,14 @@ pub struct Owner {
 #[derive(Debug, PartialEq, Eq, EnumIter)]
 pub enum Yes {
     Ok,
-    Other(String),
+    Other(Other),
 }
 
 impl Yes {
     pub fn parse(s: &str) -> Self {
-        match s {
-            "Yes" => Yes::Ok,
-            _ => Yes::Other(s.to_string()),
+        match s.parse() {
+            Ok(t) => t,
+            Err(e) => Yes::Other((s.to_string(), e)),
         }
     }
 }
@@ -57,7 +58,10 @@ impl std::str::FromStr for Yes {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match utils::from_str_exact(s) {
             Some(variant) => Ok(variant),
-            None => Ok(Self::Other(s.to_string())),
+            None => Ok(Self::Other((
+                s.to_string(),
+                "should be \"Yes\"".to_string(),
+            ))),
         }
     }
 }
@@ -65,10 +69,8 @@ impl std::str::FromStr for Yes {
 impl std::fmt::Display for Yes {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            Self::Other(s) => write!(f, "{s}"),
-            _ => {
-                write!(f, "Yes")
-            }
+            Yes::Ok => write!(f, "Yes"),
+            Yes::Other((s, _)) => write!(f, "{s}"),
         }
     }
 }
@@ -79,7 +81,7 @@ pub enum PodcastType {
     Episodic,
     Serial,
 
-    Other(String),
+    Other(Other),
 }
 
 impl std::str::FromStr for PodcastType {
@@ -88,7 +90,10 @@ impl std::str::FromStr for PodcastType {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match utils::from_str_exact(s) {
             Some(variant) => Ok(variant),
-            None => Ok(Self::Other(s.to_string())),
+            None => Ok(Self::Other((
+                s.to_string(),
+                "should be either \"episodic\" or \"serial\"".to_string(),
+            ))),
         }
     }
 }
@@ -96,7 +101,7 @@ impl std::str::FromStr for PodcastType {
 impl std::fmt::Display for PodcastType {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            Self::Other(s) => write!(f, "{s}"),
+            Self::Other((s, _)) => write!(f, "{s}"),
             _ => {
                 let s = format!("{:?}", self);
                 write!(f, "{}", s.to_lowercase())
@@ -109,7 +114,7 @@ impl PodcastType {
     pub fn parse(s: &str) -> Self {
         match s.parse() {
             Ok(variant) => variant,
-            Err(_) => Self::Other(s.to_string()),
+            Err(e) => Self::Other((s.to_string(), e)),
         }
     }
 }
@@ -121,7 +126,7 @@ pub enum EpisodeType {
     Trailer,
     Bonus,
 
-    Other(String),
+    Other(Other),
 }
 
 impl std::str::FromStr for EpisodeType {
@@ -130,7 +135,10 @@ impl std::str::FromStr for EpisodeType {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match utils::from_str_exact(s) {
             Some(variant) => Ok(variant),
-            None => Ok(Self::Other(s.to_string())),
+            None => Ok(Self::Other((
+                s.to_string(),
+                "should be either \"full\", \"trailer\", or \"bonus\"".to_string(),
+            ))),
         }
     }
 }
@@ -138,7 +146,7 @@ impl std::str::FromStr for EpisodeType {
 impl std::fmt::Display for EpisodeType {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            Self::Other(s) => write!(f, "{s}"),
+            Self::Other((s, _)) => write!(f, "{s}"),
             _ => {
                 let s = format!("{:?}", self);
                 write!(f, "{}", s.to_lowercase())
@@ -151,7 +159,7 @@ impl EpisodeType {
     pub fn parse(s: &str) -> Self {
         match s.parse() {
             Ok(variant) => variant,
-            Err(_) => Self::Other(s.to_string()),
+            Err(e) => Self::Other((s.to_string(), e)),
         }
     }
 }

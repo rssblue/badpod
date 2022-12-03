@@ -59,7 +59,7 @@ fn deserialize() {
                     ],
                     itunes_author: vec!["Jane Doe".to_string()],
                     itunes_block: vec![itunes::Yes::Ok],
-                    itunes_complete: vec![itunes::Yes::Other("No".to_string())],
+                    itunes_complete: vec![itunes::Yes::Other(("No".to_string(), "should be \"Yes\"".to_string()))],
                     itunes_category: vec! {
                         itunes::Category{
                             text: Some(itunes::CategoryName::SocietyAndCulture),
@@ -178,7 +178,7 @@ fn deserialize() {
                     podcast_images: vec![podcast::Images {
                         srcset: vec! {
                             podcast::Image::Ok("https://example.com/images/ep1/pci_avatar-massive.jpg".to_string(), 1500),
-                            podcast::Image::Other("https://example.com/images/ep1/pci_avatar-middle.jpg 6o0w".to_string()),
+                            podcast::Image::Other(("https://example.com/images/ep1/pci_avatar-middle.jpg 6o0w".to_string(), "image width should be an integer".to_string())),
                             podcast::Image::Ok("https://example.com/images/ep1/pci_avatar-small.jpg".to_string(), 300),
                         },
                     }],
@@ -208,7 +208,7 @@ fn deserialize() {
                                 },
                                 podcast::Soundbite{
                                     start_time: Some(Float::Ok(1234.5)),
-                                    duration: Some(Float::Other("-42.25".to_string())),
+                                    duration: Some(Float::Other(("-42.25".to_string(), "should be positive".to_string()))),
                                     value: Some("Why the Podcast Namespace Matters".to_string()),
                                 },
                             },
@@ -229,15 +229,15 @@ fn deserialize() {
                                     value: Some("Alice Brown".to_string()),
                                 },
                                 podcast::Person{
-                                    group: Some(podcast::PersonGroup::Other("non-existent group".to_string())),
-                                    role: Some(podcast::PersonRole::Other("Non-existent role".to_string())),
+                                    group: Some(podcast::PersonGroup::Other(("non-existent group".to_string(), "should be one of the groups defined at <https://podcasttaxonomy.com>".to_string()))),
+                                    role: Some(podcast::PersonRole::Other(("Non-existent role".to_string(), "should be one of the roles defined at <https://podcasttaxonomy.com>".to_string()))),
                                     href: Some("https://example.com/artist/beckysmith".to_string()),
                                     value: Some("Becky Smith".to_string()),
                                     ..Default::default()
                                 },
                             },
                             podcast_location: vec![podcast::Location {
-                                geo: Some(podcast::Geo::Other("GEO:-27.86159,153.3169".to_string())),
+                                geo: Some(podcast::Geo::Other(("GEO:-27.86159,153.3169".to_string(), "should start with \"geo:\"".to_string()))),
                                 osm: Some(podcast::Osm::Ok{
                                     type_: podcast::OsmType::Way,
                                     id: 43678282,
@@ -255,7 +255,7 @@ fn deserialize() {
                             }],
                             itunes_episode: vec![Integer::Ok(204)],
                             itunes_season: vec![
-                                Integer::Other("0".to_string()),
+                                Integer::Other(("0".to_string(), "should be positive".to_string())),
                             ],
                             podcast_transcript: vec! {
                                 podcast::Transcript{
@@ -265,7 +265,7 @@ fn deserialize() {
                                     rel: Some(podcast::TranscriptRel::Captions),
                                 },
                             },
-                            itunes_block: vec![itunes::Yes::Other("yes".to_string())],
+                            itunes_block: vec![itunes::Yes::Other(("yes".to_string(), "should be \"Yes\"".to_string()))],
                             podcast_alternate_enclosure: vec!{
                                 podcast::AlternateEnclosure{
                                     type_: Some(MimeEnclosure::AudioMp3),
@@ -282,7 +282,7 @@ fn deserialize() {
                                         },
                                         podcast::Source{
                                             uri: Some("https://example.com/file-0.torrent".to_string()),
-                                            type_: Some(MimeEnclosure::Other("application/x-bittorrent".to_string())),
+                                            type_: Some(MimeEnclosure::Other(("application/x-bittorrent".to_string(), "unrecognized mime type".to_string()))),
                                         },
                                         podcast::Source{
                                             uri: Some("http://example.onion/file-0.mp3".to_string()),
@@ -329,7 +329,7 @@ fn deserialize() {
                                     value: Some("S6lpp-7ZCn8-dZfGc-OoyaG".to_string()),
                                 },
                                 podcast::Txt{
-                                    purpose: Some(podcast::TxtPurpose::Other("release".to_string())),
+                                    purpose: Some(podcast::TxtPurpose::Other(("release".to_string(), "should be \"verify\"".to_string()))),
                                     value: Some("2022-10-26T04:45:30.742Z".to_string()),
                                 },
                             ],
@@ -387,10 +387,10 @@ fn deserialize() {
                 pub_date: vec![badpod::DateTime::Ok(chrono::FixedOffset::west(0).ymd(2020, 10, 9).and_hms(4, 30, 38))],
                 last_build_date: vec![badpod::DateTime::Ok(chrono::FixedOffset::west(0).ymd(2020, 10, 9).and_hms(4, 30, 38))],
 
-                podcast_guid: vec![podcast::Guid::Other("y0ur-gu1d-g035-h3r3".to_string())],
+                podcast_guid: vec![podcast::Guid::Other(("y0ur-gu1d-g035-h3r3".to_string(), r#"should be a UUIDv5 matching regular expression "^[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}$""#.to_string()))],
                 podcast_license: vec![podcast::License{
                     url: Some("https://example.org/mypodcastlicense/full.pdf".to_string()),
-                    value: Some(podcast::LicenseType::Other("my-podcast-license-v1".to_string())),
+                    value: Some(podcast::LicenseType::Other(("my-podcast-license-v1".to_string(), "unrecognized license type".to_string()))),
                 }],
                 podcast_locked: vec![podcast::Locked{
                     owner: Some("podcastowner@example.com".to_string()),
@@ -457,7 +457,7 @@ fn deserialize() {
                         url: Some("https://example.org/trailers/teaser".to_string()),
                         pub_date: Some(badpod::DateTime::Ok(chrono::FixedOffset::west(5*60*60).ymd(2021, 4, 1).and_hms(8, 0, 0))),
                         length: Some(Integer::Ok(12345678)),
-                        type_: Some(MimeEnclosure::Other("audio/mp3".to_string())),
+                        type_: Some(MimeEnclosure::Other(("audio/mp3".to_string(), "unrecognized mime type".to_string()))),
                         value: Some("Coming April 1st, 2021".to_string()),
                         season: None,
                     },
@@ -508,7 +508,7 @@ fn deserialize() {
                 },
 
                 itunes_author: vec!["John Doe".to_string()],
-                itunes_explicit: vec![Bool::Other("no".to_string())],
+                itunes_explicit: vec![Bool::Other(("no".to_string(), "should be \"true\" or \"false\"".to_string()))],
                 itunes_type: vec![itunes::PodcastType::Episodic],
                 itunes_category: vec!{
                     itunes::Category{
@@ -547,7 +547,7 @@ fn deserialize() {
                         itunes_image: vec![itunes::Image{
                             href: None,
                         }],
-                        itunes_explicit: vec![Bool::Other("no".to_string())],
+                        itunes_explicit: vec![Bool::Other(("no".to_string(), "should be \"true\" or \"false\"".to_string()))],
 
                         podcast_images: vec![podcast::Images {
                             srcset: vec! {
@@ -763,7 +763,7 @@ fn deserialize() {
                         itunes_image: vec![itunes::Image{
                             href: None,
                         }],
-                        itunes_explicit: vec![Bool::Other("no".to_string())],
+                        itunes_explicit: vec![Bool::Other(("no".to_string(), "should be \"true\" or \"false\"".to_string()))],
 
                         podcast_images: vec![podcast::Images {
                             srcset: vec! {
@@ -940,7 +940,7 @@ fn deserialize() {
                         itunes_image: vec![itunes::Image{
                             href: None,
                         }],
-                        itunes_explicit: vec![Bool::Other("no".to_string())],
+                        itunes_explicit: vec![Bool::Other(("no".to_string(), "should be \"true\" or \"false\"".to_string()))],
 
                         podcast_images: vec![podcast::Images {
                             srcset: vec! {
@@ -1120,8 +1120,21 @@ fn no_error() {
     ];
 
     for test in tests {
-        let feed_str = reqwest::blocking::get(test.url).unwrap().text();
-        let feed = badpod::from_str(&feed_str.unwrap());
+        let feed_str = match reqwest::blocking::get(test.url) {
+            Ok(response) => response.text(),
+            Err(_) => {
+                log::warn!("Failed to fetch feed: {}", test.url);
+                continue;
+            },
+        };
+        let feed_str = match feed_str {
+            Ok(feed_str) => feed_str,
+            Err(_) => {
+                log::warn!("Failed to read the feed: {}", test.url);
+                continue;
+            },
+        };
+        let feed = badpod::from_str(&feed_str);
         pretty_assertions::assert_eq!(test.title, feed.unwrap().channel[0].title[0]);
     }
 }

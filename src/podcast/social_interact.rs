@@ -1,4 +1,5 @@
 use crate::utils;
+use crate::Other;
 use strum_macros::EnumIter;
 
 /// Social protocols that can be used in [SocialInteract](crate::podcast::SocialInteract).
@@ -9,7 +10,7 @@ pub enum Protocol {
     Twitter,
     Lightning,
 
-    Other(String),
+    Other(Other),
 }
 
 impl std::str::FromStr for Protocol {
@@ -18,7 +19,7 @@ impl std::str::FromStr for Protocol {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match utils::from_str_exact(s) {
             Some(variant) => Ok(variant),
-            None => Ok(Self::Other(s.to_string())),
+            None => Ok(Self::Other((s.to_string(), "should be one of the protocols at <https://raw.githubusercontent.com/Podcastindex-org/podcast-namespace/main/socialprotocols.txt>".to_string()))),
         }
     }
 }
@@ -26,7 +27,7 @@ impl std::str::FromStr for Protocol {
 impl std::fmt::Display for Protocol {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            Self::Other(s) => write!(f, "{s}"),
+            Self::Other((s, _)) => write!(f, "{s}"),
             _ => {
                 let s = format!("{:?}", self);
                 write!(f, "{}", s.to_lowercase())
@@ -39,7 +40,7 @@ impl Protocol {
     pub fn parse(s: &str) -> Self {
         match s.parse() {
             Ok(protocol) => protocol,
-            Err(_) => Self::Other(s.to_string()),
+            Err(e) => Self::Other((s.to_string(), e)),
         }
     }
 }

@@ -1,8 +1,9 @@
 use crate::utils;
+use crate::Other;
 use strum::EnumProperty;
 use strum_macros::{EnumIter, EnumProperty};
 
-/// Group (as defined by [Podcast Taxonomy Project](https://podcasttaxonomy.com/)) of [Person](crate::podcast::Person).
+/// Group (as defined by [Podcast Taxonomy Project](https://podcasttaxonomy.com)) of [Person](crate::podcast::Person).
 #[derive(Debug, PartialEq, Eq, EnumProperty, EnumIter)]
 pub enum Group {
     #[strum(props(str = "creative direction"))]
@@ -28,7 +29,7 @@ pub enum Group {
     #[strum(props(str = "video post-production"))]
     VideoPostProduction,
 
-    Other(String),
+    Other(Other),
 }
 
 impl std::str::FromStr for Group {
@@ -37,7 +38,10 @@ impl std::str::FromStr for Group {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match utils::from_str_case_insensitive(s) {
             Some(variant) => Ok(variant),
-            None => Ok(Self::Other(s.to_string())),
+            None => Ok(Self::Other((
+                s.to_string(),
+                "should be one of the groups defined at <https://podcasttaxonomy.com>".to_string(),
+            ))),
         }
     }
 }
@@ -45,7 +49,7 @@ impl std::str::FromStr for Group {
 impl std::fmt::Display for Group {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            Self::Other(s) => write!(f, "{s}"),
+            Self::Other((s, _)) => write!(f, "{s}"),
             _ => match self.get_str("str") {
                 Some(s) => write!(f, "{}", s),
                 None => write!(f, "{:?}", self),
@@ -58,7 +62,7 @@ impl Group {
     pub fn parse(s: &str) -> Self {
         match s.parse::<Self>() {
             Ok(group) => group,
-            Err(_) => Self::Other(s.to_string()),
+            Err(e) => Self::Other((s.to_string(), e)),
         }
     }
 }
@@ -191,7 +195,7 @@ pub enum Role {
     #[strum(props(str = "assistant editor"))]
     AssistantEditor,
 
-    Other(String),
+    Other(Other),
 }
 
 impl std::str::FromStr for Role {
@@ -200,7 +204,10 @@ impl std::str::FromStr for Role {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match utils::from_str_case_insensitive(s) {
             Some(variant) => Ok(variant),
-            None => Ok(Self::Other(s.to_string())),
+            None => Ok(Self::Other((
+                s.to_string(),
+                "should be one of the roles defined at <https://podcasttaxonomy.com>".to_string(),
+            ))),
         }
     }
 }
@@ -208,7 +215,7 @@ impl std::str::FromStr for Role {
 impl std::fmt::Display for Role {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            Self::Other(s) => write!(f, "{s}"),
+            Self::Other((s, _)) => write!(f, "{s}"),
             _ => match self.get_str("str") {
                 Some(s) => write!(f, "{}", s),
                 None => write!(f, "{:?}", self),
@@ -221,7 +228,7 @@ impl Role {
     pub fn parse(s: &str) -> Self {
         match s.parse::<Self>() {
             Ok(role) => role,
-            Err(_) => Self::Other(s.to_string()),
+            Err(e) => Self::Other((s.to_string(), e)),
         }
     }
 }

@@ -1,3 +1,5 @@
+use crate::Other;
+
 pub enum TimeFormat {
     Rfc2822,
     Iso8601,
@@ -7,7 +9,7 @@ pub enum TimeFormat {
 #[derive(Debug, PartialEq, Eq)]
 pub enum DateTime {
     Ok(chrono::DateTime<chrono::FixedOffset>),
-    Other(String),
+    Other(Other),
 }
 
 impl DateTime {
@@ -15,7 +17,9 @@ impl DateTime {
         match format {
             TimeFormat::Rfc2822 => match chrono::DateTime::parse_from_rfc2822(s) {
                 Ok(dt) => DateTime::Ok(dt),
-                Err(_) => DateTime::Other(s.to_string()),
+                Err(_) => {
+                    DateTime::Other((s.to_string(), "should be RFC 2822 date format".to_string()))
+                }
             },
             TimeFormat::Iso8601 => {
                 if let Ok(t) = chrono::DateTime::parse_from_rfc3339(&s) {
@@ -26,7 +30,7 @@ impl DateTime {
                     return DateTime::Ok(t);
                 }
 
-                DateTime::Other(s.to_string())
+                DateTime::Other((s.to_string(), "should be ISO 8601 date format".to_string()))
             }
         }
     }
@@ -38,7 +42,7 @@ impl std::str::FromStr for DateTime {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match chrono::DateTime::parse_from_rfc2822(s) {
             Ok(t) => Ok(Self::Ok(t)),
-            Err(_) => Ok(DateTime::Other(s.to_string())),
+            Err(e) => Ok(DateTime::Other((s.to_string(), e.to_string()))),
         }
     }
 }
@@ -47,7 +51,7 @@ impl std::fmt::Display for DateTime {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             Self::Ok(t) => write!(f, "{t}"),
-            Self::Other(s) => write!(f, "{s}"),
+            Self::Other((s, _)) => write!(f, "{s}"),
         }
     }
 }

@@ -1,3 +1,4 @@
+use crate::Other;
 use std::str::FromStr;
 use strum::{EnumProperty, IntoEnumIterator};
 use strum_macros::{Display, EnumIter, EnumProperty, EnumString};
@@ -366,7 +367,7 @@ pub enum Language {
     #[strum(props(str = "zu"))]
     Zulu,
 
-    Other(String),
+    Other(Other),
 }
 
 impl std::str::FromStr for Language {
@@ -379,77 +380,110 @@ impl std::str::FromStr for Language {
         if s.starts_with("de") {
             return match LanguageGerman::from_str(s.as_str()) {
                 Ok(region) => Ok(Language::German(region)),
-                Err(_) => Ok(Language::Other(s)),
+                Err(_) => Ok(Language::Other((
+                    s,
+                    "looks like German language code but is not".to_string(),
+                ))),
             };
         }
 
         if s.starts_with("en") {
             return match LanguageEnglish::from_str(s.as_str()) {
                 Ok(region) => Ok(Language::English(region)),
-                Err(_) => Ok(Language::Other(s)),
+                Err(_) => Ok(Language::Other((
+                    s,
+                    "looks like English language code but is not".to_string(),
+                ))),
             };
         }
 
         if s.starts_with("es") {
             return match LanguageSpanish::from_str(s.as_str()) {
                 Ok(region) => Ok(Language::Spanish(region)),
-                Err(_) => Ok(Language::Other(s)),
+                Err(_) => Ok(Language::Other((
+                    s,
+                    "looks like Spanish language code but is not".to_string(),
+                ))),
             };
         }
 
         if s.starts_with("fr") {
             return match LanguageFrench::from_str(s.as_str()) {
                 Ok(region) => Ok(Language::French(region)),
-                Err(_) => Ok(Language::Other(s)),
+                Err(_) => Ok(Language::Other((
+                    s,
+                    "looks like French language code but is not".to_string(),
+                ))),
             };
         }
 
         if s.starts_with("it") {
             return match LanguageItalian::from_str(s.as_str()) {
                 Ok(region) => Ok(Language::Italian(region)),
-                Err(_) => Ok(Language::Other(s)),
+                Err(_) => Ok(Language::Other((
+                    s,
+                    "looks like Italian language code but is not".to_string(),
+                ))),
             };
         }
 
         if s.starts_with("nl") {
             return match LanguageDutch::from_str(s.as_str()) {
                 Ok(region) => Ok(Language::Dutch(region)),
-                Err(_) => Ok(Language::Other(s)),
+                Err(_) => Ok(Language::Other((
+                    s,
+                    "looks like Dutch language code but is not".to_string(),
+                ))),
             };
         }
 
         if s.starts_with("pt") {
             return match LanguagePortugese::from_str(s.as_str()) {
                 Ok(region) => Ok(Language::Portuguese(region)),
-                Err(_) => Ok(Language::Other(s)),
+                Err(_) => Ok(Language::Other((
+                    s,
+                    "looks like Portugese language code but is not".to_string(),
+                ))),
             };
         }
 
         if s.starts_with("ro") {
             return match LanguageRomanian::from_str(s.as_str()) {
                 Ok(region) => Ok(Language::Romanian(region)),
-                Err(_) => Ok(Language::Other(s)),
+                Err(_) => Ok(Language::Other((
+                    s,
+                    "looks like Romanian language code but is not".to_string(),
+                ))),
             };
         }
 
         if s.starts_with("ru") {
             return match LanguageRussian::from_str(s.as_str()) {
                 Ok(region) => Ok(Language::Russian(region)),
-                Err(_) => Ok(Language::Other(s)),
+                Err(_) => Ok(Language::Other((
+                    s,
+                    "looks like Russian language code but is not".to_string(),
+                ))),
             };
         }
 
         if s.starts_with("sv") {
             return match LanguageSwedish::from_str(s.as_str()) {
                 Ok(region) => Ok(Language::Swedish(region)),
-                Err(_) => Ok(Language::Other(s)),
+                Err(_) => Ok(Language::Other((
+                    s,
+                    "looks like Swedish language code but is not".to_string(),
+                ))),
             };
         }
 
         if s.starts_with("zh") {
             return match LanguageChinese::from_str(s.as_str()) {
                 Ok(region) => Ok(Language::Chinese(region)),
-                Err(_) => Ok(Language::Other(s)),
+                Err(_) => Ok(Language::Other((
+                    s,
+                    "looks like Chinese language code but is not".to_string(),
+                ))),
             };
         }
 
@@ -459,14 +493,14 @@ impl std::str::FromStr for Language {
             };
         }
 
-        Ok(Language::Other(s))
+        Ok(Language::Other((s, "unknown language code".to_string())))
     }
 }
 
 impl std::fmt::Display for Language {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            Language::Other(s) => write!(f, "{s}"),
+            Language::Other((s, _)) => write!(f, "{s}"),
             Language::Chinese(region) => write!(f, "{region}"),
             Language::Dutch(region) => write!(f, "{region}"),
             Language::English(region) => write!(f, "{region}"),
@@ -696,7 +730,7 @@ impl Language {
     pub fn parse(language: &str) -> Self {
         match Self::from_str(language) {
             Ok(language) => language,
-            Err(_) => Language::Other(language.to_string()),
+            Err(e) => Language::Other((language.to_string(), e)),
         }
     }
 }
@@ -717,7 +751,13 @@ mod tests {
             "en-gb"
         );
         pretty_assertions::assert_eq!(
-            format!("{}", Language::Other("other-language".to_string())),
+            format!(
+                "{}",
+                Language::Other((
+                    "other-language".to_string(),
+                    "unknown language code".to_string()
+                ))
+            ),
             "other-language"
         );
     }

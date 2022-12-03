@@ -1,4 +1,5 @@
 use crate::utils;
+use crate::Other;
 use strum::EnumProperty;
 use strum_macros::{EnumIter, EnumProperty};
 
@@ -10,7 +11,7 @@ pub enum IntegrityType {
     #[strum(props(str = "pgp-signature"))]
     Pgp,
 
-    Other(String),
+    Other(Other),
 }
 
 impl std::str::FromStr for IntegrityType {
@@ -19,7 +20,10 @@ impl std::str::FromStr for IntegrityType {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match utils::from_str_exact(s) {
             Some(variant) => Ok(variant),
-            None => Ok(Self::Other(s.to_string())),
+            None => Ok(Self::Other((
+                s.to_string(),
+                "should be either \"sri\" or \"pgp-signature\"".to_string(),
+            ))),
         }
     }
 }
@@ -27,7 +31,7 @@ impl std::str::FromStr for IntegrityType {
 impl std::fmt::Display for IntegrityType {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            Self::Other(s) => write!(f, "{s}"),
+            Self::Other((s, _)) => write!(f, "{s}"),
             _ => match self.get_str("str") {
                 Some(s) => write!(f, "{}", s),
                 None => write!(f, "{:?}", self),
@@ -40,7 +44,7 @@ impl IntegrityType {
     pub fn parse(s: &str) -> Self {
         match s.parse() {
             Ok(variant) => variant,
-            Err(_) => Self::Other(s.to_string()),
+            Err(e) => Self::Other((s.to_string(), e)),
         }
     }
 }

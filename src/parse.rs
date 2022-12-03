@@ -6,6 +6,9 @@ use crate::podcast;
 use crate::rss;
 use crate::time::{DateTime, TimeFormat};
 
+/// Denotes values that cannot be deserialized and the reason for deserialization failure.
+pub type Other = (String, String);
+
 const NS_ITUNES: &str = "http://www.itunes.com/dtds/podcast-1.0.dtd";
 const NS_CONTENT: &str = "http://purl.org/rss/1.0/modules/content/";
 const NS_PODCAST_1: &str =

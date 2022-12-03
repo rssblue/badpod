@@ -29,5 +29,5 @@ pub use crate::mime::{
     Chapters as MimeChapters, Enclosure as MimeEnclosure, Transcript as MimeTranscript,
 };
 pub use crate::time::DateTime;
-pub use parse::{from_str, Error};
+pub use parse::{from_str, Error, Other};
 pub use rss::{Channel, Enclosure, Guid, Item, Rss};

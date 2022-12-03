@@ -1,4 +1,5 @@
 use crate::utils;
+use crate::Other;
 use strum::EnumProperty;
 use strum_macros::{EnumIter, EnumProperty};
 
@@ -22,7 +23,7 @@ pub enum Enclosure {
     #[strum(props(str = "audio/aac"))]
     AudioAac,
 
-    Other(String),
+    Other(Other),
 }
 
 impl std::str::FromStr for Enclosure {
@@ -31,7 +32,10 @@ impl std::str::FromStr for Enclosure {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match utils::from_str_exact(s) {
             Some(variant) => Ok(variant),
-            None => Ok(Self::Other(s.to_string())),
+            None => Ok(Self::Other((
+                s.to_string(),
+                "unrecognized mime type".to_string(),
+            ))),
         }
     }
 }
@@ -39,7 +43,7 @@ impl std::str::FromStr for Enclosure {
 impl std::fmt::Display for Enclosure {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            Self::Other(s) => write!(f, "{s}"),
+            Self::Other((s, _)) => write!(f, "{s}"),
             _ => match self.get_str("str") {
                 Some(s) => write!(f, "{}", s),
                 None => write!(f, "{:?}", self),
@@ -52,7 +56,7 @@ impl Enclosure {
     pub fn parse(s: &str) -> Self {
         match s.parse::<Self>() {
             Ok(variant) => variant,
-            Err(_) => Self::Other(s.to_string()),
+            Err(e) => Self::Other((s.to_string(), e)),
         }
     }
 }
@@ -75,7 +79,7 @@ pub enum Transcript {
     #[strum(props(str = "application/srt"))]
     ApplicationSrt,
 
-    Other(String),
+    Other(Other),
 }
 
 impl std::str::FromStr for Transcript {
@@ -84,7 +88,10 @@ impl std::str::FromStr for Transcript {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match utils::from_str_exact(s) {
             Some(variant) => Ok(variant),
-            None => Ok(Self::Other(s.to_string())),
+            None => Ok(Self::Other((
+                s.to_string(),
+                "unrecognized mime type".to_string(),
+            ))),
         }
     }
 }
@@ -92,7 +99,7 @@ impl std::str::FromStr for Transcript {
 impl std::fmt::Display for Transcript {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            Self::Other(s) => write!(f, "{s}"),
+            Self::Other((s, _)) => write!(f, "{s}"),
             _ => match self.get_str("str") {
                 Some(s) => write!(f, "{}", s),
                 None => write!(f, "{:?}", self),
@@ -105,7 +112,7 @@ impl Transcript {
     pub fn parse(s: &str) -> Self {
         match s.parse::<Self>() {
             Ok(variant) => variant,
-            Err(_) => Self::Other(s.to_string()),
+            Err(e) => Self::Other((s.to_string(), e)),
         }
     }
 }
@@ -118,7 +125,7 @@ pub enum Chapters {
     #[strum(props(str = "application/json"))]
     ApplicationJson,
 
-    Other(String),
+    Other(Other),
 }
 
 impl std::str::FromStr for Chapters {
@@ -127,7 +134,10 @@ impl std::str::FromStr for Chapters {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match utils::from_str_exact(s) {
             Some(variant) => Ok(variant),
-            None => Ok(Self::Other(s.to_string())),
+            None => Ok(Self::Other((
+                s.to_string(),
+                "unrecognized mime type".to_string(),
+            ))),
         }
     }
 }
@@ -135,7 +145,7 @@ impl std::str::FromStr for Chapters {
 impl std::fmt::Display for Chapters {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            Self::Other(s) => write!(f, "{s}"),
+            Self::Other((s, _)) => write!(f, "{s}"),
             _ => match self.get_str("str") {
                 Some(s) => write!(f, "{}", s),
                 None => write!(f, "{:?}", self),
@@ -148,7 +158,7 @@ impl Chapters {
     pub fn parse(s: &str) -> Self {
         match s.parse::<Self>() {
             Ok(variant) => variant,
-            Err(_) => Self::Other(s.to_string()),
+            Err(e) => Self::Other((s.to_string(), e)),
         }
     }
 }

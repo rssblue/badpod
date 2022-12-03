@@ -1,4 +1,5 @@
 use crate::utils;
+use crate::Other;
 use strum::EnumProperty;
 use strum_macros::{EnumIter, EnumProperty};
 
@@ -938,7 +939,7 @@ pub enum Type {
     #[strum(props(str = "zpl-2.1"))]
     ZopePublic2_1,
 
-    Other(String),
+    Other(Other),
 }
 
 impl std::str::FromStr for Type {
@@ -947,7 +948,10 @@ impl std::str::FromStr for Type {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match utils::from_str_case_insensitive(s) {
             Some(variant) => Ok(variant),
-            None => Ok(Self::Other(s.to_string())),
+            None => Ok(Self::Other((
+                s.to_string(),
+                "unrecognized license type".to_string(),
+            ))),
         }
     }
 }
@@ -955,7 +959,7 @@ impl std::str::FromStr for Type {
 impl std::fmt::Display for Type {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            Self::Other(s) => write!(f, "{s}"),
+            Self::Other((s, _)) => write!(f, "{s}"),
             _ => match self.get_str("str") {
                 Some(s) => write!(f, "{}", s),
                 None => write!(f, "{:?}", self),
@@ -968,7 +972,7 @@ impl Type {
     pub fn parse(s: &str) -> Self {
         match s.parse::<Self>() {
             Ok(variant) => variant,
-            Err(_) => Self::Other(s.to_string()),
+            Err(e) => Self::Other((s.to_string(), e)),
         }
     }
 }

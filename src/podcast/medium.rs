@@ -1,4 +1,5 @@
 use crate::utils;
+use crate::Other;
 use strum_macros::EnumIter;
 
 /// Medium of the feed.
@@ -12,7 +13,7 @@ pub enum Medium {
     Newsletter,
     Blog,
 
-    Other(String),
+    Other(Other),
 }
 
 impl std::str::FromStr for Medium {
@@ -21,7 +22,7 @@ impl std::str::FromStr for Medium {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match utils::from_str_exact(s) {
             Some(variant) => Ok(variant),
-            None => Ok(Self::Other(s.to_string())),
+            None => Ok(Self::Other((s.to_string(), "should be one of the following: \"podcast\", \"music\", \"video\", \"film\", \"audiobook\", \"newsletter\", \"blog\"".to_string()))),
         }
     }
 }
@@ -29,7 +30,7 @@ impl std::str::FromStr for Medium {
 impl std::fmt::Display for Medium {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            Self::Other(s) => write!(f, "{s}"),
+            Self::Other((s, _)) => write!(f, "{s}"),
             _ => {
                 let s = format!("{:?}", self);
                 write!(f, "{}", s.to_lowercase())
@@ -42,7 +43,7 @@ impl Medium {
     pub fn parse(s: &str) -> Self {
         match s.parse() {
             Ok(medium) => medium,
-            Err(_) => Self::Other(s.to_string()),
+            Err(e) => Self::Other((s.to_string(), e)),
         }
     }
 }

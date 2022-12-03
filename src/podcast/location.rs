@@ -1,3 +1,4 @@
+use crate::Other;
 use strum_macros::{Display, EnumString};
 
 /// Geographical coordinates.
@@ -9,15 +10,24 @@ pub enum Geo {
         altitude: Option<f64>,
         uncertainty: Option<f64>,
     },
-    Other(String),
+    Other(Other),
 }
 
 impl std::str::FromStr for Geo {
     type Err = String;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        if s.len() < 5 || !s.starts_with("geo:") {
-            return Ok(Geo::Other(s.to_string()));
+        if s.len() < 5 {
+            return Ok(Geo::Other((
+                s.to_string(),
+                "should be at least 5 characters long".to_string(),
+            )));
+        }
+        if !s.starts_with("geo:") {
+            return Ok(Geo::Other((
+                s.to_string(),
+                "should start with \"geo:\"".to_string(),
+            )));
         }
 
         // Part after "geo:"
@@ -25,13 +35,19 @@ impl std::str::FromStr for Geo {
 
         let num_commas = data.matches(',').count();
         if num_commas > 2 {
-            return Ok(Geo::Other(s.to_string()));
+            return Ok(Geo::Other((
+                s.to_string(),
+                "should have at most 2 commas".to_string(),
+            )));
         }
         let has_altitude = num_commas == 2;
 
         let num_semicolons = data.matches(';').count();
         if num_semicolons > 1 {
-            return Ok(Geo::Other(s.to_string()));
+            return Ok(Geo::Other((
+                s.to_string(),
+                "should have at most 1 semicolon".to_string(),
+            )));
         }
         let has_uncertainty = num_semicolons == 1;
 
@@ -56,26 +72,46 @@ impl std::str::FromStr for Geo {
         };
         let caps = match re.captures(data.as_str()) {
             Some(caps) => caps,
-            None => return Ok(Geo::Other(s.to_string())),
+            None => {
+                return Ok(Geo::Other((
+                    s.to_string(),
+                    format!("should match regular expression \"{}\"", pattern),
+                )))
+            }
         };
 
         let latitude = &caps["latitude"];
         let latitude = match latitude.parse::<f64>() {
             Ok(latitude) => latitude,
-            Err(_) => return Ok(Geo::Other(s.to_string())),
+            Err(_) => {
+                return Ok(Geo::Other((
+                    s.to_string(),
+                    "latitude should be a number".to_string(),
+                )))
+            }
         };
 
         let longitude = &caps["longitude"];
         let longitude = match longitude.parse::<f64>() {
             Ok(longitude) => longitude,
-            Err(_) => return Ok(Geo::Other(s.to_string())),
+            Err(_) => {
+                return Ok(Geo::Other((
+                    s.to_string(),
+                    "longitude should be a number".to_string(),
+                )))
+            }
         };
 
         let mut altitude: Option<f64> = None;
         if has_altitude {
             altitude = match &caps["altitude"].parse::<f64>() {
                 Ok(altitude) => Some(*altitude),
-                Err(_) => return Ok(Geo::Other(s.to_string())),
+                Err(_) => {
+                    return Ok(Geo::Other((
+                        s.to_string(),
+                        "altitude should be a number".to_string(),
+                    )))
+                }
             };
         }
 
@@ -83,7 +119,12 @@ impl std::str::FromStr for Geo {
         if has_uncertainty {
             uncertainty = match &caps["uncertainty"].parse::<f64>() {
                 Ok(uncertainty) => Some(*uncertainty),
-                Err(_) => return Ok(Geo::Other(s.to_string())),
+                Err(_) => {
+                    return Ok(Geo::Other((
+                        s.to_string(),
+                        "uncertainty should be a number".to_string(),
+                    )))
+                }
             };
         }
 
@@ -114,7 +155,7 @@ impl std::fmt::Display for Geo {
                 };
                 write!(f, "{s}")
             }
-            Self::Other(s) => write!(f, "{s}"),
+            Self::Other((s, _)) => write!(f, "{s}"),
         }
     }
 }
@@ -123,7 +164,7 @@ impl Geo {
     pub fn parse(s: &str) -> Self {
         match s.parse::<Geo>() {
             Ok(geo) => geo,
-            Err(_) => Geo::Other(s.to_string()),
+            Err(e) => Geo::Other((s.to_string(), e)),
         }
     }
 }
@@ -147,7 +188,7 @@ pub enum Osm {
         id: u64,
         revision: Option<u64>,
     },
-    Other(String),
+    Other(Other),
 }
 
 impl std::str::FromStr for Osm {
@@ -170,7 +211,12 @@ impl std::str::FromStr for Osm {
         };
         let caps = match re.captures(s) {
             Some(caps) => caps,
-            None => return Ok(Osm::Other(s.to_string())),
+            None => {
+                return Ok(Osm::Other((
+                    s.to_string(),
+                    format!("should match regular expression \"{pattern}\""),
+                )))
+            }
         };
 
         let type_ = match OsmType::from_str(&caps["type_"]) {
@@ -180,14 +226,24 @@ impl std::str::FromStr for Osm {
 
         let id = match &caps["id"].parse::<u64>() {
             Ok(id) => *id,
-            Err(_) => return Ok(Osm::Other(s.to_string())),
+            Err(_) => {
+                return Ok(Osm::Other((
+                    s.to_string(),
+                    "id should be an unsigned integer".to_string(),
+                )))
+            }
         };
 
         let mut revision: Option<u64> = None;
         if has_revision {
             revision = match &caps["revision"].parse::<u64>() {
                 Ok(revision) => Some(*revision),
-                Err(_) => return Ok(Osm::Other(s.to_string())),
+                Err(_) => {
+                    return Ok(Osm::Other((
+                        s.to_string(),
+                        "revision should be an unsigned integer".to_string(),
+                    )))
+                }
             };
         }
 
@@ -213,7 +269,7 @@ impl std::fmt::Display for Osm {
                 };
                 write!(f, "{s}")
             }
-            Self::Other(s) => write!(f, "{s}"),
+            Self::Other((s, _)) => write!(f, "{s}"),
         }
     }
 }
@@ -222,7 +278,7 @@ impl Osm {
     pub fn parse(s: &str) -> Self {
         match s.parse::<Osm>() {
             Ok(osm) => osm,
-            Err(_) => Osm::Other(s.to_string()),
+            Err(e) => Osm::Other((s.to_string(), e)),
         }
     }
 }
@@ -266,7 +322,10 @@ mod tests {
                 altitude: Some(250.0),
                 uncertainty: Some(350.0),
             },
-            Geo::Other("geo:37.786971,-122.399677,250,u=350".to_string()),
+            Geo::Other((
+                "geo:37.786971,-122.399677,250,u=350".to_string(),
+                "should have at most 2 commas".to_string(),
+            )),
         ];
 
         for (s, geo) in strings.iter().zip(geos.iter()) {
@@ -294,7 +353,7 @@ mod tests {
                 id: 7444,
                 revision: Some(188),
             },
-            Osm::Other("7444#188".to_string()),
+            Osm::Other(("7444#188".to_string(), "should match regular expression \"(?P<type_>[NWR])(?P<id>\\d+)#(?P<revision>\\d+)\"".to_string())),
         ];
 
         for (s, osm) in strings.iter().zip(osms.iter()) {

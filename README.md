@@ -82,8 +82,8 @@ match geo {
     } => {
         println!("Successfully extracted geographical coordinates!")
     }
-    podcast::Geo::Other(s) => {
-        println!("Could not parse geographical coordinates from \"{s}\".")
+    podcast::Geo::Other((s, reason)) => {
+        println!("Could not parse coordinates from \"{s}\": {reason}.")
     }
 };
 ```
@@ -94,7 +94,7 @@ If you don't get a match with `Other`, you know that deserialization yielded som
 match language {
     Language::English(region) => println!("A variant of English!"),
     Language::Lithuanian => println!("Lithuanian!"),
-    Language::Other(s) => println!("Unexpected language code \"{s}\"."),
+    Language::Other((s, _)) => println!("Unexpected language code \"{s}\"."),
     _ => println!("Some other valid language!"),
 };
 ```
@@ -115,7 +115,7 @@ match channel.itunes_explicit.get(0) {
             Bool::Ok(b) => {
                 println!("is explicit? \"{b}\"")
             }
-            Bool::Other(s) => println!("could not parse boolean value from \"{s}\""),
+            Bool::Other((s, reason)) => println!("could not parse \"{s}\": {reason}"),
         }
     }
     None => println!("<itunes:explicit> not found."),

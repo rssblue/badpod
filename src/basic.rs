@@ -1,3 +1,5 @@
+use crate::Other;
+
 pub enum NumberConstraint {
     None,
     Positive,
@@ -13,7 +15,7 @@ pub enum BoolType {
 #[derive(Debug, PartialEq, Eq)]
 pub enum Bool {
     Ok(bool),
-    Other(String),
+    Other(Other),
 }
 
 impl Default for Bool {
@@ -28,12 +30,12 @@ impl Bool {
             BoolType::TrueFalse => match s {
                 "true" => Bool::Ok(true),
                 "false" => Bool::Ok(false),
-                _ => Bool::Other(s.to_string()),
+                _ => Bool::Other((s.to_string(), "should be \"true\" or \"false\"".to_string())),
             },
             BoolType::YesNo => match s {
                 "yes" => Bool::Ok(true),
                 "no" => Bool::Ok(false),
-                _ => Bool::Other(s.to_string()),
+                _ => Bool::Other((s.to_string(), "should be \"yes\" or \"no\"".to_string())),
             },
         }
     }
@@ -45,7 +47,7 @@ impl std::str::FromStr for Bool {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s.parse::<bool>() {
             Ok(x) => Ok(Self::Ok(x)),
-            Err(_) => Ok(Self::Other(s.to_string())),
+            Err(e) => Ok(Self::Other((s.to_string(), e.to_string()))),
         }
     }
 }
@@ -54,7 +56,7 @@ impl std::fmt::Display for Bool {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             Self::Ok(t) => write!(f, "{t}"),
-            Self::Other(s) => write!(f, "{s}"),
+            Self::Other((s, _)) => write!(f, "{s}"),
         }
     }
 }
@@ -63,7 +65,7 @@ impl std::fmt::Display for Bool {
 #[derive(Debug, PartialEq, Eq)]
 pub enum Integer {
     Ok(i64),
-    Other(String),
+    Other(Other),
 }
 
 impl Integer {
@@ -75,18 +77,18 @@ impl Integer {
                     if x > 0 {
                         Self::Ok(x)
                     } else {
-                        Self::Other(s.to_string())
+                        Self::Other((s.to_string(), "should be positive".to_string()))
                     }
                 }
                 NumberConstraint::NonNegative => {
                     if x >= 0 {
                         Self::Ok(x)
                     } else {
-                        Self::Other(s.to_string())
+                        Self::Other((s.to_string(), "should be non-negative".to_string()))
                     }
                 }
             },
-            Err(_) => Self::Other(s.to_string()),
+            Err(_) => Self::Other((s.to_string(), "should be an integer".to_string())),
         }
     }
 }
@@ -95,7 +97,7 @@ impl std::fmt::Display for Integer {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             Self::Ok(t) => write!(f, "{t}"),
-            Self::Other(s) => write!(f, "{s}"),
+            Self::Other((s, _)) => write!(f, "{s}"),
         }
     }
 }
@@ -104,7 +106,7 @@ impl std::fmt::Display for Integer {
 #[derive(Debug, PartialEq)]
 pub enum Float {
     Ok(f64),
-    Other(String),
+    Other(Other),
 }
 
 impl Float {
@@ -116,18 +118,21 @@ impl Float {
                     if x > 0.0 {
                         Self::Ok(x)
                     } else {
-                        Self::Other(s.to_string())
+                        Self::Other((s.to_string(), "should be positive".to_string()))
                     }
                 }
                 NumberConstraint::NonNegative => {
                     if x >= 0.0 {
                         Self::Ok(x)
                     } else {
-                        Self::Other(s.to_string())
+                        Self::Other((s.to_string(), "should be non-negative".to_string()))
                     }
                 }
             },
-            Err(_) => Self::Other(s.to_string()),
+            Err(_) => Self::Other((
+                s.to_string(),
+                "should be a floating-point number".to_string(),
+            )),
         }
     }
 }
@@ -136,7 +141,7 @@ impl std::fmt::Display for Float {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
             Self::Ok(t) => write!(f, "{t}"),
-            Self::Other(s) => write!(f, "{s}"),
+            Self::Other((s, _)) => write!(f, "{s}"),
         }
     }
 }
@@ -148,7 +153,7 @@ impl std::fmt::Display for Float {
 pub enum Number {
     Integer(i64),
     Float(f64),
-    Other(String),
+    Other(Other),
 }
 
 impl Number {
@@ -160,14 +165,14 @@ impl Number {
                     if x > 0 {
                         Self::Integer(x)
                     } else {
-                        Self::Other(s.to_string())
+                        Self::Other((s.to_string(), "should be positive".to_string()))
                     }
                 }
                 NumberConstraint::NonNegative => {
                     if x >= 0 {
                         Self::Integer(x)
                     } else {
-                        Self::Other(s.to_string())
+                        Self::Other((s.to_string(), "should be non-negative".to_string()))
                     }
                 }
             },
@@ -178,18 +183,18 @@ impl Number {
                         if x > 0.0 {
                             Self::Float(x)
                         } else {
-                            Self::Other(s.to_string())
+                            Self::Other((s.to_string(), "should be positive".to_string()))
                         }
                     }
                     NumberConstraint::NonNegative => {
                         if x >= 0.0 {
                             Self::Float(x)
                         } else {
-                            Self::Other(s.to_string())
+                            Self::Other((s.to_string(), "should be non-negative".to_string()))
                         }
                     }
                 },
-                Err(_) => Self::Other(s.to_string()),
+                Err(_) => Self::Other((s.to_string(), "should be a number".to_string())),
             },
         }
     }
@@ -200,7 +205,7 @@ impl std::fmt::Display for Number {
         match self {
             Self::Integer(t) => write!(f, "{t}"),
             Self::Float(t) => write!(f, "{t}"),
-            Self::Other(s) => write!(f, "{s}"),
+            Self::Other((s, _)) => write!(f, "{s}"),
         }
     }
 }
