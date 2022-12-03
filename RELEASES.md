@@ -1,5 +1,10 @@
 # Releases
 
+## Version 0.5.0 (2022-12-03)
+
+- Provide reason when enum deserialization fails.
+- Introduce `Url` enum type.
+
 ## Version 0.4.0 (2022-12-01)
 
 - Use `roxmltree` instead of `serde` for parsing; this improves performance by around 2X and also avoids some deserialization errors.
