@@ -67,7 +67,7 @@ match my_channel.podcast_value.len() {
 ### Deserializing complicated tags
 
 `badpod` converts complex data in text format to something that is easier to work with.
-If that is not possible, we provide enums with variant `Other`, which is meant to represent data that could not be deserialized.
+If that is not possible, we provide enums with variant `Other`, which is meant to represent data that could not be deserialized and the reason for that failed deserialization.
 ```rust
 match geo {
     podcast::Geo::Ok {
