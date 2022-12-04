@@ -176,11 +176,7 @@ fn deserialize() {
                     }],
                     podcast_medium: vec![podcast::Medium::Music],
                     podcast_images: vec![podcast::Images {
-                        srcset: vec! {
-                            podcast::Image::Ok(url::Url::parse("https://example.com/images/ep1/pci_avatar-massive.jpg").unwrap(), 1500),
-                            podcast::Image::Other(("https://example.com/images/ep1/pci_avatar-middle.jpg 6o0w".to_string(), "image width should be an integer".to_string())),
-                            podcast::Image::Ok(url::Url::parse("https://example.com/images/ep1/pci_avatar-small.jpg").unwrap(), 300),
-                        },
+                        srcset: podcast::ImageSrcSet::Other(("https://example.com/images/ep1/pci_avatar-massive.jpg 1500w,       https://example.com/images/ep1/pci_avatar-middle.jpg 600w,       https://example.com/images/ep1/pci_avatar-small.jpg -300w".to_string(), "invalid image at index 2: invalid width (should be positive)".to_string())),
                     }],
                     item: vec! {
                         Item{
@@ -550,12 +546,12 @@ fn deserialize() {
                         itunes_explicit: vec![Bool::Other(("no".to_string(), "should be \"true\" or \"false\"".to_string()))],
 
                         podcast_images: vec![podcast::Images {
-                            srcset: vec! {
-                                podcast::Image::Ok(url::Url::parse("https://example.com/images/ep3/pci_avatar-massive.jpg").unwrap(), 1500),
-                                podcast::Image::Ok(url::Url::parse("https://example.com/images/ep3/pci_avatar-middle.jpg").unwrap(), 600),
-                                podcast::Image::Ok(url::Url::parse("https://example.com/images/ep3/pci_avatar-small.jpg").unwrap(), 300),
-                                podcast::Image::Ok(url::Url::parse("https://example.com/images/ep3/pci_avatar-tiny.jpg").unwrap(), 150),
-                            },
+                            srcset: podcast::ImageSrcSet::Ok(vec![
+                                (url::Url::parse("https://example.com/images/ep3/pci_avatar-massive.jpg").unwrap(), 1500),
+                                (url::Url::parse("https://example.com/images/ep3/pci_avatar-middle.jpg").unwrap(), 600),
+                                (url::Url::parse("https://example.com/images/ep3/pci_avatar-small.jpg").unwrap(), 300),
+                                (url::Url::parse("https://example.com/images/ep3/pci_avatar-tiny.jpg").unwrap(), 150),
+                            ]),
                         }],
                         podcast_season: vec![podcast::Season{
                             name: Some("Podcasting 2.0".to_string()),
@@ -764,15 +760,15 @@ fn deserialize() {
                             href: None,
                         }],
                         itunes_explicit: vec![Bool::Other(("no".to_string(), "should be \"true\" or \"false\"".to_string()))],
-
                         podcast_images: vec![podcast::Images {
-                            srcset: vec! {
-                                podcast::Image::Ok(url::Url::parse("https://example.com/images/ep2/pci_avatar-massive.jpg").unwrap(), 1500),
-                                podcast::Image::Ok(url::Url::parse("https://example.com/images/ep2/pci_avatar-middle.jpg").unwrap(), 600),
-                                podcast::Image::Ok(url::Url::parse("https://example.com/images/ep2/pci_avatar-small.jpg").unwrap(), 300),
-                                podcast::Image::Ok(url::Url::parse("https://example.com/images/ep2/pci_avatar-tiny.jpg").unwrap(), 150),
-                            },
+                            srcset: podcast::ImageSrcSet::Ok(vec![
+                                (url::Url::parse("https://example.com/images/ep2/pci_avatar-massive.jpg").unwrap(), 1500),
+                                (url::Url::parse("https://example.com/images/ep2/pci_avatar-middle.jpg").unwrap(), 600),
+                                (url::Url::parse("https://example.com/images/ep2/pci_avatar-small.jpg").unwrap(), 300),
+                                (url::Url::parse("https://example.com/images/ep2/pci_avatar-tiny.jpg").unwrap(), 150),
+                            ]),
                         }],
+
                         podcast_season: vec![podcast::Season{
                             name: Some("Podcasting 2.0".to_string()),
                             value: Some(Integer::Ok(1)),
@@ -941,14 +937,13 @@ fn deserialize() {
                             href: None,
                         }],
                         itunes_explicit: vec![Bool::Other(("no".to_string(), "should be \"true\" or \"false\"".to_string()))],
-
                         podcast_images: vec![podcast::Images {
-                            srcset: vec! {
-                                podcast::Image::Ok(url::Url::parse("https://example.com/images/ep1/pci_avatar-massive.jpg").unwrap(), 1500),
-                                podcast::Image::Ok(url::Url::parse("https://example.com/images/ep1/pci_avatar-middle.jpg").unwrap(), 600),
-                                podcast::Image::Ok(url::Url::parse("https://example.com/images/ep1/pci_avatar-small.jpg").unwrap(), 300),
-                                podcast::Image::Ok(url::Url::parse("https://example.com/images/ep1/pci_avatar-tiny.jpg").unwrap(), 150),
-                            },
+                            srcset: podcast::ImageSrcSet::Ok(vec![
+                                (url::Url::parse("https://example.com/images/ep1/pci_avatar-massive.jpg").unwrap(), 1500),
+                                (url::Url::parse("https://example.com/images/ep1/pci_avatar-middle.jpg").unwrap(), 600),
+                                (url::Url::parse("https://example.com/images/ep1/pci_avatar-small.jpg").unwrap(), 300),
+                                (url::Url::parse("https://example.com/images/ep1/pci_avatar-tiny.jpg").unwrap(), 150),
+                            ]),
                         }],
                         podcast_season: vec![podcast::Season{
                             name: Some("Podcasting 2.0".to_string()),

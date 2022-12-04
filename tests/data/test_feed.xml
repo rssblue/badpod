@@ -53,8 +53,8 @@
     <podcast:medium>music</podcast:medium>
     <podcast:images
       srcset="https://example.com/images/ep1/pci_avatar-massive.jpg 1500w,
-      https://example.com/images/ep1/pci_avatar-middle.jpg 6o0w,
-      https://example.com/images/ep1/pci_avatar-small.jpg 300w"
+      https://example.com/images/ep1/pci_avatar-middle.jpg 600w,
+      https://example.com/images/ep1/pci_avatar-small.jpg -300w"
       />
     <podcast:liveItem status="live" start="2021-09-26T07:30:00.000-0600" end="2021-09-26T15:30:00.000Z">
       <title>Podcasting 2.0 Live Stream</title>

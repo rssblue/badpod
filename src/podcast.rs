@@ -33,7 +33,7 @@ pub use value::RecipientType as ValueRecipientType;
 pub use value::Type as ValueType;
 
 mod image;
-pub use image::{Image, Images};
+pub use image::{Images, SrcSet as ImageSrcSet};
 
 mod live_item;
 pub use live_item::Status as LiveItemStatus;
