@@ -375,6 +375,7 @@ fn deserialize() {
             channel: vec![Channel{
                 title: vec!["Podcasting 2.0 Namespace Example".to_string()],
                 description: vec!["This is a fake show that exists only as an example of the \"podcast\" namespace tag usage.".to_string()],
+                docs: vec![Url::Ok(url::Url::parse("http://blogs.law.harvard.edu/tech/rss").unwrap())],
                 link: vec![Url::Ok(url::Url::parse("http://example.com/podcast").unwrap())],
                 language: vec![Language::English(LanguageEnglish::UnitedStates)],
                 generator: vec!["Freedom Controller".to_string()],

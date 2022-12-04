@@ -26,6 +26,7 @@ pub struct Channel {
     pub category: Vec<String>,
     pub copyright: Vec<String>,
     pub description: Vec<String>,
+    pub docs: Vec<Url>,
     pub generator: Vec<String>,
     pub item: Vec<Item>,
     pub language: Vec<language::Language>,

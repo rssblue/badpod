@@ -77,6 +77,13 @@ fn parse_channel(channel: roxmltree::Node) -> rss::Channel {
                     new_channel.description.push(text);
                 }
             }
+            (None, "docs") => {
+                if let Some(text) = parse_text_node(child) {
+                    new_channel
+                        .docs
+                        .push(Url::parse(&text, UrlConstraint::HttpOrHttps));
+                }
+            }
             (None, "generator") => {
                 if let Some(text) = parse_text_node(child) {
                     new_channel.generator.push(text);
