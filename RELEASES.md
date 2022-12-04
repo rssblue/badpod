@@ -1,5 +1,11 @@
 # Releases
 
+## Version 0.6.0 (2022-12-04)
+
+- Improve `<podcast:images>`.
+- Add `<docs>` to `<channel>`.
+- Add Apache license.
+
 ## Version 0.5.0 (2022-12-03)
 
 - Provide reason when enum deserialization fails.
