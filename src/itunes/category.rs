@@ -237,11 +237,160 @@ impl fmt::Display for SubcategoryName {
 }
 
 impl SubcategoryName {
-    pub fn parse(s: &str) -> Self {
-        match Self::from_str(s) {
+    pub fn parse(s: &str, category_name: &CategoryName) -> Self {
+        let subcategory = match Self::from_str(s) {
             Ok(variant) => variant,
             Err(e) => Self::Other((s.to_string(), e)),
+        };
+
+        let allowed_subcategories = match category_name {
+            CategoryName::Arts => vec![
+                SubcategoryName::Books,
+                SubcategoryName::Design,
+                SubcategoryName::FashionAndBeauty,
+                SubcategoryName::Food,
+                SubcategoryName::PerformingArts,
+                SubcategoryName::VisualArts,
+            ],
+            CategoryName::Business => vec![
+                SubcategoryName::Careers,
+                SubcategoryName::Entrepreneurship,
+                SubcategoryName::Investing,
+                SubcategoryName::Management,
+                SubcategoryName::Marketing,
+                SubcategoryName::NonProfit,
+            ],
+            CategoryName::Comedy => vec![
+                SubcategoryName::ComedyInterviews,
+                SubcategoryName::Improv,
+                SubcategoryName::StandUp,
+            ],
+            CategoryName::Education => vec![
+                SubcategoryName::Courses,
+                SubcategoryName::HowTo,
+                SubcategoryName::LanguageLearning,
+                SubcategoryName::SelfImprovement,
+            ],
+            CategoryName::Fiction => vec![
+                SubcategoryName::ComedyFiction,
+                SubcategoryName::Drama,
+                SubcategoryName::ScienceFiction,
+            ],
+            CategoryName::Government => vec![],
+            CategoryName::History => vec![],
+            CategoryName::HealthAndFitness => vec![
+                SubcategoryName::AlternativeHealth,
+                SubcategoryName::Fitness,
+                SubcategoryName::Medicine,
+                SubcategoryName::MentalHealth,
+                SubcategoryName::Nutrition,
+            ],
+            CategoryName::KidsAndFamily => vec![
+                SubcategoryName::EducationForKids,
+                SubcategoryName::Parenting,
+                SubcategoryName::PetsAndAnimals,
+                SubcategoryName::StoriesForKids,
+            ],
+            CategoryName::Leisure => vec![
+                SubcategoryName::AnimationAndManga,
+                SubcategoryName::Automotive,
+                SubcategoryName::Aviation,
+                SubcategoryName::Crafts,
+                SubcategoryName::Games,
+                SubcategoryName::Hobbies,
+                SubcategoryName::HomeAndGarden,
+                SubcategoryName::VideoGames,
+            ],
+            CategoryName::Music => vec![
+                SubcategoryName::MusicCommentary,
+                SubcategoryName::MusicHistory,
+                SubcategoryName::MusicInterviews,
+            ],
+            CategoryName::News => vec![
+                SubcategoryName::BusinessNews,
+                SubcategoryName::DailyNews,
+                SubcategoryName::EntertainmentNews,
+                SubcategoryName::NewsCommentary,
+                SubcategoryName::Politics,
+                SubcategoryName::SportsNews,
+                SubcategoryName::TechNews,
+            ],
+            CategoryName::ReligionAndSpirituality => vec![
+                SubcategoryName::Buddhism,
+                SubcategoryName::Christianity,
+                SubcategoryName::Hinduism,
+                SubcategoryName::Islam,
+                SubcategoryName::Judaism,
+                SubcategoryName::Religion,
+                SubcategoryName::Spirituality,
+            ],
+            CategoryName::Science => vec![
+                SubcategoryName::Astronomy,
+                SubcategoryName::Chemistry,
+                SubcategoryName::EarthSciences,
+                SubcategoryName::LifeSciences,
+                SubcategoryName::Mathematics,
+                SubcategoryName::NaturalSciences,
+                SubcategoryName::Nature,
+                SubcategoryName::Physics,
+                SubcategoryName::SocialSciences,
+            ],
+            CategoryName::SocietyAndCulture => vec![
+                SubcategoryName::Documentary,
+                SubcategoryName::PersonalJournals,
+                SubcategoryName::Philosophy,
+                SubcategoryName::PlacesAndTravel,
+                SubcategoryName::Relationships,
+            ],
+            CategoryName::Sports => vec![
+                SubcategoryName::Baseball,
+                SubcategoryName::Basketball,
+                SubcategoryName::Cricket,
+                SubcategoryName::FantasySports,
+                SubcategoryName::Football,
+                SubcategoryName::Golf,
+                SubcategoryName::Hockey,
+                SubcategoryName::Rugby,
+                SubcategoryName::Running,
+                SubcategoryName::Soccer,
+                SubcategoryName::Swimming,
+                SubcategoryName::Tennis,
+                SubcategoryName::Volleyball,
+                SubcategoryName::Wilderness,
+                SubcategoryName::Wrestling,
+            ],
+            CategoryName::Technology => vec![],
+            CategoryName::TrueCrime => vec![],
+            CategoryName::TvAndFilm => vec![
+                SubcategoryName::AfterShows,
+                SubcategoryName::FilmHistory,
+                SubcategoryName::FilmInterviews,
+                SubcategoryName::FilmReviews,
+                SubcategoryName::TvReviews,
+            ],
+            CategoryName::Other(_) => vec![],
+        };
+
+        if !allowed_subcategories.contains(&subcategory) {
+            let mut msg = format!(
+                "subcategory \"{subcategory}\" is not allowed for category \"{category_name}\""
+            );
+            if !allowed_subcategories.is_empty() {
+                msg.push_str(&format!(
+                    "; valid subcategories: {}",
+                    allowed_subcategories
+                        .iter()
+                        .map(|s| format!("\"{}\"", s))
+                        .collect::<Vec<String>>()
+                        .join(", ")
+                ));
+            } else {
+                msg.push_str("; no subcategories are allowed for this category");
+            }
+            return Self::Other((s.to_string(), msg));
         }
+
+        subcategory
     }
 }
 

@@ -62,9 +62,14 @@ fn deserialize() {
                     itunes_complete: vec![itunes::Yes::Other(("No".to_string(), "should be \"Yes\"".to_string()))],
                     itunes_category: vec! {
                         itunes::Category{
-                            text: Some(itunes::CategoryName::SocietyAndCulture),
+                            text: Some(itunes::CategoryName::Music),
                             subcategory: vec![itunes::Subcategory{
-                                text: Some(itunes::SubcategoryName::Documentary),
+                                text: Some(itunes::SubcategoryName::Other(
+                                              (
+                                              "Entertainment News".to_string(),
+                                              "subcategory \"Entertainment News\" is not allowed for category \"Music\"; valid subcategories: \"Music Commentary\", \"Music History\", \"Music Interviews\"".to_string(),
+                                              ),
+                                              )),
                             }],
                         },
                         itunes::Category{

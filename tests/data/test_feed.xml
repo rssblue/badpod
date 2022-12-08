@@ -10,8 +10,8 @@
     <itunes:author>Jane Doe</itunes:author>
     <itunes:block>Yes</itunes:block>
     <itunes:complete>No</itunes:complete>
-    <itunes:category text="Society &amp; Culture">
-      <itunes:category text="Documentary"></itunes:category>
+    <itunes:category text="Music">
+      <itunes:category text="Entertainment News"></itunes:category>
     </itunes:category>
     <itunes:explicit>false</itunes:explicit>
     <itunes:owner>

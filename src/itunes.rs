@@ -14,9 +14,6 @@ pub struct Category {
 }
 
 /// Apple Podcasts podcast subcategory.
-///
-/// Just because a subcategory is deserialized does not mean that it is compatible with the
-/// category in the parent tag.
 #[derive(Debug, PartialEq, Eq, Default)]
 pub struct Subcategory {
     pub text: Option<SubcategoryName>,

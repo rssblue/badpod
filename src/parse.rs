@@ -464,9 +464,12 @@ fn parse_itunes_category(category: roxmltree::Node) -> itunes::Category {
     let mut new_category = itunes::Category {
         ..Default::default()
     };
+    let mut category_name = itunes::CategoryName::Other(("none".to_string(), "none".to_string()));
 
     for attribute in category.attributes() {
         if attribute.name() == "text" {
+            // TODO: this is embarrassing - remove repeated computation.
+            category_name = itunes::CategoryName::parse(attribute.value());
             new_category.text = Some(itunes::CategoryName::parse(attribute.value()));
         }
     }
@@ -475,21 +478,25 @@ fn parse_itunes_category(category: roxmltree::Node) -> itunes::Category {
         if child.tag_name().name() == "category" {
             new_category
                 .subcategory
-                .push(parse_itunes_subcategory(child));
+                .push(parse_itunes_subcategory(child, &category_name));
         }
     }
 
     new_category
 }
 
-fn parse_itunes_subcategory(subcategory: roxmltree::Node) -> itunes::Subcategory {
+fn parse_itunes_subcategory(
+    subcategory: roxmltree::Node,
+    category: &itunes::CategoryName,
+) -> itunes::Subcategory {
     let mut new_subcategory = itunes::Subcategory {
         ..Default::default()
     };
 
     for attribute in subcategory.attributes() {
         if attribute.name() == "text" {
-            new_subcategory.text = Some(itunes::SubcategoryName::parse(attribute.value()));
+            new_subcategory.text =
+                Some(itunes::SubcategoryName::parse(attribute.value(), category));
         }
     }
 
