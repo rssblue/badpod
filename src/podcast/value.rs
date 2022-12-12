@@ -20,7 +20,7 @@ impl std::str::FromStr for Type {
             Some(variant) => Ok(variant),
             None => Ok(Self::Other((
                 s.to_string(),
-                "should be of the following: \"bitcoin\", \"lightning\", \"amp\"".to_string(),
+                "should be one of the following: \"bitcoin\", \"lightning\", \"amp\"".to_string(),
             ))),
         }
     }
