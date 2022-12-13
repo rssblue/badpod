@@ -76,7 +76,7 @@ impl std::str::FromStr for Geo {
             None => {
                 return Ok(Geo::Other((
                     s.to_string(),
-                    format!("should match regular expression \"{}\"", pattern),
+                    format!("should match regular expression `{}`", pattern),
                 )))
             }
         };
@@ -217,7 +217,7 @@ impl std::str::FromStr for Osm {
             None => {
                 return Ok(Osm::Other((
                     s.to_string(),
-                    format!("should match regular expression \"{pattern}\""),
+                    format!("should match regular expression `{pattern}`"),
                 )))
             }
         };
@@ -232,7 +232,7 @@ impl std::str::FromStr for Osm {
             Err(_) => {
                 return Ok(Osm::Other((
                     s.to_string(),
-                    "id should be an unsigned integer".to_string(),
+                    "ID should be an unsigned integer".to_string(),
                 )))
             }
         };
@@ -361,7 +361,11 @@ mod tests {
                 id: 7444,
                 revision: Some(188),
             },
-            Osm::Other(("7444#188".to_string(), "should match regular expression \"(?P<type_>[NWR])(?P<id>\\d+)#(?P<revision>\\d+)\"".to_string())),
+            Osm::Other((
+                "7444#188".to_string(),
+                "should match regular expression `(?P<type_>[NWR])(?P<id>\\d+)#(?P<revision>\\d+)`"
+                    .to_string(),
+            )),
         ];
 
         for (s, osm) in strings.iter().zip(osms.iter()) {

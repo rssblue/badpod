@@ -7,7 +7,10 @@ use crate::rss;
 use crate::strings::{Url, UrlConstraint};
 use crate::time::{DateTime, TimeFormat};
 
-/// Denotes values that cannot be deserialized and the reason for deserialization failure.
+/// Used when values cannot be deserialized.
+///
+/// The first string in the tuple is the value that could not be deserialized.
+/// The second string is the reason (in Markdown) for deserialization failure.
 pub type Other = (String, String);
 
 const NS_ITUNES: &str = "http://www.itunes.com/dtds/podcast-1.0.dtd";

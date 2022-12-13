@@ -131,11 +131,11 @@ impl GuidValue {
             Url::Other(_) => match is_permalink {
                 Some(basic::Bool::Ok(true)) => GuidValue::Other((
                     value.to_string(),
-                    "should be a URL when isPermalink is true".to_string(),
+                    "should be a URL when `isPermalink` is true".to_string(),
                 )),
                 None => GuidValue::Other((
                     value.to_string(),
-                    "should be a URL when isPermalink is not set".to_string(),
+                    "should be a URL when `isPermalink` is not set".to_string(),
                 )),
                 _ => GuidValue::Text(value.to_string()),
             },

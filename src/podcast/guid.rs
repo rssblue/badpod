@@ -22,7 +22,7 @@ impl std::str::FromStr for Guid {
         if !re.is_match(s) {
             return Ok(Self::Other((
                 s.to_string(),
-                format!("should be a UUIDv5 matching regular expression \"{GUID_REGEX}\""),
+                "should be a [UUIDv5](https://tools.rssblue.com/podcast-guid)".to_string(),
             )));
         }
 

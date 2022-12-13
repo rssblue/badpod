@@ -100,14 +100,14 @@ fn deserialize() {
                     podcast_person: vec! {
                         podcast::Person{
                             href: Some(Url::Ok(url::Url::parse("https://example.com/johnsmith/blog").unwrap())),
-                            img: Some(Url::Other(("http://example.com/images/johnsmith.jpg".to_string(), "protocol must be https".to_string()))),
+                            img: Some(Url::Other(("http://example.com/images/johnsmith.jpg".to_string(), "protocol must be `https`".to_string()))),
                             value: Some("John Smith".to_string()),
                             ..Default::default()
                         },
                         podcast::Person{
                             role: Some(podcast::PersonRole::Guest),
                             href: Some(Url::Ok(url::Url::parse("https://www.imdb.com/name/nm0427852888/").unwrap())),
-                            img: Some(Url::Other(("http://example.com/images/janedoe.jpg".to_string(), "protocol must be https".to_string()))),
+                            img: Some(Url::Other(("http://example.com/images/janedoe.jpg".to_string(), "protocol must be `https`".to_string()))),
                             value: Some("Jane Doe".to_string()),
                             ..Default::default()
                         },
@@ -218,7 +218,7 @@ fn deserialize() {
                                 podcast::Person{
                                     role: Some(podcast::PersonRole::Guest),
                                     href: Some(Url::Ok(url::Url::parse("https://www.wikipedia/alicebrown").unwrap())),
-                                    img: Some(Url::Other(("http://example.com/images/alicebrown.jpg".to_string(), "protocol must be https".to_string()))),
+                                    img: Some(Url::Other(("http://example.com/images/alicebrown.jpg".to_string(), "protocol must be `https`".to_string()))),
                                     value: Some("Alice Brown".to_string()),
                                     ..Default::default()
                                 },
@@ -226,7 +226,7 @@ fn deserialize() {
                                     group: Some(podcast::PersonGroup::Writing),
                                     role: Some(podcast::PersonRole::Guest),
                                     href: Some(Url::Ok(url::Url::parse("https://www.wikipedia/alicebrown").unwrap())),
-                                    img: Some(Url::Other(("http://example.com/images/alicebrown.jpg".to_string(), "protocol must be https".to_string()))),
+                                    img: Some(Url::Other(("http://example.com/images/alicebrown.jpg".to_string(), "protocol must be `https`".to_string()))),
                                     value: Some("Alice Brown".to_string()),
                                 },
                                 podcast::Person{
@@ -286,7 +286,7 @@ fn deserialize() {
                                             type_: Some(MimeEnclosure::Other(("application/x-bittorrent".to_string(), "unrecognized mime type".to_string()))),
                                         },
                                         podcast::Source{
-                                            uri: Some(Url::Other(("http://example.onion/file-0.mp3".to_string(), "protocol must not be http".to_string()))),
+                                            uri: Some(Url::Other(("http://example.onion/file-0.mp3".to_string(), "protocol must not be `http`".to_string()))),
                                             type_: None,
                                         },
                                     },
@@ -353,7 +353,7 @@ fn deserialize() {
                             title: vec!["Podcasting 2.0 Live Stream".to_string()],
                             guid: vec![Guid{
                                 is_permalink: None,
-                                value: Some(GuidValue::Other(("e32b4890-983b-4ce5-8b46-f2d6bc1d8819".to_string(), "should be a URL when isPermalink is not set".to_string()))),
+                                value: Some(GuidValue::Other(("e32b4890-983b-4ce5-8b46-f2d6bc1d8819".to_string(), "should be a URL when `isPermalink` is not set".to_string()))),
                             }],
                             enclosure: vec![Enclosure{
                                 url: Some(Url::Ok(url::Url::parse("https://example.com/pc20/livestream?format=.mp3").unwrap())),
@@ -389,7 +389,7 @@ fn deserialize() {
                 pub_date: vec![badpod::DateTime::Ok(chrono::FixedOffset::west(0).ymd(2020, 10, 9).and_hms(4, 30, 38))],
                 last_build_date: vec![badpod::DateTime::Ok(chrono::FixedOffset::west(0).ymd(2020, 10, 9).and_hms(4, 30, 38))],
 
-                podcast_guid: vec![podcast::Guid::Other(("y0ur-gu1d-g035-h3r3".to_string(), r#"should be a UUIDv5 matching regular expression "^[0-9a-fA-F]{8}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{4}\-[0-9a-fA-F]{12}$""#.to_string()))],
+                podcast_guid: vec![podcast::Guid::Other(("y0ur-gu1d-g035-h3r3".to_string(), r#"should be a [UUIDv5](https://tools.rssblue.com/podcast-guid)"#.to_string()))],
                 podcast_license: vec![podcast::License{
                     url: Some(Url::Ok(url::Url::parse("https://example.org/mypodcastlicense/full.pdf").unwrap())),
                     value: Some(podcast::LicenseType::Other(("my-podcast-license-v1".to_string(), "unrecognized license type".to_string()))),
@@ -804,14 +804,14 @@ fn deserialize() {
                         podcast_person: vec!{
                             podcast::Person{
                                 href: Some(Url::Ok(url::Url::parse("https://en.wikipedia.org/wiki/Adam_Curry").unwrap())),
-                                img: Some(Url::Other(("http://example.com/images/adamcurry.jpg".to_string(), "protocol must be https".to_string()))),
+                                img: Some(Url::Other(("http://example.com/images/adamcurry.jpg".to_string(), "protocol must be `https`".to_string()))),
                                 value: Some("Adam Curry".to_string()),
                                 ..Default::default()
                             },
                             podcast::Person{
                                 role: Some(podcast::PersonRole::Guest),
                                 href: Some(Url::Ok(url::Url::parse("https://example.com/blog/daveajones/").unwrap())),
-                                img: Some(Url::Other(("http://example.com/images/davejones.jpg".to_string(), "protocol must be https".to_string()))),
+                                img: Some(Url::Other(("http://example.com/images/davejones.jpg".to_string(), "protocol must be `https`".to_string()))),
                                 value: Some("Dave Jones".to_string()),
                                 ..Default::default()
                             },
@@ -980,14 +980,14 @@ fn deserialize() {
                         podcast_person: vec!{
                             podcast::Person{
                                 href: Some(Url::Ok(url::Url::parse("https://curry.com").unwrap())),
-                                img: Some(Url::Other(("http://example.com/images/adamcurry.jpg".to_string(), "protocol must be https".to_string()))),
+                                img: Some(Url::Other(("http://example.com/images/adamcurry.jpg".to_string(), "protocol must be `https`".to_string()))),
                                 value: Some("Adam Curry".to_string()),
                                 ..Default::default()
                             },
                             podcast::Person{
                                 role: Some(podcast::PersonRole::Guest),
                                 href: Some(Url::Ok(url::Url::parse("https://www.imdb.com/name/nm0427852888/").unwrap())),
-                                img: Some(Url::Other(("http://example.com/images/davejones.jpg".to_string(), "protocol must be https".to_string()))),
+                                img: Some(Url::Other(("http://example.com/images/davejones.jpg".to_string(), "protocol must be `https`".to_string()))),
                                 value: Some("Dave Jones".to_string()),
                                 ..Default::default()
                             },

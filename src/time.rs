@@ -18,7 +18,7 @@ impl DateTime {
             TimeFormat::Rfc2822 => match chrono::DateTime::parse_from_rfc2822(s) {
                 Ok(dt) => DateTime::Ok(dt),
                 Err(_) => {
-                    DateTime::Other((s.to_string(), "should be RFC 2822 date format".to_string()))
+                    DateTime::Other((s.to_string(), "should be [RFC 2822](https://www.rfc-editor.org/rfc/rfc2822#section-3.3) datetime format".to_string()))
                 }
             },
             TimeFormat::Iso8601 => {
@@ -30,7 +30,7 @@ impl DateTime {
                     return DateTime::Ok(t);
                 }
 
-                DateTime::Other((s.to_string(), "should be ISO 8601 date format".to_string()))
+                DateTime::Other((s.to_string(), "should be [ISO 8601](https://www.w3.org/TR/NOTE-datetime) datetime format".to_string()))
             }
         }
     }

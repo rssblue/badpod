@@ -25,14 +25,17 @@ impl Url {
                     if url.scheme() != "http" && url.scheme() != "https" {
                         return Self::Other((
                             s.to_string(),
-                            "protocol must be http or https".to_string(),
+                            "protocol must be `http` or `https`".to_string(),
                         ));
                     }
                     Self::Ok(url)
                 }
                 UrlConstraint::HttpsOnly => {
                     if url.scheme() != "https" {
-                        return Self::Other((s.to_string(), "protocol must be https".to_string()));
+                        return Self::Other((
+                            s.to_string(),
+                            "protocol must be `https`".to_string(),
+                        ));
                     }
                     Self::Ok(url)
                 }
@@ -40,7 +43,7 @@ impl Url {
                     if url.scheme() == "http" {
                         return Self::Other((
                             s.to_string(),
-                            "protocol must not be http".to_string(),
+                            "protocol must not be `http`".to_string(),
                         ));
                     }
                     Self::Ok(url)
@@ -85,14 +88,14 @@ mod tests {
             Url::parse("http://example.com", UrlConstraint::HttpsOnly),
             Url::Other((
                 "http://example.com".to_string(),
-                "protocol must be https".to_string()
+                "protocol must be `https`".to_string()
             ))
         );
         assert_eq!(
             Url::parse("http://example.com", UrlConstraint::AnyButHttp),
             Url::Other((
                 "http://example.com".to_string(),
-                "protocol must not be http".to_string()
+                "protocol must not be `http`".to_string()
             ))
         );
         assert_eq!(
@@ -103,14 +106,14 @@ mod tests {
             Url::parse("ftp://example.com", UrlConstraint::HttpOrHttps),
             Url::Other((
                 "ftp://example.com".to_string(),
-                "protocol must be http or https".to_string()
+                "protocol must be `http` or `https`".to_string()
             ))
         );
         assert_eq!(
             Url::parse("ftp://example.com", UrlConstraint::HttpsOnly),
             Url::Other((
                 "ftp://example.com".to_string(),
-                "protocol must be https".to_string()
+                "protocol must be `https`".to_string()
             ))
         );
         assert_eq!(

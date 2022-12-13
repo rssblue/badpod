@@ -56,7 +56,7 @@ fn parse_single_image(s: &str) -> Result<(url::Url, i64), String> {
     };
 
     if !width_str.ends_with('w') {
-        return Err("string denoting image width should end with 'w'".to_string());
+        return Err("string denoting image width should end with \"w\"".to_string());
     }
 
     // Remove last character.
