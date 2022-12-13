@@ -26,6 +26,16 @@ pub enum Error {
     Custom(String),
 }
 
+impl std::fmt::Display for Error {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Error::NoRoot => write!(f, "No root element found"),
+            Error::RootNotRss => write!(f, "Root element is not `rss`"),
+            Error::Custom(s) => write!(f, "{}", s),
+        }
+    }
+}
+
 /// Converts contents of an XML file of podcast's RSS feed to [Rss](crate::Rss) struct.
 pub fn from_str(feed_str: &str) -> Result<rss::Rss, Error> {
     let tree = match roxmltree::Document::parse(feed_str) {
