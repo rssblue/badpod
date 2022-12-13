@@ -1,5 +1,11 @@
 # Releases
 
+## Version 0.7.0 (2022-12-13)
+
+- Improve iTunes' categories validation.
+- Use Markdown in `Other` type.
+- Other minor fixes and improvements.
+
 ## Version 0.6.0 (2022-12-04)
 
 - Improve `<podcast:images>`.
