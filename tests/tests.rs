@@ -142,7 +142,7 @@ fn deserialize() {
                     }],
                     podcast_trailer: vec! {
                         podcast::Trailer{
-                            pub_date: Some(badpod::DateTime::Ok(chrono::FixedOffset::west(5*60*60).ymd(2021, 4, 1).and_hms(8, 0, 0))),
+                            pub_date: Some(badpod::DateTime::Ok(chrono::FixedOffset::west_opt(5*60*60).unwrap().with_ymd_and_hms(2021, 4, 1, 8, 0, 0).unwrap())),
                             url: Some(Url::Ok(url::Url::parse("https://example.org/trailers/teaser").unwrap())),
                             length: Some(Integer::Ok(12345678)),
                             type_: Some(MimeEnclosure::AudioMp3),
@@ -195,7 +195,7 @@ fn deserialize() {
                                 Number::Integer(1079),
                             ],
                             itunes_explicit: vec![Bool::Ok(true)],
-                            pub_date: vec![badpod::DateTime::Ok(chrono::FixedOffset::west(0).ymd(2022, 10, 10).and_hms(6, 10, 5))],
+                            pub_date: vec![badpod::DateTime::Ok(chrono::FixedOffset::west_opt(0).unwrap().with_ymd_and_hms(2022, 10, 10, 6, 10, 5).unwrap())],
 
                             podcast_chapters: vec![podcast::Chapters{
                                 url: Some(Url::Ok(url::Url::parse("https://example.com/episode-1/chapters.json").unwrap())),
@@ -348,8 +348,8 @@ fn deserialize() {
                     podcast_live_item: vec! {
                         podcast::LiveItem{
                             status: Some(podcast::LiveItemStatus::Live),
-                            start: Some(badpod::DateTime::Ok(chrono::FixedOffset::west(6*60*60).ymd(2021, 9, 26).and_hms(7, 30, 0))),
-                            end: Some(badpod::DateTime::Ok(chrono::FixedOffset::west(6*60*60).ymd(2021, 9, 26).and_hms(9, 30, 0))),
+                            start: Some(badpod::DateTime::Ok(chrono::FixedOffset::west_opt(6*60*60).unwrap().with_ymd_and_hms(2021, 9, 26, 7, 30, 0).unwrap())),
+                            end: Some(badpod::DateTime::Ok(chrono::FixedOffset::west_opt(6*60*60).unwrap().with_ymd_and_hms(2021, 9, 26, 9, 30, 0).unwrap())),
                             title: vec!["Podcasting 2.0 Live Stream".to_string()],
                             guid: vec![Guid{
                                 is_permalink: None,
@@ -386,8 +386,8 @@ fn deserialize() {
                 generator: vec!["Freedom Controller".to_string()],
                 managing_editor: vec!["john@example.com (John Doe)".to_string()],
                 web_master: vec!["support@example.com (Tech Support)".to_string()],
-                pub_date: vec![badpod::DateTime::Ok(chrono::FixedOffset::west(0).ymd(2020, 10, 9).and_hms(4, 30, 38))],
-                last_build_date: vec![badpod::DateTime::Ok(chrono::FixedOffset::west(0).ymd(2020, 10, 9).and_hms(4, 30, 38))],
+                pub_date: vec![badpod::DateTime::Ok(chrono::FixedOffset::west_opt(0).unwrap().with_ymd_and_hms(2020, 10, 9, 4, 30, 38).unwrap())],
+                last_build_date: vec![badpod::DateTime::Ok(chrono::FixedOffset::west_opt(0).unwrap().with_ymd_and_hms(2020, 10, 9, 4, 30, 38).unwrap())],
 
                 podcast_guid: vec![podcast::Guid::Other(("y0ur-gu1d-g035-h3r3".to_string(), r#"should be a [UUIDv5](https://tools.rssblue.com/podcast-guid)"#.to_string()))],
                 podcast_license: vec![podcast::License{
@@ -457,7 +457,7 @@ fn deserialize() {
                 podcast_trailer: vec!{
                     podcast::Trailer{
                         url: Some(Url::Ok(url::Url::parse("https://example.org/trailers/teaser").unwrap())),
-                        pub_date: Some(badpod::DateTime::Ok(chrono::FixedOffset::west(5*60*60).ymd(2021, 4, 1).and_hms(8, 0, 0))),
+                        pub_date: Some(badpod::DateTime::Ok(chrono::FixedOffset::west_opt(5*60*60).unwrap().with_ymd_and_hms(2021, 4, 1, 8, 0, 0).unwrap())),
                         length: Some(Integer::Ok(12345678)),
                         type_: Some(MimeEnclosure::Other(("audio/mp3".to_string(), "unrecognized mime type".to_string()))),
                         value: Some("Coming April 1st, 2021".to_string()),
@@ -467,8 +467,8 @@ fn deserialize() {
                 podcast_live_item: vec!{
                     podcast::LiveItem{
                         status: Some(podcast::LiveItemStatus::Live),
-                        start: Some(badpod::DateTime::Ok(chrono::FixedOffset::west(6*60*60).ymd(2021, 9, 26).and_hms(7, 30, 0))),
-                        end: Some(badpod::DateTime::Ok(chrono::FixedOffset::west(6*60*60).ymd(2021, 9, 26).and_hms(9, 30, 0))),
+                        start: Some(badpod::DateTime::Ok(chrono::FixedOffset::west_opt(6*60*60).unwrap().with_ymd_and_hms(2021, 9, 26, 7, 30, 0).unwrap())),
+                        end: Some(badpod::DateTime::Ok(chrono::FixedOffset::west_opt(6*60*60).unwrap().with_ymd_and_hms(2021, 9, 26, 9, 30, 0).unwrap())),
                         title: vec!["Podcasting 2.0 Live Show".to_string()],
                         description: vec!["A look into the future of podcasting and how we get to Podcasting 2.0!".to_string()],
                         link: vec![Url::Ok(url::Url::parse("https://example.com/podcast/live").unwrap())],
@@ -539,7 +539,7 @@ fn deserialize() {
                             is_permalink: Some(Bool::Ok(true)),
                             value: Some(GuidValue::Url(url::Url::parse("https://example.com/ep0003").unwrap())),
                         }],
-                        pub_date: vec![badpod::DateTime::Ok(chrono::FixedOffset::west(0).ymd(2020, 10, 9).and_hms(4, 30, 38))],
+                        pub_date: vec![badpod::DateTime::Ok(chrono::FixedOffset::west_opt(0).unwrap().with_ymd_and_hms(2020, 10, 9, 4, 30, 38).unwrap())],
                         enclosure: vec![Enclosure{
                             url: Some(Url::Ok(url::Url::parse("https://example.com/file-03.mp3").unwrap())),
                             length: Some(Integer::Ok(43200000)),
@@ -755,7 +755,7 @@ fn deserialize() {
                             is_permalink: Some(Bool::Ok(true)),
                             value: Some(GuidValue::Url(url::Url::parse("https://example.com/ep0002").unwrap())),
                         }],
-                        pub_date: vec![badpod::DateTime::Ok(chrono::FixedOffset::west(0).ymd(2020, 10, 8).and_hms(4, 30, 38))],
+                        pub_date: vec![badpod::DateTime::Ok(chrono::FixedOffset::west_opt(0).unwrap().with_ymd_and_hms(2020, 10, 8, 4, 30, 38).unwrap())],
                         enclosure: vec![Enclosure{
                             url: Some(Url::Ok(url::Url::parse("https://example.com/file-02.mp3").unwrap())),
                             length: Some(Integer::Ok(43113000)),
@@ -932,7 +932,7 @@ fn deserialize() {
                             is_permalink: Some(Bool::Ok(true)),
                             value: Some(GuidValue::Url(url::Url::parse("https://example.com/ep0001").unwrap())),
                         }],
-                        pub_date: vec![badpod::DateTime::Ok(chrono::FixedOffset::west(0).ymd(2020, 10, 7).and_hms(4, 30, 38))],
+                        pub_date: vec![badpod::DateTime::Ok(chrono::FixedOffset::west_opt(0).unwrap().with_ymd_and_hms(2020, 10, 7, 4, 30, 38).unwrap())],
                         enclosure: vec![Enclosure{
                             url: Some(Url::Ok(url::Url::parse("https://example.com/file-01.mp3").unwrap())),
                             length: Some(Integer::Ok(43111403)),
