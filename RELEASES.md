@@ -1,5 +1,9 @@
 # Releases
 
+## Version 0.7.1 (2023-04-02)
+
+- Simplify adding `badpod` to the project.
+
 ## Version 0.7.0 (2022-12-13)
 
 - Improve iTunes' categories validation.
