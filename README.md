@@ -27,11 +27,11 @@ In that case, we may want a more flexible, intermediate schema: a schema that do
 
 ### Including in a project
 
-Inside `Cargo.toml`:  
-```toml
-[dependencies]
-badpod = "0.7.0"
 ```
+cargo add badpod
+```
+
+This will include the latest version of the crate in your `Cargo.toml` file.
 
 ### Deserializing
 
