@@ -75,7 +75,6 @@ pub enum Transcript {
     #[strum(props(str = "application/x-subrip"))]
     ApplicationSubrip,
     /// Not supported by IANA, but was once part of podcast namespace specification.
-    #[deprecated]
     #[strum(props(str = "application/srt"))]
     ApplicationSrt,
 
