@@ -1090,10 +1090,10 @@ fn deserialize() {
                 pretty_assertions::assert_eq!(output, *expected);
             }
             (Err(output), Ok(_)) => {
-                panic!("Unexpected error: {:?}", output);
+                panic!("Unexpected error: {output:?}");
             }
             (Ok(output), Err(_)) => {
-                panic!("Unexpected success: {:?}", output);
+                panic!("Unexpected success: {output:?}");
             }
         }
     }
