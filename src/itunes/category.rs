@@ -56,8 +56,8 @@ impl fmt::Display for CategoryName {
         match self {
             Self::Other((s, _)) => write!(f, "{s}"),
             _ => match self.get_str("str") {
-                Some(s) => write!(f, "{}", s),
-                None => write!(f, "{:?}", self),
+                Some(s) => write!(f, "{s}"),
+                None => write!(f, "{self:?}"),
             },
         }
     }
@@ -229,8 +229,8 @@ impl fmt::Display for SubcategoryName {
         match self {
             Self::Other((s, _)) => write!(f, "{s}"),
             _ => match self.get_str("str") {
-                Some(s) => write!(f, "{}", s),
-                None => write!(f, "{:?}", self),
+                Some(s) => write!(f, "{s}"),
+                None => write!(f, "{self:?}"),
             },
         }
     }
@@ -380,7 +380,7 @@ impl SubcategoryName {
                     "; valid subcategories: {}",
                     allowed_subcategories
                         .iter()
-                        .map(|s| format!("\"{}\"", s))
+                        .map(|s| format!("\"{s}\""))
                         .collect::<Vec<String>>()
                         .join(", ")
                 ));

@@ -31,7 +31,7 @@ impl std::fmt::Display for Error {
         match self {
             Error::NoRoot => write!(f, "No root element found"),
             Error::RootNotRss => write!(f, "Root element is not `rss`"),
-            Error::Custom(s) => write!(f, "{}", s),
+            Error::Custom(s) => write!(f, "{s}"),
         }
     }
 }

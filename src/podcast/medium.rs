@@ -32,7 +32,7 @@ impl std::fmt::Display for Medium {
         match self {
             Self::Other((s, _)) => write!(f, "{s}"),
             _ => {
-                let s = format!("{:?}", self);
+                let s = format!("{self:?}");
                 write!(f, "{}", s.to_lowercase())
             }
         }

@@ -76,7 +76,7 @@ impl std::str::FromStr for Geo {
             None => {
                 return Ok(Geo::Other((
                     s.to_string(),
-                    format!("should match regular expression `{}`", pattern),
+                    format!("should match regular expression `{pattern}`"),
                 )))
             }
         };
@@ -338,7 +338,7 @@ mod tests {
 
         for (s, geo) in strings.iter().zip(geos.iter()) {
             pretty_assertions::assert_eq!(Geo::from_str(s), Ok(geo.clone()));
-            pretty_assertions::assert_eq!(format!("{}", geo), *s);
+            pretty_assertions::assert_eq!(format!("{geo}"), *s);
         }
     }
 
@@ -370,7 +370,7 @@ mod tests {
 
         for (s, osm) in strings.iter().zip(osms.iter()) {
             pretty_assertions::assert_eq!(Osm::from_str(s), Ok(osm.clone()));
-            pretty_assertions::assert_eq!(format!("{}", osm), *s);
+            pretty_assertions::assert_eq!(format!("{osm}"), *s);
         }
     }
 }

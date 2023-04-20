@@ -52,7 +52,7 @@ fn parse_single_image(s: &str) -> Result<(url::Url, i64), String> {
 
     let url = match Url::parse(url, UrlConstraint::HttpOrHttps) {
         Url::Ok(url) => url,
-        Url::Other((_, reason)) => return Err(format!("invalid URL ({})", reason)),
+        Url::Other((_, reason)) => return Err(format!("invalid URL ({reason})")),
     };
 
     if !width_str.ends_with('w') {
@@ -66,12 +66,12 @@ fn parse_single_image(s: &str) -> Result<(url::Url, i64), String> {
 
     match Integer::parse(width_str, NumberConstraint::Positive) {
         Integer::Ok(width) => Ok((url, width)),
-        Integer::Other((_, reason)) => Err(format!("invalid width ({})", reason)),
+        Integer::Other((_, reason)) => Err(format!("invalid width ({reason})")),
     }
 }
 
 fn display_single_image(url: &url::Url, width: i64) -> String {
-    format!("{} {}w", url, width)
+    format!("{url} {width}w")
 }
 
 impl Images {
@@ -84,7 +84,7 @@ impl Images {
                 Err(reason) => {
                     return SrcSet::Other((
                         s.to_string(),
-                        format!("invalid image at index {}: {}", idx, reason),
+                        format!("invalid image at index {idx}: {reason}"),
                     ))
                 }
             }

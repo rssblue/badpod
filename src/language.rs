@@ -513,7 +513,7 @@ impl std::fmt::Display for Language {
             Language::Spanish(region) => write!(f, "{region}"),
             Language::Swedish(region) => write!(f, "{region}"),
             _ => match self.get_str("str") {
-                Some(s) => write!(f, "{}", s),
+                Some(s) => write!(f, "{s}"),
                 None => Err("property \"str\" not found").map_err(|_| std::fmt::Error),
             },
         }

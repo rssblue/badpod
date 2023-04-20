@@ -45,8 +45,8 @@ impl std::fmt::Display for Enclosure {
         match self {
             Self::Other((s, _)) => write!(f, "{s}"),
             _ => match self.get_str("str") {
-                Some(s) => write!(f, "{}", s),
-                None => write!(f, "{:?}", self),
+                Some(s) => write!(f, "{s}"),
+                None => write!(f, "{self:?}"),
             },
         }
     }
@@ -101,8 +101,8 @@ impl std::fmt::Display for Transcript {
         match self {
             Self::Other((s, _)) => write!(f, "{s}"),
             _ => match self.get_str("str") {
-                Some(s) => write!(f, "{}", s),
-                None => write!(f, "{:?}", self),
+                Some(s) => write!(f, "{s}"),
+                None => write!(f, "{self:?}"),
             },
         }
     }
@@ -147,8 +147,8 @@ impl std::fmt::Display for Chapters {
         match self {
             Self::Other((s, _)) => write!(f, "{s}"),
             _ => match self.get_str("str") {
-                Some(s) => write!(f, "{}", s),
-                None => write!(f, "{:?}", self),
+                Some(s) => write!(f, "{s}"),
+                None => write!(f, "{self:?}"),
             },
         }
     }

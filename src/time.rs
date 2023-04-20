@@ -22,11 +22,11 @@ impl DateTime {
                 }
             },
             TimeFormat::Iso8601 => {
-                if let Ok(t) = chrono::DateTime::parse_from_rfc3339(&s) {
+                if let Ok(t) = chrono::DateTime::parse_from_rfc3339(s) {
                     return DateTime::Ok(t);
                 }
 
-                if let Ok(t) = chrono::DateTime::parse_from_str(&s, "%Y-%m-%dT%H:%M:%S%.f%:z") {
+                if let Ok(t) = chrono::DateTime::parse_from_str(s, "%Y-%m-%dT%H:%M:%S%.f%:z") {
                     return DateTime::Ok(t);
                 }
 

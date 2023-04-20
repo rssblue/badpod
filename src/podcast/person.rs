@@ -51,8 +51,8 @@ impl std::fmt::Display for Group {
         match self {
             Self::Other((s, _)) => write!(f, "{s}"),
             _ => match self.get_str("str") {
-                Some(s) => write!(f, "{}", s),
-                None => write!(f, "{:?}", self),
+                Some(s) => write!(f, "{s}"),
+                None => write!(f, "{self:?}"),
             },
         }
     }
@@ -217,8 +217,8 @@ impl std::fmt::Display for Role {
         match self {
             Self::Other((s, _)) => write!(f, "{s}"),
             _ => match self.get_str("str") {
-                Some(s) => write!(f, "{}", s),
-                None => write!(f, "{:?}", self),
+                Some(s) => write!(f, "{s}"),
+                None => write!(f, "{self:?}"),
             },
         }
     }

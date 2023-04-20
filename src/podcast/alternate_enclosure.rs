@@ -33,8 +33,8 @@ impl std::fmt::Display for IntegrityType {
         match self {
             Self::Other((s, _)) => write!(f, "{s}"),
             _ => match self.get_str("str") {
-                Some(s) => write!(f, "{}", s),
-                None => write!(f, "{:?}", self),
+                Some(s) => write!(f, "{s}"),
+                None => write!(f, "{self:?}"),
             },
         }
     }
