@@ -1,5 +1,5 @@
-use chrono::prelude::*;
 use badpod::*;
+use chrono::prelude::*;
 
 #[test]
 fn deserialize() {
@@ -433,7 +433,7 @@ fn deserialize() {
                     value: Some("Austin, TX".to_string()),
                 }],
                 podcast_medium: vec![podcast::Medium::Podcast],
-                podcast_value: vec![podcast::Value { 
+                podcast_value: vec![podcast::Value {
                     type_: Some(podcast::ValueType::Lightning),
                     method: Some(podcast::ValueMethod::Keysend),
                     suggested: Some(Float::Ok(0.00000005)),
@@ -1109,15 +1109,30 @@ fn no_error() {
 
     let tests = vec![
         // Simplecast
-        Test{url: "https://feeds.simplecast.com/54nAGcIl", title: "The Daily"},
+        Test {
+            url: "https://feeds.simplecast.com/54nAGcIl",
+            title: "The Daily",
+        },
         // Megaphone
-        Test{url: "https://feeds.megaphone.fm/hubermanlab", title: "Huberman Lab"},
+        Test {
+            url: "https://feeds.megaphone.fm/hubermanlab",
+            title: "Huberman Lab",
+        },
         // NPR
-        Test{url: "https://feeds.npr.org/500005/podcast.xml", title: "NPR News Now"},
+        Test {
+            url: "https://feeds.npr.org/500005/podcast.xml",
+            title: "NPR News Now",
+        },
         // Buzzsprout
-        Test{url: "https://feeds.buzzsprout.com/424075.rss", title: "Bret Weinstein | DarkHorse Podcast"},
+        Test {
+            url: "https://feeds.buzzsprout.com/424075.rss",
+            title: "Bret Weinstein | DarkHorse Podcast",
+        },
         // Blubrry/PowerPress - Not working
-        Test{url: "https://lexfridman.com/feed/podcast/", title: "Lex Fridman Podcast"},
+        Test {
+            url: "https://lexfridman.com/feed/podcast/",
+            title: "Lex Fridman Podcast",
+        },
     ];
 
     for test in tests {
@@ -1126,14 +1141,14 @@ fn no_error() {
             Err(_) => {
                 log::warn!("Failed to fetch feed: {}", test.url);
                 continue;
-            },
+            }
         };
         let feed_str = match feed_str {
             Ok(feed_str) => feed_str,
             Err(_) => {
                 log::warn!("Failed to read the feed: {}", test.url);
                 continue;
-            },
+            }
         };
         let feed = badpod::from_str(&feed_str);
         pretty_assertions::assert_eq!(test.title, feed.unwrap().channel[0].title[0]);
