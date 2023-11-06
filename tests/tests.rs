@@ -1126,7 +1126,7 @@ fn no_error() {
         // Buzzsprout
         Test {
             url: "https://feeds.buzzsprout.com/424075.rss",
-            title: "Bret Weinstein | DarkHorse Podcast",
+            title: "DarkHorse Podcast",
         },
         // Blubrry/PowerPress - Not working
         Test {
