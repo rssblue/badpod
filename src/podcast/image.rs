@@ -101,7 +101,7 @@ mod tests {
 
     #[test]
     fn test_srcset() {
-        let strings = vec![
+        let strings = [
             "https://example.com/images/ep1/pci_avatar-massive.jpg 1500w,
             https://example.com/images/ep1/pci_avatar-middle.jpg 600w,
             https://example.com/images/ep1/pci_avatar-small.jpg 300w,
@@ -111,7 +111,7 @@ mod tests {
             https://example.com/images/ep1/pci_avatar-small.jpg 300w,
             https://example.com/images/ep1/pci_avatar-tiny.jpg 150w",
         ];
-        let srcsets = vec![
+        let srcsets = [
             SrcSet::Ok(vec![
                 (
                     url::Url::from_str("https://example.com/images/ep1/pci_avatar-massive.jpg")

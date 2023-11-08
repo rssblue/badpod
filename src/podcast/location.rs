@@ -293,7 +293,7 @@ mod tests {
 
     #[test]
     fn test_geo() {
-        let strings = vec![
+        let strings = [
             "geo:37.786971,-122.399677",
             "geo:37.786971,-122.399677,250",
             "geo:37.786971,-122.399677;u=350",
@@ -301,7 +301,7 @@ mod tests {
             "geo:37.786971,-122.399677,250,u=350",
             "geo:137.786971,-122.399677,250;u=350",
         ];
-        let geos = vec![
+        let geos = [
             Geo::Ok {
                 latitude: 37.786971,
                 longitude: -122.399677,
@@ -344,8 +344,8 @@ mod tests {
 
     #[test]
     fn test_osm() {
-        let strings = vec!["R148838", "W5013364", "R7444#188", "7444#188"];
-        let osms = vec![
+        let strings = ["R148838", "W5013364", "R7444#188", "7444#188"];
+        let osms = [
             Osm::Ok {
                 type_: OsmType::Relation,
                 id: 148838,
