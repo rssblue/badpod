@@ -22,6 +22,8 @@ pub enum Enclosure {
     AudioOpus,
     #[strum(props(str = "audio/aac"))]
     AudioAac,
+    #[strum(props(str = "application/x-mpegURL"))]
+    ApplicationXMpegURL,
 
     Other(Other),
 }
