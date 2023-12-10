@@ -192,7 +192,8 @@ fn deserialize() {
                                 type_: Some(MimeEnclosure::AudioMp3),
                             }],
                             itunes_duration: vec![
-                                Number::Integer(1079),
+                                itunes::Duration::Duration(chrono::Duration::seconds(1079)),
+                                itunes::Duration::Duration(chrono::Duration::minutes(13) + chrono::Duration::seconds(24)),
                             ],
                             itunes_explicit: vec![Bool::Ok(true)],
                             pub_date: vec![badpod::DateTime::Ok(chrono::FixedOffset::west_opt(0).unwrap().with_ymd_and_hms(2022, 10, 10, 6, 10, 5).unwrap())],

@@ -78,7 +78,7 @@ pub struct Item {
     pub content_encoded: Vec<String>,
 
     pub itunes_block: Vec<itunes::Yes>,
-    pub itunes_duration: Vec<basic::Number>,
+    pub itunes_duration: Vec<itunes::Duration>,
     pub itunes_season: Vec<basic::Integer>,
     pub itunes_episode: Vec<basic::Integer>,
     pub itunes_explicit: Vec<basic::Bool>,

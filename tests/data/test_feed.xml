@@ -72,6 +72,7 @@
       <itunes:block>yes</itunes:block>
       <itunes:explicit>true</itunes:explicit>
       <itunes:duration>1079</itunes:duration>
+      <itunes:duration>13:24</itunes:duration>
       <pubDate>Mon, 10 Oct 2022 06:10:05 GMT</pubDate>
       <title>Example Episode</title>
       <podcast:chapters url="https://example.com/episode-1/chapters.json" type="application/json+chapters" />

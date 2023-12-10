@@ -320,13 +320,6 @@ fn parse_item(item: roxmltree::Node) -> rss::Item {
                     new_item.itunes_block.push(itunes::Yes::parse(&text));
                 }
             }
-            (Some(NS_ITUNES), "duration") => {
-                if let Some(text) = parse_text_node(child) {
-                    new_item
-                        .itunes_duration
-                        .push(Number::parse(&text, NumberConstraint::NonNegative));
-                }
-            }
             (Some(NS_ITUNES), "season") => {
                 if let Some(text) = parse_text_node(child) {
                     new_item
@@ -361,7 +354,13 @@ fn parse_item(item: roxmltree::Node) -> rss::Item {
                     new_item.itunes_type.push(itunes::EpisodeType::parse(&text));
                 }
             }
-
+            (Some(NS_ITUNES), "duration") => {
+                if let Some(text) = parse_text_node(child) {
+                    new_item
+                        .itunes_duration
+                        .push(itunes::Duration::parse(&text));
+                }
+            }
             (Some(NS_PODCAST_1 | NS_PODCAST_2), "transcript") => {
                 new_item
                     .podcast_transcript
