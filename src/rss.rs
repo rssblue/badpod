@@ -63,6 +63,7 @@ pub struct Channel {
     pub podcast_live_item: Vec<podcast::LiveItem>,
     pub podcast_block: Vec<podcast::Block>,
     pub podcast_txt: Vec<podcast::Txt>,
+    pub podcast_remote_item: Vec<podcast::RemoteItem>,
 }
 
 /// Podcast episode.

@@ -1,11 +1,11 @@
-use crate::basic::{Bool, BoolType, Float, Integer, Number, NumberConstraint};
-use crate::itunes;
+use crate::basic::{self, Bool, BoolType, Float, Integer, Number, NumberConstraint};
 use crate::language::Language;
 use crate::mime;
 use crate::podcast;
 use crate::rss;
 use crate::strings::{Url, UrlConstraint};
 use crate::time::{DateTime, TimeFormat};
+use crate::{itunes, GuidValue};
 
 /// Used when values cannot be deserialized.
 ///
@@ -262,6 +262,11 @@ fn parse_channel(channel: roxmltree::Node) -> rss::Channel {
             }
             (Some(NS_PODCAST_1 | NS_PODCAST_2), "txt") => {
                 new_channel.podcast_txt.push(parse_podcast_txt(child));
+            }
+            (Some(NS_PODCAST_1 | NS_PODCAST_2), "remoteItem") => {
+                new_channel
+                    .podcast_remote_item
+                    .push(parse_podcast_remote_item(child));
             }
 
             _ => {}
@@ -611,6 +616,32 @@ pub fn parse_podcast_person(person: roxmltree::Node) -> podcast::Person {
     }
 
     new_person
+}
+
+pub fn parse_podcast_remote_item(remote_item: roxmltree::Node) -> podcast::RemoteItem {
+    let mut new_remote_item = podcast::RemoteItem {
+        ..Default::default()
+    };
+
+    for attribute in remote_item.attributes() {
+        match attribute.name() {
+            "feedGuid" => new_remote_item.feed_guid = Some(podcast::Guid::parse(attribute.value())),
+            "feedUrl" => {
+                new_remote_item.feed_url =
+                    Some(Url::parse(attribute.value(), UrlConstraint::AnyProtocol))
+            }
+            "itemGuid" => {
+                new_remote_item.item_guid = Some(GuidValue::parse(
+                    attribute.value(),
+                    &Some(basic::Bool::Ok(false)),
+                ))
+            }
+            "medium" => new_remote_item.medium = Some(podcast::Medium::parse(attribute.value())),
+            _ => {}
+        }
+    }
+
+    new_remote_item
 }
 
 pub fn parse_podcast_location(location: roxmltree::Node) -> podcast::Location {

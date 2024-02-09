@@ -434,6 +434,14 @@ fn deserialize() {
                     value: Some("Austin, TX".to_string()),
                 }],
                 podcast_medium: vec![podcast::Medium::Podcast],
+                podcast_remote_item: vec![
+                    podcast::RemoteItem {
+                        feed_guid: Some(podcast::Guid::Ok("ff519475-6e90-5231-91a0-37d092088d88".into())),
+                        feed_url: Some(Url::Ok(url::Url::parse("https://media.rss.com/joemartinmusic/feed.xml").unwrap())),
+                        item_guid: Some(GuidValue::Text("e75771b1-e8d4-4133-9392-c579822247d9".into())),
+                        medium: Some(podcast::Medium::Music),
+                    }
+                ],
                 podcast_value: vec![podcast::Value {
                     type_: Some(podcast::ValueType::Lightning),
                     method: Some(podcast::ValueMethod::Keysend),

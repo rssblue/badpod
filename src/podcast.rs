@@ -4,6 +4,7 @@ use crate::language::Language;
 use crate::mime;
 use crate::strings::Url;
 use crate::time::DateTime;
+use crate::GuidValue;
 
 mod transcript;
 pub use transcript::Rel as TranscriptRel;
@@ -258,4 +259,13 @@ pub struct Block {
 pub struct Txt {
     pub purpose: Option<TxtPurpose>,
     pub value: Option<String>,
+}
+
+/// This element provides a way to "point" to another feed or an item in another feed in order to obtain some sort of data that the other feed or feed item has.
+#[derive(Debug, PartialEq, Eq, Default)]
+pub struct RemoteItem {
+    pub feed_guid: Option<Guid>,
+    pub feed_url: Option<Url>,
+    pub item_guid: Option<GuidValue>,
+    pub medium: Option<Medium>,
 }
