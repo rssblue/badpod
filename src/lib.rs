@@ -20,7 +20,7 @@ pub mod itunes;
 /// Implementation details adapted from <https://podcastindex.org/namespace/1.0>.
 pub mod podcast;
 
-pub use crate::basic::{Bool, Float, Integer, Number};
+pub use crate::basic::{Bool, Duration, Float, Integer, Number};
 pub use crate::language::{
     Language, LanguageChinese, LanguageDutch, LanguageEnglish, LanguageFrench, LanguageGerman,
     LanguageItalian, LanguagePortugese, LanguageRomanian, LanguageRussian, LanguageSpanish,

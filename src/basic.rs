@@ -241,3 +241,22 @@ impl std::fmt::Display for Number {
         }
     }
 }
+
+/// Duration.
+#[derive(Debug, PartialEq, Eq)]
+pub enum Duration {
+    Duration(chrono::Duration),
+    Other(Other),
+}
+
+impl Duration {
+    pub fn parse_from_int_string(s: &str) -> Self {
+        match s.parse::<u64>() {
+            Ok(x) => Self::Duration(chrono::Duration::seconds(x as i64)),
+            Err(_) => Self::Other((
+                s.to_string(),
+                "should be a non-negative integer".to_string(),
+            )),
+        }
+    }
+}

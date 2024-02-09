@@ -745,6 +745,12 @@ fn parse_podcast_value(value: roxmltree::Node) -> podcast::Value {
                 .value_recipient
                 .push(parse_podcast_value_recipient(child));
         }
+
+        if let (Some(NS_PODCAST_1 | NS_PODCAST_2), "valueTimeSplit") = (namespace, tag_name) {
+            new_value
+                .value_time_split
+                .push(parse_podcast_value_time_split(child));
+        }
     }
 
     new_value
@@ -779,6 +785,53 @@ fn parse_podcast_value_recipient(value_recipient: roxmltree::Node) -> podcast::V
     }
 
     new_value_recipient
+}
+
+fn parse_podcast_value_time_split(value_time_split: roxmltree::Node) -> podcast::ValueTimeSplit {
+    let mut new_value_time_split = podcast::ValueTimeSplit {
+        ..Default::default()
+    };
+
+    for attribute in value_time_split.attributes() {
+        match attribute.name() {
+            "startTime" => {
+                new_value_time_split.start_time =
+                    Some(basic::Duration::parse_from_int_string(attribute.value()))
+            }
+            "duration" => {
+                new_value_time_split.duration =
+                    Some(basic::Duration::parse_from_int_string(attribute.value()))
+            }
+            "remoteStartTime" => {
+                new_value_time_split.remote_start_time =
+                    Some(basic::Duration::parse_from_int_string(attribute.value()))
+            }
+            "remotePercentage" => {
+                new_value_time_split.remote_percentage =
+                    Some(Integer::parse(attribute.value(), NumberConstraint::None))
+            }
+            _ => {}
+        }
+    }
+
+    for child in value_time_split.children() {
+        let namespace = child.tag_name().namespace();
+        let tag_name = child.tag_name().name();
+
+        if let (Some(NS_PODCAST_1 | NS_PODCAST_2), "valueRecipient") = (namespace, tag_name) {
+            new_value_time_split
+                .value_recipient
+                .push(parse_podcast_value_recipient(child));
+        }
+
+        if let (Some(NS_PODCAST_1 | NS_PODCAST_2), "remoteItem") = (namespace, tag_name) {
+            new_value_time_split
+                .remote_item
+                .push(parse_podcast_remote_item(child));
+        }
+    }
+
+    new_value_time_split
 }
 
 pub fn parse_podcast_images(images: roxmltree::Node) -> podcast::Images {

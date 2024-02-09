@@ -178,6 +178,7 @@ fn deserialize() {
                                 ..Default::default()
                             },
                         },
+                        value_time_split: vec![],
                     }],
                     podcast_medium: vec![podcast::Medium::Music],
                     podcast_images: vec![podcast::Images {
@@ -312,6 +313,7 @@ fn deserialize() {
                                 method: Some(podcast::ValueMethod::Keysend),
                                 suggested: Some(Float::Ok(0.00000015)),
                                 value_recipient: vec!{},
+                        value_time_split: vec![],
                             }],
                             podcast_social_interact: vec! {
                                 podcast::SocialInteract{
@@ -462,6 +464,21 @@ fn deserialize() {
                             ..Default::default()
                         },
                     },
+                    value_time_split: vec![
+                        podcast::ValueTimeSplit{
+                            start_time: Some(badpod::Duration::Duration(chrono::Duration::minutes(1))),
+                            duration: Some(badpod::Duration::Duration(chrono::Duration::minutes(3) + chrono::Duration::seconds(57))),
+                            remote_start_time: None,
+                            remote_percentage: Some(Integer::Ok(95)),
+                            value_recipient: vec![],
+                            remote_item: vec![podcast::RemoteItem{
+                                feed_guid: Some(podcast::Guid::Ok("a94f5cc9-8c58-55fc-91fe-a324087a655b".into())),
+                                feed_url: None,
+                                item_guid: Some(GuidValue::Url(url::Url::parse("https://podcastindex.org/podcast/4148683#1").unwrap())),
+                                medium: Some(podcast::Medium::Music),
+                            }],
+                        }
+                    ],
                 }],
                 podcast_trailer: vec!{
                     podcast::Trailer{
@@ -736,6 +753,7 @@ fn deserialize() {
                                     ..Default::default()
                                 },
                             },
+                        value_time_split: vec![],
                         }],
                         podcast_social_interact: vec!{
                             podcast::SocialInteract{
@@ -930,6 +948,7 @@ fn deserialize() {
                                     ..Default::default()
                                 },
                             },
+                        value_time_split: vec![],
                         }],
                         ..Default::default()
                     },

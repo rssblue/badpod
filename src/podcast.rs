@@ -174,6 +174,7 @@ pub struct Value {
     pub method: Option<ValueMethod>,
     pub suggested: Option<basic::Float>,
     pub value_recipient: Vec<ValueRecipient>,
+    pub value_time_split: Vec<ValueTimeSplit>,
 }
 
 /// Destination for payments to be sent to during consumption of enclosed media.
@@ -268,4 +269,15 @@ pub struct RemoteItem {
     pub feed_url: Option<Url>,
     pub item_guid: Option<GuidValue>,
     pub medium: Option<Medium>,
+}
+
+/// This element allows different value splits for a certain period of time.
+#[derive(Debug, PartialEq, Eq, Default)]
+pub struct ValueTimeSplit {
+    pub start_time: Option<crate::Duration>,
+    pub duration: Option<crate::Duration>,
+    pub remote_start_time: Option<crate::Duration>,
+    pub remote_percentage: Option<basic::Integer>,
+    pub remote_item: Vec<RemoteItem>,
+    pub value_recipient: Vec<ValueRecipient>,
 }
