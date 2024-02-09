@@ -55,11 +55,13 @@ This is to reflect that in XML, tags *can* be repeated, while attributes---*cann
 We don't enforce any requirements on what or how many tags should be in the feed---that's a decision for you to make!
 Leaving it more flexible (instead of throwing an instant error) also allows providing users with better feedback.
 ```rust
-match my_channel.podcast_value.len() {
-    0 => println!("Have you considered receiving payments from listeners?"),
-    1 => println!("You support Value4Value! Awesome!"),
-    _ => println!("Only one <podcast:value> tag is allowed per channel."),
-}
+match (value_time_split.remote_item.len(), value_time_split.value_recipient.len()) {
+    (0, 0) => println!("Either a single `<podcast:remoteItem>` element or one or more `<podcast:valueRecipient>` elements are required."),
+    (1, 0) => println!("You are referencing a remote item! Awesome!"),
+    (_, 0) => println!("Only a single `<podcast:remoteItem>` element is allowed."),
+    (0, _) => println!("You are sharing value with others during this segment! Nice!"),
+    (_, _) => println!("Either a single `<podcast:remoteItem>` element or one or more `<podcast:valueRecipient>` elements can be included."),
+};
 ```
 
 *Note*: all fields representing tags are named in the singular form, even though they are vectors.
