@@ -259,4 +259,18 @@ impl Duration {
             )),
         }
     }
+
+    pub fn parse_from_float_string(s: &str) -> Self {
+        match s.parse::<f64>() {
+            Ok(x) => {
+                // Convert to nanoseconds and round to the nearest integer.
+                let x = (x * 1_000_000_000.0).round() as i64;
+                Self::Duration(chrono::Duration::nanoseconds(x))
+            }
+            Err(_) => Self::Other((
+                s.to_string(),
+                "should be a non-negative floating-point number".to_string(),
+            )),
+        }
+    }
 }

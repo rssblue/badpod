@@ -467,7 +467,7 @@ fn deserialize() {
                     value_time_split: vec![
                         podcast::ValueTimeSplit{
                             start_time: Some(badpod::Duration::Duration(chrono::Duration::minutes(1))),
-                            duration: Some(badpod::Duration::Duration(chrono::Duration::minutes(3) + chrono::Duration::seconds(57))),
+                            duration: Some(badpod::Duration::Duration(chrono::Duration::minutes(3) + chrono::Duration::seconds(57) + chrono::Duration::milliseconds(500))),
                             remote_start_time: None,
                             remote_percentage: Some(Integer::Ok(95)),
                             value_recipient: vec![],

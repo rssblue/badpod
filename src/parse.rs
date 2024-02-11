@@ -796,15 +796,15 @@ fn parse_podcast_value_time_split(value_time_split: roxmltree::Node) -> podcast:
         match attribute.name() {
             "startTime" => {
                 new_value_time_split.start_time =
-                    Some(basic::Duration::parse_from_int_string(attribute.value()))
+                    Some(basic::Duration::parse_from_float_string(attribute.value()))
             }
             "duration" => {
                 new_value_time_split.duration =
-                    Some(basic::Duration::parse_from_int_string(attribute.value()))
+                    Some(basic::Duration::parse_from_float_string(attribute.value()))
             }
             "remoteStartTime" => {
                 new_value_time_split.remote_start_time =
-                    Some(basic::Duration::parse_from_int_string(attribute.value()))
+                    Some(basic::Duration::parse_from_float_string(attribute.value()))
             }
             "remotePercentage" => {
                 new_value_time_split.remote_percentage =
