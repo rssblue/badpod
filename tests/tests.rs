@@ -1161,6 +1161,11 @@ fn no_error() {
             url: "https://lexfridman.com/feed/podcast/",
             title: "Lex Fridman Podcast",
         },
+        // Podcasting 2.0
+        Test {
+            url: "https://feeds.podcastindex.org/pc20.xml",
+            title: "Podcasting 2.0",
+        },
     ];
 
     for test in tests {
