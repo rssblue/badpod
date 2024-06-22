@@ -1,7 +1,6 @@
 use crate::utils;
 use crate::Other;
-use strum::EnumProperty;
-use strum_macros::{EnumIter, EnumProperty};
+use strum::{EnumIter, EnumProperty};
 
 /// Group (as defined by [Podcast Taxonomy Project](https://podcasttaxonomy.com)) of [Person](crate::podcast::Person).
 #[derive(Debug, PartialEq, Eq, EnumProperty, EnumIter)]

@@ -1,6 +1,6 @@
 use crate::utils;
 use crate::Other;
-use strum_macros::EnumIter;
+use strum::EnumIter;
 
 /// Podcast platforms.
 ///

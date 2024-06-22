@@ -1,6 +1,6 @@
 use crate::utils;
 use crate::Other;
-use strum_macros::EnumIter;
+use strum::EnumIter;
 
 /// Social protocols that can be used in [SocialInteract](crate::podcast::SocialInteract).
 #[derive(Debug, PartialEq, Eq, EnumIter)]

@@ -1,6 +1,6 @@
 use crate::utils;
 use crate::Other;
-use strum_macros::EnumIter;
+use strum::EnumIter;
 
 /// Allowed purposes for [Txt](crate::podcast::Txt).
 #[derive(Debug, PartialEq, Eq, EnumIter)]

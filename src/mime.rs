@@ -1,7 +1,6 @@
 use crate::utils;
 use crate::Other;
-use strum::EnumProperty;
-use strum_macros::{EnumIter, EnumProperty};
+use strum::{EnumIter, EnumProperty};
 
 /// Used for deserializing mime types of enclosures.
 #[derive(Debug, PartialEq, Eq, EnumProperty, EnumIter)]

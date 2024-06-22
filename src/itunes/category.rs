@@ -2,8 +2,7 @@ use crate::utils;
 use crate::Other;
 use std::fmt;
 use std::str::FromStr;
-use strum::EnumProperty;
-use strum_macros::{EnumIter, EnumProperty};
+use strum::{EnumIter, EnumProperty};
 
 /// Apple Podcasts podcast category names.
 #[derive(Debug, PartialEq, Eq, EnumProperty, EnumIter)]
