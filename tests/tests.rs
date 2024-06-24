@@ -531,6 +531,12 @@ fn deserialize() {
                                 value: Some("Twitch!".to_string()),
                             },
                         },
+                        podcast_live_value: vec! {
+                            podcast::LiveValue {
+                                uri: Some(Url::Ok(url::Url::parse("https://curiohoster.com/event?event_id=8a2cfa5a-7a4d-466a-9d32-362ad68f945e").unwrap())),
+                                protocol: Some("socket.io".to_string()),
+                            }
+                        },
                         ..Default::default()
                     },
                 },

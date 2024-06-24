@@ -229,6 +229,7 @@ pub struct LiveItem {
     pub podcast_txt: Vec<Txt>,
 
     pub podcast_content_link: Vec<ContentLink>,
+    pub podcast_live_value: Vec<LiveValue>,
 }
 
 /// Used to indicate that the content being delivered by [LiveItem](LiveItem) can be found at an external location.
@@ -280,4 +281,11 @@ pub struct ValueTimeSplit {
     pub remote_percentage: Option<basic::Integer>,
     pub remote_item: Vec<RemoteItem>,
     pub value_recipient: Vec<ValueRecipient>,
+}
+
+/// This elements enables wallet switching during a livestream.
+#[derive(Debug, PartialEq, Eq, Default)]
+pub struct LiveValue {
+    pub uri: Option<Url>,
+    pub protocol: Option<String>,
 }

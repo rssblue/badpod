@@ -1283,7 +1283,11 @@ fn parse_podcast_live_item(live_item: roxmltree::Node) -> podcast::LiveItem {
                     .podcast_content_link
                     .push(parse_podcast_content_link(child));
             }
-
+            (Some(NS_PODCAST_1 | NS_PODCAST_2), "liveValue") => {
+                new_live_item
+                    .podcast_live_value
+                    .push(parse_podcast_live_value(child));
+            }
             _ => {}
         }
     }
@@ -1306,4 +1310,20 @@ pub fn parse_podcast_content_link(content_link: roxmltree::Node) -> podcast::Con
     }
 
     new_podcast_content_link
+}
+
+pub fn parse_podcast_live_value(live_value: roxmltree::Node) -> podcast::LiveValue {
+    let mut new_live_value = podcast::LiveValue::default();
+
+    for attribute in live_value.attributes() {
+        match attribute.name() {
+            "uri" => {
+                new_live_value.uri = Some(Url::parse(attribute.value(), UrlConstraint::HttpOrHttps))
+            }
+            "protocol" => new_live_value.protocol = Some(attribute.value().to_string()),
+            _ => {}
+        }
+    }
+
+    new_live_value
 }
