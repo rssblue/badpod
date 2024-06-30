@@ -1,6 +1,6 @@
 use crate::utils;
 use crate::Other;
-use strum_macros::EnumIter;
+use strum::EnumIter;
 
 /// Used for deserializing `rel` attribute of [Transcript](crate::podcast::Transcript).
 #[derive(Debug, PartialEq, Eq, EnumIter)]

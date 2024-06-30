@@ -1,7 +1,6 @@
 use crate::utils;
 use crate::Other;
-use strum::EnumProperty;
-use strum_macros::{EnumIter, EnumProperty};
+use strum::{EnumIter, EnumProperty};
 
 /// Type of [License](crate::podcast::License).
 #[derive(Debug, PartialEq, Eq, EnumProperty, EnumIter)]
