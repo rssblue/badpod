@@ -14,12 +14,12 @@ version = "0.9.0"
 chrono = "0.4.38"
 regex = "1.10.5"
 roxmltree = "0.20.0"
-strum = { version = "0.26", features = ["derive"] }
+strum = { version = "0.26.3", features = ["derive"] }
 time = { version = "0.3.36" }
 url = "2.5.2"
 
 [dev-dependencies]
-log = "0.4.21"
+log = "0.4.22"
 pretty_assertions = "1.4.0"
 reqwest = { version = "0.12.5", features = ["blocking"] }
 
