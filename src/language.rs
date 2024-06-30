@@ -1,7 +1,6 @@
 use crate::Other;
 use std::str::FromStr;
-use strum::{EnumProperty, IntoEnumIterator};
-use strum_macros::{Display, EnumIter, EnumProperty, EnumString};
+use strum::{Display, EnumIter, EnumProperty, EnumString, IntoEnumIterator};
 
 /// Used for deserializing languages.
 ///

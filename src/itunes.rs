@@ -1,7 +1,7 @@
 use crate::strings::Url;
 use crate::utils;
 use crate::Other;
-use strum_macros::EnumIter;
+use strum::EnumIter;
 
 mod category;
 pub use category::{CategoryName, SubcategoryName};

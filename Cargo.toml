@@ -14,8 +14,7 @@ version = "0.9.0"
 chrono = "0.4.38"
 regex = "1.10.5"
 roxmltree = "0.20.0"
-strum = "0.26.3"
-strum_macros = "0.26.4"
+strum = { version = "0.26", features = ["derive"] }
 time = { version = "0.3.36" }
 url = "2.5.2"
 

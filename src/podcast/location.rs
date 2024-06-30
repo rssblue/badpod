@@ -1,6 +1,6 @@
 use crate::basic::{Float, NumberConstraint};
 use crate::Other;
-use strum_macros::{Display, EnumString};
+use strum::{Display, EnumString};
 
 /// Geographical coordinates.
 #[derive(Debug, PartialEq, Clone)]
