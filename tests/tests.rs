@@ -1142,27 +1142,27 @@ fn no_error() {
     }
 
     let tests = vec![
-        // Simplecast
+        // Simplecast/NYT
         Test {
-            url: "https://feeds.simplecast.com/54nAGcIl",
-            title: "The Daily",
+            url: "https://feeds.simplecast.com/oCXij9l2",
+            title: "Rabbit Hole",
         },
         // Megaphone
         Test {
-            url: "https://feeds.megaphone.fm/hubermanlab",
-            title: "Huberman Lab",
+            url: "https://feeds.megaphone.fm/heavyweight-spot",
+            title: "Heavyweight",
         },
         // NPR
         Test {
-            url: "https://feeds.npr.org/500005/podcast.xml",
-            title: "NPR News Now",
+            url: "https://feeds.npr.org/510307/podcast.xml",
+            title: "Invisibilia",
         },
         // Buzzsprout
         Test {
-            url: "https://feeds.buzzsprout.com/424075.rss",
-            title: "DarkHorse Podcast",
+            url: "https://feeds.buzzsprout.com/1.rss",
+            title: "How to Start a Podcast",
         },
-        // Blubrry/PowerPress - Not working
+        // Blubrry/PowerPress
         Test {
             url: "https://lexfridman.com/feed/podcast/",
             title: "Lex Fridman Podcast",
